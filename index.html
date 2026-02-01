@@ -719,25 +719,120 @@ button{font-family:inherit}
 .reveal-d3{transition-delay:.3s}
 
 /* ========== RESPONSIVE ========== */
+
+/* ─── TABLET (≤ 900px) ─── */
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}
-  /* Slightly smaller avatar on medium screens */
   .avatar-wrap{width:240px;height:240px}
   .hero-desc{max-width:none}
   .hero-ctas{justify-content:center}
   .about-grid{grid-template-columns:1fr}
   .projects-grid{grid-template-columns:1fr}
   .pill{justify-content:center}
+
+  /* Nav: hide text labels, keep icon-size buttons */
+  .nav-links a{padding:8px 10px;font-size:.82rem}
+  .logo{font-size:1.1rem}
 }
-@media(max-width:520px){
-  .hero{padding:100px 0 60px}
-  .section{padding:70px 0}
-  .section-inner{padding:0 18px}
-  .hero-inner{padding:0 18px}
-  .nav-inner{padding:0 18px}
-  /* Even smaller avatar on small screens */
-  .avatar-wrap{width:200px;height:200px}
-  .skills-grid{grid-template-columns:repeat(2,1fr)}
+
+/* ─── MOBILE (≤ 680px) ─── */
+@media(max-width:680px){
+
+  /* --- Nav: hamburger-style compact row --- */
+  .nav-inner{
+    padding:0 16px;
+    /* allow items to wrap if they still overflow */
+    flex-wrap:wrap;
+    gap:6px;
+  }
+  .logo{font-size:1rem;gap:8px}
+  .logo-ring{width:30px;height:30px;font-size:.65rem}
+
+  /* Shrink nav links area; hide CV text, keep icon */
+  .nav-links{gap:2px;flex-wrap:wrap;justify-content:flex-end}
+  .nav-links a{padding:7px 8px;font-size:.78rem}
+  .btn-cv{padding:7px 10px;font-size:.75rem}
+  .btn-cv .cv-label{display:none} /* hide "CV" text, keep ⤓ */
+  .theme-toggle,.lang-toggle{width:36px;height:36px;margin-left:4px}
+
+  /* --- Hero --- */
+  .hero{padding:90px 0 50px;min-height:auto}
+  .hero-inner{padding:0 16px;gap:28px}
+  .hero h1{font-size:clamp(2rem,7vw,2.6rem)}
+  .hero-desc{font-size:.95rem}
+  .hero-ctas{flex-direction:column;align-items:center;gap:10px}
+  .btn-main,.btn-outline{width:100%;max-width:280px;justify-content:center}
+
+  /* Avatar smaller on mobile */
+  .avatar-wrap{width:180px;height:180px}
+  .avatar-column{gap:10px}
+
+  /* Bio overlay: full-width sheet instead of centred popup */
+  .bio-overlay{
+    position:fixed;
+    top:auto;bottom:0;left:0;
+    width:100%;max-width:100%;max-height:70vh;
+    transform:translateY(100%);
+    border-radius:24px 24px 0 0;
+    padding:28px 20px 40px;
+    z-index:200;
+  }
+  .bio-overlay.show{
+    transform:translateY(0);
+  }
+  /* drag-handle hint at top */
+  .bio-overlay::before{
+    content:'';display:block;
+    width:40px;height:4px;border-radius:2px;
+    background:var(--border);
+    margin:0 auto 16px;
+  }
+
+  /* --- Sections --- */
+  .section{padding:60px 0}
+  .section-inner{padding:0 16px}
+
+  /* --- About pillars --- */
+  .about-grid{gap:28px}
+  .pillar{padding:16px;gap:14px}
+
+  /* --- Skills --- */
+  .skills-tabs{gap:6px}
+  .skill-tab{padding:8px 12px;font-size:.78rem}
+  .skills-grid{grid-template-columns:repeat(2,1fr);gap:8px}
+  .skill-chip{padding:10px 12px;font-size:.82rem}
+
+  /* --- Projects --- */
+  .projects-grid{gap:16px}
+  .project-card{padding:22px}
+
+  /* --- Contact --- */
+  .contact-btns{flex-direction:column;align-items:stretch;gap:10px}
+  .btn-contact{justify-content:center;padding:14px 18px}
+
+  /* Email popover: position below button on mobile */
+  .email-pop{
+    position:relative;
+    bottom:auto;left:auto;
+    transform:none;
+    width:100%;
+    margin-top:10px;
+    border-radius:14px;
+  }
+  .email-pop.show{transform:none}
+  .email-pop::after{display:none} /* hide arrow */
+
+  /* --- Footer --- */
+  .footer{padding:28px 16px}
+}
+
+/* ─── SMALL MOBILE (≤ 380px) ─── */
+@media(max-width:380px){
+  .hero h1{font-size:1.9rem}
+  .nav-links a span{font-size:.72rem}
+  .skills-grid{grid-template-columns:1fr}
+  .skill-chip{padding:10px 14px}
+  .avatar-wrap{width:150px;height:150px}
 }
 </style>
 </head>
@@ -758,7 +853,7 @@ button{font-family:inherit}
       <a href="#skills" class="nav-link"><span class="lang-fr">Compétences</span><span class="lang-en">Skills</span></a>
       <a href="#projects" class="nav-link"><span class="lang-fr">Projets</span><span class="lang-en">Projects</span></a>
       <a href="#contact" class="nav-link"><span class="lang-fr">Contact</span><span class="lang-en">Contact</span></a>
-      <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" target="_blank" rel="noopener" class="btn-cv">⤓ CV</a>
+      <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" target="_blank" rel="noopener" class="btn-cv">⤓ <span class="cv-label">CV</span></a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème" title="Changer de thème (clair/sombre)">
         <span id="themeIcon">🌙</span>
       </button>
@@ -979,7 +1074,7 @@ button{font-family:inherit}
 
         <div class="email-pop" id="emailPop">
           <div class="email-pop-row">
-            <span class="email-addr" id="emailText">rbmidolli@gmail.com</span>
+            <span class="email-addr" id="emailText"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6b190906020f040707022b0c060a020745080406">[email&#160;protected]</a></span>
             <button class="copy-btn" id="copyBtn" type="button" aria-label="Copier">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                 <rect x="9" y="9" width="13" height="13" rx="2"/>
@@ -1006,7 +1101,7 @@ button{font-family:inherit}
 
 <footer class="footer">© 2026 — Rafael Midolli — Portfolio Business Analyst</footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function(){
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
@@ -1164,7 +1259,7 @@ button{font-family:inherit}
   }
   if(langBtn && langIcon){
     const savedLang = localStorage.getItem('lang');
-    // Default to French if nothing saved
+    // Default to French unless a preference is saved
     setLanguage(savedLang || 'fr');
     langBtn.addEventListener('click', () => {
       const nextLang = getLang() === 'fr' ? 'en' : 'fr';

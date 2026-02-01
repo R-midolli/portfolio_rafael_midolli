@@ -202,14 +202,68 @@
   .embed-fallback a{color:var(--accent);text-decoration:underline;}
   /* Conclusion */
   .conclusion{margin-top:32px;}
+  /* ─── TABLET (≤ 760px) ─── */
   @media(max-width:760px){
     .info-grid{grid-template-columns:1fr;}
-    .nav{padding:12px 20px;}
+    .nav{padding:12px 16px;}
+    .nav .logo{font-size:1.1rem;gap:8px}
+    .logo-ring{width:30px;height:30px;font-size:.65rem}
     .btn-back,.btn-fullscreen{font-size:.8rem;padding:7px 12px;}
     .theme-toggle,.lang-toggle{width:38px;height:38px;}
+    .main{padding:90px 20px 50px;}
+    .case-title{font-size:clamp(1.6rem,5vw,2.2rem);}
   }
-  @media(max-width:480px){
-    .embed-frame{height:480px;}
+
+  /* ─── MOBILE (≤ 520px) ─── */
+  @media(max-width:520px){
+    /* Nav: stack logo + controls tighter */
+    .nav{padding:10px 14px;gap:6px;}
+    .nav .logo{font-size:.95rem;gap:6px}
+    .logo-ring{width:28px;height:28px;font-size:.6rem}
+    .nav-right{gap:4px;}
+
+    /* Hide "Retour / Back" text, keep arrow */
+    .btn-back .back-label{display:none;}
+    /* Hide "Plein écran" text on very small screens */
+    .btn-fullscreen .fs-label{display:none;}
+    .btn-back,.btn-fullscreen{padding:7px 10px;font-size:.78rem;}
+    .theme-toggle,.lang-toggle{width:34px;height:34px;}
+
+    /* Main content */
+    .main{padding:80px 14px 40px;}
+    .case-title{font-size:1.5rem;}
+    .case-subtitle{font-size:.88rem;}
+
+    /* Cards */
+    .card{padding:20px 18px;}
+    .card h3{font-size:1.05rem;}
+
+    /* Iframe: shorter on mobile, but still usable */
+    .embed-frame{height:380px;}
+
+    /* Bullets: bigger touch target */
+    .bullet{padding:14px 12px;gap:10px;}
+    .bullet-ico{width:34px;height:34px;font-size:1.1rem;}
+    .bullet-content strong{font-size:.92rem;}
+    .bullet-details{font-size:.85rem;}
+
+    /* Timeline */
+    .timeline-item{gap:10px;}
+    .timeline-marker{width:10px;height:10px;margin-top:5px;}
+    .timeline-content{font-size:.88rem;}
+
+    /* GitHub button */
+    .btn-github{width:100%;justify-content:center;padding:12px 16px;}
+
+    /* Conclusion card */
+    .conclusion{margin-top:20px;}
+  }
+
+  /* ─── SMALL MOBILE (≤ 360px) ─── */
+  @media(max-width:360px){
+    .embed-frame{height:320px;}
+    .card{padding:16px 14px;}
+    .bullet{padding:12px 10px;}
   }
   </style>
 </head>
@@ -223,10 +277,10 @@
     </a>
     <div class="nav-right">
       <a href="index.html#projects" class="btn-back">
-        <span class="lang-fr">← Retour</span><span class="lang-en">← Back</span>
+        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span class="back-label">Back</span></span>
       </a>
       <a href="reports/dashboard_retail.html" target="_blank" rel="noopener" class="btn-fullscreen">
-        <span class="lang-fr">↗ Plein écran</span><span class="lang-en">↗ Full&nbsp;screen</span>
+        <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span class="fs-label">Full&nbsp;screen</span></span>
       </a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème" title="Changer de thème (clair/sombre)">
         <span id="themeIcon">🌙</span>
