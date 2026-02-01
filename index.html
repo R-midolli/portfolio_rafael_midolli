@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" data-theme="dark" data-lang="fr">
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content="Rafael Midolli — Business Analyst spécialisé en Retail &amp; FMCG. Basé en France, disponible. 4 ans d'expérience (Colgate-Palmolive, Kantar). Portfolio avec case studies, dashboards interactifs et analyses Pareto."/>
 <title>Rafael Midolli — Business Analyst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -24,25 +25,19 @@
   --font-head:'Playfair Display',Georgia,serif;
   --font-body:'DM Sans',system-ui,sans-serif;
 }
-
-/* Light theme overrides */
 :root[data-theme="light"]{
   --bg:#f6f7fb;
   --surface:rgba(255,255,255,.7);
   --surface-hover:rgba(255,255,255,.92);
   --text:#0e1320;
   --text-muted:rgba(14,19,32,.70);
-  --grid:rgba(14,19,32,.06);
   --border:rgba(14,19,32,.10);
   --accent:#4f7cff;
   --accent-2:#7b5cff;
   --accent-glow:rgba(91,140,255,.25);
 }
-
-/* === Language visibility === */
-/* When lang is set to 'fr', hide English texts and show French. When set to 'en', do the opposite. */
-[data-lang="fr"] .lang-en{display:none;}
-[data-lang="en"] .lang-fr{display:none;}
+[data-lang="fr"] .lang-en{display:none}
+[data-lang="en"] .lang-fr{display:none}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{
   font-family:var(--font-body);
@@ -76,6 +71,12 @@ button{font-family:inherit}
   mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
   -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
 }
+:root[data-theme="light"] .bg-grid{
+  opacity:.055;
+  background-image:
+    linear-gradient(rgba(14,19,32,.4) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14,19,32,.4) 1px, transparent 1px);
+}
 
 /* ========== SCROLL PROGRESS ========== */
 .scroll-bar{
@@ -92,40 +93,21 @@ button{font-family:inherit}
   transition:background .3s, backdrop-filter .3s, padding .3s;
 }
 .nav.scrolled{
-  background:rgba(14,17,23,.7); /* Always dark background when scrolled */
+  background:rgba(14,17,23,.7);
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
   padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,0.08); /* Fixed border for dark bg */
-}
-
-/* CORREÇÃO SOLICITADA: CONTRASTE NO LIGHT MODE QUANDO SCROLL */
-/* Quando estiver no modo claro e a nav estiver "scrolled" (fundo escuro), forçar textos para branco */
-:root[data-theme="light"] .nav.scrolled {
-  --text: #f0f2f7; /* Força texto claro dentro da nav scrollada */
-  --text-muted: rgba(240, 242, 247, 0.7);
+  border-bottom:1px solid rgba(255,255,255,0.08);
 }
 :root[data-theme="light"] .nav.scrolled .logo,
-:root[data-theme="light"] .nav.scrolled .nav-links a {
-  color: #f0f2f7; /* Garante branco */
-}
-:root[data-theme="light"] .nav.scrolled .nav-links a:hover {
-  background: rgba(255,255,255,0.15);
-  color: #fff;
-}
+:root[data-theme="light"] .nav.scrolled .nav-links a{color:#f0f2f7}
+:root[data-theme="light"] .nav.scrolled .nav-links a:hover{background:rgba(255,255,255,.15);color:#fff}
 :root[data-theme="light"] .nav.scrolled .btn-cv,
 :root[data-theme="light"] .nav.scrolled .theme-toggle,
-:root[data-theme="light"] .nav.scrolled .lang-toggle {
-  color: #fff;
-  border-color: rgba(255,255,255,0.3);
-  background: transparent;
-}
+:root[data-theme="light"] .nav.scrolled .lang-toggle{color:#fff;border-color:rgba(255,255,255,.3);background:transparent}
 :root[data-theme="light"] .nav.scrolled .btn-cv:hover,
 :root[data-theme="light"] .nav.scrolled .theme-toggle:hover,
-:root[data-theme="light"] .nav.scrolled .lang-toggle:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: transparent;
-}
+:root[data-theme="light"] .nav.scrolled .lang-toggle:hover{background:rgba(255,255,255,.2);border-color:transparent}
 
 .nav-inner{
   max-width:1100px;margin:0 auto;padding:0 28px;
@@ -175,7 +157,6 @@ button{font-family:inherit}
   display:grid;grid-template-columns:1fr 380px;
   gap:60px;align-items:center;
 }
-/* pill badge */
 .pill{
   display:inline-flex;align-items:center;gap:8px;
   padding:8px 16px;border-radius:999px;
@@ -239,13 +220,13 @@ button{font-family:inherit}
   color:var(--text);font-weight:600;font-size:.9rem;
   background:var(--surface);
   transition:border-color .2s, background .2s;
+  cursor:pointer;
 }
-.btn-outline:hover{border-color:rgba(255,255,255,.25);background:var(--surface-hover)}
+.btn-outline:hover{border-color:var(--accent);background:var(--surface-hover)}
 
 /* ========== AVATAR ========== */
 .avatar-wrap{
   position:relative;
-  /* Reduce overall avatar size for a more compact appearance */
   width:280px;height:280px;
   margin:0 auto;
 }
@@ -266,7 +247,6 @@ button{font-family:inherit}
 .avatar-ring{
   position:absolute;inset:8px;
   border-radius:50%;
-  /* Create a subtle glow and animated ring that interacts with the photo */
   border:2px solid var(--accent);
   box-shadow:0 0 12px var(--accent-glow) inset;
   animation:spin-slow 25s linear infinite;
@@ -282,7 +262,6 @@ button{font-family:inherit}
 .avatar-ring-2{
   position:absolute;inset:24px;
   border-radius:50%;
-  /* Second ring with a softer glow */
   border:2px solid var(--accent-2);
   box-shadow:0 0 10px rgba(139,92,246,.25) inset;
   animation:spin-slow 40s linear infinite reverse;
@@ -298,100 +277,60 @@ button{font-family:inherit}
   position:absolute;inset:22px;
   border-radius:50%;
   overflow:hidden;
-  /* Remove dark border and background for a cleaner look */
-  border:none;
-  background:transparent;
 }
 .avatar-img-wrap img{
   width:100%;height:100%;object-fit:cover;
-  /* Slightly scale up to overlap the ring for a more integrated look */
   transform:scale(1.08);
-  /* Slightly desaturated without blurring: reduce colour while keeping details */
   filter:grayscale(0.6) brightness(1.05) contrast(1);
   opacity:0.9;
 }
-
-/* Stack the avatar, biography button and bio text vertically in the second column */
 .avatar-column{
   display:flex;
   flex-direction:column;
   align-items:center;
-  /* Reduce vertical gap to keep the biography button close to the smaller avatar */
   gap:14px;
-  position:relative; /* needed to anchor the biography popover */
-  /* Smoothly animate opacity and position when scrolling */
+  position:relative;
   transition:opacity .3s ease, transform .3s ease;
 }
 
-/* Biography overlay: slides over the avatar circle */
+/* Biography overlay */
 .bio-overlay{
   position:absolute;
-  top:50%;
-  left:50%;
-  width:360px;
-  max-width:90vw;
-  /* Increase max height so the biography can be taller */
-  max-height:420px;
-  /* Center the overlay over the circle */
+  top:50%;left:50%;
+  width:360px;max-width:90vw;max-height:420px;
   transform:translate(-50%,-50%) scale(.8);
   transform-origin:center;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
+  display:flex;flex-direction:column;
   align-items:flex-start;
   padding:24px;
-  /* Use a solid background instead of translucent to increase contrast */
   background:var(--bg);
   border:1px solid var(--border);
   box-shadow:0 4px 20px rgba(0,0,0,.35);
   border-radius:var(--radius);
   color:var(--text);
-  font-size:.94rem;
-  /* Increase line-height for better readability */
-  line-height:1.7;
+  font-size:.94rem;line-height:1.7;
   text-align:left;
-  /* Limit height and enable scrolling when content is longer */
   overflow-y:auto;
-  opacity:0;
-  pointer-events:none;
+  opacity:0;pointer-events:none;
   transition:transform .35s ease, opacity .35s ease;
   z-index:50;
 }
 .bio-overlay.show{
-  opacity:1;
-  pointer-events:auto;
+  opacity:1;pointer-events:auto;
   transform:translate(-50%,-50%) scale(1);
 }
-/* Close button inside the biography overlay */
 .bio-overlay .bio-close{
-  position:absolute;
-  top:6px;
-  right:6px;
-  background:transparent;
-  border:none;
-  color:var(--text);
-  font-size:1rem;
-  cursor:pointer;
-  line-height:1;
+  position:absolute;top:6px;right:6px;
+  background:transparent;border:none;
+  color:var(--text);font-size:1rem;cursor:pointer;line-height:1;
 }
-.bio-overlay .bio-close:hover{
-  color:var(--accent);
-}
+.bio-overlay .bio-close:hover{color:var(--accent)}
+.bio-overlay p{margin-bottom:14px}
 
-/* Add spacing between paragraphs in the biography overlay */
-.bio-overlay p{
-  margin-bottom:14px;
-}
-
-/* Button to toggle biography */
 .btn-bio{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:8px 16px;
-  border-radius:999px;
-  font-size:.84rem;
-  font-weight:700;
+  display:inline-flex;align-items:center;gap:6px;
+  padding:8px 16px;border-radius:999px;
+  font-size:.84rem;font-weight:700;
   color:var(--accent);
   border:1px solid rgba(91,140,255,.3);
   background:rgba(91,140,255,.06);
@@ -410,24 +349,20 @@ button{font-family:inherit}
 .section-label{
   font-size:.75rem;font-weight:700;
   text-transform:uppercase;letter-spacing:.14em;
-  color:var(--accent);
-  margin-bottom:12px;
+  color:var(--accent);margin-bottom:12px;
 }
 .section-title{
   font-family:var(--font-head);
   font-size:clamp(1.8rem,3.5vw,2.6rem);
-  font-weight:800;
-  color:var(--text);
-  letter-spacing:-.02em;
-  line-height:1.15;
+  font-weight:800;color:var(--text);
+  letter-spacing:-.02em;line-height:1.15;
 }
 
 /* ========== ABOUT ========== */
 .about-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:48px;
-  align-items:start;
+  gap:48px;align-items:start;
   margin-top:40px;
 }
 .about-text{color:var(--text-muted);font-size:1rem;line-height:1.8}
@@ -452,8 +387,44 @@ button{font-family:inherit}
   display:flex;align-items:center;justify-content:center;
   font-size:1.2rem;
 }
-.pillar-title{font-weight:700;font-size:.92rem;color:#fff;margin-bottom:3px}
+.pillar-title{font-weight:700;font-size:.92rem;color:var(--text);margin-bottom:3px}
 .pillar-desc{font-size:.82rem;color:var(--text-muted)}
+
+/* ========== METRICS STRIP ========== */
+.metrics-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+  margin-top:48px;
+}
+.metric-card{
+  text-align:center;
+  padding:24px 16px;
+  border-radius:18px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  transition:border-color .25s, transform .25s, box-shadow .25s;
+}
+.metric-card:hover{
+  border-color:rgba(91,140,255,.3);
+  transform:translateY(-3px);
+  box-shadow:0 8px 24px rgba(0,0,0,.15);
+}
+.metric-value{
+  font-family:var(--font-head);
+  font-size:2rem;font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.1;margin-bottom:8px;
+}
+.metric-label{
+  font-size:.76rem;font-weight:600;
+  color:var(--text-muted);
+  text-transform:uppercase;letter-spacing:.06em;
+  line-height:1.5;
+}
 
 /* ========== SKILLS ========== */
 .skills-tabs{
@@ -465,10 +436,9 @@ button{font-family:inherit}
   background:var(--surface);
   color:var(--text-muted);
   font-size:.82rem;font-weight:600;
-  cursor:pointer;
-  transition:all .2s;
+  cursor:pointer;transition:all .2s;
 }
-.skill-tab:hover{border-color:rgba(255,255,255,.2);color:var(--text)}
+.skill-tab:hover{border-color:var(--accent);color:var(--text)}
 .skill-tab.active{
   border-color:rgba(91,140,255,.4);
   background:rgba(91,140,255,.1);
@@ -477,8 +447,7 @@ button{font-family:inherit}
 .skills-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:10px;
-  margin-top:20px;
+  gap:10px;margin-top:20px;
   min-height:120px;
 }
 .skill-chip{
@@ -488,7 +457,6 @@ button{font-family:inherit}
   background:var(--surface);
   color:var(--text);
   font-size:.84rem;font-weight:600;
-  cursor:pointer;
   transition:all .22s;
   animation:chip-in .35s ease both;
 }
@@ -505,9 +473,8 @@ button{font-family:inherit}
 /* ========== PROJECTS ========== */
 .projects-grid{
   display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:20px;
-  margin-top:40px;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;margin-top:40px;
 }
 .project-card{
   padding:28px;border-radius:var(--radius);
@@ -516,14 +483,34 @@ button{font-family:inherit}
   transition:border-color .3s, transform .3s, box-shadow .3s;
   position:relative;overflow:hidden;
 }
+/* Featured project: spans both columns */
+.project-card.featured{
+  grid-column:1 / -1;
+  border-color:rgba(91,140,255,.2);
+  background:linear-gradient(135deg, var(--surface) 0%, rgba(91,140,255,.05) 100%);
+}
+.project-card.featured::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  border-radius:var(--radius) var(--radius) 0 0;
+}
+/* Result badge */
+.project-result{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;border-radius:999px;
+  background:rgba(52,211,153,.08);
+  border:1px solid rgba(52,211,153,.22);
+  color:#34d399;
+  font-size:.76rem;font-weight:600;
+  margin-bottom:16px;
+}
 .project-card::before{
   content:'';position:absolute;
   top:-60px;right:-60px;
-  width:180px;height:180px;
-  border-radius:50%;
+  width:180px;height:180px;border-radius:50%;
   background:radial-gradient(circle,rgba(91,140,255,.08),transparent 70%);
-  pointer-events:none;
-  transition:opacity .3s;
+  pointer-events:none;transition:opacity .3s;
 }
 .project-card:hover{
   border-color:rgba(91,140,255,.3);
@@ -547,9 +534,9 @@ button{font-family:inherit}
 .project-card h3{
   font-family:var(--font-head);
   font-size:1.15rem;font-weight:700;
-  color:var(--text);line-height:1.3;
-  margin-bottom:10px;
+  color:var(--text);line-height:1.3;margin-bottom:10px;
 }
+.project-card.featured h3{font-size:1.4rem}
 .project-card p{
   font-size:.84rem;color:var(--text-muted);
   line-height:1.65;margin-bottom:18px;
@@ -570,6 +557,7 @@ button{font-family:inherit}
   border:1px solid rgba(91,140,255,.3);
   background:rgba(91,140,255,.06);
   transition:background .2s, border-color .2s;
+  cursor:pointer;
 }
 .btn-case:hover{background:rgba(91,140,255,.12);border-color:var(--accent)}
 
@@ -591,30 +579,16 @@ button{font-family:inherit}
   font-size:.88rem;font-weight:700;
   border:1px solid var(--border);
   background:var(--surface);
-  color:var(--text);
-  cursor:pointer;
+  color:var(--text);cursor:pointer;
   transition:all .22s;
   position:relative;
 }
-/* When hovering contact buttons (LinkedIn/GitHub) apply the same glowing gradient used on the email button */
 .btn-contact:hover{
   border-color:transparent;
   background:linear-gradient(135deg,var(--accent),var(--accent-2));
   color:#fff;
   box-shadow:0 8px 28px rgba(91,140,255,.3);
   transform:translateY(-2px);
-}
-/* Primary contact button removed: we want uniform style and highlight only on hover */
-.btn-contact.primary{
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  border-color:transparent;color:#fff;
-  box-shadow:0 8px 28px rgba(91,140,255,.3);
-}
-/* The email button keeps its gradient by default; hovering it slightly increases the glow */
-.btn-contact.primary:hover{
-  box-shadow:0 12px 36px rgba(91,140,255,.45);
-  border-color:transparent;
-  color:#fff;
 }
 /* email popover */
 .email-pop{
@@ -628,55 +602,6 @@ button{font-family:inherit}
   border-radius:14px;padding:14px;
   box-shadow:0 20px 50px rgba(0,0,0,.4);
   z-index:50;
-}
-
-/* Theme toggle button */
-.theme-toggle{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:42px;
-  height:42px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-  cursor:pointer;
-  transition:transform .15s ease, background .2s ease, border-color .2s ease;
-}
-.theme-toggle:hover{
-  transform:translateY(-2px);
-  border-color:transparent;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#fff;
-  box-shadow:0 8px 24px var(--accent-glow);
-}
-
-/* Increase icon size inside theme toggle */
-.theme-toggle span{
-  font-size:1.25rem;
-  line-height:1;
-}
-
-/* Language toggle button: similar to theme toggle but switches between FR and EN */
-.lang-toggle{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:42px;
-  height:42px;
-  margin-left:10px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-  cursor:pointer;
-  transition:background .2s ease, transform .15s ease, border-color .2s ease;
-}
-.lang-toggle:hover{
-  transform:translateY(-2px);
-  background:var(--surface-hover);
-  border-color:var(--accent);
 }
 .email-pop.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
 .email-pop-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -698,6 +623,28 @@ button{font-family:inherit}
   border-right:1px solid rgba(255,255,255,.12);
   border-bottom:1px solid rgba(255,255,255,.12);
 }
+
+/* Theme / Lang toggles */
+.theme-toggle,.lang-toggle{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:42px;height:42px;border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);color:var(--text);
+  cursor:pointer;
+  transition:transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.theme-toggle:hover{
+  transform:translateY(-2px);border-color:transparent;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff;box-shadow:0 8px 24px var(--accent-glow);
+}
+.lang-toggle{margin-left:10px}
+.lang-toggle:hover{
+  transform:translateY(-2px);
+  background:var(--surface-hover);
+  border-color:var(--accent);
+}
+.theme-toggle span{font-size:1.25rem;line-height:1}
 
 /* ========== FOOTER ========== */
 .footer{
@@ -728,34 +675,23 @@ button{font-family:inherit}
   .hero-ctas{justify-content:center}
   .about-grid{grid-template-columns:1fr}
   .projects-grid{grid-template-columns:1fr}
+  .project-card.featured{grid-column:auto}
   .pill{justify-content:center}
-
-  /* Nav: hide text labels, keep icon-size buttons */
   .nav-links a{padding:8px 10px;font-size:.82rem}
   .logo{font-size:1.1rem}
 }
 
 /* ─── MOBILE (≤ 680px) ─── */
 @media(max-width:680px){
-
-  /* --- Nav: hamburger-style compact row --- */
-  .nav-inner{
-    padding:0 16px;
-    /* allow items to wrap if they still overflow */
-    flex-wrap:wrap;
-    gap:6px;
-  }
+  .nav-inner{padding:0 16px;flex-wrap:wrap;gap:6px}
   .logo{font-size:1rem;gap:8px}
   .logo-ring{width:30px;height:30px;font-size:.65rem}
-
-  /* Shrink nav links area; hide CV text, keep icon */
   .nav-links{gap:2px;flex-wrap:wrap;justify-content:flex-end}
   .nav-links a{padding:7px 8px;font-size:.78rem}
   .btn-cv{padding:7px 10px;font-size:.75rem}
-  .btn-cv .cv-label{display:none} /* hide "CV" text, keep ⤓ */
+  .btn-cv .cv-label{display:none}
   .theme-toggle,.lang-toggle{width:36px;height:36px;margin-left:4px}
 
-  /* --- Hero --- */
   .hero{padding:90px 0 50px;min-height:auto}
   .hero-inner{padding:0 16px;gap:28px}
   .hero h1{font-size:clamp(2rem,7vw,2.6rem)}
@@ -763,66 +699,52 @@ button{font-family:inherit}
   .hero-ctas{flex-direction:column;align-items:center;gap:10px}
   .btn-main,.btn-outline{width:100%;max-width:280px;justify-content:center}
 
-  /* Avatar smaller on mobile */
   .avatar-wrap{width:180px;height:180px}
   .avatar-column{gap:10px}
 
-  /* Bio overlay: full-width sheet instead of centred popup */
+  /* Bio: bottom sheet */
   .bio-overlay{
-    position:fixed;
-    top:auto;bottom:0;left:0;
+    position:fixed;top:auto;bottom:0;left:0;
     width:100%;max-width:100%;max-height:70vh;
     transform:translateY(100%);
     border-radius:24px 24px 0 0;
-    padding:28px 20px 40px;
-    z-index:200;
+    padding:28px 20px 40px;z-index:200;
   }
-  .bio-overlay.show{
-    transform:translateY(0);
-  }
-  /* drag-handle hint at top */
+  .bio-overlay.show{transform:translateY(0)}
   .bio-overlay::before{
     content:'';display:block;
     width:40px;height:4px;border-radius:2px;
-    background:var(--border);
-    margin:0 auto 16px;
+    background:var(--border);margin:0 auto 16px;
   }
 
-  /* --- Sections --- */
   .section{padding:60px 0}
   .section-inner{padding:0 16px}
-
-  /* --- About pillars --- */
   .about-grid{gap:28px}
   .pillar{padding:16px;gap:14px}
 
-  /* --- Skills --- */
+  /* Metrics strip */
+  .metrics-strip{gap:10px}
+  .metric-card{padding:18px 10px}
+  .metric-value{font-size:1.6rem}
+
   .skills-tabs{gap:6px}
   .skill-tab{padding:8px 12px;font-size:.78rem}
   .skills-grid{grid-template-columns:repeat(2,1fr);gap:8px}
   .skill-chip{padding:10px 12px;font-size:.82rem}
 
-  /* --- Projects --- */
-  .projects-grid{gap:16px}
+  .projects-grid{gap:16px;grid-template-columns:1fr}
   .project-card{padding:22px}
+  .project-card.featured{grid-column:auto}
 
-  /* --- Contact --- */
   .contact-btns{flex-direction:column;align-items:stretch;gap:10px}
   .btn-contact{justify-content:center;padding:14px 18px}
-
-  /* Email popover: position below button on mobile */
   .email-pop{
-    position:relative;
-    bottom:auto;left:auto;
-    transform:none;
-    width:100%;
-    margin-top:10px;
-    border-radius:14px;
+    position:relative;bottom:auto;left:auto;
+    transform:none;width:100%;
+    margin-top:10px;border-radius:14px;
   }
   .email-pop.show{transform:none}
-  .email-pop::after{display:none} /* hide arrow */
-
-  /* --- Footer --- */
+  .email-pop::after{display:none}
   .footer{padding:28px 16px}
 }
 
@@ -833,6 +755,8 @@ button{font-family:inherit}
   .skills-grid{grid-template-columns:1fr}
   .skill-chip{padding:10px 14px}
   .avatar-wrap{width:150px;height:150px}
+  .metrics-strip{grid-template-columns:1fr;gap:8px}
+  .metric-card{padding:16px 12px}
 }
 </style>
 </head>
@@ -854,10 +778,10 @@ button{font-family:inherit}
       <a href="#projects" class="nav-link"><span class="lang-fr">Projets</span><span class="lang-en">Projects</span></a>
       <a href="#contact" class="nav-link"><span class="lang-fr">Contact</span><span class="lang-en">Contact</span></a>
       <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" target="_blank" rel="noopener" class="btn-cv">⤓ <span class="cv-label">CV</span></a>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème" title="Changer de thème (clair/sombre)">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
         <span id="themeIcon">🌙</span>
       </button>
-      <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue" title="Changer de langue (FR/EN)">
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue">
         <span id="langIcon">FR</span>
       </button>
     </div>
@@ -867,14 +791,18 @@ button{font-family:inherit}
 <section class="hero" id="hero">
   <div class="hero-inner">
     <div>
-      <div class="pill reveal"><span class="pill-dot"></span> Business Analyst — Retail &amp; FMCG</div>
+      <div class="pill reveal">
+        <span class="pill-dot"></span>
+        Business Analyst — Retail &amp; FMCG
+        · <span class="lang-fr">Basé en France · Disponible</span><span class="lang-en">Based in France · Available</span>
+      </div>
       <h1 class="reveal reveal-d1">
         <span class="lang-fr">Données brutes<br/>→ <em>décisions nettes.</em></span>
         <span class="lang-en">Raw data<br/>→ <em>clear decisions.</em></span>
       </h1>
       <p class="hero-desc reveal reveal-d2">
-        <span class="lang-fr">Je transforme des données commerciales complexes en diagnostics actionnables : segmentation, KPI, benchmark, priorisation — pensés pour décider vite sur le terrain.</span>
-        <span class="lang-en">I turn complex commercial data into actionable diagnostics: segmentation, KPIs, benchmarks and prioritization — designed for fast, field‑ready decision making.</span>
+        <span class="lang-fr">4 ans d'expérience en agroalimentaire &amp; grande consommation (Colgate-Palmolive, Kantar) — je transforme des données commerciales en diagnostics actionnables : segmentation, KPI, benchmark, priorisation.</span>
+        <span class="lang-en">4 years' experience in agrifood &amp; FMCG (Colgate-Palmolive, Kantar) — I turn commercial data into actionable diagnostics: segmentation, KPIs, benchmarks, prioritisation.</span>
       </p>
       <div class="hero-ctas reveal reveal-d3">
         <a href="#projects" class="btn-main">
@@ -899,13 +827,11 @@ button{font-family:inherit}
         </div>
         <div class="bio-overlay" id="bioOverlay">
           <button class="bio-close" id="bioCloseBtn" type="button" aria-label="Fermer">✕</button>
-          
           <div class="bio-content lang-fr">
-            <p>Business Analyst avec quatre ans d’expérience dans l’agroalimentaire et la grande consommation, j'ai construit mon parcours au sein de leaders comme Colgate-Palmolive et Kantar Worldpanel.</p>
-            <p>Diplômé en ingénierie et titulaire d’un MBA en Intelligence Artificielle, je combine expertise technique et vision business pour transformer les données en stratégies concrètes. J'ai notamment piloté la performance commerciale pour des marques majeures telles que Lactalis et Tetra Pak.</p>
+            <p>Business Analyst avec quatre ans d'expérience dans l'agroalimentaire et la grande consommation, j'ai construit mon parcours au sein de leaders comme Colgate-Palmolive et Kantar Worldpanel.</p>
+            <p>Diplômé en ingénierie et titulaire d'un MBA en Intelligence Artificielle, je combine expertise technique et vision business pour transformer les données en stratégies concrètes. J'ai notamment piloté la performance commerciale pour des marques majeures telles que Lactalis et Tetra Pak.</p>
             <p>Aujourd'hui basé en France, je recherche une opportunité data-driven pour accompagner les décisions stratégiques et les actions des équipes terrain.</p>
           </div>
-          
           <div class="bio-content lang-en">
             <p>Business Analyst with four years of experience in agrifood and consumer goods (FMCG), I built my career at market leaders like Colgate-Palmolive and Kantar Worldpanel.</p>
             <p>Holding an Engineering degree and an MBA in AI, I combine technical skills with business vision to transform data into actionable strategies. I have managed commercial performance for major brands such as Lactalis and Tetra Pak.</p>
@@ -929,10 +855,10 @@ button{font-family:inherit}
     <div class="about-grid">
       <div class="about-text reveal reveal-d1">
         <p>
-          <span class="lang-fr">Business Analyst spécialisé en Retail &amp; PGC (FMCG), je construis des analyses qui passent directement à l'action. Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing ou direction.</span>
+          <span class="lang-fr">Business Analyst spécialisé en Retail &amp; PGC (FMCG), je construis des analyses qui passent directement à l'action. Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing ou direction.</span>
           <span class="lang-en">Business analyst specialised in retail and FMCG, I build analyses that lead directly to action. My approach: start from the data, structure a clear diagnosis, and make it usable for sales, marketing or management teams.</span>
         </p>
-        </div>
+      </div>
 
       <div class="pillars reveal reveal-d2">
         <div class="pillar">
@@ -955,6 +881,30 @@ button{font-family:inherit}
             <div class="pillar-title"><span class="lang-fr">Analyses reproductibles</span><span class="lang-en">Reproducible analyses</span></div>
             <div class="pillar-desc"><span class="lang-fr">Scripts versionnés, données propres, résultats vérifiables du début à la fin.</span><span class="lang-en">Versioned scripts, clean data, verifiable results from start to finish.</span></div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="metrics-strip reveal reveal-d2">
+      <div class="metric-card">
+        <div class="metric-value">4 ans</div>
+        <div class="metric-label">
+          <span class="lang-fr">Expérience en Retail &amp; FMCG</span>
+          <span class="lang-en">Retail &amp; FMCG experience</span>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">4</div>
+        <div class="metric-label">
+          <span class="lang-fr">Marques internationales pilotées<br/>(Colgate · Lactalis · Tetra Pak · Kantar)</span>
+          <span class="lang-en">Global brands managed<br/>(Colgate · Lactalis · Tetra Pak · Kantar)</span>
+        </div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-value">MBA</div>
+        <div class="metric-label">
+          <span class="lang-fr">Intelligence Artificielle +<br/>Diplôme d'ingénieur</span>
+          <span class="lang-en">Artificial Intelligence +<br/>Engineering degree</span>
         </div>
       </div>
     </div>
@@ -1001,18 +951,23 @@ button{font-family:inherit}
     <h2 class="section-title reveal reveal-d1"><span class="lang-fr">Ce que je livre</span><span class="lang-en">What I deliver</span></h2>
 
     <div class="projects-grid">
-      <article class="project-card reveal reveal-d1">
+      <article class="project-card featured reveal reveal-d1">
         <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">Publié</span><span class="lang-en">Published</span></div>
+        <div class="project-result">
+          <span class="lang-fr">✓ Dashboard interactif — priorisation Pareto sur 50+ points de vente</span>
+          <span class="lang-en">✓ Interactive dashboard — Pareto prioritisation across 50+ stores</span>
+        </div>
         <h3>Retail BA Diagnostic — Segmentation &amp; Opportunity Mapping</h3>
         <p>
-          <span class="lang-fr">Diagnostic global avec priorisation Pareto. Segmentation des points de vente, gap vs benchmark, et dashboard interactif Plotly pour une décision rapide.</span>
-          <span class="lang-en">Comprehensive diagnostic with Pareto prioritisation. Store segmentation, gap versus benchmark, and interactive Plotly dashboard for quick decision‑making.</span>
+          <span class="lang-fr">Diagnostic commercial complet : segmentation des points de vente par performance, gap analysis vs benchmark secteur, et priorisation Pareto pour identifier les opportunités à impact rapide. Dashboard Plotly interactif pour explorer les données et prendre une décision en quelques clics.</span>
+          <span class="lang-en">Full commercial diagnostic: store segmentation by performance, gap analysis versus sector benchmark, and Pareto prioritisation to identify high-impact opportunities. Interactive Plotly dashboard to explore data and make decisions in a few clicks.</span>
         </p>
         <div class="project-tags">
           <span class="project-tag">Segmentation</span>
           <span class="project-tag">Pareto</span>
           <span class="project-tag">Plotly</span>
           <span class="project-tag">Python</span>
+          <span class="project-tag">DuckDB</span>
         </div>
         <a href="project-retail.html" class="btn-case">
           <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
@@ -1060,11 +1015,11 @@ button{font-family:inherit}
         <span class="lang-fr">Contact</span><span class="lang-en">Contact</span>
       </div>
       <h2 class="section-title reveal reveal-d1" style="text-align:center">
-        <span class="lang-fr">Travaillons ensemble</span><span class="lang-en">Let's work together</span>
+        <span class="lang-fr">Disponible pour une mission BA</span><span class="lang-en">Open to a BA opportunity</span>
       </h2>
       <p class="contact-desc reveal reveal-d1">
-        <span class="lang-fr">Disponible pour des missions BA en France. Un échange rapide par email ou LinkedIn ?</span>
-        <span class="lang-en">Available for BA projects in France. A quick exchange by email or LinkedIn?</span>
+        <span class="lang-fr">Basé en France, disponible pour des missions en Retail &amp; FMCG. Un échange rapide par email ou LinkedIn ?</span>
+        <span class="lang-en">Based in France, available for Retail &amp; FMCG BA roles. Shall we have a quick chat via email or LinkedIn?</span>
       </p>
 
       <div class="contact-btns reveal reveal-d2">
@@ -1112,16 +1067,12 @@ button{font-family:inherit}
     const d = document.documentElement;
     const max = d.scrollHeight - d.clientHeight;
     scrollBar.style.width = (max > 0 ? (d.scrollTop/max)*100 : 0) + '%';
-
-    // nav
     $('#mainNav').classList.toggle('scrolled', d.scrollTop > 40);
 
-    // fade out the avatar progressively as the user scrolls through the whole page
+    // Avatar fade-out on scroll
     const avatarCol = document.querySelector('.avatar-column');
     if(avatarCol){
-      const pageHeight = d.scrollHeight - d.clientHeight;
-      // Compute scroll progress relative to the full page height; fade gradually until 60% of page scrolled
-      const progress = Math.min(d.scrollTop / (pageHeight * 0.6), 1);
+      const progress = Math.min(d.scrollTop / ((d.scrollHeight - d.clientHeight) * 0.6), 1);
       avatarCol.style.opacity = 1 - progress;
       avatarCol.style.transform = `translateY(${progress * 40}px)`;
     }
@@ -1138,20 +1089,16 @@ button{font-family:inherit}
   // --- scrollspy ---
   const navLinks = $$('.nav-link');
   const sections = ['about','skills','projects','contact'].map(id => document.getElementById(id));
-
   const ioSpy = new IntersectionObserver(entries => {
     const vis = entries.filter(e => e.isIntersecting)
       .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if(vis){
-      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+vis.target.id));
-    }
+    if(vis) navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+vis.target.id));
   }, {threshold:[.15,.3,.5], rootMargin:'-15% 0px -55% 0px'});
   sections.forEach(s => ioSpy.observe(s));
 
   // --- skills tabs ---
   const tabs = $('#skillsTabs');
   const chips = $$('.skill-chip');
-
   tabs.addEventListener('click', e => {
     const btn = e.target.closest('.skill-tab');
     if(!btn) return;
@@ -1178,52 +1125,38 @@ button{font-family:inherit}
   copyBtn.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText($('#emailText').textContent.trim());
-      const lang = getLang();
-      copyHint.textContent = lang === 'fr' ? '✓ Copié !' : '✓ Copied!';
+      copyHint.textContent = getLang() === 'fr' ? '✓ Copié !' : '✓ Copied!';
       setTimeout(() => setCopyHintDefault(), 1400);
     } catch {
-      const lang = getLang();
-      copyHint.textContent = lang === 'fr' ? 'Copie impossible' : 'Copy failed';
+      copyHint.textContent = getLang() === 'fr' ? 'Copie impossible' : 'Copy failed';
     }
   });
   document.addEventListener('click', e => {
     if(!emailPop.classList.contains('show')) return;
     if(!emailPop.contains(e.target) && !emailBtn.contains(e.target)) emailPop.classList.remove('show');
   });
-  document.addEventListener('keydown', e => { if(e.key==='Escape') emailPop.classList.remove('show'); });
+  document.addEventListener('keydown', e => { if(e.key==='Escape') emailPop.classList.remove('show') });
 
   // --- biography toggle ---
   const bioBtn = $('#bioToggleBtn');
   const bioOverlay = document.getElementById('bioOverlay');
   if(bioBtn && bioOverlay){
-    bioBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      bioOverlay.classList.toggle('show');
-    });
-    // Close overlay when clicking the close button
+    bioBtn.addEventListener('click', e => { e.stopPropagation(); bioOverlay.classList.toggle('show') });
     const bioClose = document.getElementById('bioCloseBtn');
-    if(bioClose){
-      bioClose.addEventListener('click', () => {
-        bioOverlay.classList.remove('show');
-      });
-    }
-    // Close biography overlay when clicking outside or pressing Escape
+    if(bioClose) bioClose.addEventListener('click', () => bioOverlay.classList.remove('show'));
     document.addEventListener('click', e => {
       if(!bioOverlay.classList.contains('show')) return;
       if(!bioOverlay.contains(e.target) && !bioBtn.contains(e.target)) bioOverlay.classList.remove('show');
     });
-    document.addEventListener('keydown', e => {
-      if(e.key === 'Escape') bioOverlay.classList.remove('show');
-    });
+    document.addEventListener('keydown', e => { if(e.key==='Escape') bioOverlay.classList.remove('show') });
   }
 
   // --- theme toggle ---
   const themeBtn = document.getElementById('themeToggle');
   const themeIcon = document.getElementById('themeIcon');
   if(themeBtn && themeIcon){
-    // Initialize theme: default to dark unless a preference is saved
     const saved = localStorage.getItem('theme');
-    const initial = saved ? saved : 'dark';
+    const initial = saved || 'dark';
     document.documentElement.dataset.theme = initial;
     themeIcon.textContent = initial === 'light' ? '☀️' : '🌙';
     themeBtn.addEventListener('click', () => {
@@ -1237,34 +1170,20 @@ button{font-family:inherit}
   // --- language toggle ---
   const langBtn = document.getElementById('langToggle');
   const langIcon = document.getElementById('langIcon');
-  // Helper to get current language
-  function getLang(){
-    return document.documentElement.dataset.lang || 'fr';
-  }
-  // Set default copy hint message based on current language
+  function getLang(){ return document.documentElement.dataset.lang || 'fr' }
   function setCopyHintDefault(){
-    if(typeof copyHint !== 'undefined' && copyHint){
-      const lang = getLang();
-      copyHint.textContent = lang === 'fr' ? 'Cliquez pour copier' : 'Click to copy';
-    }
+    if(copyHint) copyHint.textContent = getLang() === 'fr' ? 'Cliquez pour copier' : 'Click to copy';
   }
-  // Set site language and update toggle text
   function setLanguage(lang){
     document.documentElement.dataset.lang = lang;
-    // Also update the native lang attribute for accessibility
     document.documentElement.lang = lang;
     localStorage.setItem('lang', lang);
     if(langIcon) langIcon.textContent = lang.toUpperCase();
     setCopyHintDefault();
   }
   if(langBtn && langIcon){
-    const savedLang = localStorage.getItem('lang');
-    // Default to French unless a preference is saved
-    setLanguage(savedLang || 'fr');
-    langBtn.addEventListener('click', () => {
-      const nextLang = getLang() === 'fr' ? 'en' : 'fr';
-      setLanguage(nextLang);
-    });
+    setLanguage(localStorage.getItem('lang') || 'fr');
+    langBtn.addEventListener('click', () => setLanguage(getLang() === 'fr' ? 'en' : 'fr'));
   }
 })();
 </script>
