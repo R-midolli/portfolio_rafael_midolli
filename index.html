@@ -24,6 +24,25 @@
   --font-head:'Playfair Display',Georgia,serif;
   --font-body:'DM Sans',system-ui,sans-serif;
 }
+
+/* Light theme overrides */
+:root[data-theme="light"]{
+  --bg:#f6f7fb;
+  --surface:rgba(255,255,255,.7);
+  --surface-hover:rgba(255,255,255,.92);
+  --text:#0e1320;
+  --text-muted:rgba(14,19,32,.70);
+  --grid:rgba(14,19,32,.06);
+  --border:rgba(14,19,32,.10);
+  --accent:#4f7cff;
+  --accent-2:#7b5cff;
+  --accent-glow:rgba(91,140,255,.25);
+}
+
+/* === Language visibility === */
+/* When lang is set to 'fr', hide English texts and show French. When set to 'en', do the opposite. */
+[data-lang="fr"] .lang-en{display:none;}
+[data-lang="en"] .lang-fr{display:none;}
 html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
 body{
   font-family:var(--font-body);
@@ -151,7 +170,7 @@ button{font-family:inherit}
   font-size:clamp(2.6rem,5vw,3.8rem);
   font-weight:800;line-height:1.08;
   letter-spacing:-.03em;
-  color:#fff;
+  color:var(--text);
 }
 .hero h1 em{
   font-style:italic;
@@ -214,7 +233,9 @@ button{font-family:inherit}
 .avatar-ring{
   position:absolute;inset:8px;
   border-radius:50%;
-  border:2px solid rgba(91,140,255,.2);
+  /* Create a subtle glow and animated ring that interacts with the photo */
+  border:2px solid var(--accent);
+  box-shadow:0 0 12px var(--accent-glow) inset;
   animation:spin-slow 25s linear infinite;
 }
 @keyframes spin-slow{to{transform:rotate(360deg)}}
@@ -228,7 +249,9 @@ button{font-family:inherit}
 .avatar-ring-2{
   position:absolute;inset:24px;
   border-radius:50%;
-  border:1px solid rgba(139,92,246,.15);
+  /* Second ring with a softer glow */
+  border:2px solid var(--accent-2);
+  box-shadow:0 0 10px rgba(139,92,246,.25) inset;
   animation:spin-slow 40s linear infinite reverse;
 }
 .avatar-ring-2::before{
@@ -242,13 +265,111 @@ button{font-family:inherit}
   position:absolute;inset:22px;
   border-radius:50%;
   overflow:hidden;
-  border:3px solid rgba(255,255,255,.1);
-  background:#222;
+  /* Remove dark border and background for a cleaner look */
+  border:none;
+  background:transparent;
 }
 .avatar-img-wrap img{
   width:100%;height:100%;object-fit:cover;
-  filter:brightness(1.05) contrast(1.05);
+  /* Slightly scale up to overlap the ring for a more integrated look */
+  transform:scale(1.08);
+  /* Subtle blur and normal brightness: the portrait remains visible but less prominent */
+  filter:brightness(1) contrast(1) blur(0.5px);
+  opacity:0.9;
 }
+
+/* Stack the avatar, biography button and bio text vertically in the second column */
+.avatar-column{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+  position:relative; /* needed to anchor the biography popover */
+  /* Smoothly animate opacity and position when scrolling */
+  transition:opacity .3s ease, transform .3s ease;
+}
+
+/* Biography overlay: slides over the avatar circle */
+.bio-overlay{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:360px;
+  max-width:90vw;
+  /* Increase max height so the biography can be taller */
+  max-height:420px;
+  /* Center the overlay over the circle */
+  transform:translate(-50%,-50%) scale(.8);
+  transform-origin:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  align-items:flex-start;
+  padding:24px;
+  /* Use a solid background instead of translucent to increase contrast */
+  background:var(--bg);
+  border:1px solid var(--border);
+  box-shadow:0 4px 20px rgba(0,0,0,.35);
+  border-radius:var(--radius);
+  color:var(--text);
+  font-size:.94rem;
+  /* Increase line-height for better readability */
+  line-height:1.7;
+  text-align:left;
+  /* Limit height and enable scrolling when content is longer */
+  overflow-y:auto;
+  opacity:0;
+  pointer-events:none;
+  transition:transform .35s ease, opacity .35s ease;
+  z-index:50;
+}
+.bio-overlay.show{
+  opacity:1;
+  pointer-events:auto;
+  transform:translate(-50%,-50%) scale(1);
+}
+/* Close button inside the biography overlay */
+.bio-overlay .bio-close{
+  position:absolute;
+  top:6px;
+  right:6px;
+  background:transparent;
+  border:none;
+  color:var(--text);
+  font-size:1rem;
+  cursor:pointer;
+  line-height:1;
+}
+.bio-overlay .bio-close:hover{
+  color:var(--accent);
+}
+
+/* Add spacing between paragraphs in the biography overlay */
+.bio-overlay p{
+  margin-bottom:14px;
+}
+
+/* Button to toggle biography */
+.btn-bio{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:8px 16px;
+  border-radius:999px;
+  font-size:.84rem;
+  font-weight:700;
+  color:var(--accent);
+  border:1px solid rgba(91,140,255,.3);
+  background:rgba(91,140,255,.06);
+  cursor:pointer;
+  transition:background .2s,border-color .2s,transform .2s;
+}
+.btn-bio:hover{
+  background:rgba(91,140,255,.12);
+  border-color:var(--accent);
+  transform:translateY(-2px);
+}
+
 
 /* ========== SECTION WRAPPER ========== */
 .section{position:relative;z-index:1;padding:100px 0}
@@ -262,7 +383,8 @@ button{font-family:inherit}
 .section-title{
   font-family:var(--font-head);
   font-size:clamp(1.8rem,3.5vw,2.6rem);
-  font-weight:800;color:#fff;
+  font-weight:800;
+  color:var(--text);
   letter-spacing:-.02em;
   line-height:1.15;
 }
@@ -392,7 +514,7 @@ button{font-family:inherit}
 .project-card h3{
   font-family:var(--font-head);
   font-size:1.15rem;font-weight:700;
-  color:#fff;line-height:1.3;
+  color:var(--text);line-height:1.3;
   margin-bottom:10px;
 }
 .project-card p{
@@ -441,19 +563,25 @@ button{font-family:inherit}
   transition:all .22s;
   position:relative;
 }
+/* When hovering contact buttons (LinkedIn/GitHub) apply the same glowing gradient used on the email button */
 .btn-contact:hover{
-  border-color:rgba(91,140,255,.3);
-  background:var(--surface-hover);
+  border-color:transparent;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff;
+  box-shadow:0 8px 28px rgba(91,140,255,.3);
   transform:translateY(-2px);
 }
+/* Primary contact button removed: we want uniform style and highlight only on hover */
 .btn-contact.primary{
   background:linear-gradient(135deg,var(--accent),var(--accent-2));
   border-color:transparent;color:#fff;
   box-shadow:0 8px 28px rgba(91,140,255,.3);
 }
+/* The email button keeps its gradient by default; hovering it slightly increases the glow */
 .btn-contact.primary:hover{
-  box-shadow:0 12px 36px rgba(91,140,255,.4);
+  box-shadow:0 12px 36px rgba(91,140,255,.45);
   border-color:transparent;
+  color:#fff;
 }
 /* email popover */
 .email-pop{
@@ -467,6 +595,55 @@ button{font-family:inherit}
   border-radius:14px;padding:14px;
   box-shadow:0 20px 50px rgba(0,0,0,.4);
   z-index:50;
+}
+
+/* Theme toggle button */
+.theme-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:42px;
+  height:42px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  cursor:pointer;
+  transition:transform .15s ease, background .2s ease, border-color .2s ease;
+}
+.theme-toggle:hover{
+  transform:translateY(-2px);
+  border-color:transparent;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  color:#fff;
+  box-shadow:0 8px 24px var(--accent-glow);
+}
+
+/* Increase icon size inside theme toggle */
+.theme-toggle span{
+  font-size:1.25rem;
+  line-height:1;
+}
+
+/* Language toggle button: similar to theme toggle but switches between FR and EN */
+.lang-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:42px;
+  height:42px;
+  margin-left:10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:var(--surface);
+  color:var(--text);
+  cursor:pointer;
+  transition:background .2s ease, transform .15s ease, border-color .2s ease;
+}
+.lang-toggle:hover{
+  transform:translateY(-2px);
+  background:var(--surface-hover);
+  border-color:var(--accent);
 }
 .email-pop.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
 .email-pop-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -543,11 +720,19 @@ button{font-family:inherit}
       Rafael Midolli
     </a>
     <div class="nav-links">
-      <a href="#about" class="nav-link">À propos</a>
-      <a href="#skills" class="nav-link">Skills</a>
-      <a href="#projects" class="nav-link">Projets</a>
-      <a href="#contact" class="nav-link">Contact</a>
+      <a href="#about" class="nav-link"><span class="lang-fr">À propos</span><span class="lang-en">About</span></a>
+      <a href="#skills" class="nav-link"><span class="lang-fr">Compétences</span><span class="lang-en">Skills</span></a>
+      <a href="#projects" class="nav-link"><span class="lang-fr">Projets</span><span class="lang-en">Projects</span></a>
+      <a href="#contact" class="nav-link"><span class="lang-fr">Contact</span><span class="lang-en">Contact</span></a>
       <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" target="_blank" rel="noopener" class="btn-cv">⤓ CV</a>
+      <!-- Theme toggle button: allows users to switch between light and dark mode -->
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème" title="Changer de thème (clair/sombre)">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <!-- Language toggle button: allows users to switch between French and English -->
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue" title="Changer de langue (FR/EN)">
+        <span id="langIcon">FR</span>
+      </button>
     </div>
   </div>
 </nav>
@@ -556,25 +741,56 @@ button{font-family:inherit}
 <section class="hero" id="hero">
   <div class="hero-inner">
     <div>
-      <div class="pill reveal"><span class="pill-dot"></span> Business Analyst — Retail & FMCG</div>
-      <h1 class="reveal reveal-d1">Données brutes<br>→ <em>décisions nettes.</em></h1>
+      <div class="pill reveal"><span class="pill-dot"></span> Business Analyst — Retail &amp; FMCG</div>
+      <h1 class="reveal reveal-d1">
+        <span class="lang-fr">Données brutes<br/>→ <em>décisions nettes.</em></span>
+        <span class="lang-en">Raw data<br/>→ <em>clear decisions.</em></span>
+      </h1>
       <p class="hero-desc reveal reveal-d2">
-        Je transforme des données commerciales complexes en diagnostics actionnables :
-        segmentation, KPI, benchmark, priorisation — pensés pour décider vite sur le terrain.
+        <span class="lang-fr">Je transforme des données commerciales complexes en diagnostics actionnables : segmentation, KPI, benchmark, priorisation — pensés pour décider vite sur le terrain.</span>
+        <span class="lang-en">I turn complex commercial data into actionable diagnostics: segmentation, KPIs, benchmarks and prioritization — designed for fast, field‑ready decision making.</span>
       </p>
       <div class="hero-ctas reveal reveal-d3">
-        <a href="#projects" class="btn-main">Voir les projets <span>→</span></a>
-        <a href="project-retail.html" class="btn-outline">Cas #1 ↗</a>
+        <a href="#projects" class="btn-main">
+          <span class="lang-fr">Voir les projets</span>
+          <span class="lang-en">See projects</span>
+          <span>→</span>
+        </a>
+        <!-- Removed the Case button to streamline the hero section as requested -->
       </div>
     </div>
 
-    <div class="avatar-wrap reveal reveal-d2">
-      <div class="avatar-blob"></div>
-      <div class="avatar-ring"></div>
-      <div class="avatar-ring-2"></div>
-      <div class="avatar-img-wrap">
-        <img src="assets/img/photo_bio.jpg" alt="Rafael Midolli"/>
+    <!-- Avatar column contains the photo, biography toggle and text. Placing all elements inside a single container ensures they stack vertically and stay aligned with the grid column -->
+    <div class="avatar-column reveal reveal-d2">
+      <div class="avatar-wrap">
+        <div class="avatar-blob"></div>
+        <div class="avatar-ring"></div>
+        <div class="avatar-ring-2"></div>
+        <div class="avatar-img-wrap">
+          <img src="assets/img/photo_bio.jpg" alt="Portrait de Rafael Midolli"/>
+        </div>
+        <!-- Biography overlay: slides over the avatar circle -->
+        <div class="bio-overlay" id="bioOverlay">
+          <button class="bio-close" id="bioCloseBtn" type="button" aria-label="Fermer">✕</button>
+          <div class="bio-content lang-fr">
+            <p>Analyste avec plus de quatre ans d’expérience dans l’agroalimentaire et la grande consommation.</p>
+            <p>Diplômé en ingénierie de gestion et titulaire d’un MBA en IA, je transforme les données en leviers business concrets.</p>
+            <p>J’ai travaillé chez Aperam, Colgate‑Palmolive, Scanntech et Kantar Worldpanel, où j’ai piloté des indicateurs pour des clients comme Lactalis et Nestlé.</p>
+            <p>Aujourd’hui, je vise un rôle data‑driven en France, idéalement dans le Sud, pour transformer la stratégie en actions pour les équipes terrain.</p>
+          </div>
+          <div class="bio-content lang-en">
+            <p>Analyst with more than four years of experience in agrifood and consumer goods.</p>
+            <p>Trained in management engineering and holding an MBA in AI, I turn data into concrete business levers.</p>
+            <p>I have worked at Aperam, Colgate‑Palmolive, Scanntech and Kantar Worldpanel, where I managed KPIs for clients such as Lactalis and Nestlé.</p>
+            <p>Today I am looking to continue my career in France, ideally in the south, in a data‑driven role that translates strategy into actionable plans for field teams.</p>
+          </div>
+        </div>
       </div>
+      <!-- Biography toggle button appears directly below the photo -->
+      <button class="btn-bio reveal reveal-d3" id="bioToggleBtn">
+        <span class="lang-fr">Biographie</span>
+        <span class="lang-en">Biography</span>
+      </button>
     </div>
   </div>
 </section>
@@ -582,20 +798,22 @@ button{font-family:inherit}
 <!-- ABOUT -->
 <section class="section" id="about">
   <div class="section-inner">
-    <div class="section-label reveal">À propos</div>
-    <h2 class="section-title reveal reveal-d1">Ce qui me distingue</h2>
+    <div class="section-label reveal">
+      <span class="lang-fr">À propos</span><span class="lang-en">About</span>
+    </div>
+    <h2 class="section-title reveal reveal-d1">
+      <span class="lang-fr">Ce qui me distingue</span><span class="lang-en">What sets me apart</span>
+    </h2>
 
     <div class="about-grid">
       <div class="about-text reveal reveal-d1">
         <p>
-          Business Analyst spécialisé en Retail & PGC (FMCG), je construis des analyses
-          qui passent directement à l'action. Mon approche : partir des données, structurer
-          un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing
-          ou direction.
+          <span class="lang-fr">Business Analyst spécialisé en Retail &amp; PGC (FMCG), je construis des analyses qui passent directement à l'action. Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing ou direction.</span>
+          <span class="lang-en">Business analyst specialised in retail and FMCG, I build analyses that lead directly to action. My approach: start from the data, structure a clear diagnosis, and make it usable for sales, marketing or management teams.</span>
         </p>
         <p>
-          Basé à Angers, disponible pour des missions en France — avec une
-          expérience de travail dans des environnements internationaux.
+          <span class="lang-fr">Basé dans le Maine‑et‑Loire, mobile sur toute la France — avec une expérience de travail dans des environnements internationaux.</span>
+          <span class="lang-en">Based in the Maine‑et‑Loire, mobile throughout France — with experience working in international environments.</span>
         </p>
       </div>
 
@@ -603,22 +821,22 @@ button{font-family:inherit}
         <div class="pillar">
           <div class="pillar-icon">📌</div>
           <div>
-            <div class="pillar-title">Diagnostics actionnables</div>
-            <div class="pillar-desc">Segmentation, benchmark, gap analysis, priorisation Pareto → plan d'action concret.</div>
+            <div class="pillar-title"><span class="lang-fr">Diagnostics actionnables</span><span class="lang-en">Actionable diagnostics</span></div>
+            <div class="pillar-desc"><span class="lang-fr">Segmentation, benchmark, gap analysis, priorisation Pareto → plan d'action concret.</span><span class="lang-en">Segmentation, benchmark, gap analysis, Pareto prioritisation → concrete action plan.</span></div>
           </div>
         </div>
         <div class="pillar">
           <div class="pillar-icon">🧩</div>
           <div>
-            <div class="pillar-title">Storytelling orienté décision</div>
-            <div class="pillar-desc">Rendre une analyse lisible et exploitable pour ventes, marketing ou direction.</div>
+            <div class="pillar-title"><span class="lang-fr">Storytelling orienté décision</span><span class="lang-en">Decision‑oriented storytelling</span></div>
+            <div class="pillar-desc"><span class="lang-fr">Rendre une analyse lisible et exploitable pour ventes, marketing ou direction.</span><span class="lang-en">Make an analysis readable and usable for sales, marketing or management.</span></div>
           </div>
         </div>
         <div class="pillar">
           <div class="pillar-icon">🔁</div>
           <div>
-            <div class="pillar-title">Analyses reproductibles</div>
-            <div class="pillar-desc">Scripts versionnés, données propres, résultats vérifiables du début à la fin.</div>
+            <div class="pillar-title"><span class="lang-fr">Analyses reproductibles</span><span class="lang-en">Reproducible analyses</span></div>
+            <div class="pillar-desc"><span class="lang-fr">Scripts versionnés, données propres, résultats vérifiables du début à la fin.</span><span class="lang-en">Versioned scripts, clean data, verifiable results from start to finish.</span></div>
           </div>
         </div>
       </div>
@@ -629,12 +847,12 @@ button{font-family:inherit}
 <!-- SKILLS -->
 <section class="section" id="skills" style="padding-top:20px">
   <div class="section-inner">
-    <div class="section-label reveal">Compétences</div>
-    <h2 class="section-title reveal reveal-d1">Stack & savoir-faire</h2>
+    <div class="section-label reveal"><span class="lang-fr">Compétences</span><span class="lang-en">Skills</span></div>
+    <h2 class="section-title reveal reveal-d1"><span class="lang-fr">Stack &amp; savoir‑faire</span><span class="lang-en">Stack &amp; expertise</span></h2>
 
     <div class="skills-tabs reveal reveal-d1" id="skillsTabs">
       <button class="skill-tab active" data-tab="analytics">📈 Analytics</button>
-      <button class="skill-tab" data-tab="bi">📊 BI & Reporting</button>
+      <button class="skill-tab" data-tab="bi">📊 BI &amp; Reporting</button>
       <button class="skill-tab" data-tab="workflow">🔧 Workflow</button>
     </div>
 
@@ -667,45 +885,57 @@ button{font-family:inherit}
 <!-- PROJECTS -->
 <section class="section" id="projects">
   <div class="section-inner">
-    <div class="section-label reveal">Projets</div>
-    <h2 class="section-title reveal reveal-d1">Ce que je livre</h2>
+    <div class="section-label reveal"><span class="lang-fr">Projets</span><span class="lang-en">Projects</span></div>
+    <h2 class="section-title reveal reveal-d1"><span class="lang-fr">Ce que je livre</span><span class="lang-en">What I deliver</span></h2>
 
     <div class="projects-grid">
       <article class="project-card reveal reveal-d1">
-        <div class="project-status status-live"><span class="status-dot"></span> Publié</div>
-        <h3>Retail BA Diagnostic — Segmentation & Opportunity Mapping</h3>
-        <p>Diagnostic global avec priorisation Pareto. Segmentation des points de vente, gap vs benchmark, et dashboard interactif Plotly pour une décision rapide.</p>
+        <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">Publié</span><span class="lang-en">Published</span></div>
+        <h3>Retail BA Diagnostic — Segmentation &amp; Opportunity Mapping</h3>
+        <p>
+          <span class="lang-fr">Diagnostic global avec priorisation Pareto. Segmentation des points de vente, gap vs benchmark, et dashboard interactif Plotly pour une décision rapide.</span>
+          <span class="lang-en">Comprehensive diagnostic with Pareto prioritisation. Store segmentation, gap versus benchmark, and interactive Plotly dashboard for quick decision‑making.</span>
+        </p>
         <div class="project-tags">
           <span class="project-tag">Segmentation</span>
           <span class="project-tag">Pareto</span>
           <span class="project-tag">Plotly</span>
           <span class="project-tag">Python</span>
         </div>
-        <a href="project-retail.html" class="btn-case">Ouvrir le cas →</a>
+        <a href="project-retail.html" class="btn-case">
+          <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+          <span>→</span>
+        </a>
       </article>
 
       <article class="project-card muted reveal reveal-d2">
-        <div class="project-status status-soon"><span class="status-dot"></span> En cours</div>
-        <h3>Customer Segmentation — Insights & Recommandations</h3>
-        <p>Analyse comportementale client avec KPI clés et recommandations stratégiques. Format case study complet.</p>
+        <div class="project-status status-soon"><span class="status-dot"></span> <span class="lang-fr">En cours</span><span class="lang-en">In progress</span></div>
+        <h3><span class="lang-fr">Customer Segmentation — Insights &amp; Recommandations</span><span class="lang-en">Customer Segmentation — Insights &amp; Recommendations</span></h3>
+        <p>
+          <span class="lang-fr">Analyse comportementale client avec KPI clés et recommandations stratégiques. Format case study complet.</span>
+          <span class="lang-en">Customer behavioural analysis with key KPIs and strategic recommendations. Full case study format.</span>
+        </p>
         <div class="project-tags">
           <span class="project-tag">Segmentation</span>
           <span class="project-tag">KPI</span>
           <span class="project-tag">Insights</span>
         </div>
-        <span class="btn-case" style="opacity:.5;pointer-events:none">Bientôt</span>
+        <span class="btn-case" style="opacity:.5;pointer-events:none"><span class="lang-fr">Bientôt</span><span class="lang-en">Soon</span></span>
       </article>
 
       <article class="project-card muted reveal reveal-d3">
-        <div class="project-status status-soon"><span class="status-dot"></span> Planifié</div>
-        <h3>Analytics Assistant — GenAI & RAG</h3>
-        <p>Assistant métier pour l'exploration de données avec retrieval augmenté. Demo via Streamlit.</p>
+        <div class="project-status status-soon"><span class="status-dot"></span> <span class="lang-fr">Planifié</span><span class="lang-en">Planned</span></div>
+        <h3><span class="lang-fr">Analytics Assistant — GenAI &amp; RAG</span><span class="lang-en">Analytics Assistant — GenAI &amp; RAG</span></h3>
+        <p>
+          <span class="lang-fr">Assistant métier pour l'exploration de données avec retrieval augmenté. Demo via Streamlit.</span>
+          <span class="lang-en">Business assistant for data exploration with augmented retrieval. Demo via Streamlit.</span>
+        </p>
         <div class="project-tags">
           <span class="project-tag">RAG</span>
           <span class="project-tag">Agents</span>
           <span class="project-tag">Streamlit</span>
         </div>
-        <span class="btn-case" style="opacity:.5;pointer-events:none">Bientôt</span>
+        <span class="btn-case" style="opacity:.5;pointer-events:none"><span class="lang-fr">Bientôt</span><span class="lang-en">Soon</span></span>
       </article>
     </div>
   </div>
@@ -715,20 +945,26 @@ button{font-family:inherit}
 <section class="section" id="contact">
   <div class="section-inner">
     <div class="contact-wrap">
-      <div class="section-label reveal" style="text-align:center">Contact</div>
-      <h2 class="section-title reveal reveal-d1" style="text-align:center">Travaillons ensemble</h2>
+      <div class="section-label reveal" style="text-align:center">
+        <span class="lang-fr">Contact</span><span class="lang-en">Contact</span>
+      </div>
+      <h2 class="section-title reveal reveal-d1" style="text-align:center">
+        <span class="lang-fr">Travaillons ensemble</span><span class="lang-en">Let's work together</span>
+      </h2>
       <p class="contact-desc reveal reveal-d1">
-        Disponible pour des missions BA en France. Un échange rapide par email ou LinkedIn ?
+        <span class="lang-fr">Disponible pour des missions BA en France. Un échange rapide par email ou LinkedIn ?</span>
+        <span class="lang-en">Available for BA projects in France. A quick exchange by email or LinkedIn?</span>
       </p>
 
       <div class="contact-btns reveal reveal-d2">
-        <button class="btn-contact primary" id="emailBtn" type="button">
+        <!-- Email button -->
+        <button class="btn-contact" id="emailBtn" type="button">
           ✉️ &nbsp;Email
         </button>
 
         <div class="email-pop" id="emailPop">
           <div class="email-pop-row">
-            <span class="email-addr" id="emailText">rafael.midolli@gmail.com</span>
+            <span class="email-addr" id="emailText">rbmidolli@gmail.com</span>
             <button class="copy-btn" id="copyBtn" type="button" aria-label="Copier">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                 <rect x="9" y="9" width="13" height="13" rx="2"/>
@@ -736,7 +972,7 @@ button{font-family:inherit}
               </svg>
             </button>
           </div>
-          <div class="copy-hint" id="copyHint">Cliquez pour copier</div>
+          <div class="copy-hint" id="copyHint"></div>
         </div>
 
         <a class="btn-contact" href="https://www.linkedin.com/in/rafael-midolli/" target="_blank" rel="noopener">
@@ -769,6 +1005,16 @@ button{font-family:inherit}
 
     // nav
     $('#mainNav').classList.toggle('scrolled', d.scrollTop > 40);
+
+    // fade out the avatar progressively as the user scrolls through the whole page
+    const avatarCol = document.querySelector('.avatar-column');
+    if(avatarCol){
+      const pageHeight = d.scrollHeight - d.clientHeight;
+      // Compute scroll progress relative to the full page height; fade gradually until 60% of page scrolled
+      const progress = Math.min(d.scrollTop / (pageHeight * 0.6), 1);
+      avatarCol.style.opacity = 1 - progress;
+      avatarCol.style.transform = `translateY(${progress * 40}px)`;
+    }
   }
   window.addEventListener('scroll', onScroll, {passive:true});
   onScroll();
@@ -822,15 +1068,94 @@ button{font-family:inherit}
   copyBtn.addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText($('#emailText').textContent.trim());
-      copyHint.textContent = '✓ Copié !';
-      setTimeout(() => copyHint.textContent = 'Cliquez pour copier', 1400);
-    } catch { copyHint.textContent = 'Copie impossible'; }
+      const lang = getLang();
+      copyHint.textContent = lang === 'fr' ? '✓ Copié !' : '✓ Copied!';
+      setTimeout(() => setCopyHintDefault(), 1400);
+    } catch {
+      const lang = getLang();
+      copyHint.textContent = lang === 'fr' ? 'Copie impossible' : 'Copy failed';
+    }
   });
   document.addEventListener('click', e => {
     if(!emailPop.classList.contains('show')) return;
     if(!emailPop.contains(e.target) && !emailBtn.contains(e.target)) emailPop.classList.remove('show');
   });
   document.addEventListener('keydown', e => { if(e.key==='Escape') emailPop.classList.remove('show'); });
+
+  // --- biography toggle ---
+  const bioBtn = $('#bioToggleBtn');
+  const bioOverlay = document.getElementById('bioOverlay');
+  if(bioBtn && bioOverlay){
+    bioBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      bioOverlay.classList.toggle('show');
+    });
+    // Close overlay when clicking the close button
+    const bioClose = document.getElementById('bioCloseBtn');
+    if(bioClose){
+      bioClose.addEventListener('click', () => {
+        bioOverlay.classList.remove('show');
+      });
+    }
+    // Close biography overlay when clicking outside or pressing Escape
+    document.addEventListener('click', e => {
+      if(!bioOverlay.classList.contains('show')) return;
+      if(!bioOverlay.contains(e.target) && !bioBtn.contains(e.target)) bioOverlay.classList.remove('show');
+    });
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape') bioOverlay.classList.remove('show');
+    });
+  }
+
+  // --- theme toggle ---
+  const themeBtn = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  if(themeBtn && themeIcon){
+    // Initialize theme: default to dark unless a preference is saved
+    const saved = localStorage.getItem('theme');
+    const initial = saved ? saved : 'dark';
+    document.documentElement.dataset.theme = initial;
+    themeIcon.textContent = initial === 'light' ? '☀️' : '🌙';
+    themeBtn.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('theme', next);
+      themeIcon.textContent = next === 'light' ? '☀️' : '🌙';
+    });
+  }
+
+  // --- language toggle ---
+  const langBtn = document.getElementById('langToggle');
+  const langIcon = document.getElementById('langIcon');
+  // Helper to get current language
+  function getLang(){
+    return document.documentElement.dataset.lang || 'fr';
+  }
+  // Set default copy hint message based on current language
+  function setCopyHintDefault(){
+    if(typeof copyHint !== 'undefined' && copyHint){
+      const lang = getLang();
+      copyHint.textContent = lang === 'fr' ? 'Cliquez pour copier' : 'Click to copy';
+    }
+  }
+  // Set site language and update toggle text
+  function setLanguage(lang){
+    document.documentElement.dataset.lang = lang;
+    // Also update the native lang attribute for accessibility
+    document.documentElement.lang = lang;
+    localStorage.setItem('lang', lang);
+    if(langIcon) langIcon.textContent = lang.toUpperCase();
+    setCopyHintDefault();
+  }
+  if(langBtn && langIcon){
+    const savedLang = localStorage.getItem('lang');
+    // Default to French if nothing saved
+    setLanguage(savedLang || 'fr');
+    langBtn.addEventListener('click', () => {
+      const nextLang = getLang() === 'fr' ? 'en' : 'fr';
+      setLanguage(nextLang);
+    });
+  }
 })();
 </script>
 </body>
