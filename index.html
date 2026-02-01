@@ -92,12 +92,41 @@ button{font-family:inherit}
   transition:background .3s, backdrop-filter .3s, padding .3s;
 }
 .nav.scrolled{
-  background:rgba(14,17,23,.7);
+  background:rgba(14,17,23,.7); /* Always dark background when scrolled */
   backdrop-filter:blur(18px);
   -webkit-backdrop-filter:blur(18px);
   padding:10px 0;
-  border-bottom:1px solid var(--border);
+  border-bottom:1px solid rgba(255,255,255,0.08); /* Fixed border for dark bg */
 }
+
+/* CORREÇÃO SOLICITADA: CONTRASTE NO LIGHT MODE QUANDO SCROLL */
+/* Quando estiver no modo claro e a nav estiver "scrolled" (fundo escuro), forçar textos para branco */
+:root[data-theme="light"] .nav.scrolled {
+  --text: #f0f2f7; /* Força texto claro dentro da nav scrollada */
+  --text-muted: rgba(240, 242, 247, 0.7);
+}
+:root[data-theme="light"] .nav.scrolled .logo,
+:root[data-theme="light"] .nav.scrolled .nav-links a {
+  color: #f0f2f7; /* Garante branco */
+}
+:root[data-theme="light"] .nav.scrolled .nav-links a:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+:root[data-theme="light"] .nav.scrolled .btn-cv,
+:root[data-theme="light"] .nav.scrolled .theme-toggle,
+:root[data-theme="light"] .nav.scrolled .lang-toggle {
+  color: #fff;
+  border-color: rgba(255,255,255,0.3);
+  background: transparent;
+}
+:root[data-theme="light"] .nav.scrolled .btn-cv:hover,
+:root[data-theme="light"] .nav.scrolled .theme-toggle:hover,
+:root[data-theme="light"] .nav.scrolled .lang-toggle:hover {
+  background: rgba(255,255,255,0.2);
+  border-color: transparent;
+}
+
 .nav-inner{
   max-width:1100px;margin:0 auto;padding:0 28px;
   display:flex;align-items:center;justify-content:space-between;
@@ -187,7 +216,10 @@ button{font-family:inherit}
   line-height:1.7;
 }
 .hero-ctas{
-  display:flex;gap:12px;flex-wrap:wrap;margin-top:32px;
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:32px;
 }
 .btn-main{
   display:inline-flex;align-items:center;gap:8px;
@@ -213,7 +245,8 @@ button{font-family:inherit}
 /* ========== AVATAR ========== */
 .avatar-wrap{
   position:relative;
-  width:320px;height:320px;
+  /* Reduce overall avatar size for a more compact appearance */
+  width:280px;height:280px;
   margin:0 auto;
 }
 .avatar-blob{
@@ -273,8 +306,8 @@ button{font-family:inherit}
   width:100%;height:100%;object-fit:cover;
   /* Slightly scale up to overlap the ring for a more integrated look */
   transform:scale(1.08);
-  /* Subtle blur and normal brightness: the portrait remains visible but less prominent */
-  filter:brightness(1) contrast(1) blur(0.5px);
+  /* Slightly desaturated without blurring: reduce colour while keeping details */
+  filter:grayscale(0.6) brightness(1.05) contrast(1);
   opacity:0.9;
 }
 
@@ -283,7 +316,8 @@ button{font-family:inherit}
   display:flex;
   flex-direction:column;
   align-items:center;
-  gap:18px;
+  /* Reduce vertical gap to keep the biography button close to the smaller avatar */
+  gap:14px;
   position:relative; /* needed to anchor the biography popover */
   /* Smoothly animate opacity and position when scrolling */
   transition:opacity .3s ease, transform .3s ease;
@@ -369,7 +403,6 @@ button{font-family:inherit}
   border-color:var(--accent);
   transform:translateY(-2px);
 }
-
 
 /* ========== SECTION WRAPPER ========== */
 .section{position:relative;z-index:1;padding:100px 0}
@@ -688,7 +721,8 @@ button{font-family:inherit}
 /* ========== RESPONSIVE ========== */
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;gap:40px;text-align:center}
-  .avatar-wrap{width:260px;height:260px}
+  /* Slightly smaller avatar on medium screens */
+  .avatar-wrap{width:240px;height:240px}
   .hero-desc{max-width:none}
   .hero-ctas{justify-content:center}
   .about-grid{grid-template-columns:1fr}
@@ -701,7 +735,8 @@ button{font-family:inherit}
   .section-inner{padding:0 18px}
   .hero-inner{padding:0 18px}
   .nav-inner{padding:0 18px}
-  .avatar-wrap{width:220px;height:220px}
+  /* Even smaller avatar on small screens */
+  .avatar-wrap{width:200px;height:200px}
   .skills-grid{grid-template-columns:repeat(2,1fr)}
 }
 </style>
@@ -712,7 +747,6 @@ button{font-family:inherit}
 <div class="bg-mesh" aria-hidden="true"></div>
 <div class="bg-grid" aria-hidden="true"></div>
 
-<!-- NAV -->
 <nav class="nav" id="mainNav">
   <div class="nav-inner">
     <a href="#hero" class="logo">
@@ -725,11 +759,9 @@ button{font-family:inherit}
       <a href="#projects" class="nav-link"><span class="lang-fr">Projets</span><span class="lang-en">Projects</span></a>
       <a href="#contact" class="nav-link"><span class="lang-fr">Contact</span><span class="lang-en">Contact</span></a>
       <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" target="_blank" rel="noopener" class="btn-cv">⤓ CV</a>
-      <!-- Theme toggle button: allows users to switch between light and dark mode -->
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème" title="Changer de thème (clair/sombre)">
         <span id="themeIcon">🌙</span>
       </button>
-      <!-- Language toggle button: allows users to switch between French and English -->
       <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue" title="Changer de langue (FR/EN)">
         <span id="langIcon">FR</span>
       </button>
@@ -737,7 +769,6 @@ button{font-family:inherit}
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-inner">
     <div>
@@ -756,11 +787,13 @@ button{font-family:inherit}
           <span class="lang-en">See projects</span>
           <span>→</span>
         </a>
-        <!-- Removed the Case button to streamline the hero section as requested -->
+        <button class="btn-bio" id="bioToggleBtn" type="button">
+          <span class="lang-fr">Biographie</span>
+          <span class="lang-en">Biography</span>
+        </button>
       </div>
     </div>
 
-    <!-- Avatar column contains the photo, biography toggle and text. Placing all elements inside a single container ensures they stack vertically and stay aligned with the grid column -->
     <div class="avatar-column reveal reveal-d2">
       <div class="avatar-wrap">
         <div class="avatar-blob"></div>
@@ -769,33 +802,26 @@ button{font-family:inherit}
         <div class="avatar-img-wrap">
           <img src="assets/img/photo_bio.jpg" alt="Portrait de Rafael Midolli"/>
         </div>
-        <!-- Biography overlay: slides over the avatar circle -->
         <div class="bio-overlay" id="bioOverlay">
           <button class="bio-close" id="bioCloseBtn" type="button" aria-label="Fermer">✕</button>
+          
           <div class="bio-content lang-fr">
-            <p>Analyste avec plus de quatre ans d’expérience dans l’agroalimentaire et la grande consommation.</p>
-            <p>Diplômé en ingénierie de gestion et titulaire d’un MBA en IA, je transforme les données en leviers business concrets.</p>
-            <p>J’ai travaillé chez Aperam, Colgate‑Palmolive, Scanntech et Kantar Worldpanel, où j’ai piloté des indicateurs pour des clients comme Lactalis et Nestlé.</p>
-            <p>Aujourd’hui, je vise un rôle data‑driven en France, idéalement dans le Sud, pour transformer la stratégie en actions pour les équipes terrain.</p>
+            <p>Business Analyst avec quatre ans d’expérience dans l’agroalimentaire et la grande consommation, j'ai construit mon parcours au sein de leaders comme Colgate-Palmolive et Kantar Worldpanel.</p>
+            <p>Diplômé en ingénierie et titulaire d’un MBA en Intelligence Artificielle, je combine expertise technique et vision business pour transformer les données en stratégies concrètes. J'ai notamment piloté la performance commerciale pour des marques majeures telles que Lactalis et Tetra Pak.</p>
+            <p>Aujourd'hui basé en France, je recherche une opportunité data-driven pour accompagner les décisions stratégiques et les actions des équipes terrain.</p>
           </div>
+          
           <div class="bio-content lang-en">
-            <p>Analyst with more than four years of experience in agrifood and consumer goods.</p>
-            <p>Trained in management engineering and holding an MBA in AI, I turn data into concrete business levers.</p>
-            <p>I have worked at Aperam, Colgate‑Palmolive, Scanntech and Kantar Worldpanel, where I managed KPIs for clients such as Lactalis and Nestlé.</p>
-            <p>Today I am looking to continue my career in France, ideally in the south, in a data‑driven role that translates strategy into actionable plans for field teams.</p>
+            <p>Business Analyst with four years of experience in agrifood and consumer goods (FMCG), I built my career at market leaders like Colgate-Palmolive and Kantar Worldpanel.</p>
+            <p>Holding an Engineering degree and an MBA in AI, I combine technical skills with business vision to transform data into actionable strategies. I have managed commercial performance for major brands such as Lactalis and Tetra Pak.</p>
+            <p>Currently based in France, I am seeking a data-driven role to support strategic decisions and drive field team actions.</p>
           </div>
         </div>
       </div>
-      <!-- Biography toggle button appears directly below the photo -->
-      <button class="btn-bio reveal reveal-d3" id="bioToggleBtn">
-        <span class="lang-fr">Biographie</span>
-        <span class="lang-en">Biography</span>
-      </button>
     </div>
   </div>
 </section>
 
-<!-- ABOUT -->
 <section class="section" id="about">
   <div class="section-inner">
     <div class="section-label reveal">
@@ -811,11 +837,7 @@ button{font-family:inherit}
           <span class="lang-fr">Business Analyst spécialisé en Retail &amp; PGC (FMCG), je construis des analyses qui passent directement à l'action. Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing ou direction.</span>
           <span class="lang-en">Business analyst specialised in retail and FMCG, I build analyses that lead directly to action. My approach: start from the data, structure a clear diagnosis, and make it usable for sales, marketing or management teams.</span>
         </p>
-        <p>
-          <span class="lang-fr">Basé dans le Maine‑et‑Loire, mobile sur toute la France — avec une expérience de travail dans des environnements internationaux.</span>
-          <span class="lang-en">Based in the Maine‑et‑Loire, mobile throughout France — with experience working in international environments.</span>
-        </p>
-      </div>
+        </div>
 
       <div class="pillars reveal reveal-d2">
         <div class="pillar">
@@ -844,7 +866,6 @@ button{font-family:inherit}
   </div>
 </section>
 
-<!-- SKILLS -->
 <section class="section" id="skills" style="padding-top:20px">
   <div class="section-inner">
     <div class="section-label reveal"><span class="lang-fr">Compétences</span><span class="lang-en">Skills</span></div>
@@ -857,7 +878,6 @@ button{font-family:inherit}
     </div>
 
     <div class="skills-grid" id="skillsGrid">
-      <!-- Analytics -->
       <div class="skill-chip" data-scope="analytics"><span class="ico">🗄️</span> SQL</div>
       <div class="skill-chip" data-scope="analytics"><span class="ico">🐍</span> Python</div>
       <div class="skill-chip" data-scope="analytics"><span class="ico">📦</span> Pandas</div>
@@ -866,13 +886,11 @@ button{font-family:inherit}
       <div class="skill-chip" data-scope="analytics"><span class="ico">🧩</span> Segmentation</div>
       <div class="skill-chip" data-scope="analytics"><span class="ico">🔎</span> Diagnostic</div>
       <div class="skill-chip" data-scope="analytics"><span class="ico">✍️</span> Storytelling</div>
-      <!-- BI -->
       <div class="skill-chip" data-scope="bi" hidden><span class="ico">📊</span> Power BI</div>
       <div class="skill-chip" data-scope="bi" hidden><span class="ico">➗</span> DAX</div>
       <div class="skill-chip" data-scope="bi" hidden><span class="ico">🧱</span> Data Modeling</div>
       <div class="skill-chip" data-scope="bi" hidden><span class="ico">📋</span> Dashboards</div>
       <div class="skill-chip" data-scope="bi" hidden><span class="ico">📑</span> Reporting</div>
-      <!-- Workflow -->
       <div class="skill-chip" data-scope="workflow" hidden><span class="ico">🦆</span> DuckDB</div>
       <div class="skill-chip" data-scope="workflow" hidden><span class="ico">📄</span> CSV / Parquet</div>
       <div class="skill-chip" data-scope="workflow" hidden><span class="ico">🔀</span> Git / GitHub</div>
@@ -882,7 +900,6 @@ button{font-family:inherit}
   </div>
 </section>
 
-<!-- PROJECTS -->
 <section class="section" id="projects">
   <div class="section-inner">
     <div class="section-label reveal"><span class="lang-fr">Projets</span><span class="lang-en">Projects</span></div>
@@ -941,7 +958,6 @@ button{font-family:inherit}
   </div>
 </section>
 
-<!-- CONTACT -->
 <section class="section" id="contact">
   <div class="section-inner">
     <div class="contact-wrap">
@@ -957,7 +973,6 @@ button{font-family:inherit}
       </p>
 
       <div class="contact-btns reveal reveal-d2">
-        <!-- Email button -->
         <button class="btn-contact" id="emailBtn" type="button">
           ✉️ &nbsp;Email
         </button>
