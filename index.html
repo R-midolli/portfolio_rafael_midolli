@@ -419,6 +419,14 @@ button{font-family:inherit}
   background-clip:text;
   line-height:1.1;margin-bottom:8px;
 }
+
+/* FIX: Specific class for the text-heavy metric to keep theme */
+.metric-value.text-fit {
+    font-size: 1.35rem; 
+    line-height: 1.25;
+    /* Keeps the gradient from base .metric-value */
+}
+
 .metric-label{
   font-size:.76rem;font-weight:600;
   color:var(--text-muted);
@@ -679,6 +687,9 @@ button{font-family:inherit}
   .pill{justify-content:center}
   .nav-links a{padding:8px 10px;font-size:.82rem}
   .logo{font-size:1.1rem}
+  
+  /* Adjusted font for the metric on tablet */
+  .metric-value.text-fit { font-size: 1.15rem; }
 }
 
 /* ─── MOBILE (≤ 680px) ─── */
@@ -709,6 +720,7 @@ button{font-family:inherit}
     transform:translateY(100%);
     border-radius:24px 24px 0 0;
     padding:28px 20px 40px;z-index:200;
+    overflow-y: auto; /* Fix scroll */
   }
   .bio-overlay.show{transform:translateY(0)}
   .bio-overlay::before{
@@ -871,7 +883,7 @@ button{font-family:inherit}
         <div class="pillar">
           <div class="pillar-icon">🧩</div>
           <div>
-            <div class="pillar-title"><span class="lang-fr">Storytelling orienté décision</span><span class="lang-en">Decision‑oriented storytelling</span></div>
+            <div class="pillar-title"><span class="lang-fr">Storytelling orienté décision</span><span class="lang-en">Decision-oriented storytelling</span></div>
             <div class="pillar-desc"><span class="lang-fr">Rendre une analyse lisible et exploitable pour ventes, marketing ou direction.</span><span class="lang-en">Make an analysis readable and usable for sales, marketing or management.</span></div>
           </div>
         </div>
@@ -893,13 +905,18 @@ button{font-family:inherit}
           <span class="lang-en">Retail &amp; FMCG experience</span>
         </div>
       </div>
+
       <div class="metric-card">
-        <div class="metric-value">4</div>
+        <div class="metric-value text-fit">
+          <span class="lang-fr">Expertise auprès de<br>leaders mondiaux</span>
+          <span class="lang-en">Expertise with<br>global leaders</span>
+        </div>
         <div class="metric-label">
-          <span class="lang-fr">Marques internationales pilotées<br/>(Colgate · Lactalis · Tetra Pak · Kantar)</span>
-          <span class="lang-en">Global brands managed<br/>(Colgate · Lactalis · Tetra Pak · Kantar)</span>
+          <span class="lang-fr">(Colgate · Lactalis · Tetra Pak · Kantar)</span>
+          <span class="lang-en">(Colgate · Lactalis · Tetra Pak · Kantar)</span>
         </div>
       </div>
+
       <div class="metric-card">
         <div class="metric-value">MBA</div>
         <div class="metric-label">
@@ -914,7 +931,7 @@ button{font-family:inherit}
 <section class="section" id="skills" style="padding-top:20px">
   <div class="section-inner">
     <div class="section-label reveal"><span class="lang-fr">Compétences</span><span class="lang-en">Skills</span></div>
-    <h2 class="section-title reveal reveal-d1"><span class="lang-fr">Stack &amp; savoir‑faire</span><span class="lang-en">Stack &amp; expertise</span></h2>
+    <h2 class="section-title reveal reveal-d1"><span class="lang-fr">Stack &amp; savoir-faire</span><span class="lang-en">Stack &amp; expertise</span></h2>
 
     <div class="skills-tabs reveal reveal-d1" id="skillsTabs">
       <button class="skill-tab active" data-tab="analytics">📈 Analytics</button>
