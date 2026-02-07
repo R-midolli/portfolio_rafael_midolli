@@ -570,6 +570,44 @@ button{font-family:inherit;cursor:pointer}
 }
 .btn-case:hover{transform:translateX(4px);box-shadow:0 8px 20px rgba(91,140,255,.25)}
 
+/* ========== PROJECT CARD HOVER HINT ========== */
+.project-card{cursor:pointer}
+.project-card a, .project-card button{cursor:pointer}
+.project-card::after{
+  content:"Cliquez pour un aperçu";
+  position:absolute;
+  right:24px;
+  bottom:22px;
+  font-size:.78rem;
+  font-weight:700;
+  letter-spacing:.01em;
+  color:rgba(240,242,247,.45);
+  opacity:0;
+  transform:translateY(6px);
+  transition:opacity .18s ease, transform .18s ease;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.08);
+  background:rgba(14,17,23,.32);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  pointer-events:none;
+}
+.project-card:hover::after,
+.project-card:focus-within::after{
+  opacity:1;
+  transform:translateY(0);
+}
+:root[data-theme="light"] .project-card::after{
+  color:rgba(14,19,32,.55);
+  border-color:rgba(14,19,32,.12);
+  background:rgba(255,255,255,.55);
+}
+html[data-lang="en"] .project-card::after{
+  content:"Click for a preview";
+}
+
+
 /* ========== CONTACT ========== */
 .contact-wrap{
   max-width:700px;
