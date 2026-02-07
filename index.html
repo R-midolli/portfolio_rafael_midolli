@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<meta name="description" content="Rafael Midolli — Business Analyst spécialisé en Retail &amp; FMCG. Basé en France, disponible. 4 ans d'expérience (Colgate-Palmolive, Kantar). Portfolio avec case studies, dashboards interactifs et analyses Pareto."/>
+<meta name="description" content="Rafael Midolli — Business Analyst orienté data. Basé en France, disponible. 4 ans d'expérience (Retail & FMCG). Portfolio avec case studies, dashboards interactifs et analyses Pareto."/>
 <title>Rafael Midolli — Business Analyst</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -193,7 +193,7 @@ button{font-family:inherit;cursor:pointer}
   margin-top:22px;
   color:var(--text-muted);
   font-size:1.05rem;
-  max-width:480px;
+  max-width:520px;
   line-height:1.7;
 }
 .hero-ctas{
@@ -237,24 +237,84 @@ button{font-family:inherit;cursor:pointer}
   display:flex;
   align-items:center;
   justify-content:center;
-  transition:opacity .3s, transform .3s;
+  transition:opacity .5s ease, transform .5s ease;
 }
-.avatar-frame{
+.avatar-wrap{
   position:relative;
-  width:340px;height:340px;
+  width:280px;height:280px;
   border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  padding:8px;
+  display:grid;
+  place-items:center;
+  animation:floaty 10s ease-in-out infinite;
 }
-.avatar-inner{
+.avatar-blob{
+  position:absolute;
+  inset:-18px;
+  border-radius:50%;
+  background:
+    radial-gradient(closest-side, rgba(91,140,255,.18), transparent 70%),
+    radial-gradient(closest-side, rgba(139,92,246,.14), transparent 70%);
+  filter:blur(0px);
+  opacity:.9;
+  animation:morph 10s ease-in-out infinite;
+}
+.avatar-ring{
+  position:absolute;
+  inset:-10px;
+  border-radius:50%;
+  border:1px solid rgba(91,140,255,.35);
+  box-shadow:0 0 0 1px rgba(139,92,246,.12), 0 0 34px rgba(91,140,255,.18);
+  animation:spin-slow 80s linear infinite;
+}
+.avatar-ring::before{
+  content:"";
+  position:absolute;
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--accent);
+  top:22px; right:38px;
+  opacity:0.7;
+  box-shadow:0 0 12px rgba(91,140,255,.4);
+}
+.avatar-ring.r2{
+  inset:-26px;
+  border-color:rgba(139,92,246,.25);
+  box-shadow:0 0 0 1px rgba(91,140,255,.10), 0 0 34px rgba(139,92,246,.16);
+  animation-duration:120s;
+  animation-direction:reverse;
+  opacity:.85;
+}
+.avatar-ring.r2::before{
+  width:5px;height:5px;
+  background:var(--accent-2);
+  top:auto; bottom:18px; left:48px; right:auto;
+  opacity:0.6;
+  box-shadow:0 0 10px rgba(139,92,246,.35);
+}
+.avatar-img-wrap{
   width:100%;height:100%;
   border-radius:50%;
   overflow:hidden;
-  border:6px solid var(--bg);
+  border:1px solid rgba(91,140,255,.15);
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,.2),
+    0 18px 45px rgba(0,0,0,.45),
+    inset 0 0 20px rgba(0,0,0,.15);
 }
-.avatar-inner img{
+.avatar-img{
   width:100%;height:100%;
   object-fit:cover;
+}
+
+/* Animations */
+@keyframes spin-slow{ to { transform:rotate(360deg); } }
+@keyframes morph{
+  0%,100%{border-radius:55% 45% 50% 50% / 50% 52% 48% 50%}
+  50%{border-radius:45% 55% 42% 58% / 55% 45% 55% 45%}
+}
+@keyframes floaty{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
 }
 
 /* ========== SECTIONS ========== */
@@ -280,7 +340,51 @@ button{font-family:inherit;cursor:pointer}
   margin-bottom:48px;
 }
 
-/* ========== BIO OVERLAY (CORRIGIDO) ========== */
+/* ========== ABOUT (compact, only metrics) ========== */
+.about-title{margin-bottom:22px}
+.about-desc{
+  max-width:820px;
+  color:var(--text-muted);
+  font-size:1.02rem;
+  line-height:1.8;
+}
+.metrics-strip{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  margin-top:28px;
+}
+.metric-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:26px;
+  text-align:center;
+  transition:transform .2s, border-color .2s;
+}
+.metric-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--accent);
+}
+.metric-value{
+  font-family:var(--font-head);
+  font-size:2.2rem;
+  font-weight:800;
+  background:linear-gradient(135deg,var(--accent),var(--accent-2));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+  line-height:1.3;
+  margin-bottom:10px;
+}
+.metric-value.text-fit{font-size:1.4rem}
+.metric-label{
+  font-size:.88rem;
+  color:var(--text-muted);
+  line-height:1.5;
+}
+
+/* ========== BIO OVERLAY ========== */
 .bio-overlay{
   position:fixed;inset:0;z-index:200;
   background:rgba(14,17,23,.85);
@@ -347,43 +451,6 @@ button{font-family:inherit;cursor:pointer}
 }
 .bio-body p{margin-bottom:18px}
 .bio-body p:last-child{margin-bottom:0}
-
-/* ========== METRICS STRIP ========== */
-.metrics-strip{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:24px;
-  margin-top:48px;
-}
-.metric-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:28px;
-  text-align:center;
-  transition:transform .2s, border-color .2s;
-}
-.metric-card:hover{
-  transform:translateY(-4px);
-  border-color:var(--accent);
-}
-.metric-value{
-  font-family:var(--font-head);
-  font-size:2.2rem;
-  font-weight:800;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  line-height:1.3;
-  margin-bottom:10px;
-}
-.metric-value.text-fit{font-size:1.4rem}
-.metric-label{
-  font-size:.88rem;
-  color:var(--text-muted);
-  line-height:1.5;
-}
 
 /* ========== SKILLS ========== */
 .skills-tabs{
@@ -625,6 +692,7 @@ button{font-family:inherit;cursor:pointer}
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;gap:40px}
   .avatar-column{order:-1}
+  .avatar-wrap{width:240px;height:240px}
   .metrics-strip{grid-template-columns:1fr}
   .skills-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 }
@@ -633,6 +701,7 @@ button{font-family:inherit;cursor:pointer}
   .metrics-strip{grid-template-columns:1fr}
 }
 </style>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
 <body>
 <div class="bg-mesh"></div>
@@ -670,16 +739,16 @@ button{font-family:inherit;cursor:pointer}
     <div>
       <div class="pill">
         <span class="pill-dot"></span>
-        <span class="lang-fr">Disponible pour une mission BA</span>
-        <span class="lang-en">Open to BA opportunities</span>
+        <span class="lang-fr">Retail & FMCG · KPI · Dashboards · Disponible</span>
+        <span class="lang-en">Retail & FMCG · KPI · Dashboards · Available</span>
       </div>
       <h1>
-        <span class="lang-fr">Bonjour, je suis Rafael — <em>Business Analyst</em> spécialisé en Retail &amp; FMCG</span>
-        <span class="lang-en">Hello, I'm Rafael — <em>Business Analyst</em> specialized in Retail &amp; FMCG</span>
+        <span class="lang-fr">Bonjour, je suis Rafael — <em>Business Analyst</em><br/>orienté data</span>
+        <span class="lang-en">Hello, I'm Rafael — <em>Business Analyst</em><br/>data-driven</span>
       </h1>
       <p class="hero-desc">
-        <span class="lang-fr">Avec 4 ans d'expérience chez Colgate-Palmolive et Kantar, je transforme les données en insights actionnables pour optimiser les performances commerciales et opérationnelles.</span>
-        <span class="lang-en">With 4 years of experience at Colgate-Palmolive and Kantar, I transform data into actionable insights to optimize commercial and operational performance.</span>
+        <span class="lang-fr">Avec 4 ans d'expérience en Retail & FMCG, je transforme les données en KPI, dashboards et recommandations actionnables pour piloter la performance (ventes, supply chain, opérations).</span>
+        <span class="lang-en">With 4 years of experience in Retail & FMCG, I turn data into KPIs, dashboards, and actionable recommendations to drive performance (sales, supply chain, operations).</span>
       </p>
       <div class="hero-ctas">
         <a href="#projects" class="btn-primary">
@@ -692,9 +761,12 @@ button{font-family:inherit;cursor:pointer}
       </div>
     </div>
     <div class="avatar-column">
-      <div class="avatar-frame">
-        <div class="avatar-inner">
-          <img src="assets/img/photo_bio.jpg" alt="Rafael Midolli"/>
+      <div class="avatar-wrap" aria-label="Portrait Rafael Midolli">
+        <div class="avatar-blob"></div>
+        <div class="avatar-ring"></div>
+        <div class="avatar-ring r2"></div>
+        <div class="avatar-img-wrap">
+          <img src="assets/img/photo_bio.jpg" alt="Rafael Midolli" class="avatar-img"/>
         </div>
       </div>
     </div>
@@ -702,13 +774,16 @@ button{font-family:inherit;cursor:pointer}
 </section>
 
 <div class="bio-overlay" id="bioOverlay">
-  <div class="bio-card">
+  <div class="bio-card" role="dialog" aria-modal="true" aria-label="Biographie">
     <button class="bio-close" id="bioCloseBtn" type="button" aria-label="Close">×</button>
     <div class="bio-header">
       <img src="assets/img/photo_bio.jpg" alt="Rafael Midolli" class="bio-avatar"/>
       <div>
         <div class="bio-title">Rafael Midolli</div>
-        <div class="bio-subtitle">Business Analyst · Retail & FMCG</div>
+        <div class="bio-subtitle">
+          <span class="lang-fr">Business Analyst · orienté data</span>
+          <span class="lang-en">Business Analyst · data-driven</span>
+        </div>
       </div>
     </div>
     <div class="bio-body">
@@ -716,19 +791,20 @@ button{font-family:inherit;cursor:pointer}
         Après un parcours d'ingénieur et un MBA en Intelligence Artificielle, j'ai travaillé 4 ans dans le secteur Retail & FMCG, d'abord chez Colgate-Palmolive en tant qu'Analyste Commercial, puis chez Kantar en tant que Consultant BI.
       </p>
       <p class="lang-fr">
-        Mon expertise se situe à l'intersection de la data et du métier : je conçois des tableaux de bord Power BI orientés KPI (sell-out, category management, supply chain), j'automatise des pipelines ETL en Python, et je traduis les insights en recommandations stratégiques pour les équipes commerciales et marketing.
+        Mon expertise se situe à l'intersection de la data et du métier : je conçois des tableaux de bord Power BI orientés KPI (sell-out, category management, supply chain), j'automatise des pipelines ETL en Python, et je traduis les insights en recommandations concrètes pour les équipes commerciales et marketing.
       </p>
       <p class="lang-fr">
-        Basé en France, je suis disponible pour des missions en tant que Business Analyst ou BI Developer dans les secteurs Retail, FMCG, ou toute industrie nécessitant une approche data-driven rigoureuse.
+        Basé en France, je suis disponible pour des postes de Business Analyst (orienté data) ou Data Analyst, notamment en Retail/FMCG, ou toute industrie nécessitant une approche data-driven rigoureuse.
+      </p>
+
+      <p class="lang-en">
+        After an engineering degree and an MBA in Artificial Intelligence, I worked 4 years in Retail & FMCG, first at Colgate-Palmolive as a Commercial Analyst, then at Kantar as a BI Consultant.
       </p>
       <p class="lang-en">
-        After an engineering degree and an MBA in Artificial Intelligence, I worked 4 years in the Retail & FMCG sector, first at Colgate-Palmolive as a Commercial Analyst, then at Kantar as a BI Consultant.
+        My expertise sits at the intersection of data and business: I build KPI-driven Power BI dashboards (sell-out, category management, supply chain), automate ETL pipelines in Python, and turn insights into concrete recommendations for commercial and marketing teams.
       </p>
       <p class="lang-en">
-        My expertise lies at the intersection of data and business: I design KPI-oriented Power BI dashboards (sell-out, category management, supply chain), I automate ETL pipelines in Python, and I translate insights into strategic recommendations for commercial and marketing teams.
-      </p>
-      <p class="lang-en">
-        Based in France, I am available for missions as a Business Analyst or BI Developer in Retail, FMCG, or any industry requiring a rigorous data-driven approach.
+        Based in France, I am available for Business Analyst (data-driven) or Data Analyst roles, in Retail/FMCG or any industry that needs a rigorous data-driven approach.
       </p>
     </div>
   </div>
@@ -737,20 +813,31 @@ button{font-family:inherit;cursor:pointer}
 <section class="section" id="about">
   <div class="section-inner">
     <div class="section-label reveal">
-      <span class="lang-fr">Pourquoi moi ?</span>
-      <span class="lang-en">Why me?</span>
+      <span class="lang-fr">À propos</span>
+      <span class="lang-en">About</span>
     </div>
-    <h2 class="section-title reveal reveal-d1">
-      <span class="lang-fr">Un BA qui allie expertise métier et maîtrise technique</span>
-      <span class="lang-en">A BA who combines business expertise and technical mastery</span>
+    <h2 class="section-title reveal reveal-d1 about-title">
+      <span class="lang-fr">Ce qui me distingue</span>
+      <span class="lang-en">What sets me apart</span>
     </h2>
 
-    <div class="metrics-strip">
+    <p class="about-desc reveal reveal-d2">
+      <span class="lang-fr">
+        Business Analyst spécialisé en Retail & PGC (FMCG), je construis des analyses qui passent directement à l'action.
+        Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing ou direction.
+      </span>
+      <span class="lang-en">
+        Business Analyst specialized in Retail & FMCG, I deliver analyses that translate directly into action.
+        My approach: start from data, structure a clear diagnosis, and make it usable for sales, marketing, and leadership teams.
+      </span>
+    </p>
+
+    <div class="metrics-strip reveal reveal-d3">
       <div class="metric-card">
-        <div class="metric-value">4 ans</div>
+        <div class="metric-value"><span class="lang-fr">4 ans</span><span class="lang-en">4 years</span></div>
         <div class="metric-label">
-          <span class="lang-fr">Expérience en Retail &amp; FMCG</span>
-          <span class="lang-en">Retail &amp; FMCG experience</span>
+          <span class="lang-fr">Expérience en Retail & FMCG</span>
+          <span class="lang-en">Retail & FMCG experience</span>
         </div>
       </div>
 
@@ -775,7 +862,6 @@ button{font-family:inherit;cursor:pointer}
   </div>
 </section>
 
-<!-- ✅ SEULE SECTION MODIFIÉE : SKILLS -->
 <section class="section" id="skills">
   <div class="section-inner">
     <div class="section-label reveal">
@@ -783,16 +869,15 @@ button{font-family:inherit;cursor:pointer}
       <span class="lang-en">Skills</span>
     </div>
     <h2 class="section-title reveal reveal-d1">
-      <span class="lang-fr">Stack technique &amp; expertise métier</span>
-      <span class="lang-en">Tech stack &amp; business expertise</span>
+      <span class="lang-fr">Stack technique & expertise métier</span>
+      <span class="lang-en">Tech stack & business expertise</span>
     </h2>
 
-    <!-- 4 catégories alignées sur les projets -->
     <div class="skills-tabs reveal reveal-d2" id="skillsTabs">
       <button class="skill-tab active" data-tab="bi" type="button">
         <span>📊</span>
-        <span class="lang-fr">BI &amp; Viz</span>
-        <span class="lang-en">BI &amp; Viz</span>
+        <span class="lang-fr">BI & Viz</span>
+        <span class="lang-en">BI & Viz</span>
       </button>
       <button class="skill-tab" data-tab="engineering" type="button">
         <span>🧱</span>
@@ -812,7 +897,7 @@ button{font-family:inherit;cursor:pointer}
     </div>
 
     <div class="skills-grid">
-      <!-- BI & Viz (visible par défaut) -->
+      <!-- BI & Viz -->
       <div class="skill-chip" data-scope="bi"><span>📊</span> Power BI</div>
       <div class="skill-chip" data-scope="bi"><span>➗</span> DAX</div>
       <div class="skill-chip" data-scope="bi"><span>📝</span> Power Query (M)</div>
@@ -835,7 +920,7 @@ button{font-family:inherit;cursor:pointer}
       <div class="skill-chip" data-scope="business" hidden><span>🏪</span> Retail Analytics</div>
       <div class="skill-chip" data-scope="business" hidden><span>💰</span> Sell-Out</div>
       <div class="skill-chip" data-scope="business" hidden><span>📦</span> Category Mgmt</div>
-      <div class="skill-chip" data-scope="business" hidden><span>🏷️</span> Pricing &amp; Assortment</div>
+      <div class="skill-chip" data-scope="business" hidden><span>🏷️</span> Pricing & Assortment</div>
       <div class="skill-chip" data-scope="business" hidden><span>🚚</span> Supply Chain KPIs</div>
       <div class="skill-chip" data-scope="business" hidden><span>🧩</span> Segmentation</div>
       <div class="skill-chip" data-scope="business" hidden><span>📊</span> Pareto Analysis</div>
@@ -843,7 +928,7 @@ button{font-family:inherit;cursor:pointer}
 
       <!-- Outils -->
       <div class="skill-chip" data-scope="tools" hidden><span>📊</span> Excel</div>
-      <div class="skill-chip" data-scope="tools" hidden><span>🔧</span> Git &amp; GitHub</div>
+      <div class="skill-chip" data-scope="tools" hidden><span>🔧</span> Git & GitHub</div>
       <div class="skill-chip" data-scope="tools" hidden><span>📓</span> Jupyter</div>
       <div class="skill-chip" data-scope="tools" hidden><span>💻</span> VS Code</div>
       <div class="skill-chip" data-scope="tools" hidden><span>🐳</span> Docker</div>
@@ -859,14 +944,14 @@ button{font-family:inherit;cursor:pointer}
       <span class="lang-en">Projects</span>
     </div>
     <h2 class="section-title reveal reveal-d1">
-      <span class="lang-fr">Case studies avec dashboards &amp; code</span>
-      <span class="lang-en">Case studies with dashboards &amp; code</span>
+      <span class="lang-fr">Case studies avec dashboards & code</span>
+      <span class="lang-en">Case studies with dashboards & code</span>
     </h2>
 
     <div class="projects-grid">
       <article class="project-card reveal reveal-d1">
         <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
-        <h3><span class="lang-fr">Retail Analytics — Pareto &amp; Segmentation</span><span class="lang-en">Retail Analytics — Pareto &amp; Segmentation</span></h3>
+        <h3><span class="lang-fr">Retail Analytics — Pareto & Segmentation</span><span class="lang-en">Retail Analytics — Pareto & Segmentation</span></h3>
         <p>
           <span class="lang-fr">Analyse complète sell-out avec segmentation ABC/XYZ, tableaux Pareto, et dashboard interactif Plotly embarqué dans une page HTML.</span>
           <span class="lang-en">Complete sell-out analysis with ABC/XYZ segmentation, Pareto tables, and interactive Plotly dashboard embedded in an HTML page.</span>
@@ -904,7 +989,7 @@ button{font-family:inherit;cursor:pointer}
 
       <article class="project-card reveal reveal-d3">
         <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
-        <h3><span class="lang-fr">ELT Retail — Ventes &amp; Rentabilité</span><span class="lang-en">ELT Retail — Sales &amp; Profitability</span></h3>
+        <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales & Profitability</span></h3>
         <p>
           <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de rentabilité par produit et client, dashboard Power BI.</span>
           <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema), profitability analysis by product and customer, Power BI dashboard.</span>
@@ -932,11 +1017,11 @@ button{font-family:inherit;cursor:pointer}
         <span class="lang-fr">Contact</span><span class="lang-en">Contact</span>
       </div>
       <h2 class="section-title reveal reveal-d1" style="text-align:center">
-        <span class="lang-fr">Disponible pour une mission BA</span><span class="lang-en">Open to a BA opportunity</span>
+        <span class="lang-fr">Disponible pour une mission BA / Data</span><span class="lang-en">Available for BA / Data roles</span>
       </h2>
       <p class="contact-desc reveal reveal-d1">
-        <span class="lang-fr">Basé en France, disponible pour des missions en Retail &amp; FMCG. Un échange rapide par email ou LinkedIn ?</span>
-        <span class="lang-en">Based in France, available for Retail &amp; FMCG BA roles. Shall we have a quick chat via email or LinkedIn?</span>
+        <span class="lang-fr">Basé en France, disponible pour des missions BA orientées data (Business / Data Analyst). Un échange rapide par email ou LinkedIn ?</span>
+        <span class="lang-en">Based in France, available for data-driven BA / Data Analyst roles. Shall we have a quick chat via email or LinkedIn?</span>
       </p>
 
       <div class="contact-btns reveal reveal-d2">
@@ -986,12 +1071,12 @@ button{font-family:inherit;cursor:pointer}
     scrollBar.style.width = (max > 0 ? (d.scrollTop/max)*100 : 0) + '%';
     $('#mainNav')?.classList.toggle('scrolled', d.scrollTop > 40);
 
-    // Avatar fade-out on scroll
+    // Avatar fade-out on scroll - efeito mais suave
     const avatarCol = document.querySelector('.avatar-column');
     if(avatarCol){
-      const progress = Math.min(d.scrollTop / ((d.scrollHeight - d.clientHeight) * 0.6), 1);
-      avatarCol.style.opacity = 1 - progress;
-      avatarCol.style.transform = `translateY(${progress * 40}px)`;
+      const progress = Math.min(d.scrollTop / ((d.scrollHeight - d.clientHeight) * 0.5), 1);
+      avatarCol.style.opacity = 1 - (progress * 0.9);
+      avatarCol.style.transform = 'translateY(' + (progress * 50) + 'px)';
     }
   }
   window.addEventListener('scroll', onScroll, {passive:true});
@@ -1086,13 +1171,29 @@ button{font-family:inherit;cursor:pointer}
   const bioClose = $('#bioCloseBtn');
 
   if(bioBtn && bioOverlay){
-    bioBtn.addEventListener('click', e => { e.stopPropagation(); bioOverlay.classList.toggle('show') });
-    if(bioClose) bioClose.addEventListener('click', () => bioOverlay.classList.remove('show'));
-    document.addEventListener('click', e => {
-      if(!bioOverlay.classList.contains('show')) return;
-      if(!bioOverlay.contains(e.target) && !bioBtn.contains(e.target)) bioOverlay.classList.remove('show');
+    bioBtn.addEventListener('click', e => { 
+      e.stopPropagation(); 
+      bioOverlay.classList.add('show');
     });
-    document.addEventListener('keydown', e => { if(e.key==='Escape') bioOverlay.classList.remove('show') });
+    
+    if(bioClose) {
+      bioClose.addEventListener('click', e => {
+        e.stopPropagation();
+        bioOverlay.classList.remove('show');
+      });
+    }
+    
+    bioOverlay.addEventListener('click', e => {
+      if(e.target === bioOverlay) {
+        bioOverlay.classList.remove('show');
+      }
+    });
+    
+    document.addEventListener('keydown', e => { 
+      if(e.key==='Escape' && bioOverlay.classList.contains('show')) {
+        bioOverlay.classList.remove('show');
+      }
+    });
   }
 
   // --- theme toggle ---
