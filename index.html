@@ -691,6 +691,100 @@ button{font-family:inherit;cursor:pointer}
 .reveal-d3{transition-delay:.3s}
 .reveal-d4{transition-delay:.4s}
 
+
+/* ========== PROJECT PREVIEW OVERLAY ========== */
+.project-preview-overlay{
+  position:fixed;inset:0;z-index:210;
+  background:rgba(14,17,23,.86);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  opacity:0;
+  transition:opacity .28s ease;
+}
+.project-preview-overlay.show{display:flex;opacity:1}
+.project-preview-card{
+  background:var(--bg);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  width:min(1100px, 100%);
+  height:min(82vh, 760px);
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.55);
+}
+:root[data-theme="dark"] .project-preview-card{ background:#0e1117; }
+:root[data-theme="light"] .project-preview-card{ background:#f6f7fb; }
+
+.project-preview-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:18px 18px 14px;
+  border-bottom:1px solid var(--border);
+}
+.project-preview-title{
+  font-family:var(--font-head);
+  font-weight:800;
+  font-size:1.25rem;
+  line-height:1.2;
+}
+.project-preview-close{
+  width:38px;height:38px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  background:var(--surface);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.35rem;
+  color:var(--text-muted);
+  transition:background .2s, color .2s, transform .15s;
+}
+.project-preview-close:hover{background:var(--surface-hover);color:var(--text);transform:translateY(-1px)}
+
+.project-preview-frame{
+  position:relative;
+  flex:1;
+  padding:14px 18px;
+}
+.project-preview-iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  border-radius:16px;
+  background:rgba(0,0,0,.15);
+}
+.project-preview-loading{
+  position:absolute;
+  inset:14px 18px;
+  border-radius:16px;
+  background:rgba(14,17,23,.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--text-muted);
+  font-weight:700;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+}
+.project-preview-loading.show{opacity:1;pointer-events:auto}
+
+.project-preview-footer{
+  padding:14px 18px 18px;
+  border-top:1px solid var(--border);
+  display:flex;
+  justify-content:flex-end;
+}
+@media(max-width:600px){
+  .project-preview-card{height:90vh}
+  .project-preview-title{font-size:1.05rem}
+}
+
 /* ========== RESPONSIVE ========== */
 @media(max-width:900px){
   .hero-inner{grid-template-columns:1fr;gap:40px}
@@ -809,6 +903,30 @@ button{font-family:inherit;cursor:pointer}
       <p class="lang-en">
         Based in France, I am available for Business Analyst (data-driven) or Data Analyst roles, in Retail/FMCG or any industry that needs a rigorous data-driven approach.
       </p>
+    </div>
+  </div>
+</div>
+
+
+<div class="project-preview-overlay" id="projectPreviewOverlay" aria-hidden="true">
+  <div class="project-preview-card" role="dialog" aria-modal="true" aria-label="Project preview">
+    <div class="project-preview-header">
+      <div class="project-preview-title" id="projectPreviewTitle">
+        <span class="lang-fr">Aperçu du projet</span><span class="lang-en">Project preview</span>
+      </div>
+      <button class="project-preview-close" id="projectPreviewCloseBtn" type="button" aria-label="Close">×</button>
+    </div>
+    <div class="project-preview-frame">
+      <iframe id="projectPreviewIframe" class="project-preview-iframe" loading="lazy"></iframe>
+      <div class="project-preview-loading" id="projectPreviewLoading">
+        <span class="lang-fr">Chargement…</span><span class="lang-en">Loading…</span>
+      </div>
+    </div>
+    <div class="project-preview-footer">
+      <a href="#" class="btn-case" id="projectPreviewOpenBtn" target="_blank" rel="noopener">
+        <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+        <span>→</span>
+      </a>
     </div>
   </div>
 </div>
@@ -1199,7 +1317,70 @@ button{font-family:inherit;cursor:pointer}
     });
   }
 
-  // --- theme toggle ---
+  
+  // --- project preview (click on card) ---
+  const previewOverlay = $('#projectPreviewOverlay');
+  const previewCard = previewOverlay ? previewOverlay.querySelector('.project-preview-card') : null;
+  const previewCloseBtn = $('#projectPreviewCloseBtn');
+  const previewTitle = $('#projectPreviewTitle');
+  const previewIframe = $('#projectPreviewIframe');
+  const previewOpenBtn = $('#projectPreviewOpenBtn');
+  const previewLoading = $('#projectPreviewLoading');
+
+  function openProjectPreview(card){
+    if(!previewOverlay) return;
+
+    const openBtn = card.querySelector('.btn-case');
+    if(!openBtn) return;
+
+    const href = openBtn.getAttribute('href');
+    if(!href) return;
+
+    const h3 = card.querySelector('h3');
+    if(previewTitle){
+      previewTitle.innerHTML = h3 ? h3.innerHTML : (getLang()==='fr' ? 'Aperçu du projet' : 'Project preview');
+    }
+    if(previewOpenBtn) previewOpenBtn.href = href;
+
+    if(previewIframe){
+      if(previewLoading) previewLoading.classList.add('show');
+      previewIframe.onload = () => { if(previewLoading) previewLoading.classList.remove('show'); };
+      previewIframe.src = href;
+    }
+
+    previewOverlay.classList.add('show');
+  }
+
+  function closeProjectPreview(){
+    if(!previewOverlay) return;
+    previewOverlay.classList.remove('show');
+    if(previewIframe) previewIframe.src = 'about:blank';
+    if(previewLoading) previewLoading.classList.remove('show');
+  }
+
+  // Open preview when clicking on a project card (except the main button/link)
+  $$('.project-card').forEach(card => {
+    card.addEventListener('click', (e) => {
+      if(e.target.closest('.btn-case')) return; // keep default navigation
+      if(e.target.closest('a')) return; // any link should behave normally
+      openProjectPreview(card);
+    });
+  });
+
+  if(previewCloseBtn) previewCloseBtn.addEventListener('click', closeProjectPreview);
+
+  if(previewOverlay){
+    previewOverlay.addEventListener('click', (e) => {
+      if(previewCard && !previewCard.contains(e.target)) closeProjectPreview();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape' && previewOverlay && previewOverlay.classList.contains('show')) closeProjectPreview();
+  });
+
+
+// --- theme toggle ---
   const themeBtn = $('#themeToggle');
   const themeIcon = $('#themeIcon');
   if(themeBtn && themeIcon){
