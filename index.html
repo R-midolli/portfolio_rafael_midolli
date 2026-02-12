@@ -1129,25 +1129,6 @@ html[data-lang="en"] .project-card::after{
 
       <article class="project-card reveal reveal-d2">
         <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
-        <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain — Delivery Performance</span></h3>
-        <p>
-          <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery), analyse des causes de retard, et dashboard Power BI.</span>
-          <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root cause analysis of delays, and Power BI dashboard.</span>
-        </p>
-        <div class="project-tags">
-          <span class="project-tag">Python</span>
-          <span class="project-tag">ETL</span>
-          <span class="project-tag">Power BI</span>
-          <span class="project-tag">KPI</span>
-        </div>
-        <a href="project-supply-chain.html" class="btn-case">
-          <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
-          <span>→</span>
-        </a>
-      </article>
-
-      <article class="project-card reveal reveal-d3">
-        <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
         <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales & Profitability</span></h3>
         <p>
           <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de rentabilité par produit et client, dashboard Power BI.</span>
@@ -1161,6 +1142,25 @@ html[data-lang="en"] .project-card::after{
           <span class="project-tag">Power BI</span>
         </div>
         <a href="project-elt-retail.html" class="btn-case">
+          <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+          <span>→</span>
+        </a>
+      </article>
+
+      <article class="project-card reveal reveal-d3">
+        <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
+        <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain — Delivery Performance</span></h3>
+        <p>
+          <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery), analyse des causes de retard, et dashboard Power BI.</span>
+          <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root cause analysis of delays, and Power BI dashboard.</span>
+        </p>
+        <div class="project-tags">
+          <span class="project-tag">Python</span>
+          <span class="project-tag">ETL</span>
+          <span class="project-tag">Power BI</span>
+          <span class="project-tag">KPI</span>
+        </div>
+        <a href="project-supply-chain.html" class="btn-case">
           <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
           <span>→</span>
         </a>
@@ -1217,7 +1217,7 @@ html[data-lang="en"] .project-card::after{
 
 <footer class="footer">© 2026 — Rafael Midolli — Portfolio Business Analyst</footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function(){
   const $ = s => document.querySelector(s);
   const $$ = s => [...document.querySelectorAll(s)];
@@ -1442,7 +1442,7 @@ html[data-lang="en"] .project-card::after{
     document.documentElement.dataset.lang = lang;
     document.documentElement.lang = lang;
     localStorage.setItem('lang', lang);
-    if(langIcon) langIcon.textContent = lang.toUpperCase();
+    if(langIcon) langIcon.textContent = lang === 'fr' ? 'FR' : 'EN';
     setCopyHintDefault();
   }
 
@@ -1450,13 +1450,13 @@ html[data-lang="en"] .project-card::after{
     const savedLang = localStorage.getItem('lang') || 'fr';
     setLanguage(savedLang);
     langBtn.addEventListener('click', () => {
-      const next = getLang() === 'fr' ? 'en' : 'fr';
+      const next = document.documentElement.dataset.lang === 'fr' ? 'en' : 'fr';
       setLanguage(next);
     });
   }
 
-  setCopyHintDefault();
 })();
 </script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>

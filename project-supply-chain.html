@@ -3,14 +3,13 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Case study — Supply Chain Delivery Performance : Analyse des retards de livraison, ETL Python, KPI logistiques, dashboard Power BI. Portfolio Rafael Midolli."/>
-  <title>Supply Chain Delivery Performance — Case Study</title>
+  <meta name="description" content="Case study — Supply Chain ETL : Analyse des retards de livraison sur 181K commandes avec 54,83% late rate. Pipeline Python, KPI logistiques, dashboard Power BI. Portfolio Rafael Midolli."/>
+  <title>Supply Chain ETL — Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
   <style>
-  /* ===== RESET & ROOT ===== */
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
     --bg:#0e1117;
@@ -20,7 +19,6 @@
     --text-muted:#7a8494;
     --accent:#5b8cff;
     --accent-2:#8b5cf6;
-    --accent-glow:rgba(91,140,255,.25);
     --border:rgba(255,255,255,.08);
     --radius:20px;
     --font-head:'Playfair Display',Georgia,serif;
@@ -35,395 +33,87 @@
     --border:rgba(14,19,32,.10);
     --accent:#4f7cff;
     --accent-2:#7b5cff;
-    --accent-glow:rgba(91,140,255,.25);
   }
-  :root[data-theme="light"] .nav{
-    background:rgba(246,247,251,.9);
-    border-bottom:1px solid var(--border);
-  }
+  :root[data-theme="light"] .nav{background:rgba(246,247,251,.9);border-bottom:1px solid var(--border)}
   [data-lang="fr"] .lang-en{display:none}
   [data-lang="en"] .lang-fr{display:none}
   html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-  body{
-    font-family:var(--font-body);
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
+  body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
   a{color:inherit;text-decoration:none}
   button{font-family:inherit;cursor:pointer;border:none;background:none}
 
-  /* Background visuals */
-  .bg-mesh, .bg-grid{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-  }
-  .bg-mesh{
-    background:
-      radial-gradient(ellipse 70% 50% at 20% 20%, rgba(91,140,255,.12) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 60% at 80% 70%, rgba(139,92,246,.10) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 60% 10%, rgba(91,140,255,.06) 0%, transparent 60%);
-  }
-  .bg-grid{
-    opacity:.035;
-    background-image:
-      linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
-    background-size:60px 60px;
-    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-    -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-  }
-  :root[data-theme="light"] .bg-grid{
-    opacity:.055;
-    background-image:
-      linear-gradient(rgba(14,19,32,.4) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(14,19,32,.4) 1px, transparent 1px);
-  }
+  .bg-mesh, .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .bg-mesh{background:radial-gradient(ellipse 70% 50% at 20% 20%, rgba(91,140,255,.12) 0%, transparent 70%),radial-gradient(ellipse 50% 60% at 80% 70%, rgba(139,92,246,.10) 0%, transparent 70%),radial-gradient(ellipse 40% 40% at 60% 10%, rgba(91,140,255,.06) 0%, transparent 60%)}
+  .bg-grid{opacity:.035;background-image:linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%)}
+  :root[data-theme="light"] .bg-grid{opacity:.055;background-image:linear-gradient(rgba(14,19,32,.4) 1px, transparent 1px),linear-gradient(90deg, rgba(14,19,32,.4) 1px, transparent 1px)}
 
-  /* NAVIGATION */
-  .nav{
-    position:fixed;top:0;left:0;width:100%;z-index:10;
-    display:flex;justify-content:space-between;align-items:center;
-    padding:14px 24px;
-    background:rgba(14,17,23,.75);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav .logo{
-    display:flex;align-items:center;gap:10px;
-    font-family:var(--font-head);
-    font-weight:800;font-size:1.3rem;color:var(--text);
-  }
-  .logo-ring{
-    width:34px;height:34px;border-radius:50%;
-    border:2px solid var(--accent);
-    display:flex;align-items:center;justify-content:center;
-    font-size:.72rem;font-weight:700;color:var(--accent);
-    font-family:var(--font-body);
-  }
-  .nav-right{
-    display:flex;align-items:center;gap:12px;
-  }
-  .btn-back{
-    padding:8px 16px;border-radius:999px;
-    border:1px solid var(--border);
-    background:var(--surface);
-    color:var(--text);
-    font-size:.88rem;font-weight:600;
-    transition:background .2s, border-color .2s, transform .2s;
-  }
-  .btn-back:hover{
-    background:var(--surface-hover);
-    border-color:var(--accent);
-    transform:translateY(-2px);
-  }
-  .theme-toggle, .lang-toggle{
-    width:42px;height:42px;
-    border-radius:999px;
-    border:1px solid var(--border);
-    background:var(--surface);
-    display:flex;align-items:center;justify-content:center;
-    transition:transform .15s, background .2s, border-color .2s;
-  }
-  .theme-toggle:hover, .lang-toggle:hover{
-    background:var(--surface-hover);
-    border-color:var(--accent);
-    transform:translateY(-2px);
-  }
-  .theme-toggle span, .lang-toggle span{
-    font-size:1.25rem;
-  }
+  .nav{position:fixed;top:0;left:0;width:100%;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:rgba(14,17,23,.75);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+  .nav .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:800;font-size:1.3rem;color:var(--text)}
+  .logo-ring{width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--accent);font-family:var(--font-body)}
+  .nav-right{display:flex;align-items:center;gap:12px}
+  .btn-back{padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.88rem;font-weight:600;transition:background .2s, border-color .2s, transform .2s}
+  .btn-back:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-2px)}
+  .theme-toggle, .lang-toggle{width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;transition:transform .15s, background .2s, border-color .2s}
+  .theme-toggle:hover, .lang-toggle:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-2px)}
+  .theme-toggle span, .lang-toggle span{font-size:1.25rem}
 
-  /* MAIN */
-  .main{
-    position:relative;z-index:1;
-    max-width:1000px;margin:0 auto;
-    padding:120px 24px 80px;
-  }
-  .case-header{
-    margin-bottom:48px;
-  }
-  .case-label{
-    font-size:.82rem;font-weight:700;
-    color:var(--accent);
-    text-transform:uppercase;
-    letter-spacing:.1em;
-    margin-bottom:12px;
-  }
-  .case-title{
-    font-family:var(--font-head);
-    font-size:clamp(2rem,4vw,3rem);
-    font-weight:800;
-    line-height:1.1;
-    margin-bottom:16px;
-  }
-  .case-subtitle{
-    font-size:1.05rem;
-    color:var(--text-muted);
-    line-height:1.6;
-  }
+  .main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:120px 24px 80px}
+  .case-header{margin-bottom:48px}
+  .case-label{font-size:.82rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
+  .case-title{font-family:var(--font-head);font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;margin-bottom:16px}
+  .case-subtitle{font-size:1.05rem;color:var(--text-muted);line-height:1.6}
 
-  .info-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
-    margin-bottom:32px;
-  }
-  .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:28px;
-    transition:transform .2s, border-color .2s;
-  }
-  .card:hover{
-    transform:translateY(-2px);
-    border-color:rgba(91,140,255,.3);
-  }
-  .card h3{
-    font-family:var(--font-head);
-    font-size:1.4rem;font-weight:700;
-    color:var(--text);
-    margin-bottom:16px;
-  }
-  .card p{
-    color:var(--text-muted);
-    line-height:1.7;
-    margin-bottom:16px;
-  }
+  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:32px}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:transform .2s, border-color .2s}
+  .card:hover{transform:translateY(-2px);border-color:rgba(91,140,255,.3)}
+  .card h3{font-family:var(--font-head);font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:16px}
+  .card p{color:var(--text-muted);line-height:1.7;margin-bottom:16px}
   .card p:last-child{margin-bottom:0}
 
-  .metrics-mini{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:16px;
-    margin-top:20px;
-  }
-  .metric-mini{
-    text-align:center;
-    padding:18px;
-    border-radius:12px;
-    background:rgba(91,140,255,.08);
-    border:1px solid rgba(91,140,255,.2);
-    transition:transform .2s, border-color .2s;
-  }
-  .metric-mini:hover{
-    transform:translateY(-3px);
-    border-color:var(--accent);
-  }
-  .metric-mini.warning{
-    background:rgba(255,107,107,.08);
-    border:1px solid rgba(255,107,107,.2);
-  }
-  .metric-mini.warning:hover{
-    border-color:#ff6b6b;
-  }
-  .metric-value{
-    font-family:var(--font-head);
-    font-size:1.8rem;font-weight:800;
-    color:var(--accent);
-    line-height:1.2;
-  }
-  .metric-value.warning{
-    color:#ff6b6b;
-  }
-  .metric-label{
-    font-size:.78rem;
-    color:var(--text-muted);
-    margin-top:6px;
-  }
+  .metrics-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-top:20px}
+  .metric-mini{text-align:center;padding:18px;border-radius:12px;background:rgba(91,140,255,.08);border:1px solid rgba(91,140,255,.2);transition:transform .2s, border-color .2s}
+  .metric-mini:hover{transform:translateY(-3px);border-color:var(--accent)}
+  .metric-mini.warning{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2)}
+  .metric-mini.warning:hover{border-color:#ff6b6b}
+  .metric-value{font-family:var(--font-head);font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1.2}
+  .metric-value.warning{color:#ff6b6b}
+  .metric-label{font-size:.78rem;color:var(--text-muted);margin-top:6px}
 
-  .tech-stack{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:16px;
-  }
-  .tech-tag{
-    padding:8px 14px;
-    border-radius:8px;
-    background:rgba(91,140,255,.1);
-    border:1px solid rgba(91,140,255,.25);
-    color:var(--accent);
-    font-size:.84rem;font-weight:600;
-    transition:transform .15s, border-color .15s;
-  }
-  .tech-tag:hover{
-    transform:translateY(-1px);
-    border-color:var(--accent);
-  }
+  .tech-stack{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .tech-tag{padding:8px 14px;border-radius:8px;background:rgba(91,140,255,.1);border:1px solid rgba(91,140,255,.25);color:var(--accent);font-size:.84rem;font-weight:600;transition:transform .15s, border-color .15s;display:inline-flex;align-items:center;gap:6px}
+  .tech-tag:hover{transform:translateY(-1px);border-color:var(--accent)}
 
-  .btn-github{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:12px 20px;
-    border-radius:999px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    color:#fff;
-    font-size:.92rem;font-weight:700;
-    transition:transform .2s, box-shadow .2s;
-    margin-top:12px;
-  }
-  .btn-github:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(91,140,255,.3)}
-  .github-icon{
-    width:18px;height:18px;
-    fill:currentColor;
-  }
+  .btn-github{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:.92rem;font-weight:700;transition:transform .2s, box-shadow .2s;margin-top:12px;box-shadow:0 8px 24px rgba(91,140,255,.3)}
+  .btn-github:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,140,255,.4)}
+  .github-icon{width:18px;height:18px;fill:currentColor}
 
-  /* Insights Section */
-  .insights-section{
-    margin:48px 0;
-  }
-  .insight-card{
-    background:linear-gradient(135deg,rgba(91,140,255,.06),rgba(139,92,246,.04));
-    border:1px solid rgba(91,140,255,.2);
-    border-radius:var(--radius);
-    padding:32px;
-    margin-bottom:24px;
-  }
-  .insight-card.warning{
-    background:linear-gradient(135deg,rgba(255,107,107,.06),rgba(255,107,107,.04));
-    border:1px solid rgba(255,107,107,.2);
-  }
-  .insight-card h4{
-    font-family:var(--font-head);
-    font-size:1.3rem;
-    font-weight:700;
-    color:var(--text);
-    margin-bottom:16px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .insight-icon{
-    font-size:1.6rem;
-  }
-  .insight-content{
-    color:var(--text-muted);
-    line-height:1.8;
-  }
-  .insight-list{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    margin-top:16px;
-  }
-  .insight-item{
-    padding-left:24px;
-    position:relative;
-  }
-  .insight-item::before{
-    content:"→";
-    position:absolute;
-    left:0;
-    color:var(--accent);
-    font-weight:700;
-  }
-  .insight-card.warning .insight-item::before{
-    color:#ff6b6b;
-  }
-  .insight-highlight{
-    color:var(--accent);
-    font-weight:600;
-  }
-  .insight-highlight.warning{
-    color:#ff6b6b;
-  }
+  .insights-section{margin:48px 0}
+  .insight-card{background:linear-gradient(135deg,rgba(91,140,255,.06),rgba(139,92,246,.04));border:1px solid rgba(91,140,255,.2);border-radius:var(--radius);padding:32px;margin-bottom:24px}
+  .insight-card h4{font-family:var(--font-head);font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:12px}
+  .insight-icon{font-size:1.6rem}
+  .insight-content{color:var(--text-muted);line-height:1.8}
+  .insight-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+  .insight-item{padding-left:24px;position:relative}
+  .insight-item::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
+  .insight-highlight{color:var(--accent);font-weight:600}
+  .insight-highlight.warning{color:#ff6b6b}
 
-  /* Architecture section */
-  .architecture-flow{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:16px;
-    margin:24px 0;
-  }
-  .arch-step{
-    text-align:center;
-    padding:20px;
-    border-radius:12px;
-    background:rgba(91,140,255,.06);
-    border:1px solid rgba(91,140,255,.18);
-    position:relative;
-  }
-  .arch-step::after{
-    content:"→";
-    position:absolute;
-    right:-24px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--accent);
-    font-size:1.5rem;
-    font-weight:700;
-  }
-  .arch-step:last-child::after{
-    display:none;
-  }
-  .arch-icon{
-    font-size:2rem;
-    margin-bottom:8px;
-  }
-  .arch-title{
-    font-weight:700;
-    color:var(--text);
-    margin-bottom:6px;
-  }
-  .arch-desc{
-    font-size:.82rem;
-    color:var(--text-muted);
-  }
+  .architecture-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
+  .arch-step{text-align:center;padding:20px;border-radius:12px;background:rgba(91,140,255,.06);border:1px solid rgba(91,140,255,.18);position:relative}
+  .arch-step::after{content:"→";position:absolute;right:-24px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:1.5rem;font-weight:700}
+  .arch-step:last-child::after{display:none}
+  .arch-icon{font-size:2rem;margin-bottom:8px}
+  .arch-title{font-weight:700;color:var(--text);margin-bottom:6px}
+  .arch-desc{font-size:.82rem;color:var(--text-muted)}
 
-  /* Power BI embed */
-  .embed-responsive{
-    position:relative;
-    width:100%;
-    padding-top:56.25%;
-    border-radius:18px;
-    overflow:hidden;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,255,255,.06);
-    margin:32px 0;
-  }
-  .embed-responsive iframe{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    border:0;
-  }
-  .embed-note{
-    font-size:.9rem;
-    color:var(--text-muted);
-    line-height:1.6;
-    padding:16px;
-    background:rgba(91,140,255,.06);
-    border-left:3px solid var(--accent);
-    border-radius:8px;
-    margin-top:16px;
-  }
-  .embed-note strong{
-    color:var(--accent);
-  }
+  .embed-responsive{position:relative;width:100%;padding-top:56.25%;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);margin:32px 0}
+  .embed-responsive iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .embed-note{font-size:.9rem;color:var(--text-muted);line-height:1.6;padding:16px;background:rgba(91,140,255,.06);border-left:3px solid var(--accent);border-radius:8px;margin-top:16px}
+  .embed-note strong{color:var(--accent)}
 
-  /* Conclusion section */
-  .conclusion{
-    background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(139,92,246,.06));
-    border:1px solid rgba(91,140,255,.3);
-    border-radius:var(--radius);
-    padding:32px;
-    margin-top:48px;
-  }
-  .conclusion h3{
-    font-family:var(--font-head);
-    font-size:1.5rem;
-    font-weight:700;
-    margin-bottom:16px;
-  }
-  .conclusion p{
-    color:var(--text-muted);
-    line-height:1.8;
-    margin-bottom:14px;
-  }
+  .conclusion{background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(139,92,246,.06));border:1px solid rgba(91,140,255,.3);border-radius:var(--radius);padding:32px;margin-top:48px}
+  .conclusion h3{font-family:var(--font-head);font-size:1.5rem;font-weight:700;margin-bottom:16px}
+  .conclusion p{color:var(--text-muted);line-height:1.8;margin-bottom:14px}
   .conclusion p:last-child{margin-bottom:0}
 
   @media(max-width:700px){
@@ -460,19 +150,19 @@
   <main class="main">
     <header class="case-header">
       <div class="case-label">
-        <span class="lang-fr">Case Study #2</span>
-        <span class="lang-en">Case Study #2</span>
+        <span class="lang-fr">Case Study #3</span>
+        <span class="lang-en">Case Study #3</span>
       </div>
       <h1 class="case-title">
-        <span class="lang-fr">Supply Chain — Performance Livraison</span>
-        <span class="lang-en">Supply Chain — Delivery Performance</span>
+        <span class="lang-fr">Supply Chain ETL — Performance Livraison</span>
+        <span class="lang-en">Supply Chain ETL — Delivery Performance</span>
       </h1>
       <p class="case-subtitle">
         <span class="lang-fr">
-          Pipeline ETL Python pour diagnostiquer les retards de livraison sur 180K commandes. Identification des drivers critiques (modes de transport, catégories produits) et priorisation des actions pour réduire un taux de retard structurel de 54,8%.
+          Pipeline ETL Python pour diagnostiquer les retards de livraison sur 181K commandes avec seulement 45,2% OnTime. Identification des modes de transport critiques (First Class 95,3% late) et priorisation des actions pour atteindre les standards de l'industrie.
         </span>
         <span class="lang-en">
-          Python ETL pipeline to diagnose delivery delays on 180K orders. Identification of critical drivers (shipping modes, product categories) and prioritization of actions to reduce a structural late rate of 54.8%.
+          Python ETL pipeline to diagnose delivery delays on 181K orders with only 45.2% OnTime. Identification of critical shipping modes (First Class 95.3% late) and prioritization of actions to reach industry standards.
         </span>
       </p>
     </header>
@@ -485,10 +175,10 @@
         </h3>
         <p>
           <span class="lang-fr">
-            Diagnostic complet de la performance logistique sur 180 519 commandes. L'objectif : quantifier les retards, identifier les causes racines par mode de transport et catégorie produit, et prioriser les actions correctives pour améliorer le service client et réduire les coûts opérationnels.
+            Diagnostic complet de la performance logistique sur 181K commandes et $36,78M de ventes. L'objectif : quantifier les retards (54,83% late rate), identifier les modes de transport problématiques et prioriser les actions correctives pour atteindre les standards de l'industrie (>85% on-time).
           </span>
           <span class="lang-en">
-            Complete logistics performance diagnosis on 180,519 orders. Objective: quantify delays, identify root causes by shipping mode and product category, and prioritize corrective actions to improve customer service and reduce operational costs.
+            Complete logistics performance diagnosis on 181K orders and $36.78M in sales. Objective: quantify delays (54.83% late rate), identify problematic shipping modes and prioritize corrective actions to reach industry standards (>85% on-time).
           </span>
         </p>
         <div class="metrics-mini">
@@ -500,14 +190,11 @@
             </div>
           </div>
           <div class="metric-mini warning">
-            <div class="metric-value warning">99K</div>
-            <div class="metric-label">
-              <span class="lang-fr">En Retard</span>
-              <span class="lang-en">Late</span>
-            </div>
+            <div class="metric-value warning">45,2%</div>
+            <div class="metric-label">OnTime</div>
           </div>
           <div class="metric-mini warning">
-            <div class="metric-value warning">54,8%</div>
+            <div class="metric-value warning">54,83%</div>
             <div class="metric-label">
               <span class="lang-fr">Taux Retard</span>
               <span class="lang-en">Late Rate</span>
@@ -516,8 +203,8 @@
           <div class="metric-mini">
             <div class="metric-value">$36,8M</div>
             <div class="metric-label">
-              <span class="lang-fr">CA Total</span>
-              <span class="lang-en">Total Sales</span>
+              <span class="lang-fr">Ventes</span>
+              <span class="lang-en">Sales</span>
             </div>
           </div>
         </div>
@@ -529,18 +216,18 @@
           <span class="lang-en">🛠️ Tech stack</span>
         </h3>
         <div class="tech-stack">
-          <span class="tech-tag">Python</span>
-          <span class="tech-tag">Pandas</span>
-          <span class="tech-tag">Power BI</span>
-          <span class="tech-tag">Jupyter</span>
-          <span class="tech-tag">NumPy</span>
+          <span class="tech-tag"><span>🐍</span> Python</span>
+          <span class="tech-tag"><span>🐼</span> Pandas</span>
+          <span class="tech-tag"><span>📊</span> Power BI</span>
+          <span class="tech-tag"><span>📓</span> Jupyter</span>
+          <span class="tech-tag"><span>🔢</span> NumPy</span>
         </div>
         <p>
           <span class="lang-fr">
-            Pipeline ETL Python : nettoyage et standardisation des données Kaggle, feature engineering pour créer les KPI logistiques (<code>is_late</code>, <code>shipping_gap</code>, <code>late_rate</code>), et export vers Power BI pour analyse interactive.
+            Pipeline ETL Python : extraction et nettoyage des données Kaggle, feature engineering pour créer les KPI logistiques (<code>is_late</code>, <code>on_time_%</code>, <code>shipping_gap</code>), et visualisation Power BI avec analyse temporelle et par mode de transport.
           </span>
           <span class="lang-en">
-            Python ETL pipeline: Kaggle data cleaning and standardization, feature engineering to create logistics KPIs (<code>is_late</code>, <code>shipping_gap</code>, <code>late_rate</code>), and export to Power BI for interactive analysis.
+            Python ETL pipeline: Kaggle data extraction and cleaning, feature engineering to create logistics KPIs (<code>is_late</code>, <code>on_time_%</code>, <code>shipping_gap</code>), and Power BI visualization with temporal analysis and by shipping mode.
           </span>
         </p>
         <a href="https://github.com/R-midolli/supply_chain_analytics" target="_blank" rel="noopener" class="btn-github">
@@ -551,7 +238,6 @@
       </div>
     </div>
 
-    <!-- Architecture ETL -->
     <section class="card">
       <h3>
         <span class="lang-fr">🏗️ Architecture du pipeline ETL</span>
@@ -562,8 +248,8 @@
           <div class="arch-icon">📥</div>
           <div class="arch-title">Extract</div>
           <div class="arch-desc">
-            <span class="lang-fr">CSV Kaggle (180K lignes)</span>
-            <span class="lang-en">Kaggle CSV (180K rows)</span>
+            <span class="lang-fr">CSV Kaggle (181K lignes)</span>
+            <span class="lang-en">Kaggle CSV (181K rows)</span>
           </div>
         </div>
         <div class="arch-step">
@@ -590,118 +276,117 @@
       </div>
       <p>
         <span class="lang-fr">
-          Le pipeline ETL standardise le dataset Kaggle <em>DataCo Supply Chain</em> et l'enrichit avec des features KPI-ready : <code>is_late</code> (booléen), <code>shipping_gap</code> (jours de retard), <code>is_profitable</code> (proxy rentabilité). Les dates sont normalisées, les champs sélectionnés et le dataset propre est exporté pour Power BI.
+          Le pipeline ETL standardise le dataset Kaggle <em>DataCo Supply Chain</em> et calcule les KPI logistiques clés : <code>on_time_%</code> (45,2%), <code>late_rate_%</code> (54,83%), <code>avg_shipping_gap</code> (0,6 jours). Les dates sont normalisées et le dataset enrichi est exporté pour analyse interactive dans Power BI.
         </span>
         <span class="lang-en">
-          The ETL pipeline standardizes the Kaggle <em>DataCo Supply Chain</em> dataset and enriches it with KPI-ready features: <code>is_late</code> (boolean), <code>shipping_gap</code> (days late), <code>is_profitable</code> (profitability proxy). Dates are normalized, fields selected and the clean dataset is exported for Power BI.
+          The ETL pipeline standardizes the Kaggle <em>DataCo Supply Chain</em> dataset and calculates key logistics KPIs: <code>on_time_%</code> (45.2%), <code>late_rate_%</code> (54.83%), <code>avg_shipping_gap</code> (0.6 days). Dates are normalized and the enriched dataset is exported for interactive analysis in Power BI.
         </span>
       </p>
     </section>
 
-    <!-- Key Insights -->
     <section class="insights-section">
       <h2 class="case-title" style="font-size:2rem;margin-bottom:32px">
         <span class="lang-fr">💡 Insights clés du dashboard</span>
         <span class="lang-en">💡 Key dashboard insights</span>
       </h2>
 
-      <div class="insight-card warning">
+      <div class="insight-card">
         <h4>
           <span class="insight-icon">🚨</span>
           <span>
-            <span class="lang-fr">Problème structurel majeur : 54,8% de retard</span>
-            <span class="lang-en">Major structural issue: 54.8% late rate</span>
+            <span class="lang-fr">Performance en-dessous des standards : 45,2% OnTime</span>
+            <span class="lang-en">Below-standard performance: 45.2% OnTime</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Sur 181K commandes, <span class="insight-highlight warning">99K arrivent en retard</span> (54,8%). C'est un signal d'alarme critique : plus de la moitié des clients reçoivent leur commande après la date promise. L'impact sur la satisfaction client et la réputation de la marque est direct et mesurable.
+              Avec seulement <span class="insight-highlight warning">45,2% de livraisons à temps</span>, la performance est largement inférieure aux standards de l'industrie (>85% OTIF). Cela signifie que <strong>plus de la moitié des clients</strong> (54,83% = 99K commandes) reçoivent leur commande en retard.
             </span>
             <span class="lang-en">
-              Out of 181K orders, <span class="insight-highlight warning">99K arrive late</span> (54.8%). This is a critical alarm signal: over half of customers receive their order after the promised date. The impact on customer satisfaction and brand reputation is direct and measurable.
+              With only <span class="insight-highlight warning">45.2% on-time deliveries</span>, performance is well below industry standards (>85% OTIF). This means that <strong>more than half of customers</strong> (54.83% = 99K orders) receive their order late.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr"><strong>Impact financier</strong> : $20,1M de ventes à risque (commandes en retard)</span>
-              <span class="lang-en"><strong>Financial impact</strong>: $20.1M in at-risk sales (late orders)</span>
+              <span class="lang-fr"><strong>Gap vs benchmark</strong> : 40 points sous le standard (85% - 45,2% = 39,8%)</span>
+              <span class="lang-en"><strong>Gap vs benchmark</strong>: 40 points below standard (85% - 45.2% = 39.8%)</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Coût caché</strong> : Service client surchargé, réclamations, potentiel churn</span>
-              <span class="lang-en"><strong>Hidden cost</strong>: Overloaded customer service, complaints, potential churn</span>
+              <span class="lang-fr"><strong>Impact satisfaction</strong> : Risque élevé de churn et d'avis négatifs</span>
+              <span class="lang-en"><strong>Satisfaction impact</strong>: High risk of churn and negative reviews</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Benchmark</strong> : Les standards de l'industrie visent >85% on-time delivery</span>
-              <span class="lang-en"><strong>Benchmark</strong>: Industry standards target >85% on-time delivery</span>
+              <span class="lang-fr"><strong>Coût caché</strong> : Service client surchargé avec 99K réclamations potentielles</span>
+              <span class="lang-en"><strong>Hidden cost</strong>: Customer service overloaded with 99K potential complaints</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="insight-card warning">
+      <div class="insight-card">
         <h4>
           <span class="insight-icon">📦</span>
           <span>
-            <span class="lang-fr">First Class : performance catastrophique (95,3%)</span>
-            <span class="lang-en">First Class: catastrophic performance (95.3%)</span>
+            <span class="lang-fr">First Class : problème critique à résoudre d'urgence</span>
+            <span class="lang-en">First Class: critical issue requiring urgent resolution</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Le mode <strong>First Class</strong> affiche un taux de retard de <span class="insight-highlight warning">95,3%</span> — pratiquement toutes les commandes arrivent en retard. Cela indique un SLA non respecté par le transporteur ou une promesse de livraison irréaliste dès le départ.
+              Le mode <strong>First Class</strong> affiche un taux de retard catastrophique de <span class="insight-highlight warning">95,3%</span> — pratiquement aucune commande n'arrive à temps. C'est le principal driver du problème global et nécessite une <strong>action immédiate</strong>.
             </span>
             <span class="lang-en">
-              The <strong>First Class</strong> mode shows a late rate of <span class="insight-highlight warning">95.3%</span> — virtually all orders arrive late. This indicates an unmet SLA by the carrier or an unrealistic delivery promise from the start.
+              The <strong>First Class</strong> mode shows a catastrophic late rate of <span class="insight-highlight warning">95.3%</span> — virtually no orders arrive on time. This is the main driver of the overall problem and requires <strong>immediate action</strong>.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr"><strong>Action prioritaire</strong> : Renégocier le contrat avec le transporteur First Class</span>
-              <span class="lang-en"><strong>Priority action</strong>: Renegotiate contract with First Class carrier</span>
+              <span class="lang-fr"><strong>Second Class</strong> : 76,6% retard — également problématique</span>
+              <span class="lang-en"><strong>Second Class</strong>: 76.6% late — also problematic</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Alternative</strong> : Migrer les volumes vers Second Class (76,6%) ou Same Day (45,7%)</span>
-              <span class="lang-en"><strong>Alternative</strong>: Migrate volumes to Second Class (76.6%) or Same Day (45.7%)</span>
+              <span class="lang-fr"><strong>Same Day</strong> : 45,7% retard — performance acceptable mais à améliorer</span>
+              <span class="lang-en"><strong>Same Day</strong>: 45.7% late — acceptable performance but needs improvement</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Audit</strong> : Revoir les promesses de délai communiquées aux clients</span>
-              <span class="lang-en"><strong>Audit</strong>: Review delivery time promises communicated to customers</span>
+              <span class="lang-fr"><strong>Standard Class</strong> : 38,1% retard — meilleur mode actuellement</span>
+              <span class="lang-en"><strong>Standard Class</strong>: 38.1% late — currently best mode</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="insight-card warning">
+      <div class="insight-card">
         <h4>
           <span class="insight-icon">🎯</span>
           <span>
-            <span class="lang-fr">Catégories critiques à investiguer</span>
-            <span class="lang-en">Critical categories to investigate</span>
+            <span class="lang-fr">Top 10 catégories à risque identifiées</span>
+            <span class="lang-en">Top 10 at-risk categories identified</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Certaines catégories affichent des taux de retard disproportionnés : <strong>Golf Bags & Carts</strong> (68,9%), <strong>Lacrosse</strong> (60,1%), <strong>Pet Supplies</strong> (58,9%). Ces produits nécessitent une investigation approfondie.
+              L'analyse par catégorie révèle des produits systématiquement en retard : <strong>Golf Bags & Carts</strong> (68,9%), <strong>Lacrosse</strong> (60,1%), <strong>Pet Supplies</strong> (58,9%), <strong>Cameras</strong> (58,1%). Ces catégories nécessitent un audit approfondi.
             </span>
             <span class="lang-en">
-              Certain categories show disproportionate late rates: <strong>Golf Bags & Carts</strong> (68.9%), <strong>Lacrosse</strong> (60.1%), <strong>Pet Supplies</strong> (58.9%). These products require in-depth investigation.
+              Category analysis reveals products systematically late: <strong>Golf Bags & Carts</strong> (68.9%), <strong>Lacrosse</strong> (60.1%), <strong>Pet Supplies</strong> (58.9%), <strong>Cameras</strong> (58.1%). These categories require in-depth audit.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr"><strong>Hypothèse #1</strong> : Problème de disponibilité stock (ruptures fréquentes)</span>
-              <span class="lang-en"><strong>Hypothesis #1</strong>: Stock availability issue (frequent stockouts)</span>
+              <span class="lang-fr">Strength Training (57,2%), As Seen on TV (57,4%), Music (57,1%)</span>
+              <span class="lang-en">Strength Training (57.2%), As Seen on TV (57.4%), Music (57.1%)</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Hypothèse #2</strong> : Temps de préparation rallongé (produits volumineux/fragiles)</span>
-              <span class="lang-en"><strong>Hypothesis #2</strong>: Extended preparation time (bulky/fragile products)</span>
+              <span class="lang-fr">Accessories (57,0%), Fitness Accessories (57,0%), Books (56,5%)</span>
+              <span class="lang-en">Accessories (57.0%), Fitness Accessories (57.0%), Books (56.5%)</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Hypothèse #3</strong> : Contraintes fournisseurs (délais d'approvisionnement)</span>
-              <span class="lang-en"><strong>Hypothesis #3</strong>: Supplier constraints (procurement lead times)</span>
+              <span class="lang-fr"><strong>Hypothèse</strong> : Problèmes de stock, préparation longue ou contraintes fournisseurs</span>
+              <span class="lang-en"><strong>Hypothesis</strong>: Stock issues, long preparation or supplier constraints</span>
             </div>
           </div>
         </div>
@@ -711,27 +396,27 @@
         <h4>
           <span class="insight-icon">📊</span>
           <span>
-            <span class="lang-fr">Évolution mensuelle : tendance stable mais préoccupante</span>
-            <span class="lang-en">Monthly trend: stable but concerning</span>
+            <span class="lang-fr">Tendance mensuelle stable : problème structurel</span>
+            <span class="lang-en">Stable monthly trend: structural problem</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Le taux de retard mensuel oscille entre <span class="insight-highlight">44% et 46%</span> tout au long de l'année, sans amélioration significative. Cela confirme qu'il s'agit d'un <strong>problème structurel</strong> et non d'un incident ponctuel.
+              Le graphique <strong>OnTime % by Month</strong> montre une tendance stable oscillant entre <span class="insight-highlight">44% et 46%</span> tout au long de l'année, sans pic saisonnier marqué ni amélioration. Cela confirme un <strong>problème structurel organisationnel</strong> et non un incident ponctuel.
             </span>
             <span class="lang-en">
-              The monthly late rate oscillates between <span class="insight-highlight">44% and 46%</span> throughout the year, with no significant improvement. This confirms it's a <strong>structural problem</strong> and not a one-time incident.
+              The <strong>OnTime % by Month</strong> chart shows a stable trend oscillating between <span class="insight-highlight">44% and 46%</span> throughout the year, with no marked seasonal peak or improvement. This confirms a <strong>structural organizational problem</strong> and not a one-time incident.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr">Aucun pic saisonnier critique détecté (pas de pire période spécifique)</span>
-              <span class="lang-en">No critical seasonal peak detected (no specific worst period)</span>
+              <span class="lang-fr">Aucune amélioration visible entre 2015 et 2018 → inaction ou échec des initiatives</span>
+              <span class="lang-en">No visible improvement between 2015 and 2018 → inaction or initiative failure</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr">La stabilité du problème indique des causes racines organisationnelles</span>
-              <span class="lang-en">Problem stability indicates organizational root causes</span>
+              <span class="lang-fr">Pic légèrement positif en juillet (~46%) vs creux en août (~44%)</span>
+              <span class="lang-en">Slightly positive peak in July (~46%) vs low in August (~44%)</span>
             </div>
           </div>
         </div>
@@ -739,36 +424,35 @@
 
       <div class="insight-card">
         <h4>
-          <span class="insight-icon">💰</span>
+          <span class="insight-icon">⏱️</span>
           <span>
-            <span class="lang-fr">Impact business : $20,1M de ventes en retard</span>
-            <span class="lang-en">Business impact: $20.1M in late sales</span>
+            <span class="lang-fr">Avg Shipping Gap : 0,6 jours de retard moyen</span>
+            <span class="lang-en">Avg Shipping Gap: 0.6 days average delay</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Les commandes en retard représentent <span class="insight-highlight">$20,1M de ventes</span> sur un total de $36,8M. Chaque amélioration de 1% du taux de retard permet de <strong>sécuriser ~$400K de CA</strong> et d'améliorer la satisfaction client.
+              En moyenne, les commandes en retard arrivent avec <span class="insight-highlight">0,6 jours de retard</span>. Bien que ce chiffre puisse sembler faible, il cache une grande disparité : certaines commandes arrivent plusieurs jours voire semaines en retard, tandis que d'autres sont légèrement en retard.
             </span>
             <span class="lang-en">
-              Late orders represent <span class="insight-highlight">$20.1M in sales</span> out of a total of $36.8M. Each 1% improvement in late rate allows to <strong>secure ~$400K in revenue</strong> and improve customer satisfaction.
+              On average, late orders arrive <span class="insight-highlight">0.6 days late</span>. While this number may seem low, it hides great disparity: some orders arrive several days or even weeks late, while others are slightly late.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr">Objectif réaliste court terme : réduire le taux à 45% (gain de ~$3,6M sécurisés)</span>
-              <span class="lang-en">Realistic short-term goal: reduce rate to 45% (gain of ~$3.6M secured)</span>
+              <span class="lang-fr">Nécessite une analyse de distribution pour identifier les retards extrêmes</span>
+              <span class="lang-en">Requires distribution analysis to identify extreme delays</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr">Objectif ambitieux moyen terme : atteindre 30% (standard industrie)</span>
-              <span class="lang-en">Ambitious mid-term goal: reach 30% (industry standard)</span>
+              <span class="lang-fr">Même 0,6 jours = impact négatif sur NPS et satisfaction client</span>
+              <span class="lang-en">Even 0.6 days = negative impact on NPS and customer satisfaction</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Dashboard Power BI -->
     <section class="card">
       <h3>
         <span class="lang-fr">📊 Dashboard Power BI interactif</span>
@@ -776,10 +460,10 @@
       </h3>
       <p>
         <span class="lang-fr">
-          Le dashboard offre une vue exécutive complète avec des filtres dynamiques par année (2015-2018) et région géographique. Il permet d'explorer les performances par mode de transport, catégorie produit et évolution temporelle.
+          Le dashboard offre une vue exécutive complète avec filtres par année (2015-2018) et région géographique (Africa, Europe, LATAM, Pacific Asia, USCA). Explorez les performances par mode de transport, catégorie produit et évolution temporelle pour identifier les leviers d'action prioritaires.
         </span>
         <span class="lang-en">
-          The dashboard provides a complete executive view with dynamic filters by year (2015-2018) and geographic region. It allows exploration of performance by shipping mode, product category and time evolution.
+          The dashboard provides a complete executive view with filters by year (2015-2018) and geographic region (Africa, Europe, LATAM, Pacific Asia, USCA). Explore performance by shipping mode, product category and time evolution to identify priority action levers.
         </span>
       </p>
       
@@ -798,15 +482,14 @@
           <span class="lang-en">💡 Tip:</span>
         </strong>
         <span class="lang-fr">
-          Utilisez les filtres de date et de région pour analyser les tendances spécifiques. Cliquez sur les modes de transport dans le graphique pour isoler First Class et comparer sa performance catastrophique. Le treemap des catégories permet d'identifier rapidement les segments problématiques.
+          Utilisez les filtres de région (Africa, Europe, LATAM, Pacific Asia, USCA) pour segmenter l'analyse. Le graphique "Late orders mix by shipping mode" montre la distribution mensuelle des modes de transport problématiques. Identifiez les catégories avec >60% de retard pour prioriser les audits.
         </span>
         <span class="lang-en">
-          Use date and region filters to analyze specific trends. Click on shipping modes in the chart to isolate First Class and compare its catastrophic performance. The categories treemap allows quick identification of problematic segments.
+          Use region filters (Africa, Europe, LATAM, Pacific Asia, USCA) to segment analysis. The "Late orders mix by shipping mode" chart shows monthly distribution of problematic shipping modes. Identify categories with >60% late to prioritize audits.
         </span>
       </div>
     </section>
 
-    <!-- Conclusion -->
     <section class="conclusion">
       <h3>
         <span class="lang-fr">🎯 Recommandations stratégiques</span>
@@ -814,34 +497,34 @@
       </h3>
       <p>
         <span class="lang-fr">
-          <strong>1. Action urgente sur First Class :</strong> Avec 95,3% de retard, ce mode doit être suspendu ou renégocié immédiatement. Migrer les volumes vers Same Day (45,7%) ou Standard Class (38,1%) jusqu'à résolution du problème.
+          <strong>1. Action urgente sur First Class et Second Class :</strong> Ces deux modes représentent la majorité du problème (95,3% et 76,6%). Renégocier les SLA avec les transporteurs ou migrer immédiatement les volumes vers Standard Class (38,1%) jusqu'à résolution.
         </span>
         <span class="lang-en">
-          <strong>1. Urgent action on First Class:</strong> With 95.3% late rate, this mode must be suspended or renegotiated immediately. Migrate volumes to Same Day (45.7%) or Standard Class (38.1%) until problem resolution.
+          <strong>1. Urgent action on First Class and Second Class:</strong> These two modes represent the majority of the problem (95.3% and 76.6%). Renegotiate SLAs with carriers or immediately migrate volumes to Standard Class (38.1%) until resolution.
         </span>
       </p>
       <p>
         <span class="lang-fr">
-          <strong>2. Investigation approfondie des catégories critiques :</strong> Golf Bags & Carts, Lacrosse et Pet Supplies nécessitent un audit complet (disponibilité stock, processus de préparation, contraintes fournisseurs). Identifier les causes racines sous 30 jours.
+          <strong>2. Audit approfondi des catégories >60% retard :</strong> Golf Bags & Carts (68,9%), Lacrosse (60,1%), Pet Supplies (58,9%) et Cameras (58,1%) nécessitent un diagnostic complet : disponibilité stock, processus de préparation, contraintes fournisseurs. Timeline : 30 jours maximum.
         </span>
         <span class="lang-en">
-          <strong>2. In-depth investigation of critical categories:</strong> Golf Bags & Carts, Lacrosse and Pet Supplies require a complete audit (stock availability, preparation process, supplier constraints). Identify root causes within 30 days.
+          <strong>2. In-depth audit of categories >60% late:</strong> Golf Bags & Carts (68.9%), Lacrosse (60.1%), Pet Supplies (58.9%) and Cameras (58.1%) require complete diagnosis: stock availability, preparation process, supplier constraints. Timeline: 30 days maximum.
         </span>
       </p>
       <p>
         <span class="lang-fr">
-          <strong>3. Revue des promesses de livraison :</strong> Avec un taux de retard global de 54,8%, les délais communiqués aux clients sont probablement trop optimistes. Ajuster les promesses pour refléter la réalité opérationnelle et éviter la sur-promesse.
+          <strong>3. Ajuster les promesses de livraison :</strong> Avec 45,2% OnTime, les délais communiqués aux clients sont trop optimistes. Revoir les promesses pour refléter la réalité opérationnelle actuelle et éviter la sur-promesse qui détruit la confiance.
         </span>
         <span class="lang-en">
-          <strong>3. Review of delivery promises:</strong> With an overall late rate of 54.8%, delivery times communicated to customers are probably too optimistic. Adjust promises to reflect operational reality and avoid over-promising.
+          <strong>3. Adjust delivery promises:</strong> With 45.2% OnTime, delivery times communicated to customers are too optimistic. Review promises to reflect current operational reality and avoid over-promising that destroys trust.
         </span>
       </p>
       <p>
         <span class="lang-fr">
-          <strong>4. Plan d'amélioration progressive :</strong> Viser une réduction à 45% sous 3 mois (Quick wins : First Class, catégories critiques), puis 35% sous 6 mois (Optimisation des processus), et enfin 30% sous 12 mois (standard industrie).
+          <strong>4. Plan d'amélioration par étapes :</strong> Objectif court terme (3 mois) : atteindre 60% OnTime via quick wins (First/Second Class). Moyen terme (6 mois) : 75% OnTime via optimisation catégories. Long terme (12 mois) : >85% OnTime (standard industrie).
         </span>
         <span class="lang-en">
-          <strong>4. Progressive improvement plan:</strong> Target reduction to 45% within 3 months (Quick wins: First Class, critical categories), then 35% within 6 months (Process optimization), and finally 30% within 12 months (industry standard).
+          <strong>4. Phased improvement plan:</strong> Short-term goal (3 months): reach 60% OnTime via quick wins (First/Second Class). Medium-term (6 months): 75% OnTime via category optimization. Long-term (12 months): >85% OnTime (industry standard).
         </span>
       </p>
     </section>
@@ -851,8 +534,6 @@
   <script>
   (function(){
     const $ = s => document.querySelector(s);
-
-    // Theme toggle
     const themeBtn = $('#themeToggle');
     const themeIcon = $('#themeIcon');
     if(themeBtn && themeIcon){
@@ -866,25 +547,23 @@
         themeIcon.textContent = next === 'light' ? '☀️' : '🌙';
       });
     }
-
-    // Language toggle
     const langBtn = $('#langToggle');
     const langIcon = $('#langIcon');
     if(langBtn && langIcon){
       const savedLang = localStorage.getItem('lang') || 'fr';
       document.documentElement.dataset.lang = savedLang;
       document.documentElement.lang = savedLang;
-      langIcon.textContent = savedLang.toUpperCase();
+      langIcon.textContent = savedLang === 'fr' ? 'FR' : 'EN';
       langBtn.addEventListener('click', () => {
         const next = document.documentElement.dataset.lang === 'fr' ? 'en' : 'fr';
         document.documentElement.dataset.lang = next;
         document.documentElement.lang = next;
         localStorage.setItem('lang', next);
-        langIcon.textContent = next.toUpperCase();
+        langIcon.textContent = next === 'fr' ? 'FR' : 'EN';
       });
     }
   })();
   </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script>
 </body>
 </html>

@@ -851,13 +851,13 @@
       const savedLang = localStorage.getItem('lang') || 'fr';
       document.documentElement.dataset.lang = savedLang;
       document.documentElement.lang = savedLang;
-      langIcon.textContent = savedLang.toUpperCase();
+      langIcon.textContent = savedLang === 'fr' ? 'FR' : 'EN';
       langBtn.addEventListener('click', () => {
         const next = document.documentElement.dataset.lang === 'fr' ? 'en' : 'fr';
         document.documentElement.dataset.lang = next;
         document.documentElement.lang = next;
         localStorage.setItem('lang', next);
-        langIcon.textContent = next.toUpperCase();
+        langIcon.textContent = next === 'fr' ? 'FR' : 'EN';
       });
     }
   })();

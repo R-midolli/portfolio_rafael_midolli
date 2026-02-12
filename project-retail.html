@@ -613,7 +613,7 @@
       document.documentElement.dataset.lang = lang;
       document.documentElement.lang = lang;
       localStorage.setItem('lang', lang);
-      if(langIcon) langIcon.textContent = lang.toUpperCase();
+      if(langIcon) langIcon.textContent = lang === 'fr' ? 'FR' : 'EN';
     }
     if(langBtn && langIcon){
       setLanguage(localStorage.getItem('lang') || 'fr');
