@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Case study — Supply Chain Delivery Performance : ETL Python, KPI logistiques, et dashboard Power BI. Portfolio Rafael Midolli."/>
+  <meta name="description" content="Case study — Supply Chain Delivery Performance : Analyse des retards de livraison, ETL Python, KPI logistiques, dashboard Power BI. Portfolio Rafael Midolli."/>
   <title>Supply Chain Delivery Performance — Case Study</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -103,121 +103,136 @@
     font-size:.72rem;font-weight:700;color:var(--accent);
     font-family:var(--font-body);
   }
-  .nav-right{display:flex;align-items:center;gap:10px}
-  .btn-back, .btn-fullscreen{
-    display:inline-flex;align-items:center;gap:6px;
-    padding:8px 14px;border-radius:999px;
+  .nav-right{
+    display:flex;align-items:center;gap:12px;
+  }
+  .btn-back{
+    padding:8px 16px;border-radius:999px;
     border:1px solid var(--border);
-    font-size:.84rem;font-weight:600;
     background:var(--surface);
-    color:var(--text-muted);
-    transition:background .2s, border-color .2s, color .2s;
-  }
-  .btn-back:hover, .btn-fullscreen:hover{
-    background:var(--surface-hover);
     color:var(--text);
-    border-color:rgba(255,255,255,.18);
+    font-size:.88rem;font-weight:600;
+    transition:background .2s, border-color .2s, transform .2s;
   }
-  .btn-fullscreen{
-    color:var(--accent);
-    border-color:rgba(91,140,255,.3);
-    background:rgba(91,140,255,.08);
-  }
-  .btn-fullscreen:hover{
-    background:rgba(91,140,255,.15);
+  .btn-back:hover{
+    background:var(--surface-hover);
     border-color:var(--accent);
+    transform:translateY(-2px);
   }
   .theme-toggle, .lang-toggle{
-    display:inline-flex;align-items:center;justify-content:center;
-    width:42px;height:42px;margin-left:8px;
+    width:42px;height:42px;
     border-radius:999px;
     border:1px solid var(--border);
     background:var(--surface);
-    color:var(--text);
-    transition:transform .15s ease, background .2s ease, border-color .2s ease;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .15s, background .2s, border-color .2s;
   }
   .theme-toggle:hover, .lang-toggle:hover{
-    transform:translateY(-2px);
     background:var(--surface-hover);
     border-color:var(--accent);
+    transform:translateY(-2px);
   }
   .theme-toggle span, .lang-toggle span{
-    font-size:1.25rem;line-height:1;
+    font-size:1.25rem;
   }
 
   /* MAIN */
-  .main{max-width:1100px;margin:0 auto;padding:100px 24px 60px;position:relative;z-index:1}
-  .case-header{margin-bottom:40px}
+  .main{
+    position:relative;z-index:1;
+    max-width:1000px;margin:0 auto;
+    padding:120px 24px 80px;
+  }
+  .case-header{
+    margin-bottom:48px;
+  }
   .case-label{
-    font-size:.75rem;font-weight:700;
-    text-transform:uppercase;letter-spacing:.14em;
-    color:var(--accent);margin-bottom:10px;
+    font-size:.82rem;font-weight:700;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.1em;
+    margin-bottom:12px;
   }
   .case-title{
     font-family:var(--font-head);
-    font-size:clamp(1.9rem,4vw,2.8rem);
-    font-weight:800;color:var(--text);
-    margin-bottom:12px;
+    font-size:clamp(2rem,4vw,3rem);
+    font-weight:800;
+    line-height:1.1;
+    margin-bottom:16px;
   }
   .case-subtitle{
-    font-size:1rem;color:var(--text-muted);
-    display:flex;gap:12px;flex-wrap:wrap;
+    font-size:1.05rem;
+    color:var(--text-muted);
+    line-height:1.6;
   }
+
   .info-grid{
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
     gap:20px;
     margin-bottom:32px;
   }
   .card{
-    padding:24px;
-    border-radius:var(--radius);
-    border:1px solid var(--border);
     background:var(--surface);
-    margin-bottom:24px;
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:28px;
+    transition:transform .2s, border-color .2s;
+  }
+  .card:hover{
+    transform:translateY(-2px);
+    border-color:rgba(91,140,255,.3);
   }
   .card h3{
     font-family:var(--font-head);
-    font-size:1.2rem;font-weight:700;
-    color:var(--text);margin-bottom:14px;
+    font-size:1.4rem;font-weight:700;
+    color:var(--text);
+    margin-bottom:16px;
   }
   .card p{
     color:var(--text-muted);
     line-height:1.7;
-    margin-bottom:12px;
+    margin-bottom:16px;
   }
   .card p:last-child{margin-bottom:0}
-  .card code{
-    background:rgba(91,140,255,.12);
-    color:var(--accent);
-    padding:2px 6px;
-    border-radius:4px;
-    font-size:.88em;
-    font-family:'Courier New',monospace;
-  }
 
   .metrics-mini{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
     gap:16px;
     margin-top:20px;
   }
   .metric-mini{
     text-align:center;
-    padding:16px;
+    padding:18px;
     border-radius:12px;
     background:rgba(91,140,255,.08);
     border:1px solid rgba(91,140,255,.2);
+    transition:transform .2s, border-color .2s;
+  }
+  .metric-mini:hover{
+    transform:translateY(-3px);
+    border-color:var(--accent);
+  }
+  .metric-mini.warning{
+    background:rgba(255,107,107,.08);
+    border:1px solid rgba(255,107,107,.2);
+  }
+  .metric-mini.warning:hover{
+    border-color:#ff6b6b;
   }
   .metric-value{
     font-family:var(--font-head);
     font-size:1.8rem;font-weight:800;
     color:var(--accent);
+    line-height:1.2;
+  }
+  .metric-value.warning{
+    color:#ff6b6b;
   }
   .metric-label{
     font-size:.78rem;
     color:var(--text-muted);
-    margin-top:4px;
+    margin-top:6px;
   }
 
   .tech-stack{
@@ -233,6 +248,11 @@
     border:1px solid rgba(91,140,255,.25);
     color:var(--accent);
     font-size:.84rem;font-weight:600;
+    transition:transform .15s, border-color .15s;
+  }
+  .tech-tag:hover{
+    transform:translateY(-1px);
+    border-color:var(--accent);
   }
 
   .btn-github{
@@ -251,38 +271,125 @@
     fill:currentColor;
   }
 
-  .timeline{
+  /* Insights Section */
+  .insights-section{
+    margin:48px 0;
+  }
+  .insight-card{
+    background:linear-gradient(135deg,rgba(91,140,255,.06),rgba(139,92,246,.04));
+    border:1px solid rgba(91,140,255,.2);
+    border-radius:var(--radius);
+    padding:32px;
+    margin-bottom:24px;
+  }
+  .insight-card.warning{
+    background:linear-gradient(135deg,rgba(255,107,107,.06),rgba(255,107,107,.04));
+    border:1px solid rgba(255,107,107,.2);
+  }
+  .insight-card h4{
+    font-family:var(--font-head);
+    font-size:1.3rem;
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .insight-icon{
+    font-size:1.6rem;
+  }
+  .insight-content{
+    color:var(--text-muted);
+    line-height:1.8;
+  }
+  .insight-list{
     display:flex;
     flex-direction:column;
-    gap:16px;
+    gap:12px;
     margin-top:16px;
   }
-  .timeline-item{
-    display:flex;
-    gap:16px;
-    align-items:flex-start;
+  .insight-item{
+    padding-left:24px;
+    position:relative;
   }
-  .timeline-marker{
-    width:12px;height:12px;
-    border-radius:50%;
-    background:var(--accent);
-    margin-top:6px;
-    flex-shrink:0;
+  .insight-item::before{
+    content:"→";
+    position:absolute;
+    left:0;
+    color:var(--accent);
+    font-weight:700;
   }
-  .timeline-content{
-    flex:1;
-    color:var(--text-muted);
-    line-height:1.7;
+  .insight-card.warning .insight-item::before{
+    color:#ff6b6b;
+  }
+  .insight-highlight{
+    color:var(--accent);
+    font-weight:600;
+  }
+  .insight-highlight.warning{
+    color:#ff6b6b;
   }
 
-  .embed-box{
-    margin-top:20px;
+  /* Architecture section */
+  .architecture-flow{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+    margin:24px 0;
   }
-  .dash-preview{
-    width:100%;
+  .arch-step{
+    text-align:center;
+    padding:20px;
     border-radius:12px;
-    border:1px solid var(--border);
-    margin-bottom:16px;
+    background:rgba(91,140,255,.06);
+    border:1px solid rgba(91,140,255,.18);
+    position:relative;
+  }
+  .arch-step::after{
+    content:"→";
+    position:absolute;
+    right:-24px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--accent);
+    font-size:1.5rem;
+    font-weight:700;
+  }
+  .arch-step:last-child::after{
+    display:none;
+  }
+  .arch-icon{
+    font-size:2rem;
+    margin-bottom:8px;
+  }
+  .arch-title{
+    font-weight:700;
+    color:var(--text);
+    margin-bottom:6px;
+  }
+  .arch-desc{
+    font-size:.82rem;
+    color:var(--text-muted);
+  }
+
+  /* Power BI embed */
+  .embed-responsive{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    border-radius:18px;
+    overflow:hidden;
+    background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    margin:32px 0;
+  }
+  .embed-responsive iframe{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border:0;
   }
   .embed-note{
     font-size:.9rem;
@@ -292,67 +399,38 @@
     background:rgba(91,140,255,.06);
     border-left:3px solid var(--accent);
     border-radius:8px;
+    margin-top:16px;
   }
   .embed-note strong{
     color:var(--accent);
   }
 
-  .bullets{
-    display:flex;
-    flex-direction:column;
-    gap:14px;
-    margin-top:16px;
-  }
-  .bullet{
-    display:flex;
-    gap:14px;
-    align-items:flex-start;
-    padding:16px;
-    border-radius:12px;
-    background:rgba(255,255,255,.03);
-    border:1px solid var(--border);
-    cursor:pointer;
-    transition:background .2s, border-color .2s;
-  }
-  .bullet:hover{
-    background:rgba(255,255,255,.06);
-    border-color:var(--accent);
-  }
-  .bullet.active .bullet-details{
-    max-height:300px;
-    margin-top:8px;
-    opacity:1;
-  }
-  .bullet-ico{
-    font-size:1.5rem;
-    flex-shrink:0;
-  }
-  .bullet-content{
-    flex:1;
-  }
-  .bullet-content strong{
-    color:var(--text);
-    font-size:1rem;
-    display:block;
-    margin-bottom:4px;
-  }
-  .bullet-details{
-    max-height:0;
-    overflow:hidden;
-    opacity:0;
-    transition:max-height .3s ease, opacity .3s ease, margin .3s ease;
-    color:var(--text-muted);
-    line-height:1.6;
-  }
-
+  /* Conclusion section */
   .conclusion{
     background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(139,92,246,.06));
-    border-color:rgba(91,140,255,.3);
+    border:1px solid rgba(91,140,255,.3);
+    border-radius:var(--radius);
+    padding:32px;
+    margin-top:48px;
   }
+  .conclusion h3{
+    font-family:var(--font-head);
+    font-size:1.5rem;
+    font-weight:700;
+    margin-bottom:16px;
+  }
+  .conclusion p{
+    color:var(--text-muted);
+    line-height:1.8;
+    margin-bottom:14px;
+  }
+  .conclusion p:last-child{margin-bottom:0}
 
   @media(max-width:700px){
     .info-grid{grid-template-columns:1fr}
-    .metrics-mini{grid-template-columns:1fr}
+    .metrics-mini{grid-template-columns:repeat(2,1fr)}
+    .architecture-flow{grid-template-columns:1fr}
+    .arch-step::after{display:none}
   }
   </style>
 </head>
@@ -366,16 +444,14 @@
       Rafael Midolli
     </a>
     <div class="nav-right">
-      <a href="index.html" class="btn-back">
-        ← <span class="lang-fr">Retour</span><span class="lang-en">Back</span>
+      <a href="index.html#projects" class="btn-back">
+        <span class="lang-fr">← Projets</span>
+        <span class="lang-en">← Projects</span>
       </a>
-      <a href="https://github.com/R-midolli/supply_chain_analytics" target="_blank" rel="noopener" class="btn-fullscreen">
-        <span class="lang-fr">📂 GitHub</span><span class="lang-en">📂 GitHub</span>
-      </a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
         <span id="themeIcon">🌙</span>
       </button>
-      <button class="lang-toggle" id="langToggle" aria-label="Toggle language">
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Toggle language">
         <span id="langIcon">FR</span>
       </button>
     </div>
@@ -384,192 +460,405 @@
   <main class="main">
     <header class="case-header">
       <div class="case-label">
-        <span class="lang-fr">Case Study #2</span><span class="lang-en">Case Study #2</span>
+        <span class="lang-fr">Case Study #2</span>
+        <span class="lang-en">Case Study #2</span>
       </div>
       <h1 class="case-title">
-        <span class="lang-fr">Supply Chain — Delivery Performance</span>
+        <span class="lang-fr">Supply Chain — Performance Livraison</span>
         <span class="lang-en">Supply Chain — Delivery Performance</span>
       </h1>
-      <div class="case-subtitle">
-        <span class="lang-fr">ETL Python • KPI logistiques • Dashboard Power BI</span>
-        <span class="lang-en">Python ETL • Logistics KPI • Power BI Dashboard</span>
-      </div>
+      <p class="case-subtitle">
+        <span class="lang-fr">
+          Pipeline ETL Python pour diagnostiquer les retards de livraison sur 180K commandes. Identification des drivers critiques (modes de transport, catégories produits) et priorisation des actions pour réduire un taux de retard structurel de 54,8%.
+        </span>
+        <span class="lang-en">
+          Python ETL pipeline to diagnose delivery delays on 180K orders. Identification of critical drivers (shipping modes, product categories) and prioritization of actions to reduce a structural late rate of 54.8%.
+        </span>
+      </p>
     </header>
 
     <div class="info-grid">
       <div class="card">
-        <h3><span class="lang-fr">Contexte &amp; objectif</span><span class="lang-en">Context &amp; objective</span></h3>
+        <h3>
+          <span class="lang-fr">🎯 Contexte business</span>
+          <span class="lang-en">🎯 Business context</span>
+        </h3>
         <p>
-          <span class="lang-fr">Un retailer e‑commerce souhaite diagnostiquer sa performance de livraison. L'objectif : identifier les causes de retard (mode de transport, catégorie produit, géographie) pour prioriser les actions correctrices et améliorer le taux de livraison à l'heure.</span>
-          <span class="lang-en">An e‑commerce retailer wants to diagnose its delivery performance. The goal: identify the causes of delays (shipping mode, product category, geography) to prioritise corrective actions and improve on-time delivery rate.</span>
+          <span class="lang-fr">
+            Diagnostic complet de la performance logistique sur 180 519 commandes. L'objectif : quantifier les retards, identifier les causes racines par mode de transport et catégorie produit, et prioriser les actions correctives pour améliorer le service client et réduire les coûts opérationnels.
+          </span>
+          <span class="lang-en">
+            Complete logistics performance diagnosis on 180,519 orders. Objective: quantify delays, identify root causes by shipping mode and product category, and prioritize corrective actions to improve customer service and reduce operational costs.
+          </span>
         </p>
-
-        <!-- KPI -->
         <div class="metrics-mini">
           <div class="metric-mini">
             <div class="metric-value">181K</div>
-            <div class="metric-label"><span class="lang-fr">Total Orders</span><span class="lang-en">Total Orders</span></div>
+            <div class="metric-label">
+              <span class="lang-fr">Commandes</span>
+              <span class="lang-en">Orders</span>
+            </div>
+          </div>
+          <div class="metric-mini warning">
+            <div class="metric-value warning">99K</div>
+            <div class="metric-label">
+              <span class="lang-fr">En Retard</span>
+              <span class="lang-en">Late</span>
+            </div>
+          </div>
+          <div class="metric-mini warning">
+            <div class="metric-value warning">54,8%</div>
+            <div class="metric-label">
+              <span class="lang-fr">Taux Retard</span>
+              <span class="lang-en">Late Rate</span>
+            </div>
           </div>
           <div class="metric-mini">
-            <div class="metric-value">45.2%</div>
-            <div class="metric-label"><span class="lang-fr">On-Time %</span><span class="lang-en">On-Time %</span></div>
-          </div>
-          <div class="metric-mini">
-            <div class="metric-value">0.6</div>
-            <div class="metric-label"><span class="lang-fr">Avg Shipping Gap</span><span class="lang-en">Avg Shipping Gap</span></div>
+            <div class="metric-value">$36,8M</div>
+            <div class="metric-label">
+              <span class="lang-fr">CA Total</span>
+              <span class="lang-en">Total Sales</span>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="card">
-        <h3><span class="lang-fr">Stack technique</span><span class="lang-en">Tech stack</span></h3>
-        <p>
-          <span class="lang-fr">Pipeline simple et reproductible : extraction CSV, nettoyage, features KPI → export dataset → Power BI (modèle + DAX + dashboard).</span>
-          <span class="lang-en">Simple, reproducible pipeline: CSV ingestion, cleaning, KPI features → dataset export → Power BI (model + DAX + dashboard).</span>
-        </p>
-
+        <h3>
+          <span class="lang-fr">🛠️ Stack technique</span>
+          <span class="lang-en">🛠️ Tech stack</span>
+        </h3>
         <div class="tech-stack">
-          <span class="tech-tag">🐍 Python</span>
-          <span class="tech-tag">📦 Pandas</span>
-          <span class="tech-tag">🧰 ETL</span>
-          <span class="tech-tag">📊 Power BI</span>
-          <span class="tech-tag">➗ DAX</span>
+          <span class="tech-tag">Python</span>
+          <span class="tech-tag">Pandas</span>
+          <span class="tech-tag">Power BI</span>
+          <span class="tech-tag">Jupyter</span>
+          <span class="tech-tag">NumPy</span>
         </div>
-
-        <a href="https://github.com/R-midolli/supply_chain_analytics" target="_blank" rel="noopener" class="btn-github" aria-label="Ouvrir GitHub">
-          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-          <span class="lang-fr">Code sur GitHub</span><span class="lang-en">View on GitHub</span>
+        <p>
+          <span class="lang-fr">
+            Pipeline ETL Python : nettoyage et standardisation des données Kaggle, feature engineering pour créer les KPI logistiques (<code>is_late</code>, <code>shipping_gap</code>, <code>late_rate</code>), et export vers Power BI pour analyse interactive.
+          </span>
+          <span class="lang-en">
+            Python ETL pipeline: Kaggle data cleaning and standardization, feature engineering to create logistics KPIs (<code>is_late</code>, <code>shipping_gap</code>, <code>late_rate</code>), and export to Power BI for interactive analysis.
+          </span>
+        </p>
+        <a href="https://github.com/R-midolli/supply_chain_analytics" target="_blank" rel="noopener" class="btn-github">
+          <svg class="github-icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+          <span class="lang-fr">Voir le code</span>
+          <span class="lang-en">View code</span>
         </a>
       </div>
     </div>
 
-    <div class="card">
-      <h3><span class="lang-fr">Source des données</span><span class="lang-en">Data source</span></h3>
-      <p>
-        <span class="lang-fr">Cas construit à partir du dataset Kaggle <em>DataCo Supply Chain</em>. La source contient 180&nbsp;519 commandes avec des informations sur la livraison (dates planifiées vs réelles), le mode de transport, les catégories produits, la géographie (pays, région, ville) et un proxy de rentabilité.</span>
-        <span class="lang-en">Case built on the Kaggle dataset <em>DataCo Supply Chain</em>. The source contains 180,519 orders with delivery information (planned vs actual dates), shipping mode, product categories, geography (country, region, city) and a profitability proxy.</span>
-      </p>
-      <p>
-        <span class="lang-fr">Le périmètre n'est pas la prévision de délais, mais le diagnostic de la performance actuelle : quantifier les retards, identifier les drivers et prioriser les actions.</span>
-        <span class="lang-en">The scope is not delay forecasting, but diagnosing current performance: quantifying delays, identifying drivers and prioritising actions.</span>
-      </p>
-    </div>
-
-    <div class="card">
-      <h3><span class="lang-fr">ETL — ce qui est livré</span><span class="lang-en">ETL — what's delivered</span></h3>
-      <p>
-        <span class="lang-fr">Le dataset est standardisé et enrichi pour Power BI (features KPI). Exemples de champs créés : <code>is_late</code>, <code>shipping_gap</code>, <code>is_profitable</code>.</span>
-        <span class="lang-en">The dataset is standardised and enriched for Power BI (KPI-ready features). Example fields: <code>is_late</code>, <code>shipping_gap</code>, <code>is_profitable</code>.</span>
-      </p>
-
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">1) Chargement CSV + normalisation des colonnes (noms, types, dates)</span>
-            <span class="lang-en">1) CSV load + column normalisation (names, types, dates)</span>
+    <!-- Architecture ETL -->
+    <section class="card">
+      <h3>
+        <span class="lang-fr">🏗️ Architecture du pipeline ETL</span>
+        <span class="lang-en">🏗️ ETL Pipeline architecture</span>
+      </h3>
+      <div class="architecture-flow">
+        <div class="arch-step">
+          <div class="arch-icon">📥</div>
+          <div class="arch-title">Extract</div>
+          <div class="arch-desc">
+            <span class="lang-fr">CSV Kaggle (180K lignes)</span>
+            <span class="lang-en">Kaggle CSV (180K rows)</span>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">2) Sélection des champs utiles (logistique, ventes, produit, géographie)</span>
-            <span class="lang-en">2) Select useful fields (logistics, sales, product, geography)</span>
+        <div class="arch-step">
+          <div class="arch-icon">🔧</div>
+          <div class="arch-title">Transform</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Python + Pandas (nettoyage, KPI)</span>
+            <span class="lang-en">Python + Pandas (cleaning, KPIs)</span>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">3) Feature engineering KPI : retard, gap, proxy profit</span>
-            <span class="lang-en">3) KPI feature engineering: lateness, gap, profit proxy</span>
+        <div class="arch-step">
+          <div class="arch-icon">💾</div>
+          <div class="arch-title">Load</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Export CSV enrichi</span>
+            <span class="lang-en">Enriched CSV export</span>
           </div>
         </div>
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">4) Export du dataset propre pour Power BI</span>
-            <span class="lang-en">4) Export clean dataset for Power BI</span>
-          </div>
+        <div class="arch-step">
+          <div class="arch-icon">📊</div>
+          <div class="arch-title">Visualize</div>
+          <div class="arch-desc">Power BI</div>
         </div>
       </div>
-    </div>
-
-    <div class="card">
-      <h3><span class="lang-fr">Dashboard Power BI (aperçu)</span><span class="lang-en">Power BI dashboard (preview)</span></h3>
-
-      <div class="embed-box">
-        <!-- Option 1: screenshot -->
-        <img class="dash-preview" src="assets/img/supply_chain_dashboard.png" alt="Aperçu dashboard Supply Chain (Power BI)" style="display:none"/>
-
-        <p class="embed-note">
-          <span class="lang-fr">🚧 <strong>Dashboard Power BI en cours de finalisation</strong>. Le dashboard sera publié sur Power BI Public dans les prochains jours et le lien sera intégré ici. En attendant, le code ETL complet est disponible sur <a href="https://github.com/R-midolli/supply_chain_analytics" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">GitHub</a>.</span>
-          <span class="lang-en">🚧 <strong>Power BI dashboard being finalized</strong>. The dashboard will be published on Power BI Public in the coming days and the link will be integrated here. Meanwhile, the complete ETL code is available on <a href="https://github.com/R-midolli/supply_chain_analytics" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline">GitHub</a>.</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><span class="lang-fr">Lecture &amp; actions</span><span class="lang-en">How to act</span></h3>
       <p>
-        <span class="lang-fr">Objectif du dashboard : passer d'une vue exécutive à l'identification de causes et priorités d'action (où se concentrent les retards ? quels modes/catégories ?).</span>
-        <span class="lang-en">Dashboard goal: move from an executive view to root causes and action priorities (where do delays concentrate? which modes/categories?).</span>
+        <span class="lang-fr">
+          Le pipeline ETL standardise le dataset Kaggle <em>DataCo Supply Chain</em> et l'enrichit avec des features KPI-ready : <code>is_late</code> (booléen), <code>shipping_gap</code> (jours de retard), <code>is_profitable</code> (proxy rentabilité). Les dates sont normalisées, les champs sélectionnés et le dataset propre est exporté pour Power BI.
+        </span>
+        <span class="lang-en">
+          The ETL pipeline standardizes the Kaggle <em>DataCo Supply Chain</em> dataset and enriches it with KPI-ready features: <code>is_late</code> (boolean), <code>shipping_gap</code> (days late), <code>is_profitable</code> (profitability proxy). Dates are normalized, fields selected and the clean dataset is exported for Power BI.
+        </span>
       </p>
+    </section>
 
-      <div class="bullets">
-        <div class="bullet">
-          <div class="bullet-ico">⏱️</div>
-          <div class="bullet-content">
-            <strong><span class="lang-fr">Piloter le niveau de service</span><span class="lang-en">Track service level</span></strong>
-            <div class="bullet-details">
-              <span class="lang-fr">Suivre On-Time % et son évolution mensuelle ; détecter les périodes de rupture. Un taux de 45.2% signale un problème structurel : plus de la moitié des commandes arrivent en retard. Identifier les mois critiques permet de corréler avec des événements (pics saisonniers, problèmes opérationnels).</span>
-              <span class="lang-en">Monitor On-Time % and monthly trend; detect disruption periods. A 45.2% rate signals a structural issue: over half the orders are late. Identifying critical months enables correlation with events (seasonal peaks, operational issues).</span>
+    <!-- Key Insights -->
+    <section class="insights-section">
+      <h2 class="case-title" style="font-size:2rem;margin-bottom:32px">
+        <span class="lang-fr">💡 Insights clés du dashboard</span>
+        <span class="lang-en">💡 Key dashboard insights</span>
+      </h2>
+
+      <div class="insight-card warning">
+        <h4>
+          <span class="insight-icon">🚨</span>
+          <span>
+            <span class="lang-fr">Problème structurel majeur : 54,8% de retard</span>
+            <span class="lang-en">Major structural issue: 54.8% late rate</span>
+          </span>
+        </h4>
+        <div class="insight-content">
+          <p>
+            <span class="lang-fr">
+              Sur 181K commandes, <span class="insight-highlight warning">99K arrivent en retard</span> (54,8%). C'est un signal d'alarme critique : plus de la moitié des clients reçoivent leur commande après la date promise. L'impact sur la satisfaction client et la réputation de la marque est direct et mesurable.
+            </span>
+            <span class="lang-en">
+              Out of 181K orders, <span class="insight-highlight warning">99K arrive late</span> (54.8%). This is a critical alarm signal: over half of customers receive their order after the promised date. The impact on customer satisfaction and brand reputation is direct and measurable.
+            </span>
+          </p>
+          <div class="insight-list">
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Impact financier</strong> : $20,1M de ventes à risque (commandes en retard)</span>
+              <span class="lang-en"><strong>Financial impact</strong>: $20.1M in at-risk sales (late orders)</span>
             </div>
-          </div>
-        </div>
-
-        <div class="bullet">
-          <div class="bullet-ico">🚚</div>
-          <div class="bullet-content">
-            <strong><span class="lang-fr">Identifier les drivers</span><span class="lang-en">Identify drivers</span></strong>
-            <div class="bullet-details">
-              <span class="lang-fr">Comparer le Late Rate % par Shipping Mode pour cibler les modalités les plus risquées. Si "Standard Class" affiche 60% de retard vs 25% pour "First Class", l'arbitrage est clair : renégocier les SLA avec les transporteurs Standard ou réallouer les volumes vers des modes plus performants.</span>
-              <span class="lang-en">Compare Late Rate % by Shipping Mode to target the riskiest modalities. If "Standard Class" shows 60% delays vs 25% for "First Class", the trade-off is clear: renegotiate SLAs with Standard carriers or reallocate volumes to more reliable modes.</span>
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Coût caché</strong> : Service client surchargé, réclamations, potentiel churn</span>
+              <span class="lang-en"><strong>Hidden cost</strong>: Overloaded customer service, complaints, potential churn</span>
             </div>
-          </div>
-        </div>
-
-        <div class="bullet">
-          <div class="bullet-ico">🎯</div>
-          <div class="bullet-content">
-            <strong><span class="lang-fr">Prioriser les catégories</span><span class="lang-en">Prioritise categories</span></strong>
-            <div class="bullet-details">
-              <span class="lang-fr">Regarder les Late Orders par Category pour concentrer l'effort là où l'impact est maximal. Si "Electronics" représente 40% des retards mais seulement 20% des volumes, c'est un signal d'alerte : problème de préparation, disponibilité stock ou fragilité du produit à investiguer en priorité.</span>
-              <span class="lang-en">Review Late Orders by Category to focus effort where impact is highest. If "Electronics" accounts for 40% of delays but only 20% of volumes, it's a red flag: preparation issues, stock availability or product fragility to investigate as a priority.</span>
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Benchmark</strong> : Les standards de l'industrie visent >85% on-time delivery</span>
+              <span class="lang-en"><strong>Benchmark</strong>: Industry standards target >85% on-time delivery</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="card conclusion">
-      <h3><span class="lang-fr">Conclusion</span><span class="lang-en">Conclusion</span></h3>
+      <div class="insight-card warning">
+        <h4>
+          <span class="insight-icon">📦</span>
+          <span>
+            <span class="lang-fr">First Class : performance catastrophique (95,3%)</span>
+            <span class="lang-en">First Class: catastrophic performance (95.3%)</span>
+          </span>
+        </h4>
+        <div class="insight-content">
+          <p>
+            <span class="lang-fr">
+              Le mode <strong>First Class</strong> affiche un taux de retard de <span class="insight-highlight warning">95,3%</span> — pratiquement toutes les commandes arrivent en retard. Cela indique un SLA non respecté par le transporteur ou une promesse de livraison irréaliste dès le départ.
+            </span>
+            <span class="lang-en">
+              The <strong>First Class</strong> mode shows a late rate of <span class="insight-highlight warning">95.3%</span> — virtually all orders arrive late. This indicates an unmet SLA by the carrier or an unrealistic delivery promise from the start.
+            </span>
+          </p>
+          <div class="insight-list">
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Action prioritaire</strong> : Renégocier le contrat avec le transporteur First Class</span>
+              <span class="lang-en"><strong>Priority action</strong>: Renegotiate contract with First Class carrier</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Alternative</strong> : Migrer les volumes vers Second Class (76,6%) ou Same Day (45,7%)</span>
+              <span class="lang-en"><strong>Alternative</strong>: Migrate volumes to Second Class (76.6%) or Same Day (45.7%)</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Audit</strong> : Revoir les promesses de délai communiquées aux clients</span>
+              <span class="lang-en"><strong>Audit</strong>: Review delivery time promises communicated to customers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card warning">
+        <h4>
+          <span class="insight-icon">🎯</span>
+          <span>
+            <span class="lang-fr">Catégories critiques à investiguer</span>
+            <span class="lang-en">Critical categories to investigate</span>
+          </span>
+        </h4>
+        <div class="insight-content">
+          <p>
+            <span class="lang-fr">
+              Certaines catégories affichent des taux de retard disproportionnés : <strong>Golf Bags & Carts</strong> (68,9%), <strong>Lacrosse</strong> (60,1%), <strong>Pet Supplies</strong> (58,9%). Ces produits nécessitent une investigation approfondie.
+            </span>
+            <span class="lang-en">
+              Certain categories show disproportionate late rates: <strong>Golf Bags & Carts</strong> (68.9%), <strong>Lacrosse</strong> (60.1%), <strong>Pet Supplies</strong> (58.9%). These products require in-depth investigation.
+            </span>
+          </p>
+          <div class="insight-list">
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Hypothèse #1</strong> : Problème de disponibilité stock (ruptures fréquentes)</span>
+              <span class="lang-en"><strong>Hypothesis #1</strong>: Stock availability issue (frequent stockouts)</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Hypothèse #2</strong> : Temps de préparation rallongé (produits volumineux/fragiles)</span>
+              <span class="lang-en"><strong>Hypothesis #2</strong>: Extended preparation time (bulky/fragile products)</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr"><strong>Hypothèse #3</strong> : Contraintes fournisseurs (délais d'approvisionnement)</span>
+              <span class="lang-en"><strong>Hypothesis #3</strong>: Supplier constraints (procurement lead times)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <h4>
+          <span class="insight-icon">📊</span>
+          <span>
+            <span class="lang-fr">Évolution mensuelle : tendance stable mais préoccupante</span>
+            <span class="lang-en">Monthly trend: stable but concerning</span>
+          </span>
+        </h4>
+        <div class="insight-content">
+          <p>
+            <span class="lang-fr">
+              Le taux de retard mensuel oscille entre <span class="insight-highlight">44% et 46%</span> tout au long de l'année, sans amélioration significative. Cela confirme qu'il s'agit d'un <strong>problème structurel</strong> et non d'un incident ponctuel.
+            </span>
+            <span class="lang-en">
+              The monthly late rate oscillates between <span class="insight-highlight">44% and 46%</span> throughout the year, with no significant improvement. This confirms it's a <strong>structural problem</strong> and not a one-time incident.
+            </span>
+          </p>
+          <div class="insight-list">
+            <div class="insight-item">
+              <span class="lang-fr">Aucun pic saisonnier critique détecté (pas de pire période spécifique)</span>
+              <span class="lang-en">No critical seasonal peak detected (no specific worst period)</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr">La stabilité du problème indique des causes racines organisationnelles</span>
+              <span class="lang-en">Problem stability indicates organizational root causes</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="insight-card">
+        <h4>
+          <span class="insight-icon">💰</span>
+          <span>
+            <span class="lang-fr">Impact business : $20,1M de ventes en retard</span>
+            <span class="lang-en">Business impact: $20.1M in late sales</span>
+          </span>
+        </h4>
+        <div class="insight-content">
+          <p>
+            <span class="lang-fr">
+              Les commandes en retard représentent <span class="insight-highlight">$20,1M de ventes</span> sur un total de $36,8M. Chaque amélioration de 1% du taux de retard permet de <strong>sécuriser ~$400K de CA</strong> et d'améliorer la satisfaction client.
+            </span>
+            <span class="lang-en">
+              Late orders represent <span class="insight-highlight">$20.1M in sales</span> out of a total of $36.8M. Each 1% improvement in late rate allows to <strong>secure ~$400K in revenue</strong> and improve customer satisfaction.
+            </span>
+          </p>
+          <div class="insight-list">
+            <div class="insight-item">
+              <span class="lang-fr">Objectif réaliste court terme : réduire le taux à 45% (gain de ~$3,6M sécurisés)</span>
+              <span class="lang-en">Realistic short-term goal: reduce rate to 45% (gain of ~$3.6M secured)</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr">Objectif ambitieux moyen terme : atteindre 30% (standard industrie)</span>
+              <span class="lang-en">Ambitious mid-term goal: reach 30% (industry standard)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Dashboard Power BI -->
+    <section class="card">
+      <h3>
+        <span class="lang-fr">📊 Dashboard Power BI interactif</span>
+        <span class="lang-en">📊 Interactive Power BI dashboard</span>
+      </h3>
       <p>
-        <span class="lang-fr">Avec un taux de livraison à l'heure de 45.2%, le diagnostic révèle un problème structurel. L'analyse par Shipping Mode et par Category permet d'identifier les leviers prioritaires : renégocier les SLA, réallouer les volumes vers les modes performants, et investiguer les catégories sur‑représentées dans les retards. Le dashboard Power BI (en finalisation) permettra de suivre ces KPI en continu et de piloter l'amélioration.</span>
-        <span class="lang-en">With an on-time delivery rate of 45.2%, the diagnosis reveals a structural problem. Analysis by Shipping Mode and Category helps identify priority levers: renegotiate SLAs, reallocate volumes to high-performing modes, and investigate categories over-represented in delays. The Power BI dashboard (being finalized) will enable continuous monitoring of these KPIs and drive improvement.</span>
+        <span class="lang-fr">
+          Le dashboard offre une vue exécutive complète avec des filtres dynamiques par année (2015-2018) et région géographique. Il permet d'explorer les performances par mode de transport, catégorie produit et évolution temporelle.
+        </span>
+        <span class="lang-en">
+          The dashboard provides a complete executive view with dynamic filters by year (2015-2018) and geographic region. It allows exploration of performance by shipping mode, product category and time evolution.
+        </span>
       </p>
-    </div>
+      
+      <div class="embed-responsive">
+        <iframe 
+          title="Supply Chain Analytics" 
+          src="https://app.powerbi.com/view?r=eyJrIjoiN2FmNWZjNTktMTc4Yi00YzJjLWI2ZDctYTUxOGNlMjg1MWQyIiwidCI6IjdlOTNlMjg2LWIyOWEtNDQ1NC1hNDFhLWU4NDE5ZWM5ZGViNSJ9" 
+          frameborder="0" 
+          allowFullScreen="true">
+        </iframe>
+      </div>
+
+      <div class="embed-note">
+        <strong>
+          <span class="lang-fr">💡 Astuce :</span>
+          <span class="lang-en">💡 Tip:</span>
+        </strong>
+        <span class="lang-fr">
+          Utilisez les filtres de date et de région pour analyser les tendances spécifiques. Cliquez sur les modes de transport dans le graphique pour isoler First Class et comparer sa performance catastrophique. Le treemap des catégories permet d'identifier rapidement les segments problématiques.
+        </span>
+        <span class="lang-en">
+          Use date and region filters to analyze specific trends. Click on shipping modes in the chart to isolate First Class and compare its catastrophic performance. The categories treemap allows quick identification of problematic segments.
+        </span>
+      </div>
+    </section>
+
+    <!-- Conclusion -->
+    <section class="conclusion">
+      <h3>
+        <span class="lang-fr">🎯 Recommandations stratégiques</span>
+        <span class="lang-en">🎯 Strategic recommendations</span>
+      </h3>
+      <p>
+        <span class="lang-fr">
+          <strong>1. Action urgente sur First Class :</strong> Avec 95,3% de retard, ce mode doit être suspendu ou renégocié immédiatement. Migrer les volumes vers Same Day (45,7%) ou Standard Class (38,1%) jusqu'à résolution du problème.
+        </span>
+        <span class="lang-en">
+          <strong>1. Urgent action on First Class:</strong> With 95.3% late rate, this mode must be suspended or renegotiated immediately. Migrate volumes to Same Day (45.7%) or Standard Class (38.1%) until problem resolution.
+        </span>
+      </p>
+      <p>
+        <span class="lang-fr">
+          <strong>2. Investigation approfondie des catégories critiques :</strong> Golf Bags & Carts, Lacrosse et Pet Supplies nécessitent un audit complet (disponibilité stock, processus de préparation, contraintes fournisseurs). Identifier les causes racines sous 30 jours.
+        </span>
+        <span class="lang-en">
+          <strong>2. In-depth investigation of critical categories:</strong> Golf Bags & Carts, Lacrosse and Pet Supplies require a complete audit (stock availability, preparation process, supplier constraints). Identify root causes within 30 days.
+        </span>
+      </p>
+      <p>
+        <span class="lang-fr">
+          <strong>3. Revue des promesses de livraison :</strong> Avec un taux de retard global de 54,8%, les délais communiqués aux clients sont probablement trop optimistes. Ajuster les promesses pour refléter la réalité opérationnelle et éviter la sur-promesse.
+        </span>
+        <span class="lang-en">
+          <strong>3. Review of delivery promises:</strong> With an overall late rate of 54.8%, delivery times communicated to customers are probably too optimistic. Adjust promises to reflect operational reality and avoid over-promising.
+        </span>
+      </p>
+      <p>
+        <span class="lang-fr">
+          <strong>4. Plan d'amélioration progressive :</strong> Viser une réduction à 45% sous 3 mois (Quick wins : First Class, catégories critiques), puis 35% sous 6 mois (Optimisation des processus), et enfin 30% sous 12 mois (standard industrie).
+        </span>
+        <span class="lang-en">
+          <strong>4. Progressive improvement plan:</strong> Target reduction to 45% within 3 months (Quick wins: First Class, critical categories), then 35% within 6 months (Process optimization), and finally 30% within 12 months (industry standard).
+        </span>
+      </p>
+    </section>
+
   </main>
 
   <script>
   (function(){
-    // Theme
-    const themeBtn = document.getElementById('themeToggle');
-    const themeIcon = document.getElementById('themeIcon');
+    const $ = s => document.querySelector(s);
+
+    // Theme toggle
+    const themeBtn = $('#themeToggle');
+    const themeIcon = $('#themeIcon');
     if(themeBtn && themeIcon){
-      const savedTheme = localStorage.getItem('theme');
-      const initialTheme = savedTheme || 'dark';
-      document.documentElement.dataset.theme = initialTheme;
-      themeIcon.textContent = initialTheme === 'light' ? '☀️' : '🌙';
+      const saved = localStorage.getItem('theme') || 'dark';
+      document.documentElement.dataset.theme = saved;
+      themeIcon.textContent = saved === 'light' ? '☀️' : '🌙';
       themeBtn.addEventListener('click', () => {
         const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
         document.documentElement.dataset.theme = next;
@@ -578,25 +867,24 @@
       });
     }
 
-    // Language
-    const langBtn = document.getElementById('langToggle');
-    const langIcon = document.getElementById('langIcon');
-    function getLang(){ return document.documentElement.dataset.lang || 'fr' }
-    function setLanguage(lang){
-      document.documentElement.dataset.lang = lang;
-      document.documentElement.lang = lang;
-      localStorage.setItem('lang', lang);
-      if(langIcon) langIcon.textContent = lang.toUpperCase();
-    }
+    // Language toggle
+    const langBtn = $('#langToggle');
+    const langIcon = $('#langIcon');
     if(langBtn && langIcon){
-      setLanguage(localStorage.getItem('lang') || 'fr');
-      langBtn.addEventListener('click', () => setLanguage(getLang() === 'fr' ? 'en' : 'fr'));
+      const savedLang = localStorage.getItem('lang') || 'fr';
+      document.documentElement.dataset.lang = savedLang;
+      document.documentElement.lang = savedLang;
+      langIcon.textContent = savedLang.toUpperCase();
+      langBtn.addEventListener('click', () => {
+        const next = document.documentElement.dataset.lang === 'fr' ? 'en' : 'fr';
+        document.documentElement.dataset.lang = next;
+        document.documentElement.lang = next;
+        localStorage.setItem('lang', next);
+        langIcon.textContent = next.toUpperCase();
+      });
     }
-
-    // Bullet toggle
-    const bullets = document.querySelectorAll('.bullets .bullet');
-    bullets.forEach(b => b.addEventListener('click', () => b.classList.toggle('active')));
   })();
   </script>
+<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
