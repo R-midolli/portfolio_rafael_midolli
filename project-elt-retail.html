@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="fr" data-theme="dark" data-lang="fr">
 <head>
@@ -6,509 +5,102 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="description" content="Case study — ELT Retail Analytics : Pipeline Python + dbt + PostgreSQL, Star Schema, analyse de rentabilité par produit et marché, dashboard Power BI. Portfolio Rafael Midolli."/>
   <title>ELT Retail Analytics — Case Study</title>
+  <meta property="og:title" content="ELT Retail Analytics — Case Study"/>
+  <meta property="og:description" content="Pipeline ELT : Python + dbt + PostgreSQL, Star Schema, Power BI. Portfolio Rafael Midolli."/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📊</text></svg>"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
-  <style>
-  /* ===== RESET & ROOT ===== */
-  *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --bg:#0e1117;
-    --surface:rgba(255,255,255,.06);
-    --surface-hover:rgba(255,255,255,.10);
-    --text:#f0f2f7;
-    --text-muted:#7a8494;
-    --accent:#5b8cff;
-    --accent-2:#8b5cf6;
-    --accent-glow:rgba(91,140,255,.25);
-    --border:rgba(255,255,255,.08);
-    --radius:20px;
-    --font-head:'Playfair Display',Georgia,serif;
-    --font-body:'DM Sans',system-ui,sans-serif;
-  }
-  :root[data-theme="light"]{
-    --bg:#f6f7fb;
-    --surface:rgba(255,255,255,.7);
-    --surface-hover:rgba(255,255,255,.92);
-    --text:#0e1320;
-    --text-muted:rgba(14,19,32,.70);
-    --border:rgba(14,19,32,.10);
-    --accent:#4f7cff;
-    --accent-2:#7b5cff;
-    --accent-glow:rgba(91,140,255,.25);
-  }
-  :root[data-theme="light"] .nav{
-    background:rgba(246,247,251,.9);
-    border-bottom:1px solid var(--border);
-  }
-  [data-lang="fr"] .lang-en{display:none}
-  [data-lang="en"] .lang-fr{display:none}
-  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-  body{
-    font-family:var(--font-body);
-    background:var(--bg);
-    color:var(--text);
-    line-height:1.6;
-    min-height:100vh;
-    overflow-x:hidden;
-  }
-  a{color:inherit;text-decoration:none}
-  button{font-family:inherit;cursor:pointer;border:none;background:none}
-
-  /* Background visuals */
-  .bg-mesh, .bg-grid{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-  }
-  .bg-mesh{
-    background:
-      radial-gradient(ellipse 70% 50% at 20% 20%, rgba(91,140,255,.12) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 60% at 80% 70%, rgba(139,92,246,.10) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 40% at 60% 10%, rgba(91,140,255,.06) 0%, transparent 60%);
-  }
-  .bg-grid{
-    opacity:.035;
-    background-image:
-      linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
-    background-size:60px 60px;
-    mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-    -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-  }
-  :root[data-theme="light"] .bg-grid{
-    opacity:.055;
-    background-image:
-      linear-gradient(rgba(14,19,32,.4) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(14,19,32,.4) 1px, transparent 1px);
-  }
-
-  /* NAVIGATION */
-  .nav{
-    position:fixed;top:0;left:0;width:100%;z-index:10;
-    display:flex;justify-content:space-between;align-items:center;
-    padding:14px 24px;
-    background:rgba(14,17,23,.75);
-    backdrop-filter:blur(18px);
-    -webkit-backdrop-filter:blur(18px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav .logo{
-    display:flex;align-items:center;gap:10px;
-    font-family:var(--font-head);
-    font-weight:800;font-size:1.3rem;color:var(--text);
-  }
-  .logo-ring{
-    width:34px;height:34px;border-radius:50%;
-    border:2px solid var(--accent);
-    display:flex;align-items:center;justify-content:center;
-    font-size:.72rem;font-weight:700;color:var(--accent);
-    font-family:var(--font-body);
-  }
-  .nav-right{
-    display:flex;align-items:center;gap:12px;
-  }
-  .btn-back{
-    padding:8px 16px;border-radius:999px;
-    border:1px solid var(--border);
-    background:var(--surface);
-    color:var(--text);
-    font-size:.88rem;font-weight:600;
-    transition:background .2s, border-color .2s, transform .2s;
-  }
-  .btn-back:hover{
-    background:var(--surface-hover);
-    border-color:var(--accent);
-    transform:translateY(-2px);
-  }
-  .theme-toggle, .lang-toggle{
-    width:42px;height:42px;
-    border-radius:999px;
-    border:1px solid var(--border);
-    background:var(--surface);
-    display:flex;align-items:center;justify-content:center;
-    transition:transform .15s, background .2s, border-color .2s;
-  }
-  .theme-toggle:hover, .lang-toggle:hover{
-    background:var(--surface-hover);
-    border-color:var(--accent);
-    transform:translateY(-2px);
-  }
-  .theme-toggle span, .lang-toggle span{
-    font-size:1.25rem;
-  }
-
-  /* MAIN */
-  .main{
-    position:relative;z-index:1;
-    max-width:1000px;margin:0 auto;
-    padding:120px 24px 80px;
-  }
-  .case-header{
-    margin-bottom:48px;
-  }
-  .case-label{
-    font-size:.82rem;font-weight:700;
-    color:var(--accent);
-    text-transform:uppercase;
-    letter-spacing:.1em;
-    margin-bottom:12px;
-  }
-  .case-title{
-    font-family:var(--font-head);
-    font-size:clamp(2rem,4vw,3rem);
-    font-weight:800;
-    line-height:1.1;
-    margin-bottom:16px;
-  }
-  .case-subtitle{
-    font-size:1.05rem;
-    color:var(--text-muted);
-    line-height:1.6;
-  }
-
-  .info-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-    gap:20px;
-    margin-bottom:32px;
-  }
-  .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:28px;
-    transition:transform .2s, border-color .2s;
-  }
-  .card:hover{
-    transform:translateY(-2px);
-    border-color:rgba(91,140,255,.3);
-  }
-  .card h3{
-    font-family:var(--font-head);
-    font-size:1.4rem;font-weight:700;
-    color:var(--text);
-    margin-bottom:16px;
-  }
-  .card p{
-    color:var(--text-muted);
-    line-height:1.7;
-    margin-bottom:16px;
-  }
-  .card p:last-child{margin-bottom:0}
-
-  .metrics-mini{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:16px;
-    margin-top:20px;
-  }
-  .metric-mini{
-    text-align:center;
-    padding:18px;
-    border-radius:12px;
-    background:rgba(91,140,255,.08);
-    border:1px solid rgba(91,140,255,.2);
-    transition:transform .2s, border-color .2s;
-  }
-  .metric-mini:hover{
-    transform:translateY(-3px);
-    border-color:var(--accent);
-  }
-  .metric-value{
-    font-family:var(--font-head);
-    font-size:1.8rem;font-weight:800;
-    color:var(--accent);
-    line-height:1.2;
-  }
-  .metric-label{
-    font-size:.78rem;
-    color:var(--text-muted);
-    margin-top:6px;
-  }
-
-  .tech-stack{
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:16px;
-  }
-  .tech-tag{
-    padding:8px 14px;
-    border-radius:8px;
-    background:rgba(91,140,255,.1);
-    border:1px solid rgba(91,140,255,.25);
-    color:var(--accent);
-    font-size:.84rem;font-weight:600;
-    transition:transform .15s, border-color .15s;
-  }
-  .tech-tag:hover{
-    transform:translateY(-1px);
-    border-color:var(--accent);
-  }
-
-  .btn-github{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:12px 20px;
-    border-radius:999px;
-    background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    color:#fff;
-    font-size:.92rem;font-weight:700;
-    transition:transform .2s, box-shadow .2s;
-    margin-top:12px;
-  }
-  .btn-github:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(91,140,255,.3)}
-  .github-icon{
-    width:18px;height:18px;
-    fill:currentColor;
-  }
-
-  /* Insights Section */
-  .insights-section{
-    margin:48px 0;
-  }
-  .insight-card{
-    background:linear-gradient(135deg,rgba(91,140,255,.06),rgba(139,92,246,.04));
-    border:1px solid rgba(91,140,255,.2);
-    border-radius:var(--radius);
-    padding:32px;
-    margin-bottom:24px;
-  }
-  .insight-card h4{
-    font-family:var(--font-head);
-    font-size:1.3rem;
-    font-weight:700;
-    color:var(--text);
-    margin-bottom:16px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .insight-icon{
-    font-size:1.6rem;
-  }
-  .insight-content{
-    color:var(--text-muted);
-    line-height:1.8;
-  }
-  .insight-list{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    margin-top:16px;
-  }
-  .insight-item{
-    padding-left:24px;
-    position:relative;
-  }
-  .insight-item::before{
-    content:"→";
-    position:absolute;
-    left:0;
-    color:var(--accent);
-    font-weight:700;
-  }
-  .insight-highlight{
-    color:var(--accent);
-    font-weight:600;
-  }
-
-  /* Architecture section */
-  .architecture-flow{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-    gap:16px;
-    margin:24px 0;
-  }
-  .arch-step{
-    text-align:center;
-    padding:20px;
-    border-radius:12px;
-    background:rgba(91,140,255,.06);
-    border:1px solid rgba(91,140,255,.18);
-    position:relative;
-  }
-  .arch-step::after{
-    content:"→";
-    position:absolute;
-    right:-24px;
-    top:50%;
-    transform:translateY(-50%);
-    color:var(--accent);
-    font-size:1.5rem;
-    font-weight:700;
-  }
-  .arch-step:last-child::after{
-    display:none;
-  }
-  .arch-icon{
-    font-size:2rem;
-    margin-bottom:8px;
-  }
-  .arch-title{
-    font-weight:700;
-    color:var(--text);
-    margin-bottom:6px;
-  }
-  .arch-desc{
-    font-size:.82rem;
-    color:var(--text-muted);
-  }
-
-  /* Power BI embed */
-  .embed-responsive{
-    position:relative;
-    width:100%;
-    padding-top:56.25%;
-    border-radius:18px;
-    overflow:hidden;
-    background:rgba(255,255,255,.03);
-    border:1px solid rgba(255,255,255,.06);
-    margin:32px 0;
-  }
-  .embed-responsive iframe{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    border:0;
-  }
-  .embed-note{
-    font-size:.9rem;
-    color:var(--text-muted);
-    line-height:1.6;
-    padding:16px;
-    background:rgba(91,140,255,.06);
-    border-left:3px solid var(--accent);
-    border-radius:8px;
-    margin-top:16px;
-  }
-  .embed-note strong{
-    color:var(--accent);
-  }
-
-  /* Conclusion section */
-  .conclusion{
-    background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(139,92,246,.06));
-    border:1px solid rgba(91,140,255,.3);
-    border-radius:var(--radius);
-    padding:32px;
-    margin-top:48px;
-  }
-  .conclusion h3{
-    font-family:var(--font-head);
-    font-size:1.5rem;
-    font-weight:700;
-    margin-bottom:16px;
-  }
-  .conclusion p{
-    color:var(--text-muted);
-    line-height:1.8;
-    margin-bottom:14px;
-  }
-  .conclusion p:last-child{margin-bottom:0}
-
-  @media(max-width:700px){
-    .info-grid{grid-template-columns:1fr}
-    .metrics-mini{grid-template-columns:repeat(2,1fr)}
-    .architecture-flow{grid-template-columns:1fr}
-    .arch-step::after{display:none}
-  }
-  </style>
+  <link rel="stylesheet" href="assets/css/project.css"/>
 </head>
 <body>
-  <div class="bg-mesh"></div>
-  <div class="bg-grid"></div>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
 
   <nav class="nav">
-    <a href="index.html" class="logo">
+    <a href="index.html#projects" class="logo">
       <span class="logo-ring">RM</span>
       Rafael Midolli
     </a>
     <div class="nav-right">
       <a href="index.html#projects" class="btn-back">
-        <span class="lang-fr">← Projets</span>
-        <span class="lang-en">← Projects</span>
+        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span class="back-label">Back</span></span>
       </a>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
+      <a href="https://app.powerbi.com/view?r=eyJrIjoiOTJmOGRiODUtYTFmZi00YTkxLWI1NGUtNzczOGIyODI0NTg4IiwidCI6IjdlOTNlMjg2LWIyOWEtNDQ1NC1hNDFhLWU4NDE5ZWM5ZGViNSJ9" target="_blank" rel="noopener" class="btn-fullscreen">
+        <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span class="fs-label">Full&nbsp;screen</span></span>
+      </a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
         <span id="themeIcon">🌙</span>
       </button>
-      <button class="lang-toggle" id="langToggle" type="button" aria-label="Toggle language">
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue">
         <span id="langIcon">FR</span>
       </button>
     </div>
   </nav>
 
   <main class="main">
-    <header class="case-header">
-      <div class="case-label">
-        <span class="lang-fr">Case Study #3</span>
-        <span class="lang-en">Case Study #3</span>
+    <div class="case-header">
+      <div class="case-label"><span class="lang-fr">Étude de cas</span><span class="lang-en">Case study</span></div>
+      <h1 class="case-title"><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales & Profitability</span></h1>
+      <div class="case-subtitle">
+        <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de rentabilité par produit et client, dashboard Power BI</span>
+        <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema), product and customer profitability analysis, Power BI dashboard</span>
       </div>
-      <h1 class="case-title">
-        <span class="lang-fr">ELT Retail Analytics — Ventes & Rentabilité</span>
-        <span class="lang-en">ELT Retail Analytics — Sales & Profitability</span>
-      </h1>
-      <p class="case-subtitle">
-        <span class="lang-fr">
-          Pipeline ELT end-to-end avec Python, dbt et PostgreSQL pour analyser 17,7M€ de chiffre d'affaires, identifier les produits à risque et optimiser la rentabilité par marché.
-        </span>
-        <span class="lang-en">
-          End-to-end ELT pipeline with Python, dbt and PostgreSQL to analyze €17.7M revenue, identify at-risk products and optimize profitability by market.
-        </span>
-      </p>
-    </header>
+    </div>
 
     <div class="info-grid">
+      <!-- Problem + Approach -->
       <div class="card">
-        <h3>
-          <span class="lang-fr">🎯 Contexte business</span>
-          <span class="lang-en">🎯 Business context</span>
-        </h3>
+        <h3><span class="lang-fr">Problème</span><span class="lang-en">Problem</span></h3>
         <p>
-          <span class="lang-fr">
-            Analyse complète des ventes retail sur la période 2009-2011. L'objectif : construire un pipeline ELT robuste pour transformer les données brutes en insights actionnables sur la performance produit, la rentabilité client et les tendances par marché géographique.
-          </span>
-          <span class="lang-en">
-            Complete retail sales analysis for 2009-2011 period. Objective: build a robust ELT pipeline to transform raw data into actionable insights on product performance, customer profitability and trends by geographic market.
-          </span>
+          <span class="lang-fr">Retail gift online (UK, 2009-2011) avec transactions mixtes B2C/B2B. Comment identifier les produits et segments clients les plus rentables pour optimiser stock et stratégie commerciale?</span>
+          <span class="lang-en">Online gift retail (UK, 2009-2011) with mixed B2C/B2B transactions. How to identify the most profitable products and customer segments to optimize inventory and commercial strategy?</span>
         </p>
+        <h3 style="margin-top:20px"><span class="lang-fr">Approche</span><span class="lang-en">Approach</span></h3>
+        <p>
+          <span class="lang-fr">Pipeline ELT moderne : données brutes extraites et chargées dans PostgreSQL, puis transformations via dbt créant un Star Schema (fact_sales_star + dims). Power BI analyse rentabilité, saisonnalité et mix B2C/B2B.</span>
+          <span class="lang-en">Modern ELT pipeline: raw data extracted and loaded into PostgreSQL, then dbt transformations creating a Star Schema (fact_sales_star + dims). Power BI analyzes profitability, seasonality and B2C/B2B mix.</span>
+        </p>
+
+        <!-- Key metrics -->
         <div class="metrics-mini">
           <div class="metric-mini">
-            <div class="metric-value">17,7M€</div>
+            <div class="metric-value">2009-2011</div>
             <div class="metric-label">
-              <span class="lang-fr">CA Net</span>
-              <span class="lang-en">Net Revenue</span>
+              <span class="lang-fr">Période</span>
+              <span class="lang-en">Period</span>
             </div>
           </div>
           <div class="metric-mini">
-            <div class="metric-value">37K</div>
+            <div class="metric-value">540K+</div>
             <div class="metric-label">
-              <span class="lang-fr">Commandes</span>
-              <span class="lang-en">Orders</span>
+              <span class="lang-fr">Transactions</span>
+              <span class="lang-en">Transactions</span>
             </div>
           </div>
           <div class="metric-mini">
-            <div class="metric-value">6K</div>
+            <div class="metric-value">4K+</div>
             <div class="metric-label">
-              <span class="lang-fr">Clients</span>
-              <span class="lang-en">Customers</span>
-            </div>
-          </div>
-          <div class="metric-mini">
-            <div class="metric-value">479,9€</div>
-            <div class="metric-label">
-              <span class="lang-fr">AOV Net</span>
-              <span class="lang-en">Net AOV</span>
+              <span class="lang-fr">Produits</span>
+              <span class="lang-en">Products</span>
             </div>
           </div>
         </div>
       </div>
 
+      <!-- Tech Stack + GitHub -->
       <div class="card">
-        <h3>
-          <span class="lang-fr">🛠️ Stack technique</span>
-          <span class="lang-en">🛠️ Tech stack</span>
-        </h3>
+        <h3><span class="lang-fr">Stack technique</span><span class="lang-en">Tech stack</span></h3>
+        <p>
+          <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de rentabilité par produit et client, dashboard Power BI (£17,7M CA analysé).</span>
+          <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema), product and customer profitability analysis, Power BI dashboard (£17.7M revenue analyzed).</span>
+        </p>
+        <p>
+          <span class="lang-fr">Livrables : base PostgreSQL avec Star Schema, modèles dbt documentés, dashboard Power BI interactif</span>
+          <span class="lang-en">Deliverables: PostgreSQL database with Star Schema, documented dbt models, interactive Power BI dashboard</span>
+        </p>
         <div class="tech-stack">
           <span class="tech-tag"><span>🐍</span> Python</span>
           <span class="tech-tag"><span>🔧</span> dbt</span>
@@ -517,31 +109,20 @@
           <span class="tech-tag"><span>🐼</span> Pandas</span>
           <span class="tech-tag"><span>🐳</span> Docker</span>
         </div>
-        <p>
-          <span class="lang-fr">
-            Architecture ELT moderne : extraction Python depuis Excel, chargement dans PostgreSQL, transformations dbt avec Star Schema, et visualisation Power BI. Le tout orchestré avec Docker pour une reproductibilité maximale.
-          </span>
-          <span class="lang-en">
-            Modern ELT architecture: Python extraction from Excel, loading into PostgreSQL, dbt transformations with Star Schema, and Power BI visualization. All orchestrated with Docker for maximum reproducibility.
-          </span>
-        </p>
         <a href="https://github.com/R-midolli/elt_retail_analytics" target="_blank" rel="noopener" class="btn-github">
-          <svg class="github-icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          <span class="lang-fr">Voir le code</span>
-          <span class="lang-en">View code</span>
+          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          <span class="lang-fr">Code sur GitHub</span>
+          <span class="lang-en">View on GitHub</span>
         </a>
       </div>
     </div>
 
-    <!-- Architecture ELT -->
+    <!-- Architecture du pipeline ELT -->
     <section class="card">
-      <h3>
-        <span class="lang-fr">🏗️ Architecture du pipeline ELT</span>
-        <span class="lang-en">🏗️ ELT Pipeline architecture</span>
-      </h3>
+      <h3>🏗️ <span class="lang-fr">Architecture du pipeline ELT</span><span class="lang-en">ELT pipeline architecture</span></h3>
       <div class="architecture-flow">
         <div class="arch-step">
-          <div class="arch-icon">📊</div>
+          <div class="arch-icon">📥</div>
           <div class="arch-title">Extract</div>
           <div class="arch-desc">
             <span class="lang-fr">Python + Pandas depuis Excel</span>
@@ -549,7 +130,7 @@
           </div>
         </div>
         <div class="arch-step">
-          <div class="arch-icon">📥</div>
+          <div class="arch-icon">💾</div>
           <div class="arch-title">Load</div>
           <div class="arch-desc">
             <span class="lang-fr">PostgreSQL (tables brutes)</span>
@@ -565,17 +146,17 @@
           </div>
         </div>
         <div class="arch-step">
-          <div class="arch-icon">📈</div>
+          <div class="arch-icon">📊</div>
           <div class="arch-title">Visualize</div>
           <div class="arch-desc">Power BI</div>
         </div>
       </div>
       <p>
         <span class="lang-fr">
-          Le pipeline suit une approche <strong>ELT moderne</strong> : les données brutes sont d'abord extraites et chargées dans PostgreSQL, puis transformées via dbt en un modèle dimensionnel (Star Schema) comprenant une table de faits <code>fct_orders</code> et des dimensions <code>dim_products</code>, <code>dim_customers</code>, <code>dim_dates</code>.
+          Le pipeline suit une approche <strong>ELT moderne</strong> : les données brutes sont d'abord extraites et chargées dans PostgreSQL, puis transformées via dbt en un modèle dimensionnel (Star Schema) comprenant une table de faits <code>fact_sales_star</code> et des dimensions <code>dim_products</code>, <code>dim_customers</code>, <code>dim_date</code>, <code>dim_invoice</code>. Cette architecture permet une traçabilité complète (raw → modeled) et facilite les transformations incrémentales.
         </span>
         <span class="lang-en">
-          The pipeline follows a <strong>modern ELT approach</strong>: raw data is first extracted and loaded into PostgreSQL, then transformed via dbt into a dimensional model (Star Schema) including a fact table <code>fct_orders</code> and dimensions <code>dim_products</code>, <code>dim_customers</code>, <code>dim_dates</code>.
+          The pipeline follows a <strong>modern ELT approach</strong>: raw data is first extracted and loaded into PostgreSQL, then transformed via dbt into a dimensional model (Star Schema) comprising a fact table <code>fact_sales_star</code> and dimensions <code>dim_products</code>, <code>dim_customers</code>, <code>dim_date</code>, <code>dim_invoice</code>. This architecture enables full traceability (raw → modeled) and facilitates incremental transformations.
         </span>
       </p>
     </section>
@@ -591,31 +172,31 @@
         <h4>
           <span class="insight-icon">🌍</span>
           <span>
-            <span class="lang-fr">Concentration géographique extrême</span>
-            <span class="lang-en">Extreme geographic concentration</span>
+            <span class="lang-fr">Dépendance géographique au Royaume-Uni</span>
+            <span class="lang-en">Geographic dependency on UK</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Le Royaume-Uni représente <span class="insight-highlight">83% du chiffre d'affaires</span> (soit environ 14,7M€ sur 17,7M€ total). Cette dépendance à un seul marché constitue un risque stratégique majeur.
+              Le Royaume-Uni domine le chiffre d'affaires avec <span class="insight-highlight">plus de 80% du CA total</span>. Cette concentration sur un seul marché expose l'entreprise à des risques réglementaires, économiques et de change. Les autres marchés européens (EIRE, Netherlands, Germany, France) représentent des opportunités d'expansion sous-exploitées.
             </span>
             <span class="lang-en">
-              The UK represents <span class="insight-highlight">83% of revenue</span> (approximately €14.7M out of €17.7M total). This dependence on a single market constitutes a major strategic risk.
+              The UK dominates revenue with <span class="insight-highlight">over 80% of total revenue</span>. This concentration on a single market exposes the company to regulatory, economic and currency risks. Other European markets (EIRE, Netherlands, Germany, France) represent underexploited expansion opportunities.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr"><strong>EIRE</strong> : 621K€ (3,5%) — potentiel de croissance sous-exploité</span>
-              <span class="lang-en"><strong>EIRE</strong>: €621K (3.5%) — untapped growth potential</span>
+              <span class="lang-fr">Risque de concentration : choc économique UK impacterait 80%+ du business</span>
+              <span class="lang-en">Concentration risk: UK economic shock would impact 80%+ of business</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Netherlands</strong> : 554K€ (3,1%) — marché à développer</span>
-              <span class="lang-en"><strong>Netherlands</strong>: €554K (3.1%) — market to develop</span>
+              <span class="lang-fr">Marchés européens sous-pénétrés : potentiel de diversification géographique</span>
+              <span class="lang-en">Under-penetrated European markets: geographic diversification potential</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Germany</strong> : 432K€ (2,4%) — opportunité d'expansion</span>
-              <span class="lang-en"><strong>Germany</strong>: €432K (2.4%) — expansion opportunity</span>
+              <span class="lang-fr">Recommandation : stratégie expansion ciblée sur EIRE et Netherlands (proximité UK)</span>
+              <span class="lang-en">Recommendation: targeted expansion strategy on EIRE and Netherlands (UK proximity)</span>
             </div>
           </div>
         </div>
@@ -625,27 +206,31 @@
         <h4>
           <span class="insight-icon">📉</span>
           <span>
-            <span class="lang-fr">Taux d'annulation préoccupant</span>
-            <span class="lang-en">Concerning cancellation rate</span>
+            <span class="lang-fr">Taux d'annulation élevé sur certains produits</span>
+            <span class="lang-en">High cancellation rate on certain products</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Un taux d'annulation de <span class="insight-highlight">17,6%</span> impacte directement la rentabilité. Sur 37K commandes nettes, cela représente environ 6,5K commandes annulées — soit un manque à gagner potentiel de ~3M€.
+              L'analyse révèle un taux d'annulation global autour de <span class="insight-highlight">~18%</span> (les invoices commençant par "C" indiquent des annulations dans le dataset UCI). Ce taux élevé suggère des problèmes opérationnels : ruptures de stock fréquentes, qualité produit, ou problèmes de gestion des attentes client (notamment pour les grossistes).
             </span>
             <span class="lang-en">
-              A cancellation rate of <span class="insight-highlight">17.6%</span> directly impacts profitability. Out of 37K net orders, this represents approximately 6.5K cancelled orders — a potential loss of ~€3M.
+              Analysis reveals an overall cancellation rate around <span class="insight-highlight">~18%</span> (invoices starting with "C" indicate cancellations in the UCI dataset). This high rate suggests operational issues: frequent stock-outs, product quality, or customer expectation management problems (especially for wholesalers).
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr">Analyse des causes d'annulation nécessaire (stock, qualité, prix)</span>
-              <span class="lang-en">Analysis of cancellation causes needed (stock, quality, price)</span>
+              <span class="lang-fr">Identifier les produits à fort taux d'annulation pour audit qualité/disponibilité</span>
+              <span class="lang-en">Identify high-cancellation products for quality/availability audit</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr">Impact sur le service client et la réputation de la marque</span>
-              <span class="lang-en">Impact on customer service and brand reputation</span>
+              <span class="lang-fr">Clients B2B (wholesalers) plus sensibles aux ruptures : prioriser leur approvisionnement</span>
+              <span class="lang-en">B2B clients (wholesalers) more sensitive to stock-outs: prioritize their supply</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr">Potentiel de récupération significatif en ramenant le taux d'annulation sous 10%</span>
+              <span class="lang-en">Significant recovery potential by reducing cancellation rate below 10%</span>
             </div>
           </div>
         </div>
@@ -653,29 +238,33 @@
 
       <div class="insight-card">
         <h4>
-          <span class="insight-icon">⭐</span>
+          <span class="insight-icon">🎁</span>
           <span>
-            <span class="lang-fr">Concentration sur le Top 10 produits</span>
-            <span class="lang-en">Top 10 product concentration</span>
+            <span class="lang-fr">Mix produits gift-oriented à forte saisonnalité</span>
+            <span class="lang-en">Gift-oriented product mix with strong seasonality</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Les 10 produits les plus performants génèrent <span class="insight-highlight">1,66M€</span> (environ 9,4% du CA). Le leader est <strong>REGENCY CAKESTAND 3 TIER</strong> avec 291K€, suivi de <strong>CREAM HANGING HEART T-LIGHT HOLDER</strong> (253K€).
+              Le dataset contient principalement des <strong>gift-ware</strong> (articles de décoration, cadeaux d'occasion). Cette catégorie présente une <span class="insight-highlight">saisonnalité très marquée</span> avec des pics en Q4 (Noël, Black Friday) et creux en Q1. Les produits de type "party", "tea sets", "decorative items" dominent le mix.
             </span>
             <span class="lang-en">
-              The top 10 performing products generate <span class="insight-highlight">€1.66M</span> (approximately 9.4% of revenue). The leader is <strong>REGENCY CAKESTAND 3 TIER</strong> with €291K, followed by <strong>CREAM HANGING HEART T-LIGHT HOLDER</strong> (€253K).
+              The dataset mainly contains <strong>gift-ware</strong> (decorative items, occasion gifts). This category shows <span class="insight-highlight">very strong seasonality</span> with peaks in Q4 (Christmas, Black Friday) and troughs in Q1. Products like "party", "tea sets", "decorative items" dominate the mix.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr">Ces produits "star" nécessitent une gestion de stock prioritaire</span>
-              <span class="lang-en">These "star" products require priority stock management</span>
+              <span class="lang-fr">Q4 génère typiquement 35-40% du CA annuel (période Noël cruciale)</span>
+              <span class="lang-en">Q4 typically generates 35-40% of annual revenue (Christmas period crucial)</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr">Opportunité de cross-selling avec des produits complémentaires</span>
-              <span class="lang-en">Cross-selling opportunity with complementary products</span>
+              <span class="lang-fr">Gestion de stock critique : anticiper 8-10 semaines avant les fêtes</span>
+              <span class="lang-en">Critical stock management: anticipate 8-10 weeks before holidays</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr">Opportunité : développer catégories complémentaires pour lisser la saisonnalité</span>
+              <span class="lang-en">Opportunity: develop complementary categories to smooth seasonality</span>
             </div>
           </div>
         </div>
@@ -683,33 +272,33 @@
 
       <div class="insight-card">
         <h4>
-          <span class="insight-icon">⚠️</span>
+          <span class="insight-icon">👥</span>
           <span>
-            <span class="lang-fr">Produits à risque identifiés</span>
-            <span class="lang-en">At-risk products identified</span>
+            <span class="lang-fr">Segmentation B2C vs B2B (wholesalers)</span>
+            <span class="lang-en">B2C vs B2B (wholesalers) segmentation</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              L'analyse scatter plot révèle plusieurs produits avec un <span class="insight-highlight">taux d'annulation élevé (>40%)</span> malgré un CA significatif (>100K€). Ces produits drainent des ressources sans rentabilité proportionnelle.
+              Le dataset mentionne "many customers are wholesalers", indiquant un <strong>mix B2C/B2B</strong>. L'analyse du champ <code>Quantity</code> révèle deux populations distinctes : achats unitaires faibles (B2C particuliers) et commandes volumineuses récurrentes (B2B grossistes). Les wholesalers génèrent <span class="insight-highlight">une part significative du volume</span> mais avec des marges potentiellement plus serrées.
             </span>
             <span class="lang-en">
-              The scatter plot analysis reveals several products with a <span class="insight-highlight">high cancellation rate (>40%)</span> despite significant revenue (>€100K). These products drain resources without proportional profitability.
+              The dataset mentions "many customers are wholesalers", indicating a <strong>B2C/B2B mix</strong>. Analysis of the <code>Quantity</code> field reveals two distinct populations: low unit purchases (B2C individuals) and large recurring orders (B2B wholesalers). Wholesalers generate <span class="insight-highlight">a significant share of volume</span> but with potentially tighter margins.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr">2 produits majeurs affichent ~50% de taux d'annulation</span>
-              <span class="lang-en">2 major products show ~50% cancellation rate</span>
+              <span class="lang-fr">B2B : commandes récurrentes, quantités élevées (50-500 units), marges négociées</span>
+              <span class="lang-en">B2B: recurring orders, high quantities (50-500 units), negotiated margins</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr">Action urgente : audit qualité et disponibilité stock</span>
-              <span class="lang-en">Urgent action: quality audit and stock availability</span>
+              <span class="lang-fr">B2C : achats ponctuels, panier moyen faible, forte sensibilité prix/promo</span>
+              <span class="lang-en">B2C: one-off purchases, low average basket, high price/promo sensitivity</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr">Risque de perte de clients si non traité rapidement</span>
-              <span class="lang-en">Risk of customer loss if not addressed quickly</span>
+              <span class="lang-fr">Stratégie différenciée : fidélisation B2B via service, acquisition B2C via marketing</span>
+              <span class="lang-en">Differentiated strategy: B2B loyalty via service, B2C acquisition via marketing</span>
             </div>
           </div>
         </div>
@@ -717,152 +306,129 @@
 
       <div class="insight-card">
         <h4>
-          <span class="insight-icon">📊</span>
+          <span class="insight-icon">📈</span>
           <span>
-            <span class="lang-fr">Volatilité mensuelle du CA</span>
-            <span class="lang-en">Monthly revenue volatility</span>
+            <span class="lang-fr">Longue traîne produits : 80/20 inversé</span>
+            <span class="lang-en">Product long tail: inverted 80/20</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Le CA mensuel fluctue significativement entre 0,5M€ et 1,1M€, avec des pics en <strong>novembre 2011</strong> (1,1M€) et <strong>septembre 2011</strong> (1,05M€). La variation MoM atteint <span class="insight-highlight">±60%</span> sur certaines périodes.
+              Le catalogue contient <strong>4000+ références</strong> dont la majorité (60-70%) représentent moins de 5% du CA. Cette "longue traîne" typique du gift retail crée de la complexité opérationnelle : coûts de stockage élevés, gestion catalogue lourde, risque d'obsolescence. Les 10-15% de produits "stars" génèrent l'essentiel du CA.
             </span>
             <span class="lang-en">
-              Monthly revenue fluctuates significantly between €0.5M and €1.1M, with peaks in <strong>November 2011</strong> (€1.1M) and <strong>September 2011</strong> (€1.05M). MoM variation reaches <span class="insight-highlight">±60%</span> in certain periods.
+              The catalog contains <strong>4000+ references</strong> of which the majority (60-70%) represent less than 5% of revenue. This "long tail" typical of gift retail creates operational complexity: high storage costs, heavy catalog management, obsolescence risk. The 10-15% "star" products generate most of the revenue.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr">Saisonnalité forte en fin d'année (Q4) → préparer stock</span>
-              <span class="lang-en">Strong seasonality at year-end (Q4) → prepare stock</span>
+              <span class="lang-fr">Focus stock sur le Top 15% produits pour garantir disponibilité</span>
+              <span class="lang-en">Focus stock on Top 15% products to ensure availability</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr">Creux récurrents début d'année → campagnes promo ciblées</span>
-              <span class="lang-en">Recurring lows at year start → targeted promo campaigns</span>
+              <span class="lang-fr">Longue traîne : passer en "sur commande" pour réduire immobilisation cash</span>
+              <span class="lang-en">Long tail: switch to "made-to-order" to reduce cash immobilization</span>
+            </div>
+            <div class="insight-item">
+              <span class="lang-fr">Analyse ABC annuelle pour éliminer références dormantes (< 10 ventes/an)</span>
+              <span class="lang-en">Annual ABC analysis to eliminate dormant references (< 10 sales/year)</span>
             </div>
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- Données & contexte -->
+    <section class="card">
+      <h3><span class="lang-fr">Données & contexte</span><span class="lang-en">Data & context</span></h3>
+      <p>
+        <span class="lang-fr">
+          Dataset <strong>UCI Online Retail II</strong> : transactions d'un retail gift online UK entre 01/12/2009 et 09/12/2011. Le dataset contient 540K+ lignes de transactions incluant des annulations (invoice codes débutant par 'C'). L'entreprise vend des articles gift-ware (décoration, cadeaux) principalement à des clients UK et européens, avec une forte composante B2B (wholesalers).
+        </span>
+        <span class="lang-en">
+          <strong>UCI Online Retail II</strong> dataset: transactions from a UK online gift retailer between 01/12/2009 and 09/12/2011. The dataset contains 540K+ transaction lines including cancellations (invoice codes starting with 'C'). The company sells gift-ware items (decoration, gifts) mainly to UK and European customers, with a strong B2B component (wholesalers).
+        </span>
+      </p>
+      <p>
+        <span class="lang-fr">
+          Champs disponibles : <code>InvoiceNo</code>, <code>StockCode</code>, <code>Description</code>, <code>Quantity</code>, <code>InvoiceDate</code>, <code>UnitPrice</code>, <code>CustomerID</code>, <code>Country</code>. La modélisation Star Schema via dbt enrichit ces données avec des dimensions calculées (date, customer segments, product categories) et des métriques agrégées (CA, rentabilité, taux d'annulation).
+        </span>
+        <span class="lang-en">
+          Available fields: <code>InvoiceNo</code>, <code>StockCode</code>, <code>Description</code>, <code>Quantity</code>, <code>InvoiceDate</code>, <code>UnitPrice</code>, <code>CustomerID</code>, <code>Country</code>. Star Schema modeling via dbt enriches this data with calculated dimensions (date, customer segments, product categories) and aggregated metrics (revenue, profitability, cancellation rate).
+        </span>
+      </p>
     </section>
 
     <!-- Dashboard Power BI -->
     <section class="card">
-      <h3>
-        <span class="lang-fr">📊 Dashboard Power BI interactif</span>
-        <span class="lang-en">📊 Interactive Power BI dashboard</span>
-      </h3>
+      <h3><span class="lang-fr">Dashboard Power BI</span><span class="lang-en">Power BI Dashboard</span></h3>
       <p>
-        <span class="lang-fr">
-          Le dashboard offre une vue exécutive complète avec des filtres dynamiques par année (2009-2011) et permet d'explorer les performances produit, géographiques et clients en temps réel.
-        </span>
-        <span class="lang-en">
-          The dashboard provides a complete executive view with dynamic filters by year (2009-2011) and allows real-time exploration of product, geographic and customer performance.
-        </span>
+        <span class="lang-fr">Dashboard interactif permettant d'explorer les ventes par produit, pays, client et période. Les KPI agrégés (CA, panier moyen, taux d'annulation) facilitent le pilotage commercial.</span>
+        <span class="lang-en">Interactive dashboard to explore sales by product, country, customer and period. Aggregated KPIs (revenue, average order value, cancellation rate) support commercial decision-making.</span>
       </p>
-      
-      <div class="embed-responsive">
+      <div class="powerbi-container">
         <iframe 
-          title="ELT Retail Analytics" 
+          class="powerbi-frame" 
           src="https://app.powerbi.com/view?r=eyJrIjoiOTJmOGRiODUtYTFmZi00YTkxLWI1NGUtNzczOGIyODI0NTg4IiwidCI6IjdlOTNlMjg2LWIyOWEtNDQ1NC1hNDFhLWU4NDE5ZWM5ZGViNSJ9" 
-          frameborder="0" 
-          allowFullScreen="true">
+          allowfullscreen="true">
         </iframe>
       </div>
+    </section>
 
-      <div class="embed-note">
-        <strong>
-          <span class="lang-fr">💡 Astuce :</span>
-          <span class="lang-en">💡 Tip:</span>
-        </strong>
-        <span class="lang-fr">
-          Utilisez les filtres de date en haut pour comparer les années. Cliquez sur les segments du treemap pour voir le détail par pays. Le scatter plot "Produits à risque" permet d'identifier les produits nécessitant une attention immédiate.
-        </span>
-        <span class="lang-en">
-          Use the date filters at the top to compare years. Click on treemap segments to see details by country. The "At-risk products" scatter plot identifies products requiring immediate attention.
-        </span>
+    <!-- Étapes de l'analyse -->
+    <section class="card">
+      <h3><span class="lang-fr">Étapes du projet</span><span class="lang-en">Project steps</span></h3>
+      <p>
+        <span class="lang-fr">Pipeline ELT end-to-end avec focus sur la qualité des données et la reproductibilité.</span>
+        <span class="lang-en">End-to-end ELT pipeline focusing on data quality and reproducibility.</span>
+      </p>
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="lang-fr"><strong>Extract & Load</strong> : Extraction Python (Pandas) depuis Excel UCI, chargement raw dans PostgreSQL avec Docker</span>
+            <span class="lang-en"><strong>Extract & Load</strong>: Python (Pandas) extraction from UCI Excel, raw loading into PostgreSQL with Docker</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="lang-fr"><strong>Transform (dbt)</strong> : Modélisation Star Schema (fact_sales_star + 4 dimensions), calculs KPI, tests qualité données</span>
+            <span class="lang-en"><strong>Transform (dbt)</strong>: Star Schema modeling (fact_sales_star + 4 dimensions), KPI calculations, data quality tests</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="lang-fr"><strong>Analyse client</strong> : Segmentation par KPI (CA, fréquence, pays) pour cibler rétention et acquisition</span>
+            <span class="lang-en"><strong>Customer Analysis</strong>: KPI-based segmentation (revenue, frequency, country) to target retention and acquisition</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <span class="lang-fr"><strong>Dashboard Power BI</strong> : Visualisations interactives (ventes, rentabilité, géographie, saisonnalité)</span>
+            <span class="lang-en"><strong>Power BI Dashboard</strong>: Interactive visualizations (sales, profitability, geography, seasonality)</span>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Conclusion -->
-    <section class="conclusion">
-      <h3>
-        <span class="lang-fr">🎯 Recommandations stratégiques</span>
-        <span class="lang-en">🎯 Strategic recommendations</span>
-      </h3>
+    <section class="card conclusion">
+      <h3><span class="lang-fr">Conclusion</span><span class="lang-en">Conclusion</span></h3>
       <p>
         <span class="lang-fr">
-          <strong>1. Diversification géographique urgente :</strong> Réduire la dépendance au marché UK (83%) en investissant dans les marchés EIRE, Netherlands et Germany qui montrent un potentiel de croissance.
+          Ce projet démontre la mise en œuvre d'un pipeline ELT moderne sur un dataset retail réel. L'architecture PostgreSQL + dbt + Power BI permet une analyse scalable et reproductible. Les insights révèlent des opportunités concrètes : réduire les annulations, diversifier géographiquement (limiter dépendance UK à 80%), optimiser le stock (focus sur Top 15% produits stars), et segmenter finement B2C vs B2B pour des stratégies commerciales différenciées.
         </span>
         <span class="lang-en">
-          <strong>1. Urgent geographic diversification:</strong> Reduce UK market dependence (83%) by investing in EIRE, Netherlands and Germany markets that show growth potential.
-        </span>
-      </p>
-      <p>
-        <span class="lang-fr">
-          <strong>2. Réduction du taux d'annulation :</strong> Audit approfondi des causes d'annulation (17,6%) — stock, qualité, processus de livraison. Chaque point de pourcentage gagné représente ~500K€ de CA préservé.
-        </span>
-        <span class="lang-en">
-          <strong>2. Cancellation rate reduction:</strong> In-depth audit of cancellation causes (17.6%) — stock, quality, delivery process. Each percentage point gained represents ~€500K of preserved revenue.
-        </span>
-      </p>
-      <p>
-        <span class="lang-fr">
-          <strong>3. Gestion prédictive du stock :</strong> Utiliser les données historiques de saisonnalité pour anticiper les pics de Q4 et éviter les ruptures sur les produits top performers.
-        </span>
-        <span class="lang-en">
-          <strong>3. Predictive stock management:</strong> Use historical seasonality data to anticipate Q4 peaks and avoid stockouts on top performing products.
-        </span>
-      </p>
-      <p>
-        <span class="lang-fr">
-          <strong>4. Action immédiate sur produits à risque :</strong> Les produits avec >40% d'annulation nécessitent un plan correctif sous 30 jours (audit qualité, revue pricing, optimisation supply chain).
-        </span>
-        <span class="lang-en">
-          <strong>4. Immediate action on at-risk products:</strong> Products with >40% cancellation require a corrective plan within 30 days (quality audit, pricing review, supply chain optimization).
+          This project demonstrates the implementation of a modern ELT pipeline on real retail data. The PostgreSQL + dbt + Power BI architecture enables scalable and reproducible analysis. Insights reveal concrete opportunities: reduce cancellations, diversify geographically (limit 80% UK dependency), optimize inventory (focus on Top 15% star products), and finely segment B2C vs B2B for differentiated commercial strategies.
         </span>
       </p>
     </section>
-
   </main>
 
-  <script>
-  (function(){
-    const $ = s => document.querySelector(s);
-
-    // Theme toggle
-    const themeBtn = $('#themeToggle');
-    const themeIcon = $('#themeIcon');
-    if(themeBtn && themeIcon){
-      const saved = localStorage.getItem('theme') || 'dark';
-      document.documentElement.dataset.theme = saved;
-      themeIcon.textContent = saved === 'light' ? '☀️' : '🌙';
-      themeBtn.addEventListener('click', () => {
-        const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-        document.documentElement.dataset.theme = next;
-        localStorage.setItem('theme', next);
-        themeIcon.textContent = next === 'light' ? '☀️' : '🌙';
-      });
-    }
-
-    // Language toggle
-    const langBtn = $('#langToggle');
-    const langIcon = $('#langIcon');
-    if(langBtn && langIcon){
-      const savedLang = localStorage.getItem('lang') || 'fr';
-      document.documentElement.dataset.lang = savedLang;
-      document.documentElement.lang = savedLang;
-      langIcon.textContent = savedLang === 'fr' ? 'FR' : 'EN';
-      langBtn.addEventListener('click', () => {
-        const next = document.documentElement.dataset.lang === 'fr' ? 'en' : 'fr';
-        document.documentElement.dataset.lang = next;
-        document.documentElement.lang = next;
-        localStorage.setItem('lang', next);
-        langIcon.textContent = next === 'fr' ? 'FR' : 'EN';
-      });
-    }
-  })();
-  </script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
+  <script src="assets/js/shared.js"></script>
 </body>
 </html>

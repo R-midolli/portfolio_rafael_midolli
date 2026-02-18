@@ -4,130 +4,21 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Case study — Supply Chain ETL : Analyse des retards de livraison sur 181K commandes avec 54,83% late rate. Pipeline Python, KPI logistiques, dashboard Power BI. Portfolio Rafael Midolli."/>
+  <meta name="description" content="Case study — Supply Chain ETL : Analyse des retards de livraison sur 181K commandes avec 54,8% late rate. Pipeline Python, KPI logistiques, dashboard Power BI. Portfolio Rafael Midolli."/>
   <title>Supply Chain ETL — Case Study</title>
+  <meta property="og:title" content="Supply Chain ETL — Delivery Performance"/>
+  <meta property="og:description" content="Pipeline ETL Python, KPI logistiques, 181K commandes, Power BI. Portfolio Rafael Midolli."/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📊</text></svg>"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
-  <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  :root{
-    --bg:#0e1117;
-    --surface:rgba(255,255,255,.06);
-    --surface-hover:rgba(255,255,255,.10);
-    --text:#f0f2f7;
-    --text-muted:#7a8494;
-    --accent:#5b8cff;
-    --accent-2:#8b5cf6;
-    --border:rgba(255,255,255,.08);
-    --radius:20px;
-    --font-head:'Playfair Display',Georgia,serif;
-    --font-body:'DM Sans',system-ui,sans-serif;
-  }
-  :root[data-theme="light"]{
-    --bg:#f6f7fb;
-    --surface:rgba(255,255,255,.7);
-    --surface-hover:rgba(255,255,255,.92);
-    --text:#0e1320;
-    --text-muted:rgba(14,19,32,.70);
-    --border:rgba(14,19,32,.10);
-    --accent:#4f7cff;
-    --accent-2:#7b5cff;
-  }
-  :root[data-theme="light"] .nav{background:rgba(246,247,251,.9);border-bottom:1px solid var(--border)}
-  [data-lang="fr"] .lang-en{display:none}
-  [data-lang="en"] .lang-fr{display:none}
-  html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
-  body{font-family:var(--font-body);background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
-  a{color:inherit;text-decoration:none}
-  button{font-family:inherit;cursor:pointer;border:none;background:none}
-
-  .bg-mesh, .bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none}
-  .bg-mesh{background:radial-gradient(ellipse 70% 50% at 20% 20%, rgba(91,140,255,.12) 0%, transparent 70%),radial-gradient(ellipse 50% 60% at 80% 70%, rgba(139,92,246,.10) 0%, transparent 70%),radial-gradient(ellipse 40% 40% at 60% 10%, rgba(91,140,255,.06) 0%, transparent 60%)}
-  .bg-grid{opacity:.035;background-image:linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%)}
-  :root[data-theme="light"] .bg-grid{opacity:.055;background-image:linear-gradient(rgba(14,19,32,.4) 1px, transparent 1px),linear-gradient(90deg, rgba(14,19,32,.4) 1px, transparent 1px)}
-
-  .nav{position:fixed;top:0;left:0;width:100%;z-index:10;display:flex;justify-content:space-between;align-items:center;padding:14px 24px;background:rgba(14,17,23,.75);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
-  .nav .logo{display:flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:800;font-size:1.3rem;color:var(--text)}
-  .logo-ring{width:34px;height:34px;border-radius:50%;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:var(--accent);font-family:var(--font-body)}
-  .nav-right{display:flex;align-items:center;gap:12px}
-  .btn-back{padding:8px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:.88rem;font-weight:600;transition:background .2s, border-color .2s, transform .2s}
-  .btn-back:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-2px)}
-  .theme-toggle, .lang-toggle{width:42px;height:42px;border-radius:999px;border:1px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;transition:transform .15s, background .2s, border-color .2s}
-  .theme-toggle:hover, .lang-toggle:hover{background:var(--surface-hover);border-color:var(--accent);transform:translateY(-2px)}
-  .theme-toggle span, .lang-toggle span{font-size:1.25rem}
-
-  .main{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:120px 24px 80px}
-  .case-header{margin-bottom:48px}
-  .case-label{font-size:.82rem;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px}
-  .case-title{font-family:var(--font-head);font-size:clamp(2rem,4vw,3rem);font-weight:800;line-height:1.1;margin-bottom:16px}
-  .case-subtitle{font-size:1.05rem;color:var(--text-muted);line-height:1.6}
-
-  .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;margin-bottom:32px}
-  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px;transition:transform .2s, border-color .2s}
-  .card:hover{transform:translateY(-2px);border-color:rgba(91,140,255,.3)}
-  .card h3{font-family:var(--font-head);font-size:1.4rem;font-weight:700;color:var(--text);margin-bottom:16px}
-  .card p{color:var(--text-muted);line-height:1.7;margin-bottom:16px}
-  .card p:last-child{margin-bottom:0}
-
-  .metrics-mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px;margin-top:20px}
-  .metric-mini{text-align:center;padding:18px;border-radius:12px;background:rgba(91,140,255,.08);border:1px solid rgba(91,140,255,.2);transition:transform .2s, border-color .2s}
-  .metric-mini:hover{transform:translateY(-3px);border-color:var(--accent)}
-  .metric-mini.warning{background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.2)}
-  .metric-mini.warning:hover{border-color:#ff6b6b}
-  .metric-value{font-family:var(--font-head);font-size:1.8rem;font-weight:800;color:var(--accent);line-height:1.2}
-  .metric-value.warning{color:#ff6b6b}
-  .metric-label{font-size:.78rem;color:var(--text-muted);margin-top:6px}
-
-  .tech-stack{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
-  .tech-tag{padding:8px 14px;border-radius:8px;background:rgba(91,140,255,.1);border:1px solid rgba(91,140,255,.25);color:var(--accent);font-size:.84rem;font-weight:600;transition:transform .15s, border-color .15s;display:inline-flex;align-items:center;gap:6px}
-  .tech-tag:hover{transform:translateY(-1px);border-color:var(--accent)}
-
-  .btn-github{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-size:.92rem;font-weight:700;transition:transform .2s, box-shadow .2s;margin-top:12px;box-shadow:0 8px 24px rgba(91,140,255,.3)}
-  .btn-github:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(91,140,255,.4)}
-  .github-icon{width:18px;height:18px;fill:currentColor}
-
-  .insights-section{margin:48px 0}
-  .insight-card{background:linear-gradient(135deg,rgba(91,140,255,.06),rgba(139,92,246,.04));border:1px solid rgba(91,140,255,.2);border-radius:var(--radius);padding:32px;margin-bottom:24px}
-  .insight-card h4{font-family:var(--font-head);font-size:1.3rem;font-weight:700;color:var(--text);margin-bottom:16px;display:flex;align-items:center;gap:12px}
-  .insight-icon{font-size:1.6rem}
-  .insight-content{color:var(--text-muted);line-height:1.8}
-  .insight-list{display:flex;flex-direction:column;gap:12px;margin-top:16px}
-  .insight-item{padding-left:24px;position:relative}
-  .insight-item::before{content:"→";position:absolute;left:0;color:var(--accent);font-weight:700}
-  .insight-highlight{color:var(--accent);font-weight:600}
-  .insight-highlight.warning{color:#ff6b6b}
-
-  .architecture-flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin:24px 0}
-  .arch-step{text-align:center;padding:20px;border-radius:12px;background:rgba(91,140,255,.06);border:1px solid rgba(91,140,255,.18);position:relative}
-  .arch-step::after{content:"→";position:absolute;right:-24px;top:50%;transform:translateY(-50%);color:var(--accent);font-size:1.5rem;font-weight:700}
-  .arch-step:last-child::after{display:none}
-  .arch-icon{font-size:2rem;margin-bottom:8px}
-  .arch-title{font-weight:700;color:var(--text);margin-bottom:6px}
-  .arch-desc{font-size:.82rem;color:var(--text-muted)}
-
-  .embed-responsive{position:relative;width:100%;padding-top:56.25%;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);margin:32px 0}
-  .embed-responsive iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-  .embed-note{font-size:.9rem;color:var(--text-muted);line-height:1.6;padding:16px;background:rgba(91,140,255,.06);border-left:3px solid var(--accent);border-radius:8px;margin-top:16px}
-  .embed-note strong{color:var(--accent)}
-
-  .conclusion{background:linear-gradient(135deg,rgba(91,140,255,.08),rgba(139,92,246,.06));border:1px solid rgba(91,140,255,.3);border-radius:var(--radius);padding:32px;margin-top:48px}
-  .conclusion h3{font-family:var(--font-head);font-size:1.5rem;font-weight:700;margin-bottom:16px}
-  .conclusion p{color:var(--text-muted);line-height:1.8;margin-bottom:14px}
-  .conclusion p:last-child{margin-bottom:0}
-
-  @media(max-width:700px){
-    .info-grid{grid-template-columns:1fr}
-    .metrics-mini{grid-template-columns:repeat(2,1fr)}
-    .architecture-flow{grid-template-columns:1fr}
-    .arch-step::after{display:none}
-  }
-  </style>
+  <link rel="stylesheet" href="assets/css/project.css"/>
 </head>
 <body>
-  <div class="bg-mesh"></div>
-  <div class="bg-grid"></div>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
 
   <nav class="nav">
     <a href="index.html" class="logo">
@@ -176,10 +67,10 @@
         </h3>
         <p>
           <span class="lang-fr">
-            Diagnostic complet de la performance logistique sur 181K commandes et $36,78M de ventes. L'objectif : quantifier les retards (54,83% late rate), identifier les modes de transport problématiques et prioriser les actions correctives pour atteindre les standards de l'industrie (>85% on-time).
+            Diagnostic complet de la performance logistique sur 181K commandes et $36,78M de ventes. L'objectif : quantifier les retards (54,8% late rate), identifier les modes de transport problématiques et prioriser les actions correctives pour atteindre les standards de l'industrie (>85% on-time).
           </span>
           <span class="lang-en">
-            Complete logistics performance diagnosis on 181K orders and $36.78M in sales. Objective: quantify delays (54.83% late rate), identify problematic shipping modes and prioritize corrective actions to reach industry standards (>85% on-time).
+            Complete logistics performance diagnosis on 181K orders and $36.78M in sales. Objective: quantify delays (54.8% late rate), identify problematic shipping modes and prioritize corrective actions to reach industry standards (>85% on-time).
           </span>
         </p>
         <div class="metrics-mini">
@@ -195,7 +86,7 @@
             <div class="metric-label">OnTime</div>
           </div>
           <div class="metric-mini warning">
-            <div class="metric-value warning">54,83%</div>
+            <div class="metric-value warning">54,8%</div>
             <div class="metric-label">
               <span class="lang-fr">Taux Retard</span>
               <span class="lang-en">Late Rate</span>
@@ -277,10 +168,10 @@
       </div>
       <p>
         <span class="lang-fr">
-          Le pipeline ETL standardise le dataset Kaggle <em>DataCo Supply Chain</em> et calcule les KPI logistiques clés : <code>on_time_%</code> (45,2%), <code>late_rate_%</code> (54,83%), <code>avg_shipping_gap</code> (0,6 jours). Les dates sont normalisées et le dataset enrichi est exporté pour analyse interactive dans Power BI.
+          Le pipeline ETL standardise le dataset Kaggle <em>DataCo Supply Chain</em> et calcule les KPI logistiques clés : <code>on_time_%</code> (45,2%), <code>late_rate_%</code> (54,8%), <code>avg_shipping_gap</code> (0,6 jours). Les dates sont normalisées et le dataset enrichi est exporté pour analyse interactive dans Power BI.
         </span>
         <span class="lang-en">
-          The ETL pipeline standardizes the Kaggle <em>DataCo Supply Chain</em> dataset and calculates key logistics KPIs: <code>on_time_%</code> (45.2%), <code>late_rate_%</code> (54.83%), <code>avg_shipping_gap</code> (0.6 days). Dates are normalized and the enriched dataset is exported for interactive analysis in Power BI.
+          The ETL pipeline standardizes the Kaggle <em>DataCo Supply Chain</em> dataset and calculates key logistics KPIs: <code>on_time_%</code> (45.2%), <code>late_rate_%</code> (54.8%), <code>avg_shipping_gap</code> (0.6 days). Dates are normalized and the enriched dataset is exported for interactive analysis in Power BI.
         </span>
       </p>
     </section>
@@ -302,10 +193,10 @@
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Avec seulement <span class="insight-highlight warning">45,2% de livraisons à temps</span>, la performance est largement inférieure aux standards de l'industrie (>85% OTIF). Cela signifie que <strong>plus de la moitié des clients</strong> (54,83% = 99K commandes) reçoivent leur commande en retard.
+              Avec seulement <span class="insight-highlight warning">45,2% de livraisons à temps</span>, la performance est largement inférieure aux standards de l'industrie (>85% OTIF). Cela signifie que <strong>plus de la moitié des clients</strong> (54,8% — soit ~99K commandes) reçoivent leur commande en retard.
             </span>
             <span class="lang-en">
-              With only <span class="insight-highlight warning">45.2% on-time deliveries</span>, performance is well below industry standards (>85% OTIF). This means that <strong>more than half of customers</strong> (54.83% = 99K orders) receive their order late.
+              With only <span class="insight-highlight warning">45.2% on-time deliveries</span>, performance is well below industry standards (>85% OTIF). This means that <strong>more than half of customers</strong> (54.8% — approx. 99K orders) receive their order late.
             </span>
           </p>
           <div class="insight-list">
@@ -491,7 +382,7 @@
       </div>
     </section>
 
-    <section class="conclusion">
+    <section class="conclusion conclusion--highlight">
       <h3>
         <span class="lang-fr">🎯 Recommandations stratégiques</span>
         <span class="lang-en">🎯 Strategic recommendations</span>
@@ -532,39 +423,7 @@
 
   </main>
 
-  <script>
-  (function(){
-    const $ = s => document.querySelector(s);
-    const themeBtn = $('#themeToggle');
-    const themeIcon = $('#themeIcon');
-    if(themeBtn && themeIcon){
-      const saved = localStorage.getItem('theme') || 'dark';
-      document.documentElement.dataset.theme = saved;
-      themeIcon.textContent = saved === 'light' ? '☀️' : '🌙';
-      themeBtn.addEventListener('click', () => {
-        const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-        document.documentElement.dataset.theme = next;
-        localStorage.setItem('theme', next);
-        themeIcon.textContent = next === 'light' ? '☀️' : '🌙';
-      });
-    }
-    const langBtn = $('#langToggle');
-    const langIcon = $('#langIcon');
-    if(langBtn && langIcon){
-      const savedLang = localStorage.getItem('lang') || 'fr';
-      document.documentElement.dataset.lang = savedLang;
-      document.documentElement.lang = savedLang;
-      langIcon.textContent = savedLang === 'fr' ? 'FR' : 'EN';
-      langBtn.addEventListener('click', () => {
-        const next = document.documentElement.dataset.lang === 'fr' ? 'en' : 'fr';
-        document.documentElement.dataset.lang = next;
-        document.documentElement.lang = next;
-        localStorage.setItem('lang', next);
-        langIcon.textContent = next === 'fr' ? 'FR' : 'EN';
-      });
-    }
-  })();
-  </script>
+  <script src="assets/js/shared.js"></script>
 <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script>
 </body>
 </html>
