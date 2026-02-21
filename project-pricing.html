@@ -5,12 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description"
-        content="Case study — FMCG Cost Pressure Monitor : Pipeline macro-données (ECB, INSEE, Yahoo Finance, Open Food Facts) et diagnostic de compression de marge alimentaire. Python, DuckDB, Plotly, Airflow. Portfolio Rafael Midolli." />
-    <title>FMCG Pricing Analytics — Case Study</title>
-    <meta property="og:title" content="FMCG Pricing Analytics — Cost Pressure Monitor" />
-    <meta property="og:description"
-        content="Pipeline macro-données et diagnostic de marge FMCG. Python, DuckDB, Plotly. Portfolio Rafael Midolli." />
-    <meta property="og:type" content="website" />
+        content="Case study — FMCG Cost Pressure Monitor : Data pipeline (ECB, INSEE, Yahoo Finance) et diagnostic macroéconomique. Portfolio Rafael Midolli." />
+    <title>FMCG Analytics — Cost Pressure Monitor</title>
+
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📊</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -19,107 +16,183 @@
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet" />
     <link rel="stylesheet" href="assets/css/project.css" />
+
     <style>
-        .metric-value.highlight {
-            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Modern Bento Grid and Typography Overrides */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
         }
 
-        .metric-value.success {
-            background: linear-gradient(135deg, #10B981, #059669);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .metric-value.warning {
-            background: linear-gradient(135deg, #F87171, #DC2626);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            color: transparent;
-        }
-
-        .insight-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            cursor: default;
-        }
-
-        .insight-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-        }
-
-        :root[data-theme="dark"] .insight-card:hover {
-            border-color: rgba(91, 140, 255, 0.4);
-            box-shadow: 0 15px 35px rgba(91, 140, 255, 0.1);
-        }
-
-        .architecture-flow {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            align-items: center;
-            justify-content: space-between;
-            margin: 2rem 0;
-        }
-
-        .arch-step {
-            flex: 1;
-            min-width: 140px;
-            text-align: center;
-            padding: 1.5rem;
+        .bento-item {
             background: var(--surface);
             border: 1px solid var(--border);
-            border-radius: 16px;
-            transition: all 0.3s ease;
+            border-radius: 20px;
+            padding: 24px;
+            transition: transform 0.3s ease, border-color 0.3s ease;
             position: relative;
+            overflow: hidden;
         }
 
-        .arch-step:hover {
-            transform: translateY(-5px);
+        .bento-item:hover {
+            transform: translateY(-4px);
             border-color: var(--accent);
-            background: var(--surface-hover);
         }
 
-        .arch-step:not(:last-child)::after {
-            content: '→';
-            position: absolute;
-            right: -24px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 1.5rem;
-            color: var(--text-muted);
-            opacity: 0.5;
+        /* Span helpers */
+        .col-12 {
+            grid-column: span 12;
         }
 
-        @media (max-width: 768px) {
-            .arch-step:not(:last-child)::after {
-                content: '↓';
-                right: 50%;
-                bottom: -24px;
-                top: auto;
-                transform: translateX(50%);
+        .col-8 {
+            grid-column: span 8;
+        }
+
+        .col-6 {
+            grid-column: span 6;
+        }
+
+        .col-4 {
+            grid-column: span 4;
+        }
+
+        @media (max-width: 900px) {
+            .col-8 {
+                grid-column: span 12;
             }
 
-            .architecture-flow {
-                flex-direction: column;
+            .col-4 {
+                grid-column: span 12;
             }
         }
 
-        .arch-icon {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+        @media (max-width: 600px) {
+            .col-6 {
+                grid-column: span 12;
+            }
         }
 
-        .arch-title {
+        .bento-title {
+            font-size: 1.1rem;
             font-weight: 700;
             color: var(--text);
-            margin-bottom: 5px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .arch-desc {
-            font-size: 0.85rem;
+        .bento-title .icon {
+            font-size: 1.4rem;
+        }
+
+        .bento-desc {
+            font-size: 0.9rem;
             color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .kpi-huge {
+            font-size: 3rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .kpi-neutral {
+            background: linear-gradient(135deg, #5b8cff, #818cf8);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        .kpi-cocoa {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            background-clip: text;
+        }
+
+        /* Native Chart Containers */
+        .chart-native-container {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        :root[data-theme="dark"] .chart-native-container {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .dashboard-filters {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .native-select {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        .native-select:hover,
+        .native-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.15);
+        }
+
+        :root[data-theme="dark"] .native-select {
+            color-scheme: dark;
+        }
+
+        .native-select option {
+            background: var(--surface);
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .flow-modern {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .flow-node {
+            background: var(--surface-hover);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
     </style>
 </head>
@@ -135,12 +208,7 @@
         </a>
         <div class="nav-right">
             <a href="index.html#projects" class="btn-back">
-                <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
-                        class="back-label">Back</span></span>
-            </a>
-            <a href="reports/dashboard_fmcg.html" target="_blank" rel="noopener" class="btn-fullscreen">
-                <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span
-                        class="fs-label">Full&nbsp;screen</span></span>
+                <span class="lang-fr">← Retour</span><span class="lang-en">← Back</span>
             </a>
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
                 <span id="themeIcon">🌙</span>
@@ -154,424 +222,209 @@
     <main class="main">
         <header class="case-header">
             <div class="case-label">
-                <span class="lang-fr">Étude de cas Stratégique</span>
-                <span class="lang-en">Strategic Case Study</span>
+                <span class="lang-fr">Étude de cas · Data Engineering & Analytics</span>
+                <span class="lang-en">Case Study · Data Engineering & Analytics</span>
             </div>
             <h1 class="case-title">
-                <span class="lang-fr">FMCG Pricing Analytics — Diagnostic de Pression Macro</span>
-                <span class="lang-en">FMCG Pricing Analytics — Macro Cost Pressure Diagnostic</span>
+                <span class="lang-fr">FMCG Macro Monitor</span>
+                <span class="lang-en">FMCG Macro Monitor</span>
             </h1>
-            <p class="case-subtitle">
-                <span class="lang-fr">
-                    Pipeline de données multi-sources (BCE, INSEE, Yahoo Finance, Open Food Facts) couplé à un modèle
-                    dimensionnel DuckDB pour quantifier la compression de marge alimentaire et identifier les catégories
-                    produit
-                    les plus exposées aux chocs de commodités agricoles.
-                </span>
-                <span class="lang-en">
-                    Multi-source data pipeline (ECB, INSEE, Yahoo Finance, Open Food Facts) coupled with a DuckDB
-                    dimensional model to quantify food margin compression and identify product categories most exposed
-                    to agricultural commodity shocks.
-                </span>
+            <p class="case-subtitle" style="max-width: 700px; margin: 0 auto;">
+                <span class="lang-fr">Un pipeline automatisé (Airflow, DuckDB) mesurant le "Cost Squeeze" de l'industrie
+                    alimentaire face à l'explosion mondiale du prix du Cacao et du Café.</span>
+                <span class="lang-en">An automated pipeline (Airflow, DuckDB) tracking the FMCG "Cost Squeeze" amid the
+                    global explosion of Cocoa and Coffee prices.</span>
             </p>
         </header>
 
-        <div class="info-grid">
-            <div class="card">
-                <h3>
-                    <span class="lang-fr">Le Défi Business</span>
-                    <span class="lang-en">The Business Challenge</span>
-                </h3>
-                <p>
-                    <span class="lang-fr">
-                        Le secteur FMCG européen fait face à une pression triple : explosion du Cacao (+60% YoY),
-                        volatilité du taux de change EUR/USD impactant les coûts d'importation, et une inflation
-                        alimentaire
-                        persistante mesurée par l'INSEE. <strong>La question stratégique :</strong> "Les hausses de
-                        coûts
-                        matières premières sont-elles absorbées par les industriels ou transmises au consommateur final
-                        ?
-                        Quelles catégories subissent la compression de marge la plus critique ?"
-                    </span>
-                    <span class="lang-en">
-                        The European FMCG sector faces a triple squeeze: Cocoa price explosion (+60% YoY),
-                        EUR/USD exchange rate volatility impacting import costs, and persistent food inflation measured
-                        by
-                        INSEE. <strong>The strategic question:</strong> "Are raw material cost increases absorbed by
-                        manufacturers or passed through to end consumers? Which categories face the most critical margin
-                        compression?"
-                    </span>
+        <!-- BENTO GRID: Context & Architecture (Visual, Less Text) -->
+        <section class="bento-grid">
+            <!-- Strategic Issue -->
+            <div class="bento-item col-8">
+                <div class="bento-title"><span class="icon">🎯</span> <span class="lang-fr">Le Défi
+                        Stratégique</span><span class="lang-en">The Strategic Challenge</span></div>
+                <p class="bento-desc">
+                    <span class="lang-fr">Les géants de l'alimentaire (FMCG) font face au pire choc de matières
+                        premières de la décennie. Notre mission : croiser instantanément les marchés financiers et
+                        l'inflation grand public pour quantifier la destruction de marge brute (Cost Squeeze).</span>
+                    <span class="lang-en">FMCG giants are facing the worst commodity shock of the decade. Our mission:
+                        instantly cross-reference financial markets with consumer inflation to quantify gross margin
+                        destruction (Cost Squeeze).</span>
                 </p>
-
-                <div class="metrics-mini">
-                    <div class="metric-mini">
-                        <div class="metric-value highlight">+60%</div>
-                        <div class="metric-label">
-                            <span class="lang-fr">Cacao YoY</span>
-                            <span class="lang-en">Cocoa YoY</span>
-                        </div>
-                    </div>
-                    <div class="metric-mini">
-                        <div class="metric-value">4</div>
-                        <div class="metric-label">
-                            <span class="lang-fr">Sources API</span>
-                            <span class="lang-en">API Sources</span>
-                        </div>
-                    </div>
-                    <div class="metric-mini">
-                        <div class="metric-value warning">8</div>
-                        <div class="metric-label">
-                            <span class="lang-fr">Catégories CPI</span>
-                            <span class="lang-en">CPI Categories</span>
-                        </div>
-                    </div>
-                    <div class="metric-mini">
-                        <div class="metric-value success">10/10</div>
-                        <div class="metric-label">
-                            <span class="lang-fr">Tests Pytest</span>
-                            <span class="lang-en">Pytest Tests</span>
-                        </div>
-                    </div>
+                <div class="flow-modern" style="margin-top: 20px;">
+                    <div class="flow-node"><span>⚠️</span> Choc Cacao</div>
+                    <div class="flow-node"><span>⚠️</span> Risque EUR/USD</div>
+                    <div class="flow-node"><span>⚠️</span> Inflation IPC</div>
                 </div>
             </div>
 
-            <div class="card">
-                <h3>
-                    <span class="lang-fr">Architecture Technique</span>
-                    <span class="lang-en">Technical Architecture</span>
-                </h3>
-                <p>
-                    <span class="lang-fr">
-                        Pipeline automatisé d'extraction parallèle de 4 APIs publiques, transformation via le moteur
-                        <strong>DuckDB</strong> (Star Schema dimensionnel), validation par <strong>pytest</strong>,
-                        et génération programmatique d'un portail d'exploration interactif via <strong>Plotly</strong>.
-                        Orchestration <strong>Airflow</strong> et CI/CD <strong>GitHub Actions</strong>.
-                    </span>
-                    <span class="lang-en">
-                        Automated pipeline for parallel extraction from 4 public APIs, transformation via the
-                        <strong>DuckDB</strong> engine (dimensional Star Schema), validation through
-                        <strong>pytest</strong>,
-                        and programmatic generation of an interactive exploration portal via <strong>Plotly</strong>.
-                        <strong>Airflow</strong> orchestration and <strong>GitHub Actions</strong> CI/CD.
-                    </span>
-                </p>
-                <div class="tech-stack">
-                    <span class="tech-tag"><span>🐍</span> Python</span>
-                    <span class="tech-tag"><span>🦆</span> DuckDB</span>
-                    <span class="tech-tag"><span>📊</span> Plotly</span>
-                    <span class="tech-tag"><span>🌀</span> Airflow</span>
-                    <span class="tech-tag"><span>⚙️</span> GitHub Actions</span>
+            <!-- Big KPI 1 -->
+            <div class="bento-item col-4"
+                style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
+                <div class="bento-title" style="justify-content:center; margin:0;"><span class="lang-fr">Cacao
+                        (YoY)</span><span class="lang-en">Cocoa (YoY)</span></div>
+                <div class="kpi-huge">+60%</div>
+                <p class="bento-desc" style="font-size:0.8rem;"><span class="lang-fr">Pic historique</span><span
+                        class="lang-en">Historical Peak</span></p>
+            </div>
+
+            <!-- Infrastructure Flow -->
+            <div class="bento-item col-12">
+                <div class="bento-title"><span class="icon">🏗️</span> <span class="lang-fr">Modélisation &
+                        Pipeline</span><span class="lang-en">Data Stack & Pipeline</span></div>
+                <div class="architecture-flow" style="margin: 15px 0 0 0;">
+                    <div class="arch-step" style="padding: 1rem;">
+                        <div class="arch-icon">🌐</div>
+                        <div class="arch-title">APIs</div>
+                        <div class="arch-desc">ECB, INSEE, Yahoo, OpenFoodFacts</div>
+                    </div>
+                    <div class="arch-step" style="padding: 1rem;">
+                        <div class="arch-title" style="font-size:1.8rem;">🦆</div>
+                        <div class="arch-title">DuckDB</div>
+                        <div class="arch-desc">Star Schema</div>
+                    </div>
+                    <div class="arch-step" style="padding: 1rem;">
+                        <div class="arch-title" style="font-size:1.8rem;">🌀</div>
+                        <div class="arch-title">Airflow</div>
+                        <div class="arch-desc">Orchestration</div>
+                    </div>
                 </div>
                 <a href="https://github.com/R-midolli/fmcg_pricing_macro_monitor" target="_blank" rel="noopener"
-                    class="btn-github">
+                    class="btn-github" style="margin-top:20px; width:fit-content;">
                     <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path
                             d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                     </svg>
-                    <span class="lang-fr">Dépôt GitHub du Projet</span>
-                    <span class="lang-en">View GitHub Repository</span>
+                    <span class="lang-fr">Voir le Code Complet</span>
+                    <span class="lang-en">View Source Code</span>
                 </a>
             </div>
-        </div>
 
-        <!-- Architecture Flow -->
-        <section class="card">
-            <h3>
-                <span class="lang-fr">🏗️ Data Workflow & Gouvernance</span>
-                <span class="lang-en">🏗️ Data Workflow & Governance</span>
-            </h3>
-            <div class="architecture-flow">
-                <div class="arch-step">
-                    <div class="arch-icon">🌐</div>
-                    <div class="arch-title">Extract</div>
-                    <div class="arch-desc">
-                        <span class="lang-fr">APIs ECB, INSEE, Yahoo Finance, Open Food Facts</span>
-                        <span class="lang-en">ECB, INSEE, Yahoo Finance, Open Food Facts APIs</span>
-                    </div>
+            <!-- Live Data APIs -->
+            <div class="bento-item col-6" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="bento-title" style="margin:0;"><span class="lang-fr">Taux BCE (Live)</span><span
+                            class="lang-en">ECB Rate (Live)</span></div>
+                    <div class="bento-desc"><span class="lang-fr">Impact Imports</span><span class="lang-en">Import
+                            Impact</span></div>
                 </div>
-                <div class="arch-step">
-                    <div class="arch-icon">📁</div>
-                    <div class="arch-title">Store</div>
-                    <div class="arch-desc">
-                        <span class="lang-fr">Parquet (data/raw/)</span>
-                        <span class="lang-en">Parquet (data/raw/)</span>
-                    </div>
-                </div>
-                <div class="arch-step">
-                    <div class="arch-icon">🦆</div>
-                    <div class="arch-title">Transform</div>
-                    <div class="arch-desc">
-                        <span class="lang-fr">DuckDB Star Schema</span>
-                        <span class="lang-en">DuckDB Star Schema</span>
-                    </div>
-                </div>
-                <div class="arch-step">
-                    <div class="arch-icon">📊</div>
-                    <div class="arch-title">Visualize</div>
-                    <div class="arch-desc">
-                        <span class="lang-fr">Dashboard Plotly Interactif</span>
-                        <span class="lang-en">Interactive Plotly Dashboard</span>
-                    </div>
-                </div>
+                <div class="kpi-huge kpi-neutral" style="margin:0;" id="kpi-val-fx">1.18</div>
             </div>
-            <p>
-                <span class="lang-fr">
-                    Le pipeline transforme les flux bruts multi-sources en indicateurs métiers exploitables. Le modèle
-                    dimensionnel DuckDB produit les tables analytiques <code>dim_date</code>, <code>dim_product</code>,
-                    <code>fact_commodities</code>, <code>fact_inflation</code>, <code>fact_fx</code> et le mart
-                    <code>mart_category_pressure</code> qui alimente directement le dashboard.
-                </span>
-                <span class="lang-en">
-                    The pipeline transforms multi-source raw feeds into actionable business indicators. The DuckDB
-                    dimensional model produces analytical tables <code>dim_date</code>, <code>dim_product</code>,
-                    <code>fact_commodities</code>, <code>fact_inflation</code>, <code>fact_fx</code> and the
-                    <code>mart_category_pressure</code> mart that directly feeds the dashboard.
-                </span>
-            </p>
-        </section>
-
-        <!-- Key Insights -->
-        <section class="insights-section">
-            <h2 class="case-title" style="font-size:2rem;margin-bottom:32px">
-                <span class="lang-fr">💡 Actionable Data Insights</span>
-                <span class="lang-en">💡 Actionable Data Insights</span>
-            </h2>
-
-            <div class="insight-card">
-                <h4>
-                    <span class="insight-icon">📈</span>
-                    <span>
-                        <span class="lang-fr">Choc Cacao : +60% YoY, le principal vecteur de pression</span>
-                        <span class="lang-en">Cocoa Shock: +60% YoY, the Primary Pressure Driver</span>
-                    </span>
-                </h4>
-                <div class="insight-content">
-                    <p>
-                        <span class="lang-fr">
-                            L'analyse des séries temporelles révèle que le <span class="insight-highlight warning">Cacao
-                                affiche la
-                                hausse la plus brutale (+60% YoY)</span>, suivi du Café (+40%). Ces deux commodités sont
-                            cotées en
-                            USD, ce qui amplifie l'impact via le taux de change EUR/USD. Les catégories Chocolat et
-                            Biscuits sont
-                            les premières exposées.
-                        </span>
-                        <span class="lang-en">
-                            Time series analysis reveals that <span class="insight-highlight warning">Cocoa shows the
-                                most brutal
-                                increase (+60% YoY)</span>, followed by Coffee (+40%). Both commodities are
-                            USD-denominated, which
-                            amplifies the impact through the EUR/USD exchange rate. Chocolate and Biscuit categories are
-                            the first
-                            exposed.
-                        </span>
-                    </p>
-                    <div class="insight-list">
-                        <div class="insight-item">
-                            <span class="lang-fr"><strong>Levier identifié :</strong> Le Blé et le Sucre restent
-                                stables, offrant
-                                une opportunité de redéploiement du mix promotionnel vers les catégories Céréales et
-                                Confiseries.</span>
-                            <span class="lang-en"><strong>Identified lever:</strong> Wheat and Sugar remain stable,
-                                offering an
-                                opportunity to redeploy the promotional mix toward Cereals and Confectionery
-                                categories.</span>
-                        </div>
-                    </div>
+            <div class="bento-item col-6" style="display:flex; justify-content:space-between; align-items:center;">
+                <div>
+                    <div class="bento-title" style="margin:0;"><span class="lang-fr">Cours Cacao (Live)</span><span
+                            class="lang-en">Cocoa Spot (Live)</span></div>
+                    <div class="bento-desc">Yahoo Finance</div>
                 </div>
-            </div>
-
-            <div class="insight-card">
-                <h4>
-                    <span class="insight-icon">🌍</span>
-                    <span>
-                        <span class="lang-fr">Risque Change EUR/USD : Double Peine sur les Importations</span>
-                        <span class="lang-en">EUR/USD FX Risk: Double Penalty on Imports</span>
-                    </span>
-                </h4>
-                <div class="insight-content">
-                    <p>
-                        <span class="lang-fr">
-                            Le croisement des données BCE et Yahoo Finance prouve une <span
-                                class="insight-highlight">corrélation
-                                négative</span> entre la dépréciation de l'Euro et le coût d'achat des commodités.
-                            Chaque
-                            mouvement de -1% du taux de change génère mécaniquement une <strong>sur-inflation
-                                importée</strong>
-                            sur les matières premières cotées en USD.
-                        </span>
-                        <span class="lang-en">
-                            Cross-referencing ECB and Yahoo Finance data proves a <span
-                                class="insight-highlight">negative
-                                correlation</span> between Euro depreciation and commodity purchase costs. Each -1% FX
-                            movement
-                            mechanically generates <strong>imported over-inflation</strong> on USD-denominated raw
-                            materials.
-                        </span>
-                    </p>
-                    <div class="insight-list">
-                        <div class="insight-item">
-                            <span class="lang-fr"><strong>Recommandation :</strong> Instaurer un monitoring FX
-                                systématique et
-                                évaluer des contrats de couverture (hedging) sur les achats Cacao et Café.</span>
-                            <span class="lang-en"><strong>Recommendation:</strong> Implement systematic FX monitoring
-                                and evaluate
-                                hedging contracts on Cocoa and Coffee purchases.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="insight-card">
-                <h4>
-                    <span class="insight-icon">⚠️</span>
-                    <span>
-                        <span class="lang-fr">Cost Squeeze : Compression de Marge sur les Catégories
-                            Cacao-Dépendantes</span>
-                        <span class="lang-en">Cost Squeeze: Margin Compression on Cocoa-Dependent Categories</span>
-                    </span>
-                </h4>
-                <div class="insight-content">
-                    <p>
-                        <span class="lang-fr">
-                            Le <strong>Cost Squeeze Score</strong> (= Variation YoY Commodité − Variation YoY IPC)
-                            identifie les
-                            catégories où les coûts matières augmentent plus vite que l'inflation consommateur. Les
-                            catégories
-                            connectées au Cacao (Chocolats, Biscuits) affichent les <span
-                                class="insight-highlight warning">scores
-                                de compression les plus critiques</span>, signalant une érosion de marge brute à court
-                            terme.
-                        </span>
-                        <span class="lang-en">
-                            The <strong>Cost Squeeze Score</strong> (= Commodity YoY Change − CPI YoY Change) identifies
-                            categories
-                            where input costs rise faster than consumer inflation. Cocoa-connected categories
-                            (Chocolates, Biscuits)
-                            show the <span class="insight-highlight warning">most critical compression scores</span>,
-                            signaling
-                            near-term gross margin erosion.
-                        </span>
-                    </p>
-                    <div class="insight-list">
-                        <div class="insight-item">
-                            <span class="lang-fr"><strong>Plan d'action :</strong> Prioriser la renégociation
-                                fournisseur et le
-                                sourcing alternatif pour les catégories dépassant un seuil de squeeze > 20
-                                points.</span>
-                            <span class="lang-en"><strong>Action plan:</strong> Prioritize supplier renegotiation and
-                                alternative
-                                sourcing for categories exceeding a squeeze threshold > 20 points.</span>
-                        </div>
-                    </div>
-                </div>
+                <div class="kpi-huge kpi-cocoa" style="margin:0;" id="kpi-val-cocoa">+$3k</div>
             </div>
         </section>
 
-        <!-- Dashboard -->
-        <section class="card">
-            <h3>
-                <span class="lang-fr">📊 Dashboard Interactif — Exploration Self-Service</span>
-                <span class="lang-en">📊 Interactive Dashboard — Self-Service Exploration</span>
-            </h3>
-            <p>
-                <span class="lang-fr">
-                    Portail d'exploration interactif alimenté par les données macro : tendances des commodités agricoles
-                    (filtrage par matière première), taux de change EUR/USD, inflation alimentaire par catégorie INSEE,
-                    et
-                    matrice de Cost Squeeze. Entièrement généré en Python via Plotly.
-                </span>
-                <span class="lang-en">
-                    Interactive exploration portal fed by macro data: agricultural commodity trends (filterable by raw
-                    material),
-                    EUR/USD exchange rate, food inflation by INSEE category, and Cost Squeeze matrix. Entirely generated
-                    in
-                    Python via Plotly.
-                </span>
-            </p>
 
-            <div class="embed-responsive">
-                <iframe title="FMCG Cost Pressure Monitor" src="reports/dashboard_fmcg.html" class="embed-frame"
-                    id="dashFrame" loading="lazy"></iframe>
+        <!-- NATIVE DASHBOARD SECTION -->
+        <section class="card" style="padding: 2rem; border-radius: 24px;">
+            <div class="dashboard-header">
+                <div>
+                    <h3 style="margin-bottom: 8px;">
+                        <span class="lang-fr">📊 Data Storytelling : L'Effet "Squeeze"</span>
+                        <span class="lang-en">📊 Data Storytelling: The "Squeeze" Effect</span>
+                    </h3>
+                    <p class="bento-desc" style="max-width:600px; margin:0;">
+                        <span class="lang-fr">Graphiques générés dynamiquement via Plotly.js branché sur l'API
+                            analytique du pipeline.</span>
+                        <span class="lang-en">Dynamically generated plots via Plotly.js wired to our pipeline's
+                            analytical API.</span>
+                    </p>
+                </div>
+
+                <div class="dashboard-filters">
+                    <label class="bento-desc" style="font-weight:600;"><span class="lang-fr">Filtre :</span><span
+                            class="lang-en">Filter:</span></label>
+                    <select class="native-select" id="filterComm">
+                        <option value="all">🌍 Toutes / All</option>
+                        <option value="Cocoa">🍫 Cacao</option>
+                        <option value="Coffee">☕ Café</option>
+                        <option value="Wheat">🥖 Blé (Wheat)</option>
+                        <option value="Sugar">🍬 Sucre (Sugar)</option>
+                    </select>
+                </div>
             </div>
-            <div class="embed-fallback" id="dashFallback">
-                <span class="lang-fr">Si le module dynamique tarde à charger, <a href="reports/dashboard_fmcg.html"
-                        target="_blank" rel="noopener">cliquez ici pour l'ouvrir en plein écran</a>.</span>
-                <span class="lang-en">If the dynamic module is slow to load, <a href="reports/dashboard_fmcg.html"
-                        target="_blank" rel="noopener">click here to launch in full screen</a>.</span>
+
+            <div class="bento-grid" style="margin-bottom:0;">
+
+                <!-- Chart 1: Commodities -->
+                <div class="bento-item col-12" style="padding: 10px;">
+                    <div id="chart-commodities" class="chart-native-container" style="height: 400px;"></div>
+                </div>
+
+                <!-- Chart 2: FX -->
+                <div class="bento-item col-6" style="padding: 10px;">
+                    <div id="chart-fx" class="chart-native-container" style="height: 350px;"></div>
+                </div>
+
+                <!-- Chart 3: YoY Commod -->
+                <div class="bento-item col-6" style="padding: 10px;">
+                    <div id="chart-yoy" class="chart-native-container" style="height: 350px;"></div>
+                </div>
+
+                <!-- Chart 4: Inflation -->
+                <div class="bento-item col-12" style="padding: 10px;">
+                    <div id="chart-inflation" class="chart-native-container" style="height: 450px;"></div>
+                </div>
+
+                <!-- Chart 5: Squeeze Matrix -->
+                <div class="bento-item col-12" style="padding: 10px;">
+                    <div class="bento-desc" style="padding: 0 10px 10px 10px;">
+                        <strong><span class="lang-fr">Matrice de Diagnostic :</span><span class="lang-en">Diagnostic
+                                Matrix:</span></strong>
+                        <span class="lang-fr">Le "Squeeze Score" identifie les catégories où l'inflation matière dépasse
+                            drastiquement les hausses de prix aux consommateurs. Alerte rouge sur les produits
+                            cacaotés.</span>
+                        <span class="lang-en">The "Squeeze Score" reveals categories where raw material inflation
+                            drastically eclipses consumer price hikes. Red alert on cocoa products.</span>
+                    </div>
+                    <div id="chart-squeeze" class="chart-native-container" style="height: 500px;"></div>
+                </div>
+
             </div>
         </section>
 
         <!-- Conclusion -->
-        <section class="conclusion conclusion--highlight">
+        <section class="conclusion conclusion--highlight" style="margin-top: 40px; border-radius: 20px;">
             <h3>
-                <span class="lang-fr">🎯 Plan d'action & Résolution Stratégique</span>
-                <span class="lang-en">🎯 Action Plan & Strategic Resolution</span>
+                <span class="lang-fr">🎯 Plan d'action Stratégique</span>
+                <span class="lang-en">🎯 Strategic Action Plan</span>
             </h3>
             <p>
-                <span class="lang-fr">
-                    <strong>1. Couverture FX sur les Achats Critiques :</strong> Les catégories dont l'ingrédient
-                    principal est
-                    coté en USD (Cacao, Café) nécessitent une politique de hedging ou un sourcing local pour absorber la
-                    volatilité EUR/USD sans détruire la marge brute.
-                </span>
-                <span class="lang-en">
-                    <strong>1. FX Coverage on Critical Purchases:</strong> Categories with USD-denominated primary
-                    ingredients
-                    (Cocoa, Coffee) require a hedging policy or local sourcing to absorb EUR/USD volatility without
-                    destroying
-                    gross margin.
-                </span>
+                <span class="lang-fr"><strong>1. Couverture FX intensive :</strong> Les achats Cacao/Café (en USD)
+                    nécessitent un "hedging" agressif pour contrer la double peine.</span>
+                <span class="lang-en"><strong>1. Intensive FX Hedging:</strong> Cocoa/Coffee purchases (in USD) require
+                    aggressive hedging to counter the double penalty.</span>
             </p>
             <p>
-                <span class="lang-fr">
-                    <strong>2. Monitoring « Cost Squeeze » Automatisé :</strong> Automatiser via le DAG Airflow un suivi
-                    hebdomadaire du score de squeeze pour déclencher des alertes proactives avant que la compression de
-                    marge
-                    ne devienne irréversible.
-                </span>
-                <span class="lang-en">
-                    <strong>2. Automated "Cost Squeeze" Monitoring:</strong> Automate weekly squeeze score tracking via
-                    the
-                    Airflow DAG to trigger proactive alerts before margin compression becomes irreversible.
-                </span>
+                <span class="lang-fr"><strong>2. Sourcing Alternatif :</strong> Décaler dynamiquement le mix
+                    promotionnel vers les céréales et produits laitiers, où la marge résiste mieux.</span>
+                <span class="lang-en"><strong>2. Alternative Sourcing:</strong> Dynamically shift the promotional mix
+                    towards cereals and dairy products, where margin holds up better.</span>
             </p>
             <p>
-                <span class="lang-fr">
-                    <strong>3. Redéploiement du Mix Promotionnel :</strong> Déplacer l'investissement promotionnel vers
-                    les
-                    catégories à faible exposure (Céréales, Produits laitiers) pour protéger la marge globale du
-                    portefeuille.
-                </span>
-                <span class="lang-en">
-                    <strong>3. Promotional Mix Redeployment:</strong> Shift promotional investment toward low-exposure
-                    categories
-                    (Cereals, Dairy) to protect overall portfolio margin.
-                </span>
+                <span class="lang-fr"><strong>3. Automatisation des Alertes :</strong> Airflow monitore désormais ce
+                    pipeline chaque semaine, déclenchant des signaux Achats/Pricing avant l'érosion de marge.</span>
+                <span class="lang-en"><strong>3. Alert Automation:</strong> Airflow now monitors this pipeline weekly,
+                    triggering Procurement/Pricing signals ahead of margin erosion.</span>
             </p>
         </section>
     </main>
 
+    <!-- Apache ECharts for Native High-Performance Interactive Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+
+
+    <!-- Core Portfolio Logic -->
     <script src="assets/js/shared.js"></script>
-    <script>
-        (function () {
-            var frame = document.getElementById('dashFrame');
-            var fallback = document.getElementById('dashFallback');
-            if (frame) {
-                frame.addEventListener('load', function () { if (fallback) fallback.style.display = 'none'; }, { once: true });
-                setTimeout(function () {
-                    if (!frame.contentDocument || frame.contentDocument.body.childElementCount === 0) {
-                        if (fallback) fallback.style.display = 'block';
-                    }
-                }, 6000);
-                window.addEventListener('message', function (e) {
-                    if (e.data && e.data.type === 'rm-iframe-height' && typeof e.data.height === 'number') {
-                        if (e.data.height > 200) frame.style.height = e.data.height + 'px';
-                    }
-                });
-            }
-        })();
-    </script>
+
+    <!-- Native Dashboard Integration -->
+    <script src="assets/js/dashboard_fmcg.js"></script>
 </body>
 
 </html>
