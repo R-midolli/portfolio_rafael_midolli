@@ -251,12 +251,14 @@
                 <div class="bento-title"><span class="icon">🎯</span> <span class="lang-fr">Le Défi
                         Stratégique</span><span class="lang-en">The Strategic Challenge</span></div>
                 <p class="bento-desc">
-                    <span class="lang-fr">Les géants de l'alimentaire (FMCG) font face au pire choc de matières
-                        premières de la décennie. Notre mission : croiser instantanément les marchés financiers et
-                        l'inflation grand public pour quantifier la destruction de marge brute (Cost Squeeze).</span>
-                    <span class="lang-en">FMCG giants are facing the worst commodity shock of the decade. Our mission:
-                        instantly cross-reference financial markets with consumer inflation to quantify gross margin
-                        destruction (Cost Squeeze).</span>
+                    <span class="lang-fr">L'industrie agroalimentaire traverse le cycle inflationniste le plus sévère de
+                        la décennie sur les matières premières. Notre objectif : modéliser la corrélation en direct
+                        entre les marchés à terme (commodities) et l'indice des prix à la consommation, afin de
+                        quantifier la destruction de marge brute (Cost Squeeze).</span>
+                    <span class="lang-en">The food and beverage industry is navigating the most severe commodity
+                        inflationary cycle of the decade. Our objective: model the real-time correlation between futures
+                        markets (commodities) and the consumer price index to quantify gross margin destruction (Cost
+                        Squeeze).</span>
                 </p>
                 <div class="flow-modern" style="margin-top: 20px;">
                     <div class="flow-node"><span>⚠️</span> Choc Cacao</div>
@@ -348,21 +350,23 @@
                     </p>
                 </div>
 
-                <div class="dashboard-filters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div class="dashboard-filters"
+                    style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; background: rgba(255,255,255,0.03); padding: 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05);">
                     <button class="category-toggle active" data-comm="all">
-                        <span>🌍</span> <span class="lang-fr">Toutes</span><span class="lang-en">All</span>
+                        <span>🌍</span> <span class="lang-fr">Toutes (Index Global)</span><span class="lang-en">All
+                            (Global Index)</span>
                     </button>
                     <button class="category-toggle" data-comm="Cocoa" style="--btn-color: #f59e0b;">
-                        <span>🍫</span> Cacao
+                        <span>🍫</span> <span class="lang-fr">Cacao</span><span class="lang-en">Cocoa</span>
                     </button>
                     <button class="category-toggle" data-comm="Coffee" style="--btn-color: #ef4444;">
-                        <span>☕</span> Coffee
+                        <span>☕</span> <span class="lang-fr">Café</span><span class="lang-en">Coffee</span>
                     </button>
                     <button class="category-toggle" data-comm="Sugar" style="--btn-color: #22d3ee;">
-                        <span>🍬</span> Sugar
+                        <span>🍬</span> <span class="lang-fr">Sucre</span><span class="lang-en">Sugar</span>
                     </button>
                     <button class="category-toggle" data-comm="Wheat" style="--btn-color: #a78bfa;">
-                        <span>🥖</span> Wheat
+                        <span>🥖</span> <span class="lang-fr">Blé</span><span class="lang-en">Wheat</span>
                     </button>
                 </div>
             </div>
@@ -391,14 +395,13 @@
 
                 <!-- Chart 5: Squeeze Matrix -->
                 <div class="bento-item col-12" style="padding: 10px;">
-                    <div class="bento-desc" style="padding: 0 10px 10px 10px;">
-                        <strong><span class="lang-fr">Matrice de Diagnostic :</span><span class="lang-en">Diagnostic
-                                Matrix:</span></strong>
-                        <span class="lang-fr">Le "Squeeze Score" identifie les catégories où l'inflation matière dépasse
-                            drastiquement les hausses de prix aux consommateurs. Alerte rouge sur les produits
-                            cacaotés.</span>
-                        <span class="lang-en">The "Squeeze Score" reveals categories where raw material inflation
-                            drastically eclipses consumer price hikes. Red alert on cocoa products.</span>
+                    <div class="bento-desc" style="padding: 0 10px 10px 10px;" id="dynamic-insight">
+                        <strong><span class="lang-fr">Diagnostic Global :</span><span class="lang-en">Global
+                                Diagnostic:</span></strong>
+                        <span class="lang-fr">Pression généralisée sur les chaînes de valeur. Le cacao draine la
+                            majorité des marges de l'industrie sucrière et chocolatière.</span>
+                        <span class="lang-en">Widespread pressure across value chains. Cocoa is draining the majority of
+                            margins in the chocolate industry.</span>
                     </div>
                     <div id="chart-squeeze" class="chart-native-container" style="height: 500px;"></div>
                 </div>

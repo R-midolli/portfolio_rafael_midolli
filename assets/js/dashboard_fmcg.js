@@ -160,6 +160,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const spotTitle = document.getElementById('spot-title');
         const spotVal = document.getElementById('spot-value');
         const spotDesc = document.getElementById('spot-desc');
+        // Insight Block
+        const dynInsight = document.getElementById('dynamic-insight');
 
         if (!kpiTitle || !data) return;
 
@@ -178,6 +180,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (spotTitle) spotTitle.innerHTML = `<span class="lang-fr">Cours Cacao (Live)</span><span class="lang-en">Cocoa Spot (Live)</span>`;
             if (spotVal) spotVal.textContent = `+$${Math.round(data.kpis.cocoa_usd_t).toLocaleString('en-US')}`;
             if (spotDesc) spotDesc.textContent = "Yahoo Finance";
+
+            if (dynInsight) dynInsight.innerHTML = `<strong><span class="lang-fr">Diagnostic Global :</span><span class="lang-en">Global Diagnostic:</span></strong><span class="lang-fr"> Pression généralisée sur les chaînes de valeur. Le Cacao draine la vaste majorité des marges de l'industrie sucrière et chocolatière.</span><span class="lang-en"> Widespread pressure across value chains. Cocoa is draining the vast majority of margins in the chocolate industry.</span>`;
         } else {
             const yoyIndex = data.charts.yoy_commodity.labels.indexOf(selectedCommodity);
             if (yoyIndex !== -1) {
@@ -196,6 +200,31 @@ document.addEventListener('DOMContentLoaded', async () => {
                 spotTitle.innerHTML = `<span class="lang-fr">Cours ${commFr} (Live)</span><span class="lang-en">${selectedCommodity} Spot</span>`;
                 spotVal.textContent = `$${latest >= 1000 ? (latest / 1000).toFixed(1) + 'k' : Math.round(latest)}`;
                 if (spotDesc) spotDesc.textContent = "Yahoo Finance";
+            }
+
+            if (dynInsight) {
+                const insights = {
+                    'Cocoa': {
+                        fr: "Choc historique d'approvisionnement en Afrique de l'Ouest. La compression des marges est inévitable sans stratégies de couverture massives.",
+                        en: "Historic supply shock in West Africa. Margin compression is inevitable without massive hedging strategies."
+                    },
+                    'Coffee': {
+                        fr: "Volatilité structurelle exacerbée par les aléas climatiques mondiaux. Les torréfacteurs peinent à répercuter l'intégralité des hausses.",
+                        en: "Structural volatility exacerbated by global weather events. Roasters struggle to pass on the full increases."
+                    },
+                    'Sugar': {
+                        fr: "Contraintes logistiques et demande mondiale robuste maintiennent des prix planchers élevés. Pression latente sur les confiseries.",
+                        en: "Logistical bottlenecks and robust global demand maintain high floor prices. Latent pressure on confectionery."
+                    },
+                    'Wheat': {
+                        fr: "Normalisation post-choc géopolitique. Effet d'aubaine pour la boulangerie industrielle qui reconstitue progressivement ses marges.",
+                        en: "Post-geopolitical shock normalization. Windfall effect for industrial bakeries gradually rebuilding margins."
+                    }
+                };
+                const ins = insights[selectedCommodity];
+                if (ins) {
+                    dynInsight.innerHTML = `<strong><span class="lang-fr">Diagnostic ${commFr} :</span><span class="lang-en">${selectedCommodity} Diagnostic:</span></strong><span class="lang-fr"> ${ins.fr}</span><span class="lang-en"> ${ins.en}</span>`;
+                }
             }
         }
     }
@@ -304,7 +333,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             yAxis: {
                 type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
                 axisLabel: {
-                    formatter: '{value}', // Base 100 index doesn't need $ or decimals
+                    formatter: v => Math.round(v), // Mathematical guarantee of no decimals
                     color: theme().muted, fontFamily: 'DM Sans'
                 },
                 name: 'Base 100\n(Jan 2023)',
