@@ -1,96 +1,105 @@
 /**
- * FMCG Native Dashboard Integration (Apache ECharts)
- * Premium visual design with Power BI–style cross-chart filtering,
- * synced theme (dark/light) and language (FR/EN).
+ * FMCG Cost Pressure Monitor — Native Dashboard (Apache ECharts)
+ * All values are 100% data-driven from the pipeline JSON.
+ * No hardcoded KPIs. Cross-chart filtering via category toggles.
  */
 document.addEventListener('DOMContentLoaded', async () => {
-    // DOM containers
     const domComm = document.getElementById('chart-commodities');
     const domFx = document.getElementById('chart-fx');
     const domYoyComm = document.getElementById('chart-yoy');
     const domYoyInf = document.getElementById('chart-inflation');
     const domSqueeze = document.getElementById('chart-squeeze');
-    const filterComm = document.getElementById('filterComm');
 
     let chartComm, chartFx, chartYoyComm, chartYoyInf, chartSqueeze;
 
-    // ─── PREMIUM COLOR PALETTE ────────────────────────────────────────
+    // ─── COLOR PALETTE ───────────────────────────────────────────────
     const PALETTE = {
         Cocoa: { main: '#f59e0b', glow: 'rgba(245,158,11,.35)' },
         Coffee: { main: '#ef4444', glow: 'rgba(239,68,68,.35)' },
         Sugar: { main: '#22d3ee', glow: 'rgba(34,211,238,.35)' },
         Wheat: { main: '#a78bfa', glow: 'rgba(167,139,250,.35)' },
         Fx: { main: '#818cf8', glow: 'rgba(129,140,248,.35)' },
-        Up: '#ef4444',
-        Down: '#22c55e'
+        Up: '#ef4444', Down: '#22c55e'
     };
 
-    // ─── THEME TOKENS ─────────────────────────────────────────────────
+    // Inflation category colors (consistent across charts)
+    const INF_COLORS = {
+        'Oils & Fats': '#ef4444',
+        'Dairy, Cheese & Eggs': '#f97316',
+        'Coffee, Tea, Cocoa': '#f59e0b',
+        'Meat': '#eab308',
+        'Sugar, Jam, Honey, Chocolate': '#a78bfa',
+        'All Items': '#3b82f6',
+        'Bread & Cereals': '#22c55e'
+    };
+
+    // Map commodity filter → inflation category for cross-filtering
+    const COMM_TO_INF = {
+        'Cocoa': 'Coffee, Tea, Cocoa',
+        'Coffee': 'Coffee, Tea, Cocoa',
+        'Sugar': 'Sugar, Jam, Honey, Chocolate',
+        'Wheat': 'Bread & Cereals'
+    };
+
+    // ─── THEME TOKENS ────────────────────────────────────────────────
     const THEMES = {
         dark: {
             text: '#e0e3eb', muted: '#8b92a5',
             gridLine: 'rgba(255,255,255,0.05)',
             tipBg: 'rgba(15,23,42,0.96)', tipBorder: 'rgba(91,140,255,0.2)',
-            cardBg: 'rgba(255,255,255,0.03)'
         },
         light: {
             text: '#1e293b', muted: '#64748b',
             gridLine: 'rgba(0,0,0,0.06)',
             tipBg: 'rgba(255,255,255,0.96)', tipBorder: 'rgba(0,0,0,0.08)',
-            cardBg: 'rgba(0,0,0,0.02)'
         }
     };
 
-    // ─── TRANSLATIONS ─────────────────────────────────────────────────
+    // ─── TRANSLATIONS ────────────────────────────────────────────────
     const TR = {
         fr: {
-            comm: 'Évolution Mondiale des Prix (Base 100)',
-            fx: 'Taux de Change EUR/USD',
-            yoy: 'Inflation Matières (% YoY - Mois Actuel)',
-            inf: 'Historique Inflation Consommateur (France)',
-            squeeze: 'Matrice Squeeze (Impact Instantané)',
-            sqTip: 'Squeeze Score',
-            zoomTip: 'Glissez pour zoomer',
-            click: 'Cliquez sur la légende pour filtrer'
+            comm: 'Évolution des Prix (Base 100 = Jan 2023)',
+            fx: 'Taux de Change EUR / USD',
+            yoy: 'Variation Annuelle des Matières Premières',
+            inf: 'Inflation par Catégorie Alimentaire (INSEE)',
+            squeeze: 'Matrice de Pression sur les Marges',
+            sqTip: 'Score de Pression'
         },
         en: {
-            comm: 'Global Commodity Price Evolution (Base 100)',
-            fx: 'EUR/USD Exchange Rate',
-            yoy: 'Commodity Inflation (% YoY - Current Month)',
-            inf: 'Historical Consumer Inflation (France)',
-            squeeze: 'Squeeze Matrix (Instantaneous Impact)',
-            sqTip: 'Squeeze Score',
-            zoomTip: 'Drag to zoom',
-            click: 'Click legend to filter'
+            comm: 'Commodity Price Evolution (Base 100 = Jan 2023)',
+            fx: 'EUR / USD Exchange Rate',
+            yoy: 'Year-over-Year Commodity Price Change',
+            inf: 'Food Category Inflation Over Time (INSEE)',
+            squeeze: 'Margin Pressure Matrix',
+            sqTip: 'Pressure Score'
         }
     };
 
-    // ─── STATE ─────────────────────────────────────────────────────────
+    // ─── STATE ───────────────────────────────────────────────────────
     let data = null;
     let theme = () => THEMES[document.documentElement.getAttribute('data-theme') || 'dark'];
     let lang = () => TR[document.documentElement.getAttribute('data-lang') || 'fr'];
     let isDark = () => (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
-    let selectedCommodity = 'all'; // cross-filter state
+    let selectedCommodity = 'all';
 
-    // ─── DATA FETCH ───────────────────────────────────────────────────
+    // ─── DATA FETCH ──────────────────────────────────────────────────
     try {
         const res = await fetch('reports/dashboard_fmcg_data.json');
         data = await res.json();
 
-        // Populate KPIs
+        // Populate static KPIs from real data
         const kpiFx = document.getElementById('kpi-val-fx');
         if (kpiFx) kpiFx.textContent = data.kpis.fx_eur_usd.toFixed(4);
-        const kpiCocoa = document.getElementById('kpi-val-cocoa');
-        if (kpiCocoa) kpiCocoa.textContent = `+$${Math.round(data.kpis.cocoa_usd_t).toLocaleString('en-US')}`;
 
+        updateDynamicKPI();
         initCharts();
         renderAll();
         bindEvents();
     } catch (e) {
-        console.warn('Dashboard data unavailable (expected on file://):', e.message);
+        console.warn('Dashboard data unavailable:', e.message);
     }
 
-    // ─── INIT ─────────────────────────────────────────────────────────
+    // ─── INIT ────────────────────────────────────────────────────────
     function initCharts() {
         if (domComm) chartComm = echarts.init(domComm);
         if (domFx) chartFx = echarts.init(domFx);
@@ -100,19 +109,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function bindEvents() {
-        // Theme toggle
         const themeBtn = document.getElementById('themeToggle');
         if (themeBtn) themeBtn.addEventListener('click', () => setTimeout(renderAll, 60));
 
-        // Language toggle
         const langBtn = document.getElementById('langToggle');
         if (langBtn) langBtn.addEventListener('click', () => setTimeout(renderAll, 60));
 
-        // Category Toggles -> cross-filter AND update dynamic KPI
-        const toggles = document.querySelectorAll('.category-toggle');
-        toggles.forEach(btn => {
+        document.querySelectorAll('.category-toggle').forEach(btn => {
             btn.addEventListener('click', () => {
-                toggles.forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.category-toggle').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 selectedCommodity = btn.getAttribute('data-comm');
                 updateDynamicKPI();
@@ -120,129 +125,133 @@ document.addEventListener('DOMContentLoaded', async () => {
             });
         });
 
-        // Responsive resize
         window.addEventListener('resize', () => {
             [chartComm, chartFx, chartYoyComm, chartYoyInf, chartSqueeze]
                 .forEach(c => c && c.resize());
         });
-
-        // ─── POWER BI-STYLE: Click legend on Commodities → cross-filter ─
-        if (chartComm) {
-            chartComm.on('legendselectchanged', (params) => {
-                const selected = Object.entries(params.selected).filter(([, v]) => v).map(([k]) => k);
-                if (selected.length === 1) {
-                    selectedCommodity = selected[0];
-                } else {
-                    selectedCommodity = 'all';
-                }
-
-                // Sync HTML toggle buttons
-                const toggles = document.querySelectorAll('.category-toggle');
-                toggles.forEach(b => {
-                    b.classList.remove('active');
-                    if (b.getAttribute('data-comm') === selectedCommodity) b.classList.add('active');
-                });
-
-                updateDynamicKPI();
-                renderYoyComm();
-                renderSqueeze();
-            });
-        }
     }
 
-    // ─── DYNAMIC KPI UPDATE ───────────────────────────────────────────
+    // ─── DYNAMIC KPI (100% data-driven) ──────────────────────────────
     function updateDynamicKPI() {
-        // YoY Block
         const kpiTitle = document.getElementById('kpi-title');
         const kpiVal = document.getElementById('kpi-value');
         const kpiDesc = document.getElementById('kpi-desc');
-        // Spot Block
         const spotTitle = document.getElementById('spot-title');
         const spotVal = document.getElementById('spot-value');
         const spotDesc = document.getElementById('spot-desc');
-        // Insight Block
         const dynInsight = document.getElementById('dynamic-insight');
 
         if (!kpiTitle || !data) return;
 
-        const pTheme = PALETTE[selectedCommodity] || { main: '#818cf8' };
-        kpiVal.style.color = pTheme.main;
-        if (spotVal) spotVal.style.color = pTheme.main;
-
         const frNames = { 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' };
-        const commFr = frNames[selectedCommodity] || selectedCommodity;
 
         if (selectedCommodity === 'all') {
-            kpiTitle.innerHTML = `<span class="lang-fr">Inflation Globale (YoY)</span><span class="lang-en">Global Inflation (YoY)</span>`; // Top mover anchor
-            const avgYoy = data.charts.yoy_inflation.values.reduce((a, b) => a + b, 0) / data.charts.yoy_inflation.values.length;
-            kpiVal.textContent = "+" + avgYoy.toFixed(1) + "%";
-            kpiDesc.innerHTML = `<span class="lang-fr">Moyenne des catégories</span><span class="lang-en">Category Average</span>`;
+            // Find the top mover (highest absolute YoY change)
+            const yoy = data.charts.yoy_commodity;
+            let maxIdx = 0;
+            yoy.values.forEach((v, i) => { if (Math.abs(v) > Math.abs(yoy.values[maxIdx])) maxIdx = i; });
+            const topName = yoy.labels[maxIdx];
+            const topVal = yoy.values[maxIdx];
+            const topFr = frNames[topName] || topName;
+            const prefix = topVal > 0 ? '+' : '';
 
-            if (spotTitle) spotTitle.innerHTML = `<span class="lang-fr">Tendance Globale</span><span class="lang-en">Global Trend</span>`;
-            if (spotVal) {
-                spotVal.textContent = "Élevée";
-                spotVal.style.fontSize = "2.2rem"; // Auto size text
-                spotVal.style.color = "#ef4444";
+            kpiTitle.innerHTML = `<span class="lang-fr">${topFr} (YoY)</span><span class="lang-en">${topName} (YoY)</span>`;
+            kpiVal.textContent = prefix + Math.round(topVal) + '%';
+            kpiVal.style.color = PALETTE[topName] ? PALETTE[topName].main : '#818cf8';
+            kpiDesc.innerHTML = `<span class="lang-fr">Plus forte variation</span><span class="lang-en">Largest Swing</span>`;
+
+            if (spotTitle) {
+                const latestPrice = data.charts.commodities[topName].prices.slice(-1)[0];
+                spotTitle.innerHTML = `<span class="lang-fr">Cours ${topFr}</span><span class="lang-en">${topName} Spot</span>`;
+                spotVal.textContent = '$' + (latestPrice >= 1000 ? (latestPrice / 1000).toFixed(1) + 'k' : Math.round(latestPrice));
+                spotVal.style.color = PALETTE[topName] ? PALETTE[topName].main : '#818cf8';
+                spotVal.style.fontSize = '3rem';
+                if (spotDesc) spotDesc.textContent = 'Yahoo Finance';
             }
-            if (spotDesc) spotDesc.textContent = "Macro Monitor";
 
-            if (dynInsight) dynInsight.innerHTML = `<strong><span class="lang-fr">Diagnostic Global :</span><span class="lang-en">Global Diagnostic:</span></strong><span class="lang-fr"> Pression généralisée sur les chaînes de valeur. Le Cacao draine la vaste majorité des marges de l'industrie sucrière et chocolatière.</span><span class="lang-en"> Widespread pressure across value chains. Cocoa is draining the vast majority of margins in the chocolate industry.</span>`;
+            if (dynInsight) dynInsight.innerHTML = buildGlobalInsight();
         } else {
-            const yoyIndex = data.charts.yoy_commodity.labels.indexOf(selectedCommodity);
-            if (yoyIndex !== -1) {
-                const val = data.charts.yoy_commodity.values[yoyIndex];
+            const commFr = frNames[selectedCommodity] || selectedCommodity;
+            const yoyIdx = data.charts.yoy_commodity.labels.indexOf(selectedCommodity);
+
+            if (yoyIdx !== -1) {
+                const val = data.charts.yoy_commodity.values[yoyIdx];
                 const prefix = val > 0 ? '+' : '';
                 kpiTitle.innerHTML = `<span class="lang-fr">${commFr} (YoY)</span><span class="lang-en">${selectedCommodity} (YoY)</span>`;
-                kpiVal.textContent = prefix + val.toFixed(0) + "%";
-                kpiDesc.innerHTML = val > 20 ?
-                    `<span class="lang-fr">Alerte volatilité</span><span class="lang-en">Volatility Alert</span>` :
-                    `<span class="lang-fr">Évolution Annuelle</span><span class="lang-en">Annual Evolution</span>`;
+                kpiVal.textContent = prefix + Math.round(val) + '%';
+                kpiVal.style.color = PALETTE[selectedCommodity] ? PALETTE[selectedCommodity].main : '#818cf8';
+                kpiDesc.innerHTML = val > 10
+                    ? `<span class="lang-fr">Hausse significative</span><span class="lang-en">Significant Rise</span>`
+                    : val < -10
+                        ? `<span class="lang-fr">Correction majeure</span><span class="lang-en">Major Correction</span>`
+                        : `<span class="lang-fr">Variation annuelle</span><span class="lang-en">Annual Change</span>`;
             }
 
             if (spotTitle && data.charts.commodities[selectedCommodity]) {
                 const prices = data.charts.commodities[selectedCommodity].prices;
                 const latest = prices[prices.length - 1];
-                spotTitle.innerHTML = `<span class="lang-fr">Cours ${commFr} (Live)</span><span class="lang-en">${selectedCommodity} Spot</span>`;
-                spotVal.style.fontSize = "3rem";
-                spotVal.textContent = `$${latest >= 1000 ? (latest / 1000).toFixed(1) + 'k' : Math.round(latest)}`;
-                if (spotDesc) spotDesc.textContent = "Yahoo Finance";
+                spotTitle.innerHTML = `<span class="lang-fr">Cours ${commFr}</span><span class="lang-en">${selectedCommodity} Spot</span>`;
+                spotVal.textContent = '$' + (latest >= 1000 ? (latest / 1000).toFixed(1) + 'k' : Math.round(latest));
+                spotVal.style.color = PALETTE[selectedCommodity] ? PALETTE[selectedCommodity].main : '#818cf8';
+                spotVal.style.fontSize = '3rem';
+                if (spotDesc) spotDesc.textContent = 'Yahoo Finance';
             }
 
-            if (dynInsight) {
-                const insights = {
-                    'Cocoa': {
-                        fr: "Choc historique d'approvisionnement en Afrique de l'Ouest. La compression des marges est inévitable sans stratégies de couverture massives.",
-                        en: "Historic supply shock in West Africa. Margin compression is inevitable without massive hedging strategies."
-                    },
-                    'Coffee': {
-                        fr: "Volatilité structurelle exacerbée par les aléas climatiques mondiaux. Les torréfacteurs peinent à répercuter l'intégralité des hausses.",
-                        en: "Structural volatility exacerbated by global weather events. Roasters struggle to pass on the full increases."
-                    },
-                    'Sugar': {
-                        fr: "Contraintes logistiques et demande mondiale robuste maintiennent des prix planchers élevés. Pression latente sur les confiseries.",
-                        en: "Logistical bottlenecks and robust global demand maintain high floor prices. Latent pressure on confectionery."
-                    },
-                    'Wheat': {
-                        fr: "Normalisation post-choc géopolitique. Effet d'aubaine pour la boulangerie industrielle qui reconstitue progressivement ses marges.",
-                        en: "Post-geopolitical shock normalization. Windfall effect for industrial bakeries gradually rebuilding margins."
-                    }
-                };
-                const ins = insights[selectedCommodity];
-                if (ins) {
-                    dynInsight.innerHTML = `<strong><span class="lang-fr">Diagnostic ${commFr} :</span><span class="lang-en">${selectedCommodity} Diagnostic:</span></strong><span class="lang-fr"> ${ins.fr}</span><span class="lang-en"> ${ins.en}</span>`;
-                }
-            }
+            if (dynInsight) dynInsight.innerHTML = buildCommodityInsight(selectedCommodity, commFr);
         }
     }
 
-    // ─── COMMON HELPERS ───────────────────────────────────────────────
-    function makeGradient(color, opacity1 = 0.45, opacity2 = 0) {
-        return new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: color.replace(')', `,${opacity1})`).replace('rgb', 'rgba') },
-            { offset: 1, color: color.replace(')', `,${opacity2})`).replace('rgb', 'rgba') }
-        ]);
+    // Insight text builders — derived from the actual data
+    function buildGlobalInsight() {
+        const yoy = data.charts.yoy_commodity;
+        const rising = yoy.labels.filter((_, i) => yoy.values[i] > 0);
+        const falling = yoy.labels.filter((_, i) => yoy.values[i] < 0);
+        const risingFr = rising.map(n => ({ 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' }[n] || n));
+        const fallingFr = falling.map(n => ({ 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' }[n] || n));
+
+        const frText = `Sur les 4 matières suivies, ${rising.length > 0 ? risingFr.join(', ') + (rising.length === 1 ? ' est' : ' sont') + ' en hausse annuelle' : 'aucune n\'est en hausse'}${falling.length > 0 ? ' tandis que ' + fallingFr.join(', ') + (falling.length === 1 ? ' recule.' : ' reculent.') : '.'}`;
+        const enText = `Of the 4 tracked commodities, ${rising.length > 0 ? rising.join(', ') + (rising.length === 1 ? ' is' : ' are') + ' rising year-over-year' : 'none are rising'}${falling.length > 0 ? ' while ' + falling.join(', ') + (falling.length === 1 ? ' is declining.' : ' are declining.') : '.'}`;
+
+        return `<strong><span class="lang-fr">Vue d'ensemble :</span><span class="lang-en">Overview:</span></strong>
+                <span class="lang-fr"> ${frText}</span><span class="lang-en"> ${enText}</span>`;
     }
 
+    function buildCommodityInsight(comm, commFr) {
+        const yoyIdx = data.charts.yoy_commodity.labels.indexOf(comm);
+        const yoyVal = yoyIdx !== -1 ? data.charts.yoy_commodity.values[yoyIdx] : 0;
+        const prefix = yoyVal > 0 ? '+' : '';
+        const infCat = COMM_TO_INF[comm];
+        let infVal = null;
+        if (infCat) {
+            const infIdx = data.charts.yoy_inflation.labels.indexOf(infCat);
+            if (infIdx !== -1) infVal = data.charts.yoy_inflation.values[infIdx];
+        }
+
+        let frText = `Le ${commFr} affiche une variation de ${prefix}${Math.round(yoyVal)}% sur un an.`;
+        let enText = `${comm} shows a ${prefix}${Math.round(yoyVal)}% year-over-year change.`;
+
+        if (infVal !== null) {
+            const infPrefix = infVal > 0 ? '+' : '';
+            frText += ` L'inflation de la catégorie associée (${infCat}) se situe à ${infPrefix}${infVal.toFixed(1)}% — `;
+            enText += ` Linked retail inflation (${infCat}) stands at ${infPrefix}${infVal.toFixed(1)}% — `;
+
+            if (Math.abs(yoyVal) > 20 && infVal < 5) {
+                frText += `le consommateur n'absorbe qu'une fraction du choc matières.`;
+                enText += `consumers are absorbing only a fraction of the raw material shock.`;
+            } else if (yoyVal < 0 && infVal > 0) {
+                frText += `les prix de détail restent élevés malgré la baisse des matières premières (effet retard).`;
+                enText += `retail prices remain high despite falling commodity costs (lag effect).`;
+            } else {
+                frText += `le pass-through vers les prix de détail est à surveiller.`;
+                enText += `the pass-through to retail prices should be monitored.`;
+            }
+        }
+
+        return `<strong><span class="lang-fr">Diagnostic ${commFr} :</span><span class="lang-en">${comm} Analysis:</span></strong>
+                <span class="lang-fr"> ${frText}</span><span class="lang-en"> ${enText}</span>`;
+    }
+
+    // ─── COMMON HELPERS ──────────────────────────────────────────────
     function hexToRgba(hex, a) {
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
@@ -261,17 +270,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const t = theme();
         return {
             tooltip: {
-                trigger: 'axis',
-                backgroundColor: t.tipBg,
-                borderColor: t.tipBorder,
-                borderWidth: 1,
-                borderRadius: 12,
-                padding: [12, 16],
+                backgroundColor: t.tipBg, borderColor: t.tipBorder, borderWidth: 1,
+                borderRadius: 12, padding: [12, 16],
                 textStyle: { color: t.text, fontFamily: 'DM Sans', fontSize: 13 },
                 axisPointer: {
                     type: 'cross',
-                    lineStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.3) },
-                    crossStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.3) },
+                    lineStyle: { color: 'rgba(129,140,248,0.3)' },
+                    crossStyle: { color: 'rgba(129,140,248,0.3)' },
                     label: { backgroundColor: t.muted, borderRadius: 4, padding: [4, 8], precision: 0 }
                 }
             }
@@ -293,71 +298,75 @@ document.addEventListener('DOMContentLoaded', async () => {
             text, left: 'center', top: 4,
             textStyle: {
                 color: theme().text, fontFamily: 'DM Sans',
-                fontSize: 15, fontWeight: 700, letterSpacing: '-0.02em'
+                fontSize: 15, fontWeight: 700
             }
         };
     }
 
-    // ─── CHART 1: COMMODITIES (Main) ──────────────────────────────────
+    // ═══════════════════════════════════════════════════════════════════
+    // CHART 1 — COMMODITY PRICE EVOLUTION (Base 100)
+    // ═══════════════════════════════════════════════════════════════════
     function renderComm() {
         if (!chartComm || !data) return;
         const t = lang();
-        const sel = selectedCommodity;
-        const names = sel === 'all' ? ['Cocoa', 'Coffee', 'Sugar', 'Wheat'] : [sel];
+        const d = data.charts.commodities;
+        const allNames = ['Cocoa', 'Coffee', 'Sugar', 'Wheat'];
 
-        const series = names.map(name => {
-            const d = data.charts.commodities[name];
-            if (!d) return null;
+        // Union all dates for a shared X axis
+        const allDates = d[allNames[0]].dates;
+
+        const series = allNames.map(name => {
+            const cd = d[name];
+            if (!cd) return null;
             const p = PALETTE[name];
-            const isOnly = names.length === 1;
+            const isActive = selectedCommodity === 'all' || selectedCommodity === name;
+            const basePrice = cd.prices[0];
+
             return {
-                name, type: 'line', smooth: 0.4, symbol: 'none', sampling: 'lttb',
-                lineStyle: { width: isOnly ? 3.5 : 2.5, color: p.main },
+                name, type: 'line', smooth: 0.3, symbol: 'none', sampling: 'lttb',
+                lineStyle: { width: isActive ? 2.5 : 1, color: isActive ? p.main : hexToRgba(p.main, 0.15) },
                 itemStyle: { color: p.main },
-                endLabel: { show: true, formatter: '{a}', color: 'inherit', fontFamily: 'DM Sans', fontWeight: 700, fontSize: 13, distance: 8 },
-                emphasis: { lineStyle: { width: 4, shadowBlur: 12, shadowColor: p.glow }, focus: 'series' },
-                areaStyle: isOnly ? { color: areaGradient(p.main, 0.35, 0.02) } : undefined,
-                animationDuration: 1200, animationEasing: 'cubicOut',
-                // BASE 100 NORMALIZATION: Divide every price point by the first date's price and multiply by 100
-                data: d.prices.map((v, i) => {
-                    const basePrice = d.prices[0];
-                    const indexedVal = (v / basePrice) * 100;
-                    return [d.dates[i], indexedVal];
-                })
+                areaStyle: (selectedCommodity !== 'all' && isActive)
+                    ? { color: areaGradient(p.main, 0.25, 0.02) } : undefined,
+                endLabel: {
+                    show: isActive, formatter: '{a}',
+                    color: p.main, fontFamily: 'DM Sans', fontWeight: 700, fontSize: 12, distance: 8
+                },
+                emphasis: { lineStyle: { width: 4, shadowBlur: 10, shadowColor: p.glow }, focus: 'series' },
+                animationDuration: 1000, animationEasing: 'cubicOut',
+                data: cd.prices.map((v, i) => [cd.dates[i], Math.round((v / basePrice) * 100)])
             };
         }).filter(Boolean);
 
         const option = {
             backgroundColor: 'transparent',
             title: titleStyle(t.comm),
-            tooltip: { ...tipStyle().tooltip, valueFormatter: v => typeof v === 'number' ? v.toFixed(0) : v },
-            legend: { show: false }, // Controlled cleanly by HTML toggle buttons instead of ECharts natively
-            grid: { left: '2%', right: '8%', bottom: '8%', top: '18%', containLabel: true },
+            tooltip: { ...tipStyle().tooltip, valueFormatter: v => typeof v === 'number' ? v : v },
+            legend: { show: false },
+            grid: { left: '2%', right: '10%', bottom: '8%', top: '18%', containLabel: true },
             xAxis: {
                 type: 'time', ...axisBase(), splitLine: { show: false },
                 axisLabel: { ...axisBase().axisLabel, formatter: '{MMM} {yyyy}', hideOverlap: true }
             },
             yAxis: {
                 type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
-                axisLabel: {
-                    formatter: v => Math.round(v), // Mathematical guarantee of no decimals
-                    color: theme().muted, fontFamily: 'DM Sans'
-                },
-                name: 'Base 100\n(Jan 2023)',
-                nameTextStyle: { color: theme().muted, fontSize: 10, align: 'right', padding: [0, 8, 0, 0] }
+                axisLabel: { formatter: v => Math.round(v), color: theme().muted, fontFamily: 'DM Sans' },
+                name: 'Base 100\n(Jan 2023)', nameTextStyle: { color: theme().muted, fontSize: 10, align: 'right', padding: [0, 8, 0, 0] }
             },
             series
         };
         chartComm.setOption(option, true);
     }
 
-    // ─── CHART 2: FX (trimmed to 2020+ for relevance) ─────────────────
+    // ═══════════════════════════════════════════════════════════════════
+    // CHART 2 — EUR/USD EXCHANGE RATE
+    // ═══════════════════════════════════════════════════════════════════
     function renderFx() {
         if (!chartFx || !data) return;
         const t = lang();
         const fx = data.charts.fx;
 
-        // Trim to 2020+ for visual relevance alongside commodities
+        // Trim to 2020+ for visual relevance
         const startIdx = fx.dates.findIndex(d => d >= '2020-01-01');
         const dates = fx.dates.slice(startIdx);
         const values = fx.values.slice(startIdx);
@@ -365,7 +374,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const option = {
             backgroundColor: 'transparent',
             title: titleStyle(t.fx),
-            tooltip: { ...tipStyle(), valueFormatter: v => v.toFixed(4) },
+            tooltip: { ...tipStyle().tooltip, valueFormatter: v => typeof v === 'number' ? v.toFixed(2) : v },
             grid: { left: '2%', right: '3%', bottom: '8%', top: '16%', containLabel: true },
             xAxis: {
                 type: 'category', data: dates, ...axisBase(),
@@ -388,7 +397,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         chartFx.setOption(option, true);
     }
 
-    // ─── CHART 3: YoY COMMODITY (cross-filtered) ──────────────────────
+    // ═══════════════════════════════════════════════════════════════════
+    // CHART 3 — YoY COMMODITY CHANGE (horizontal bar)
+    // ═══════════════════════════════════════════════════════════════════
     function renderYoyComm() {
         if (!chartYoyComm || !data) return;
         const t = lang();
@@ -398,7 +409,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             backgroundColor: 'transparent',
             title: titleStyle(t.yoy),
             tooltip: {
-                ...tipStyle(), trigger: 'item',
+                ...tipStyle().tooltip, trigger: 'item',
                 formatter: p => `<strong>${p.name}</strong><br/>${p.value > 0 ? '+' : ''}${p.value.toFixed(1)}%`
             },
             grid: { left: '5%', right: '18%', bottom: '5%', top: '16%', containLabel: true },
@@ -415,13 +426,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 animationDuration: 800, animationEasing: 'elasticOut',
                 data: d.values.map((v, i) => {
                     const name = d.labels[i];
+                    const rounded = Math.round(v * 10) / 10; // max 1 decimal
                     const isHighlighted = selectedCommodity === 'all' || selectedCommodity === name;
-                    const color = v > 0 ? PALETTE.Up : PALETTE.Down;
+                    const color = rounded > 0 ? PALETTE.Up : PALETTE.Down;
                     return {
-                        value: v,
+                        value: rounded,
                         itemStyle: {
                             color: isHighlighted ? color : hexToRgba(color, 0.15),
-                            borderRadius: [0, 6, 6, 0],
+                            borderRadius: rounded > 0 ? [0, 6, 6, 0] : [6, 0, 0, 6],
                             shadowBlur: isHighlighted ? 8 : 0,
                             shadowColor: isHighlighted ? hexToRgba(color, 0.3) : 'transparent'
                         }
@@ -437,7 +449,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         chartYoyComm.setOption(option, true);
     }
 
-    // ─── CHART 4: INFLATION ───────────────────────────────────────────
+    // ═══════════════════════════════════════════════════════════════════
+    // CHART 4 — INFLATION TIME SERIES (line chart with proper labels)
+    // ═══════════════════════════════════════════════════════════════════
     function renderInf() {
         if (!chartYoyInf || !data || !data.charts.inflation_timeseries) return;
         const t = lang();
@@ -445,55 +459,56 @@ document.addEventListener('DOMContentLoaded', async () => {
         const cats = Object.keys(d);
         if (cats.length === 0) return;
 
+        // Build shared date axis from the first category
+        const dates = d[cats[0]].dates;
+
         const series = cats.map(c => {
-            const isHighlighted = selectedCommodity === 'all' ||
-                (selectedCommodity === 'Cocoa' && c === 'Coffee, Tea, Cocoa') ||
-                (selectedCommodity === 'Coffee' && c === 'Coffee, Tea, Cocoa') ||
-                (selectedCommodity === 'Sugar' && c === 'Sugar, Jam, Honey, Chocolate') ||
-                (selectedCommodity === 'Wheat' && c === 'Bread & Cereals');
+            const relatedComm = COMM_TO_INF[selectedCommodity];
+            const isHighlighted = selectedCommodity === 'all' || c === relatedComm || c === 'All Items';
 
             return {
-                name: c,
-                type: 'line',
-                smooth: true,
-                symbol: 'none',
+                name: c, type: 'line', smooth: true, symbol: 'none',
                 data: d[c].values,
-                lineStyle: { width: isHighlighted ? 3 : 1, opacity: isHighlighted ? 1 : 0.2 },
-                itemStyle: { opacity: isHighlighted ? 1 : 0.2 },
-                endLabel: { show: isHighlighted, formatter: '{a}', color: 'inherit', fontSize: 11, fontFamily: 'DM Sans' }
+                lineStyle: {
+                    width: isHighlighted ? 2.5 : 1,
+                    opacity: isHighlighted ? 1 : 0.15,
+                    color: INF_COLORS[c] || '#666'
+                },
+                itemStyle: { color: INF_COLORS[c] || '#666', opacity: isHighlighted ? 1 : 0.15 },
+                endLabel: {
+                    show: isHighlighted,
+                    formatter: '{a}', color: INF_COLORS[c] || '#666',
+                    fontSize: 11, fontFamily: 'DM Sans', fontWeight: 600
+                },
+                animationDuration: 800
             };
         });
-
-        const dates = d[cats[0]].dates; // Shared date vector
 
         const option = {
             backgroundColor: 'transparent',
             title: titleStyle(t.inf),
             tooltip: {
-                ...tipStyle(), trigger: 'axis',
+                ...tipStyle().tooltip, trigger: 'axis',
                 valueFormatter: v => typeof v === 'number' ? v.toFixed(2) + '%' : v
             },
-            grid: { left: '2%', right: '18%', bottom: '15%', top: '16%', containLabel: true },
-            dataZoom: [
-                { type: 'slider', show: true, bottom: 5, height: 20, borderColor: 'transparent', textStyle: { color: theme().muted } },
-                { type: 'inside' }
-            ],
+            grid: { left: '2%', right: '20%', bottom: '8%', top: '16%', containLabel: true },
             xAxis: {
                 type: 'category', data: dates, ...axisBase(),
                 splitLine: { show: false },
-                axisLabel: { ...axisBase().axisLabel, formatter: v => v.substring(0, 7) }
+                axisLabel: { ...axisBase().axisLabel, formatter: v => { const d = new Date(v); const m = d.toLocaleString('default', { month: 'short' }); return m + ' ' + d.getFullYear(); }, interval: 5 }
             },
             yAxis: {
                 type: 'value', ...axisBase(),
-                axisLabel: { ...axisBase().axisLabel, formatter: v => Math.round(v) + '%' }
+                axisLabel: { ...axisBase().axisLabel, formatter: v => v.toFixed(0) + '%' }
             },
-            color: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#f97316'],
-            series: series
+            series
         };
         chartYoyInf.setOption(option, true);
     }
 
-    // ─── CHART 5: SQUEEZE MATRIX (Heatmap) ────────────────────────────
+    // ═══════════════════════════════════════════════════════════════════
+    // CHART 5 — SQUEEZE MATRIX (Heatmap)
+    // ═══════════════════════════════════════════════════════════════════
     function renderSqueeze() {
         if (!chartSqueeze || !data) return;
         const t = lang();
@@ -502,8 +517,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const heatData = [];
         for (let y = 0; y < d.y_labels.length; y++) {
             for (let x = 0; x < d.x_labels.length; x++) {
-                // Cross-filter: dim cells not related to selected commodity
-                const val = d.z_values[y][x];
+                const val = Math.round(d.z_values[y][x] * 10) / 10; // max 1 decimal
                 const isActive = selectedCommodity === 'all' || d.x_labels[x] === selectedCommodity;
                 heatData.push([x, y, val, isActive]);
             }
@@ -536,7 +550,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 splitArea: { show: true, areaStyle: { color: ['transparent', theme().gridLine] } }
             },
             visualMap: {
-                min: -15, max: 45, calculable: true,
+                min: -15, max: 45, calculable: false,
                 orient: 'horizontal', left: 'center', bottom: 4,
                 itemWidth: 14, itemHeight: 120,
                 inRange: { color: ['#1e3a5f', '#0ea5e9', '#22c55e', '#fbbf24', '#f97316', '#ef4444', '#dc2626'] },
@@ -564,7 +578,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         chartSqueeze.setOption(option, true);
     }
 
-    // ─── RENDER ALL ───────────────────────────────────────────────────
+    // ─── RENDER ALL ──────────────────────────────────────────────────
     function renderAll() {
         renderComm();
         renderFx();
