@@ -235,9 +235,11 @@
                 <span class="lang-en">FMCG Macro Monitor</span>
             </h1>
             <p class="case-subtitle" style="max-width: 700px; margin: 0 auto;">
-                <span class="lang-fr">Un pipeline automatisé (Airflow, DuckDB) mesurant le "Cost Squeeze" de l'industrie
+                <span class="lang-fr">Un pipeline CI/CD automatisé (GitHub Actions, DuckDB) mesurant le "Cost Squeeze"
+                    de l'industrie
                     alimentaire face à l'explosion mondiale du prix du Cacao et du Café.</span>
-                <span class="lang-en">An automated pipeline (Airflow, DuckDB) tracking the FMCG "Cost Squeeze" amid the
+                <span class="lang-en">An automated CI/CD pipeline (GitHub Actions, DuckDB) tracking the FMCG "Cost
+                    Squeeze" amid the
                     global explosion of Cocoa and Coffee prices.</span>
             </p>
         </header>
@@ -263,14 +265,16 @@
                 </div>
             </div>
 
-            <!-- Big KPI 1 -->
+            <!-- Dynamic KPI -->
             <div class="bento-item col-4"
                 style="display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center;">
-                <div class="bento-title" style="justify-content:center; margin:0;"><span class="lang-fr">Cacao
-                        (YoY)</span><span class="lang-en">Cocoa (YoY)</span></div>
-                <div class="kpi-huge">+60%</div>
-                <p class="bento-desc" style="font-size:0.8rem;"><span class="lang-fr">Pic historique</span><span
-                        class="lang-en">Historical Peak</span></p>
+                <div class="bento-title" style="justify-content:center; margin:0;" id="kpi-title">
+                    <span class="lang-fr">Cacao (YoY)</span><span class="lang-en">Cocoa (YoY)</span>
+                </div>
+                <div class="kpi-huge" id="kpi-value" style="transition: color 0.3s; color: #f59e0b;">+60%</div>
+                <p class="bento-desc" style="font-size:0.8rem;" id="kpi-desc">
+                    <span class="lang-fr">Pic historique</span><span class="lang-en">Historical Peak</span>
+                </p>
             </div>
 
             <!-- Infrastructure Flow -->
@@ -289,9 +293,9 @@
                         <div class="arch-desc">Star Schema</div>
                     </div>
                     <div class="arch-step" style="padding: 1rem;">
-                        <div class="arch-title" style="font-size:1.8rem;">🌀</div>
-                        <div class="arch-title">Airflow</div>
-                        <div class="arch-desc">Orchestration</div>
+                        <div class="arch-title" style="font-size:1.8rem;">⚙️</div>
+                        <div class="arch-title">GitHub Actions</div>
+                        <div class="arch-desc">CI/CD Pipeline</div>
                     </div>
                 </div>
                 <a href="https://github.com/R-midolli/fmcg_pricing_macro_monitor" target="_blank" rel="noopener"
@@ -342,16 +346,22 @@
                     </p>
                 </div>
 
-                <div class="dashboard-filters">
-                    <label class="bento-desc" style="font-weight:600;"><span class="lang-fr">Filtre :</span><span
-                            class="lang-en">Filter:</span></label>
-                    <select class="native-select" id="filterComm">
-                        <option value="all">🌍 Toutes / All</option>
-                        <option value="Cocoa">🍫 Cacao</option>
-                        <option value="Coffee">☕ Café</option>
-                        <option value="Wheat">🥖 Blé (Wheat)</option>
-                        <option value="Sugar">🍬 Sucre (Sugar)</option>
-                    </select>
+                <div class="dashboard-filters" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="category-toggle active" data-comm="all">
+                        <span>🌍</span> <span class="lang-fr">Toutes</span><span class="lang-en">All</span>
+                    </button>
+                    <button class="category-toggle" data-comm="Cocoa" style="--btn-color: #f59e0b;">
+                        <span>🍫</span> Cacao
+                    </button>
+                    <button class="category-toggle" data-comm="Coffee" style="--btn-color: #ef4444;">
+                        <span>☕</span> Coffee
+                    </button>
+                    <button class="category-toggle" data-comm="Sugar" style="--btn-color: #22d3ee;">
+                        <span>🍬</span> Sugar
+                    </button>
+                    <button class="category-toggle" data-comm="Wheat" style="--btn-color: #a78bfa;">
+                        <span>🥖</span> Wheat
+                    </button>
                 </div>
             </div>
 
@@ -413,10 +423,11 @@
                     towards cereals and dairy products, where margin holds up better.</span>
             </p>
             <p>
-                <span class="lang-fr"><strong>3. Automatisation des Alertes :</strong> Airflow monitore désormais ce
-                    pipeline chaque semaine, déclenchant des signaux Achats/Pricing avant l'érosion de marge.</span>
-                <span class="lang-en"><strong>3. Alert Automation:</strong> Airflow now monitors this pipeline weekly,
-                    triggering Procurement/Pricing signals ahead of margin erosion.</span>
+                <span class="lang-fr"><strong>3. Pipeline Automatisé :</strong> GitHub Actions exécute ce
+                    pipeline chaque semaine, mettant à jour les données et déclenchant des alertes Pricing avant
+                    l'érosion de marge.</span>
+                <span class="lang-en"><strong>3. Automated Pipeline:</strong> GitHub Actions runs this pipeline weekly,
+                    refreshing data and triggering Pricing alerts ahead of margin erosion.</span>
             </p>
         </section>
     </main>

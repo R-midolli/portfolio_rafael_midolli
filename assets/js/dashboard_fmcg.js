@@ -108,10 +108,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         const langBtn = document.getElementById('langToggle');
         if (langBtn) langBtn.addEventListener('click', () => setTimeout(renderAll, 60));
 
-        // Dropdown filter → cross-filter ALL charts
-        if (filterComm) filterComm.addEventListener('change', () => {
-            selectedCommodity = filterComm.value;
-            renderAll();
+        // Category Toggles -> cross-filter AND update dynamic KPI
+        const toggles = document.querySelectorAll('.category-toggle');
+        toggles.forEach(btn => {
+            btn.addEventListener('click', () => {
+                toggles.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedCommodity = btn.getAttribute('data-comm');
+                updateDynamicKPI();
+                renderAll();
+            });
         });
 
         // Responsive resize
@@ -123,19 +129,52 @@ document.addEventListener('DOMContentLoaded', async () => {
         // ─── POWER BI-STYLE: Click legend on Commodities → cross-filter ─
         if (chartComm) {
             chartComm.on('legendselectchanged', (params) => {
-                // Find which commodity is the only one selected
                 const selected = Object.entries(params.selected).filter(([, v]) => v).map(([k]) => k);
                 if (selected.length === 1) {
                     selectedCommodity = selected[0];
-                    if (filterComm) filterComm.value = selectedCommodity;
                 } else {
                     selectedCommodity = 'all';
-                    if (filterComm) filterComm.value = 'all';
                 }
-                // Re-render dependent charts
+
+                // Sync HTML toggle buttons
+                const toggles = document.querySelectorAll('.category-toggle');
+                toggles.forEach(b => {
+                    b.classList.remove('active');
+                    if (b.getAttribute('data-comm') === selectedCommodity) b.classList.add('active');
+                });
+
+                updateDynamicKPI();
                 renderYoyComm();
                 renderSqueeze();
             });
+        }
+    }
+
+    // ─── DYNAMIC KPI UPDATE ───────────────────────────────────────────
+    function updateDynamicKPI() {
+        const kpiTitle = document.getElementById('kpi-title');
+        const kpiVal = document.getElementById('kpi-value');
+        const kpiDesc = document.getElementById('kpi-desc');
+        if (!kpiTitle || !data) return;
+
+        const pTheme = PALETTE[selectedCommodity] || { main: '#818cf8' };
+        kpiVal.style.color = pTheme.main;
+
+        if (selectedCommodity === 'all') {
+            kpiTitle.innerHTML = `<span class="lang-fr">Cacao (YoY)</span><span class="lang-en">Cocoa (YoY)</span>`; // Keep main anchor or make it general
+            kpiVal.textContent = "+60%";
+            kpiDesc.innerHTML = `<span class="lang-fr">Pic historique</span><span class="lang-en">Historical Peak</span>`;
+        } else {
+            const yoyIndex = data.charts.yoy_commodity.labels.indexOf(selectedCommodity);
+            if (yoyIndex !== -1) {
+                const val = data.charts.yoy_commodity.values[yoyIndex];
+                const prefix = val > 0 ? '+' : '';
+                kpiTitle.innerHTML = `<span class="lang-fr">${selectedCommodity} (YoY)</span><span class="lang-en">${selectedCommodity} (YoY)</span>`;
+                kpiVal.textContent = prefix + val.toFixed(0) + "%";
+                kpiDesc.innerHTML = val > 20 ?
+                    `<span class="lang-fr">Alerte volatilité</span><span class="lang-en">Volatility Alert</span>` :
+                    `<span class="lang-fr">Évolution Annuelle</span><span class="lang-en">Annual Evolution</span>`;
+            }
         }
     }
 
@@ -164,18 +203,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     function tipStyle() {
         const t = theme();
         return {
-            trigger: 'axis',
-            backgroundColor: t.tipBg,
-            borderColor: t.tipBorder,
-            borderWidth: 1,
-            borderRadius: 12,
-            padding: [12, 16],
-            textStyle: { color: t.text, fontFamily: 'DM Sans', fontSize: 13 },
-            axisPointer: {
-                type: 'cross',
-                lineStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.3) },
-                crossStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.3) },
-                label: { backgroundColor: t.muted, borderRadius: 4, padding: [4, 8] }
+            tooltip: {
+                trigger: 'axis',
+                backgroundColor: t.tipBg,
+                borderColor: t.tipBorder,
+                borderWidth: 1,
+                borderRadius: 12,
+                padding: [12, 16],
+                textStyle: { color: t.text, fontFamily: 'DM Sans', fontSize: 13 },
+                valueFormatter: v => typeof v === 'number' ? v.toFixed(0) : v,
+                axisPointer: {
+                    type: 'cross',
+                    lineStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.3) },
+                    crossStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.3) },
+                    label: { backgroundColor: t.muted, borderRadius: 4, padding: [4, 8], precision: 0 }
+                }
             }
         };
     }
@@ -216,10 +258,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name, type: 'line', smooth: 0.4, symbol: 'none', sampling: 'lttb',
                 lineStyle: { width: isOnly ? 3.5 : 2.5, color: p.main },
                 itemStyle: { color: p.main },
-                emphasis: { lineStyle: { width: 4, shadowBlur: 12, shadowColor: p.glow } },
+                emphasis: { lineStyle: { width: 4, shadowBlur: 12, shadowColor: p.glow }, focus: 'series' },
                 areaStyle: isOnly ? { color: areaGradient(p.main, 0.35, 0.02) } : undefined,
                 animationDuration: 1200, animationEasing: 'cubicOut',
-                data: d.prices.map((v, i) => [d.dates[i], v])
+                // BASE 100 NORMALIZATION: Divide every price point by the first date's price and multiply by 100
+                data: d.prices.map((v, i) => {
+                    const basePrice = d.prices[0];
+                    const indexedVal = (v / basePrice) * 100;
+                    return [d.dates[i], indexedVal];
+                })
             };
         }).filter(Boolean);
 
@@ -232,26 +279,21 @@ document.addEventListener('DOMContentLoaded', async () => {
                 textStyle: { color: theme().text, fontFamily: 'DM Sans', fontSize: 12 },
                 selectedMode: 'multiple'
             },
-            grid: { left: '2%', right: '3%', bottom: '18%', top: '18%', containLabel: true },
+            grid: { left: '2%', right: '3%', bottom: '10%', top: '18%', containLabel: true },
             dataZoom: [{
-                type: 'slider', height: 22, bottom: 6,
-                borderColor: 'transparent',
-                backgroundColor: hexToRgba(isDark() ? '#ffffff' : '#000000', 0.04),
-                fillerColor: hexToRgba(PALETTE.Cocoa.main, 0.15),
-                handleStyle: { color: PALETTE.Cocoa.main, borderColor: PALETTE.Cocoa.main },
-                textStyle: { color: theme().muted, fontSize: 11 },
-                dataBackground: {
-                    lineStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.2) },
-                    areaStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.06) }
-                }
+                type: 'inside', // Invisible, intuitive mouse-wheel / touch zooming only
+                start: 0,
+                end: 100
             }],
             xAxis: { type: 'time', ...axisBase(), splitLine: { show: false } },
             yAxis: {
                 type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
                 axisLabel: {
-                    formatter: v => '$' + (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v),
+                    formatter: '{value}', // Base 100 index doesn't need $ or decimals
                     color: theme().muted, fontFamily: 'DM Sans'
-                }
+                },
+                name: 'Base 100\n(Jan 2023)',
+                nameTextStyle: { color: theme().muted, fontSize: 10, align: 'right', padding: [0, 8, 0, 0] }
             },
             series
         };
@@ -279,7 +321,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 splitLine: { show: false },
                 axisLabel: { ...axisBase().axisLabel, formatter: v => v.substring(0, 7), rotate: 30, interval: 5 }
             },
-            yAxis: { type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase() },
+            yAxis: {
+                type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
+                axisLabel: { ...axisBase().axisLabel, formatter: v => v.toFixed(2) }
+            },
             series: [{
                 name: 'EUR/USD', type: 'line', smooth: 0.3, symbol: 'none',
                 lineStyle: { width: 2.5, color: PALETTE.Fx.main },
