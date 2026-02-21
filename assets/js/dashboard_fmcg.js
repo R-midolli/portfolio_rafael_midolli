@@ -127,6 +127,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (domYoyComm) chartYoyComm = echarts.init(domYoyComm);
         if (domYoyInf) chartYoyInf = echarts.init(domYoyInf);
         if (domSqueeze) chartSqueeze = echarts.init(domSqueeze);
+
+        // Link Time-Series Charts together (Power BI style synchronization)
+        echarts.connect([chartComm, chartFx]);
     }
 
     // Common configurations
@@ -144,6 +147,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const theme = THEMES[currentTheme];
         return {
             trigger: 'axis',
+            axisPointer: { type: 'cross', label: { backgroundColor: theme.muted } },
             backgroundColor: theme.tooltipBg,
             borderColor: theme.tooltipBorder,
             textStyle: { color: theme.text, fontFamily: 'DM Sans' },
@@ -223,6 +227,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             },
             yAxis: {
                 type: 'value',
+                min: 'dataMin',
+                max: 'dataMax',
                 ...getCommonAxisOpts(),
                 axisLabel: {
                     formatter: (value) => '$' + echarts.format.addCommas(value),
