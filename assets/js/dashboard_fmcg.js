@@ -152,28 +152,50 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ─── DYNAMIC KPI UPDATE ───────────────────────────────────────────
     function updateDynamicKPI() {
+        // YoY Block
         const kpiTitle = document.getElementById('kpi-title');
         const kpiVal = document.getElementById('kpi-value');
         const kpiDesc = document.getElementById('kpi-desc');
+        // Spot Block
+        const spotTitle = document.getElementById('spot-title');
+        const spotVal = document.getElementById('spot-value');
+        const spotDesc = document.getElementById('spot-desc');
+
         if (!kpiTitle || !data) return;
 
         const pTheme = PALETTE[selectedCommodity] || { main: '#818cf8' };
         kpiVal.style.color = pTheme.main;
+        if (spotVal) spotVal.style.color = pTheme.main;
+
+        const frNames = { 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' };
+        const commFr = frNames[selectedCommodity] || selectedCommodity;
 
         if (selectedCommodity === 'all') {
-            kpiTitle.innerHTML = `<span class="lang-fr">Cacao (YoY)</span><span class="lang-en">Cocoa (YoY)</span>`; // Keep main anchor or make it general
+            kpiTitle.innerHTML = `<span class="lang-fr">Cacao (YoY)</span><span class="lang-en">Cocoa (YoY)</span>`; // Top mover anchor
             kpiVal.textContent = "+60%";
             kpiDesc.innerHTML = `<span class="lang-fr">Pic historique</span><span class="lang-en">Historical Peak</span>`;
+
+            if (spotTitle) spotTitle.innerHTML = `<span class="lang-fr">Cours Cacao (Live)</span><span class="lang-en">Cocoa Spot (Live)</span>`;
+            if (spotVal) spotVal.textContent = `+$${Math.round(data.kpis.cocoa_usd_t).toLocaleString('en-US')}`;
+            if (spotDesc) spotDesc.textContent = "Yahoo Finance";
         } else {
             const yoyIndex = data.charts.yoy_commodity.labels.indexOf(selectedCommodity);
             if (yoyIndex !== -1) {
                 const val = data.charts.yoy_commodity.values[yoyIndex];
                 const prefix = val > 0 ? '+' : '';
-                kpiTitle.innerHTML = `<span class="lang-fr">${selectedCommodity} (YoY)</span><span class="lang-en">${selectedCommodity} (YoY)</span>`;
+                kpiTitle.innerHTML = `<span class="lang-fr">${commFr} (YoY)</span><span class="lang-en">${selectedCommodity} (YoY)</span>`;
                 kpiVal.textContent = prefix + val.toFixed(0) + "%";
                 kpiDesc.innerHTML = val > 20 ?
                     `<span class="lang-fr">Alerte volatilité</span><span class="lang-en">Volatility Alert</span>` :
                     `<span class="lang-fr">Évolution Annuelle</span><span class="lang-en">Annual Evolution</span>`;
+            }
+
+            if (spotTitle && data.charts.commodities[selectedCommodity]) {
+                const prices = data.charts.commodities[selectedCommodity].prices;
+                const latest = prices[prices.length - 1];
+                spotTitle.innerHTML = `<span class="lang-fr">Cours ${commFr} (Live)</span><span class="lang-en">${selectedCommodity} Spot</span>`;
+                spotVal.textContent = `$${latest >= 1000 ? (latest / 1000).toFixed(1) + 'k' : Math.round(latest)}`;
+                if (spotDesc) spotDesc.textContent = "Yahoo Finance";
             }
         }
     }
@@ -211,7 +233,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 borderRadius: 12,
                 padding: [12, 16],
                 textStyle: { color: t.text, fontFamily: 'DM Sans', fontSize: 13 },
-                valueFormatter: v => typeof v === 'number' ? v.toFixed(0) : v,
                 axisPointer: {
                     type: 'cross',
                     lineStyle: { color: hexToRgba(PALETTE.Cocoa.main, 0.3) },
@@ -273,19 +294,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const option = {
             backgroundColor: 'transparent',
             title: titleStyle(t.comm),
-            tooltip: tipStyle(),
-            legend: {
-                data: names, top: 28, icon: 'roundRect', itemWidth: 16, itemHeight: 8,
-                textStyle: { color: theme().text, fontFamily: 'DM Sans', fontSize: 12 },
-                selectedMode: 'multiple'
+            tooltip: { ...tipStyle().tooltip, valueFormatter: v => typeof v === 'number' ? v.toFixed(0) : v },
+            legend: { show: false }, // Controlled cleanly by HTML toggle buttons instead of ECharts natively
+            grid: { left: '2%', right: '3%', bottom: '8%', top: '18%', containLabel: true },
+            xAxis: {
+                type: 'time', ...axisBase(), splitLine: { show: false },
+                axisLabel: { ...axisBase().axisLabel, formatter: '{MMM} {yyyy}', hideOverlap: true }
             },
-            grid: { left: '2%', right: '3%', bottom: '10%', top: '18%', containLabel: true },
-            dataZoom: [{
-                type: 'inside', // Invisible, intuitive mouse-wheel / touch zooming only
-                start: 0,
-                end: 100
-            }],
-            xAxis: { type: 'time', ...axisBase(), splitLine: { show: false } },
             yAxis: {
                 type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
                 axisLabel: {
@@ -351,7 +366,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 formatter: p => `<strong>${p.name}</strong><br/>${p.value > 0 ? '+' : ''}${p.value.toFixed(1)}%`
             },
             grid: { left: '5%', right: '18%', bottom: '5%', top: '16%', containLabel: true },
-            xAxis: { type: 'value', ...axisBase(), splitLine: { show: false } },
+            xAxis: {
+                type: 'value', ...axisBase(), splitLine: { show: false },
+                axisLabel: { ...axisBase().axisLabel, formatter: '{value}%' }
+            },
             yAxis: {
                 type: 'category', data: d.labels, ...axisBase(),
                 axisLabel: { color: theme().text, fontWeight: 600, fontSize: 13 }
@@ -397,7 +415,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 formatter: p => `<strong>${p.name}</strong><br/>${p.value > 0 ? '+' : ''}${p.value.toFixed(2)}%`
             },
             grid: { left: '2%', right: '12%', bottom: '5%', top: '12%', containLabel: true },
-            xAxis: { type: 'value', ...axisBase(), splitLine: { show: false } },
+            xAxis: {
+                type: 'value', ...axisBase(), splitLine: { show: false },
+                axisLabel: { ...axisBase().axisLabel, formatter: '{value}%' }
+            },
             yAxis: {
                 type: 'category', data: d.labels, ...axisBase(),
                 axisLabel: { color: theme().text, width: 200, overflow: 'truncate', fontSize: 12 }
