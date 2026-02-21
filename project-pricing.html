@@ -9,7 +9,7 @@
     <title>FMCG Cost Pressure Monitor — Case Study</title>
     <meta property="og:title" content="FMCG Cost Pressure Monitor — 100% Real Data" />
     <meta property="og:description"
-        content="Multi-source macro pipeline: Commodities, FX, Inflation and Product data. Plotly Dash Dashboard. Portfolio Rafael Midolli." />
+        content="Multi-source macro pipeline: Commodities, FX, Inflation and Product data. Plotly Dashboard. Portfolio Rafael Midolli." />
     <meta property="og:type" content="website" />
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🛒</text></svg>" />
@@ -26,20 +26,14 @@
             -webkit-text-fill-color: transparent;
         }
 
-        .metric-value.warning {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .metric-value.danger {
-            background: linear-gradient(135deg, #ef4444, #f87171);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
         .metric-value.success {
             background: linear-gradient(135deg, #22c55e, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric-value.warning {
+            background: linear-gradient(135deg, #f59e0b, #fbbf24);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -126,20 +120,6 @@
             font-size: 0.85rem;
             color: var(--text-muted);
         }
-
-        .source-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 8px;
-            background: rgba(91, 140, 255, .08);
-            border: 1px solid rgba(91, 140, 255, .2);
-            font-size: .82rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin: 4px;
-        }
     </style>
 </head>
 
@@ -154,16 +134,17 @@
         </a>
         <div class="nav-right">
             <a href="index.html#projects" class="btn-back">
-                <span class="lang-fr">← Retour</span><span class="lang-en">← Back</span>
+                <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
+                        class="back-label">Back</span></span>
             </a>
-            <a href="https://github.com/R-midolli/fmcg_pricing_macro_monitor" target="_blank" rel="noopener"
-                class="btn-fullscreen">
-                <span class="lang-fr">↗ GitHub Repo</span><span class="lang-en">↗ GitHub Repo</span>
+            <a href="reports/dashboard_fmcg.html" target="_blank" rel="noopener" class="btn-fullscreen">
+                <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span
+                        class="fs-label">Full&nbsp;screen</span></span>
             </a>
-            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
                 <span id="themeIcon">🌙</span>
             </button>
-            <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue">
+            <button class="lang-toggle" id="langToggle" type="button" aria-label="Toggle language">
                 <span id="langIcon">FR</span>
             </button>
         </div>
@@ -172,63 +153,69 @@
     <main class="main">
         <div class="case-header">
             <div class="case-label">
-                <span class="lang-fr">Macro-Économie & FMCG · 100% Données Réelles</span>
-                <span class="lang-en">Macroeconomics & FMCG · 100% Real Data</span>
+                <span class="lang-fr">Étude de cas Stratégique · 100% Données Réelles</span>
+                <span class="lang-en">Strategic Case Study · 100% Real Data</span>
             </div>
             <h1 class="case-title">
                 <span class="lang-fr">European FMCG Cost Pressure Monitor</span>
                 <span class="lang-en">European FMCG Cost Pressure Monitor</span>
             </h1>
             <div class="case-subtitle">
-                <span class="lang-fr">Pipeline multi-sources reliant les coûts de matières premières agricoles
-                    (Commodities) à l'inflation alimentaire française (INSEE) via un Dashboard interactif Plotly
-                    Dash.</span>
-                <span class="lang-en">Multi-source pipeline connecting agricultural commodity costs to French food
-                    inflation (INSEE) through an interactive Plotly Dash Dashboard.</span>
+                <span class="lang-fr">Pipeline multi-sources (ECB, INSEE, Yahoo Finance, Open Food Facts) reliant les
+                    coûts de
+                    matières premières agricoles à l'inflation alimentaire française via un Dashboard interactif.</span>
+                <span class="lang-en">Multi-source pipeline (ECB, INSEE, Yahoo Finance, Open Food Facts) connecting
+                    agricultural
+                    commodity costs to French food inflation through an interactive Dashboard.</span>
             </div>
         </div>
 
         <div class="info-grid">
             <!-- Problem + Approach -->
             <div class="card">
-                <h3><span class="lang-fr">Le Défi Stratégique</span><span class="lang-en">The Strategic Challenge</span>
+                <h3>
+                    <span class="lang-fr">Le Défi Stratégique</span>
+                    <span class="lang-en">The Strategic Challenge</span>
                 </h3>
                 <p>
                     <span class="lang-fr">Le secteur FMCG européen fait face à une triple pression : <strong>explosion
-                            des prix des matières premières</strong> (Cacao +60%, Café +40%), <strong>volatilité du taux
-                            de change EUR/USD</strong> impactant les coûts d'importation, et <strong>inflation
-                            alimentaire persistante</strong> mesurant le niveau de pression transmis au consommateur
-                        final. <strong>Question clé :</strong> "Les hausses des coûts inputés sont-elles absorbées ou
-                        transmises aux consommateurs ? Quelles catégories de produits sont les plus exposées ?"</span>
+                            des prix
+                            des matières premières</strong> (Cacao +60%, Café +40%), <strong>volatilité du taux de
+                            change
+                            EUR/USD</strong> impactant les coûts d'importation, et <strong>inflation alimentaire
+                            persistante</strong>. <strong>La question cruciale de la Direction :</strong> "Les hausses
+                        des coûts
+                        inputés sont-elles absorbées ou transmises aux consommateurs ? Quelles catégories de produits
+                        sont les plus
+                        exposées ?"</span>
                     <span class="lang-en">The European FMCG sector faces a triple squeeze: <strong>commodity price
                             shocks</strong> (Cocoa +60%, Coffee +40%), <strong>EUR/USD FX volatility</strong> impacting
-                        import costs, and <strong>persistent food inflation</strong> measuring consumer-level pressure.
-                        <strong>Key question:</strong> "Are input cost increases absorbed or passed through to
-                        consumers?
-                        Which product categories are most exposed?"</span>
+                        import costs,
+                        and <strong>persistent food inflation</strong>. <strong>The C-Suite's burning question:</strong>
+                        "Are input
+                        cost increases absorbed or passed through to consumers? Which product categories are most
+                        exposed?"</span>
                 </p>
-
-                <h3 style="margin-top:20px"><span class="lang-fr">L'Approche 100% Données Réelles</span><span
-                        class="lang-en">The 100% Real Data Approach</span></h3>
+                <h3 style="margin-top:20px">
+                    <span class="lang-fr">L'Approche 100% Données Réelles</span>
+                    <span class="lang-en">The 100% Real Data Approach</span>
+                </h3>
                 <p>
                     <span class="lang-fr">J'ai conçu un pipeline de données entièrement alimenté par des <strong>APIs
-                            publiques réelles</strong> — aucune donnée simulée. Les données macro (BCE, INSEE) sont
-                        croisées avec les prix de commodités agricoles (Yahoo Finance) et le catalogue produit réel
-                        (Open
-                        Food Facts) pour identifier les catégories sous pression et quantifier le « Cost Squeeze
-                        Score ».</span>
+                            publiques
+                            réelles</strong> — aucune donnée simulée. Les données macro (BCE, INSEE) sont croisées avec
+                        les prix de
+                        commodités agricoles (Yahoo Finance) et le catalogue produit réel (Open Food Facts) pour
+                        identifier les
+                        catégories sous pression et quantifier le « Cost Squeeze Score ».</span>
                     <span class="lang-en">I designed a data pipeline fed entirely by <strong>real public APIs</strong> —
-                        zero simulated data. Macro data (ECB, INSEE) is cross-referenced with agricultural commodity
-                        prices (Yahoo Finance) and real product catalog (Open Food Facts) to identify pressured
-                        categories and quantify the "Cost Squeeze Score".</span>
+                        zero
+                        simulated data. Macro data (ECB, INSEE) is cross-referenced with agricultural commodity prices
+                        (Yahoo
+                        Finance) and real product catalogs (Open Food Facts) to identify pressured categories and
+                        quantify the
+                        "Cost Squeeze Score".</span>
                 </p>
-
-                <div style="margin-top: 1.5rem;">
-                    <span class="source-badge">🏦 ECB — EUR/USD</span>
-                    <span class="source-badge">📊 INSEE — CPI France</span>
-                    <span class="source-badge">📈 Yahoo Finance — Commodities</span>
-                    <span class="source-badge">🥫 Open Food Facts — Produits</span>
-                </div>
 
                 <div class="metrics-mini">
                     <div class="metric-mini">
@@ -239,7 +226,7 @@
                         </div>
                     </div>
                     <div class="metric-mini">
-                        <div class="metric-value danger">8 <small>cat.</small></div>
+                        <div class="metric-value warning">8 <small>cat.</small></div>
                         <div class="metric-label">
                             <span class="lang-fr">Catégories CPI alimentaires</span>
                             <span class="lang-en">Food CPI categories</span>
@@ -255,154 +242,320 @@
                 </div>
             </div>
 
-            <!-- Execution Stack -->
-            <div class="card bg-alt">
-                <h3><span class="lang-fr">Stack & Architecture</span><span class="lang-en">Stack &
-                        Architecture</span></h3>
-
-                <div class="architecture-flow">
-                    <div class="arch-step">
-                        <div class="arch-icon">🌐</div>
-                        <div class="arch-title">APIs Réelles</div>
-                        <div class="arch-desc">ECB, INSEE, Yahoo Finance, Open Food Facts</div>
-                    </div>
-                    <div class="arch-step">
-                        <div class="arch-icon">🐍</div>
-                        <div class="arch-title">Python Extract</div>
-                        <div class="arch-desc">Requests + yfinance → Parquet</div>
-                    </div>
-                    <div class="arch-step">
-                        <div class="arch-icon">🦆</div>
-                        <div class="arch-title">DuckDB</div>
-                        <div class="arch-desc">Star Schema SQL (Dims, Facts, Marts)</div>
-                    </div>
-                    <div class="arch-step">
-                        <div class="arch-icon">📊</div>
-                        <div class="arch-title">Plotly Dash</div>
-                        <div class="arch-desc">Dashboard Interactif 4 Pages</div>
-                    </div>
-                </div>
-
-                <ul class="methodology-list" style="margin-top:1.5rem;">
-                    <li>
-                        <strong>Orchestration Airflow :</strong>
-                        <span class="lang-fr">DAG hebdomadaire exécutant l'extraction parallèle des 4 APIs →
-                            Transformation DuckDB → Tests de qualité automatisés.</span>
-                        <span class="lang-en">Weekly DAG running parallel extraction of 4 APIs → DuckDB transformation →
-                            Automated quality tests.</span>
-                    </li>
-                    <li>
-                        <strong>Star Schema DuckDB :</strong>
-                        <span class="lang-fr">Modèle dimensionnel complet avec dim_date, dim_product (exposition
-                            ingrédient), fact_commodities, fact_inflation, fact_fx et mart_category_pressure.</span>
-                        <span class="lang-en">Complete dimensional model with dim_date, dim_product (ingredient
-                            exposure), fact_commodities, fact_inflation, fact_fx and mart_category_pressure.</span>
-                    </li>
-                    <li>
-                        <strong>CI/CD GitHub Actions :</strong>
-                        <span class="lang-fr">Pipeline automatisée : extraction → transformation → pytest → upload
-                            artifacts Parquet.</span>
-                        <span class="lang-en">Automated pipeline: extraction → transformation → pytest → Parquet
-                            artifacts upload.</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Dashboard Pages Section -->
-        <div style="margin-top:3rem;">
-            <h2 style="font-size:1.5rem; margin-bottom:1.5rem;">
-                <span class="lang-fr">Pages du Dashboard</span>
-                <span class="lang-en">Dashboard Pages</span>
-            </h2>
-            <div class="grid"
-                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem;">
-
-                <div class="card insight-card">
-                    <div style="color:var(--accent); font-size:2rem; margin-bottom:1rem;">🌍</div>
-                    <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
-                        <span class="lang-fr">Macro Overview</span>
-                        <span class="lang-en">Macro Overview</span>
-                    </h3>
-                    <p class="lang-fr text-muted">KPIs temps réel (EUR/USD, CPI France, prix Cacao/Café/Blé/Sucre),
-                        tendances commodités et inflation YoY par catégorie alimentaire.</p>
-                    <p class="lang-en text-muted">Real-time KPIs (EUR/USD, France CPI, Cocoa/Coffee/Wheat/Sugar prices),
-                        commodity trends and YoY inflation by food category.</p>
-                </div>
-
-                <div class="card insight-card">
-                    <div style="color:#f59e0b; font-size:2rem; margin-bottom:1rem;">📈</div>
-                    <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
-                        <span class="lang-fr">Cost Shock Analysis</span>
-                        <span class="lang-en">Cost Shock Analysis</span>
-                    </h3>
-                    <p class="lang-fr text-muted">Heatmap YoY des variations de prix des commodités et scatter plot
-                        croisant les coûts input vs l'inflation consommateur pour identifier les « pass-through ».</p>
-                    <p class="lang-en text-muted">YoY commodity price change heatmap and scatter plot crossing input
-                        costs vs consumer inflation to identify cost pass-through patterns.</p>
-                </div>
-
-                <div class="card insight-card">
-                    <div style="color:#3b82f6; font-size:2rem; margin-bottom:1rem;">🏷️</div>
-                    <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
-                        <span class="lang-fr">Inflation Translation</span>
-                        <span class="lang-en">Inflation Translation</span>
-                    </h3>
-                    <p class="lang-fr text-muted">Overlay interactif : coûts matières premières vs CPI par catégorie
-                        alimentaire INSEE. Score de « Cost Squeeze » identifiant la compression de marge.</p>
-                    <p class="lang-en text-muted">Interactive overlay: raw material costs vs CPI by INSEE food category.
-                        "Cost Squeeze" score identifying margin compression.</p>
-                </div>
-
-                <div class="card insight-card" style="border-left: 4px solid var(--accent);">
-                    <div style="color:#ef4444; font-size:2rem; margin-bottom:1rem;">⚠️</div>
-                    <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
-                        <span class="lang-fr">Category Risk Exposure</span>
-                        <span class="lang-en">Category Risk Exposure</span>
-                    </h3>
-                    <p class="lang-fr text-muted">Heatmap de « squeeze » et tableau détaillé mappant les catégories Open
-                        Food Facts (Biscuits, Chocolats, Céréales…) aux chocs de commodités actuels.</p>
-                    <p class="lang-en text-muted">Squeeze heatmap and detailed table mapping Open Food Facts categories
-                        (Biscuits, Chocolates, Cereals…) to current commodity shocks.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Key Concept -->
-        <div style="margin-top:3rem;">
-            <h2 style="font-size:1.5rem; margin-bottom:1.5rem;">
-                <span class="lang-fr">Concept Clé : le « Cost Squeeze Score »</span>
-                <span class="lang-en">Key Concept: the "Cost Squeeze Score"</span>
-            </h2>
-            <div class="card" style="border-left: 4px solid var(--accent);">
+            <!-- Tech Stack + GitHub -->
+            <div class="card">
+                <h3>
+                    <span class="lang-fr">Infrastructure de la Plateforme Analytics</span>
+                    <span class="lang-en">Analytics Platform Infrastructure</span>
+                </h3>
                 <p>
-                    <span class="lang-fr"><strong>Cost Squeeze = Variation YoY Commodité (%) − Variation YoY CPI
-                            (%)</strong><br>
-                        Positif → Les coûts matières premières augmentent plus vite que l'inflation consommateur =
-                        <strong>compression de marge</strong>.<br>
-                        Négatif → Les distributeurs répercutent les coûts sur les consommateurs → marge
-                        protégée.</span>
-                    <span class="lang-en"><strong>Cost Squeeze = Commodity YoY Change (%) − CPI YoY Change
-                            (%)</strong><br>
-                        Positive → Input costs rising faster than consumer inflation = <strong>margin
-                            compression</strong>.<br>
-                        Negative → Retailers passing costs through to consumers → margin protected.</span>
+                    <span class="lang-fr">Création d'un pipeline multi-sources automatisé : extraction parallèle des 4
+                        APIs
+                        publiques, transformation via DuckDB (Star Schema), tests de qualité automatisés, et dashboard
+                        Plotly
+                        interactif. Orchestration Airflow et CI/CD GitHub Actions.</span>
+                    <span class="lang-en">Building a multi-source automated pipeline: parallel extraction from 4 public
+                        APIs,
+                        DuckDB transformation (Star Schema), automated quality tests, and interactive Plotly dashboard.
+                        Airflow
+                        orchestration and GitHub Actions CI/CD.</span>
                 </p>
+                <div class="tech-stack">
+                    <span class="tech-tag"><span>🐍</span> Python</span>
+                    <span class="tech-tag"><span>🦆</span> DuckDB</span>
+                    <span class="tech-tag"><span>📊</span> Plotly</span>
+                    <span class="tech-tag"><span>🌀</span> Airflow</span>
+                    <span class="tech-tag"><span>⚙️</span> GitHub Actions</span>
+                </div>
+                <a href="https://github.com/R-midolli/fmcg_pricing_macro_monitor" target="_blank" rel="noopener"
+                    class="btn-github">
+                    <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                    </svg>
+                    <span class="lang-fr">Dépôt GitHub du Projet</span>
+                    <span class="lang-en">View GitHub Repository</span>
+                </a>
             </div>
         </div>
+
+        <!-- Architecture Flow -->
+        <section class="card">
+            <h3>
+                <span class="lang-fr">🏗️ Data Workflow & Gouvernance</span>
+                <span class="lang-en">🏗️ Data Workflow & Governance</span>
+            </h3>
+            <div class="architecture-flow">
+                <div class="arch-step">
+                    <div class="arch-icon">🌐</div>
+                    <div class="arch-title">Extract</div>
+                    <div class="arch-desc">
+                        <span class="lang-fr">APIs ECB, INSEE, Yahoo Finance, Open Food Facts</span>
+                        <span class="lang-en">ECB, INSEE, Yahoo Finance, Open Food Facts APIs</span>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-icon">📁</div>
+                    <div class="arch-title">Store</div>
+                    <div class="arch-desc">
+                        <span class="lang-fr">Fichiers Parquet (data/raw/)</span>
+                        <span class="lang-en">Parquet Files (data/raw/)</span>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-icon">🦆</div>
+                    <div class="arch-title">Transform</div>
+                    <div class="arch-desc">
+                        <span class="lang-fr">DuckDB Star Schema (Dims, Facts, Marts)</span>
+                        <span class="lang-en">DuckDB Star Schema (Dims, Facts, Marts)</span>
+                    </div>
+                </div>
+                <div class="arch-step">
+                    <div class="arch-icon">📊</div>
+                    <div class="arch-title">Visualize</div>
+                    <div class="arch-desc">
+                        <span class="lang-fr">Dashboard Plotly Interactif</span>
+                        <span class="lang-en">Interactive Plotly Dashboard</span>
+                    </div>
+                </div>
+            </div>
+            <p>
+                <span class="lang-fr">
+                    Orchestration <strong>Airflow</strong> (DAG hebdomadaire), validation automatique via
+                    <strong>pytest</strong> (10/10 tests), et déploiement continu via <strong>GitHub Actions</strong>
+                    CI/CD.
+                    Le modèle dimensionnel DuckDB produit des tables analytiques prêtes à consommer :
+                    <code>dim_date</code>, <code>dim_product</code>, <code>fact_commodities</code>,
+                    <code>fact_inflation</code>, <code>fact_fx</code>, <code>mart_category_pressure</code>.
+                </span>
+                <span class="lang-en">
+                    <strong>Airflow</strong> orchestration (weekly DAG), automated validation via
+                    <strong>pytest</strong> (10/10 tests), and continuous deployment via <strong>GitHub Actions</strong>
+                    CI/CD.
+                    The DuckDB dimensional model produces ready-to-consume analytical tables:
+                    <code>dim_date</code>, <code>dim_product</code>, <code>fact_commodities</code>,
+                    <code>fact_inflation</code>, <code>fact_fx</code>, <code>mart_category_pressure</code>.
+                </span>
+            </p>
+        </section>
+
+        <!-- Key Insights -->
+        <section class="insights-section">
+            <h2 class="case-title" style="font-size:2rem;margin-bottom:32px">
+                <span class="lang-fr">💡 Actionable Data Insights</span>
+                <span class="lang-en">💡 Actionable Data Insights</span>
+            </h2>
+
+            <div class="insight-card">
+                <h4>
+                    <span class="insight-icon">🌍</span>
+                    <span>
+                        <span class="lang-fr">Risque de Change Quantifié (EUR/USD)</span>
+                        <span class="lang-en">Quantified FX Risk (EUR/USD)</span>
+                    </span>
+                </h4>
+                <div class="insight-content">
+                    <p>
+                        <span class="lang-fr">
+                            L'isolation mathématique de la dévaluation EUR/USD a prouvé une <span
+                                class="insight-highlight">sur-dégradation continue</span> des coûts d'importation.
+                            Chaque mouvement
+                            de -1% du taux de change génère une pression directe sur les marges des produits importés,
+                            notamment le
+                            Cacao et le Café dont les prix sont cotés en USD.
+                        </span>
+                        <span class="lang-en">
+                            Mathematical isolation of the EUR/USD devaluation proved a <span
+                                class="insight-highlight">continuous
+                                cost degradation</span> on import costs. Each -1% FX movement generates direct margin
+                            pressure on
+                            imported products, particularly Cocoa and Coffee which are USD-denominated commodities.
+                        </span>
+                    </p>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <span class="lang-fr"><strong>Recommandation :</strong> Instaurer une veille FX systématique
+                                et sourcer
+                                des alternatives pour les matières premières les plus exposées.</span>
+                            <span class="lang-en"><strong>Recommendation:</strong> Implement systematic FX monitoring
+                                and source
+                                alternatives for the most exposed raw materials.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <h4>
+                    <span class="insight-icon">📈</span>
+                    <span>
+                        <span class="lang-fr">Cost Squeeze : Identification des Catégories sous Pression</span>
+                        <span class="lang-en">Cost Squeeze: Identifying Categories Under Pressure</span>
+                    </span>
+                </h4>
+                <div class="insight-content">
+                    <p>
+                        <span class="lang-fr">
+                            Le <span class="insight-highlight">« Cost Squeeze Score » = Variation YoY Commodité (%) −
+                                Variation YoY
+                                CPI (%)</span>. Ce score identifie les catégories où les coûts matières premières
+                            augmentent plus vite
+                            que l'inflation consommateur, signalant une compression de marge. Les catégories Chocolat et
+                            Biscuits
+                            (exposées au Cacao) affichent les scores les plus critiques.
+                        </span>
+                        <span class="lang-en">
+                            The <span class="insight-highlight">"Cost Squeeze Score" = Commodity YoY Change (%) − CPI
+                                YoY Change
+                                (%)</span>. This score identifies categories where input costs rise faster than consumer
+                            inflation,
+                            signaling margin compression. Chocolate and Biscuit categories (Cocoa-exposed) show the most
+                            critical
+                            scores.
+                        </span>
+                    </p>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <span class="lang-fr"><strong>Levier stratégique :</strong> Redéployer le mix promo vers les
+                                catégories
+                                moins exposées (Céréales, Produits laitiers) pour protéger la marge globale.</span>
+                            <span class="lang-en"><strong>Strategic lever:</strong> Redeploy promo mix toward less
+                                exposed categories
+                                (Cereals, Dairy) to protect overall margin.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-card">
+                <h4>
+                    <span class="insight-icon">🛒</span>
+                    <span>
+                        <span class="lang-fr">Matrice d'Exposition Catégorielle (Open Food Facts)</span>
+                        <span class="lang-en">Category Exposure Matrix (Open Food Facts)</span>
+                    </span>
+                </h4>
+                <div class="insight-content">
+                    <p>
+                        <span class="lang-fr">
+                            Le mapping automatisé des <span class="insight-highlight">850+ produits réels Open Food
+                                Facts</span>
+                            vers leur exposition aux commodités (Cacao → Chocolats, Blé → Biscuits/Pains) révèle que 40%
+                            du
+                            catalogue FMCG est directement impacté par les chocs de prix actuels. Cette cartographie
+                            quantifie le
+                            risque par catégorie et permet un plan d'action ciblé.
+                        </span>
+                        <span class="lang-en">
+                            Automated mapping of <span class="insight-highlight">850+ real Open Food Facts
+                                products</span> to
+                            their commodity exposure (Cocoa → Chocolates, Wheat → Biscuits/Breads) reveals that 40% of
+                            the FMCG
+                            catalog is directly impacted by current price shocks. This mapping quantifies risk by
+                            category and
+                            enables targeted action plans.
+                        </span>
+                    </p>
+                    <div class="insight-list">
+                        <div class="insight-item">
+                            <span class="lang-fr"><strong>Plan d'action :</strong> Prioriser le sourcing alternatif et
+                                la
+                                reformulation produit pour les catégories dépassant un seuil de squeeze &gt; 20
+                                points.</span>
+                            <span class="lang-en"><strong>Action plan:</strong> Prioritize alternative sourcing and
+                                product
+                                reformulation for categories exceeding a squeeze threshold &gt; 20 points.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Embedded Dashboard -->
+        <div class="card">
+            <h3>
+                <span class="lang-fr">📊 Dashboard Interactif — FMCG Cost Pressure Monitor</span>
+                <span class="lang-en">📊 Interactive Dashboard — FMCG Cost Pressure Monitor</span>
+            </h3>
+            <p style="margin-bottom: 20px;">
+                <span class="lang-fr">Exploration interactive des données macro : prix des commodités agricoles, taux de
+                    change EUR/USD, inflation alimentaire par catégorie INSEE, et matrice de Cost Squeeze. Entièrement
+                    généré en
+                    Python via Plotly, alimenté par des APIs temps réel.</span>
+                <span class="lang-en">Interactive exploration of macro data: agricultural commodity prices, EUR/USD
+                    exchange
+                    rate, food inflation by INSEE category, and Cost Squeeze matrix. Entirely generated in Python via
+                    Plotly,
+                    fed by real-time APIs.</span>
+            </p>
+            <iframe src="reports/dashboard_fmcg.html" class="embed-frame" id="dashFrame" loading="lazy"></iframe>
+            <div class="embed-fallback" id="dashFallback">
+                <span class="lang-fr">Si le module dynamique d'analyse tarde à charger, <a
+                        href="reports/dashboard_fmcg.html" target="_blank" rel="noopener">cliquez ici pour l'ouvrir en
+                        plein écran</a>.</span>
+                <span class="lang-en">If the dynamic exploratory module is slow to load, <a
+                        href="reports/dashboard_fmcg.html" target="_blank" rel="noopener">click here to launch it in
+                        full screen</a>.</span>
+            </div>
+        </div>
+
+        <!-- Conclusion -->
+        <section class="card conclusion conclusion--highlight">
+            <h3>
+                <span class="lang-fr">🎯 Recommandations Stratégiques & Impact</span>
+                <span class="lang-en">🎯 Strategic Recommendations & Impact</span>
+            </h3>
+            <p>
+                <span class="lang-fr">
+                    <strong>1. Couverture FX :</strong> Les catégories dont l'ingrédient principal est coté en USD
+                    (Cacao, Café)
+                    nécessitent une politique de hedging ou une diversification de sourcing locale pour absorber la
+                    volatilité
+                    EUR/USD sans détruire la marge.
+                </span>
+                <span class="lang-en">
+                    <strong>1. FX Coverage:</strong> Categories with USD-denominated primary ingredients (Cocoa, Coffee)
+                    require
+                    a hedging policy or local sourcing diversification to absorb EUR/USD volatility without destroying
+                    margin.
+                </span>
+            </p>
+            <p>
+                <span class="lang-fr">
+                    <strong>2. Surveillance « Cost Squeeze » Continue :</strong> Automatiser via le pipeline Airflow un
+                    monitoring hebdomadaire du score de squeeze pour déclencher des alertes proactives avant que la
+                    compression
+                    de marge ne devienne critique.
+                </span>
+                <span class="lang-en">
+                    <strong>2. Continuous "Cost Squeeze" Monitoring:</strong> Automate weekly squeeze score monitoring
+                    via the
+                    Airflow pipeline to trigger proactive alerts before margin compression becomes critical.
+                </span>
+            </p>
+        </section>
     </main>
 
-    <footer class="footer">
-        <div class="footer-inner">
-            <div class="footer-links">
-                <a href="https://linkedin.com/in/rmidolli" target="_blank" rel="noopener">LinkedIn</a>
-                <a href="https://github.com/R-midolli" target="_blank" rel="noopener">GitHub</a>
-            </div>
-            <div class="footer-copy">© 2026 Rafael Midolli. Analytics & Impact.</div>
-        </div>
-    </footer>
-
     <script src="assets/js/shared.js"></script>
+    <script>
+        (function () {
+            var frame = document.getElementById('dashFrame');
+            var fallback = document.getElementById('dashFallback');
+            if (frame) {
+                frame.addEventListener('load', function () { if (fallback) fallback.style.display = 'none'; }, { once: true });
+                setTimeout(function () {
+                    if (!frame.contentDocument || frame.contentDocument.body.childElementCount === 0) {
+                        if (fallback) fallback.style.display = 'block';
+                    }
+                }, 6000);
+                window.addEventListener('message', function (e) {
+                    if (e.data && e.data.type === 'rm-iframe-height' && typeof e.data.height === 'number') {
+                        if (e.data.height > 200) frame.style.height = e.data.height + 'px';
+                    }
+                });
+            }
+        })();
+    </script>
 </body>
 
 </html>
