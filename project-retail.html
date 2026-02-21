@@ -1,20 +1,123 @@
-
 <!doctype html>
 <html lang="fr" data-theme="dark" data-lang="fr">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Case study — Diagnostic Retail BA avec segmentation de performance, analyse Pareto et dashboard interactif Plotly. Python, DuckDB, Pandas. Portfolio Rafael Midolli."/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="Case study — Diagnostic Retail BA avec segmentation de performance, analyse Pareto et dashboard interactif Plotly. Python, DuckDB, Pandas. Portfolio Rafael Midolli." />
   <title>Retail Analytics — Case Study</title>
-  <meta property="og:title" content="Retail Analytics — Pareto and Segmentation"/>
-  <meta property="og:description" content="Diagnostic sell-out, segmentation ABC/XYZ, Pareto, dashboard Plotly. Portfolio Rafael Midolli."/>
-  <meta property="og:type" content="website"/>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📊</text></svg>"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="assets/css/project.css"/>
+  <meta property="og:title" content="Retail Analytics — Pareto and Segmentation" />
+  <meta property="og:description"
+    content="Diagnostic sell-out, segmentation ABC/XYZ, Pareto, dashboard Plotly. Portfolio Rafael Midolli." />
+  <meta property="og:type" content="website" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📊</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/project.css" />
+  <style>
+    /* Inline specific UI enhancements for this project */
+    .metric-value.highlight {
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .metric-value.success {
+      background: linear-gradient(135deg, #10B981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .insight-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: default;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    :root[data-theme="dark"] .insight-card:hover {
+      border-color: rgba(91, 140, 255, 0.4);
+      box-shadow: 0 15px 35px rgba(91, 140, 255, 0.1);
+    }
+
+    .architecture-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2rem 0;
+    }
+
+    .arch-step {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .arch-step:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .arch-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .arch-step:not(:last-child)::after {
+        content: '↓';
+        right: 50%;
+        bottom: -24px;
+        top: auto;
+        transform: translateX(50%);
+      }
+
+      .architecture-flow {
+        flex-direction: column;
+      }
+    }
+
+    .arch-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .arch-title {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .arch-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
+
 <body>
   <div class="bg-mesh" aria-hidden="true"></div>
   <div class="bg-grid" aria-hidden="true"></div>
@@ -26,10 +129,12 @@
     </a>
     <div class="nav-right">
       <a href="index.html#projects" class="btn-back">
-        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span class="back-label">Back</span></span>
+        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
+            class="back-label">Back</span></span>
       </a>
       <a href="reports/dashboard_retail.html" target="_blank" rel="noopener" class="btn-fullscreen">
-        <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span class="fs-label">Full&nbsp;screen</span></span>
+        <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span
+            class="fs-label">Full&nbsp;screen</span></span>
       </a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
         <span id="themeIcon">🌙</span>
@@ -42,49 +147,66 @@
 
   <main class="main">
     <div class="case-header">
-      <div class="case-label"><span class="lang-fr">Étude de cas</span><span class="lang-en">Case study</span></div>
-      <h1 class="case-title"><span class="lang-fr">Retail Analytics — Pareto & Segmentation</span><span class="lang-en">Retail Analytics — Pareto & Segmentation</span></h1>
+      <div class="case-label"><span class="lang-fr">Étude de cas Stratégique</span><span class="lang-en">Strategic Case
+          Study</span></div>
+      <h1 class="case-title"><span class="lang-fr">Retail Analytics — Pareto & Segmentation de Réseau</span><span
+          class="lang-en">Retail Analytics — Network Segmentation & Pareto Analysis</span></h1>
       <div class="case-subtitle">
-        <span class="lang-fr">Segmentation de performance & cartographie des opportunités</span>
-        <span class="lang-en">Performance segmentation & opportunity mapping</span>
+        <span class="lang-fr">Diagnostic "Sell-Out" : Cartographie d'opportunités de revenus et priorisation d'actions
+          analytiques ciblées</span>
+        <span class="lang-en">"Sell-out" diagnostic: Mapping revenue opportunities and prioritizing targeted analytical
+          actions.</span>
       </div>
     </div>
 
     <div class="info-grid">
       <!-- Problem + Approach -->
       <div class="card">
-        <h3><span class="lang-fr">Problème</span><span class="lang-en">Problem</span></h3>
+        <h3><span class="lang-fr">Le Défi Opérationnel</span><span class="lang-en">The Operational Challenge</span></h3>
         <p>
-          <span class="lang-fr">Dans un réseau multi‑magasins, la performance est hétérogène. L'enjeu est de repérer rapidement où se situe le plus gros écart vs benchmark pour prioriser les actions.</span>
-          <span class="lang-en">In a multi‑store network, performance is heterogeneous. The goal is to quickly locate the largest gap vs benchmark to prioritise actions.</span>
+          <span class="lang-fr">Gérer un réseau multi‑magasins implique souvent de subir une forte hétérogénéité de la
+            performance de vente d'un point à l'autre. <strong>La problématique métier clé :</strong> "Comment
+            identifier sans biais où se situent les poches de croissance les plus massives face au standard (benchmark)
+            et prioriser les actions ?"</span>
+          <span class="lang-en">Managing a multi-store network frequently means grappling with heterogeneous performance
+            globally. <strong>The core business problem:</strong> "How to unbiasedly pinpoint the largest growth pockets
+            versus the network benchmark—and prioritize where to act first?"</span>
         </p>
-        <h3 style="margin-top:20px"><span class="lang-fr">Approche</span><span class="lang-en">Approach</span></h3>
+        <h3 style="margin-top:20px"><span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The
+            Analytical Approach</span></h3>
         <p>
-          <span class="lang-fr">Construction d'une couche KPI magasin, puis segmentation <em>trafic vs ventes</em>, benchmark des leaders et calcul d'un potentiel (écart au benchmark en unités). Une analyse Pareto priorise le Top&nbsp;6 (83&nbsp;% de l'opportunité).</span>
-          <span class="lang-en">Build a store KPI layer, then traffic vs sales segmentation, leaders benchmark and potential calculation (gap to benchmark in units). A Pareto analysis prioritises the Top&nbsp;6 (83% of the opportunity).</span>
+          <span class="lang-fr">Automatisation d'une <strong>couche sémantique KPI magasin</strong> en amont, permettant
+            de créer une segmentation <em>Trafic vs Ventes</em> (méthodologie croisée proche de l'ABC/XYZ). Sur la base
+            d'un benchmark de "Leaders", j'ai calculé un potentiel (écart de croissance en volume) par magasin. Enfin,
+            un filtrage de type Pareto m'a permis d'isoler un plan d'action d'échelle concentré sur 6 points de vente
+            "Alerte".</span>
+          <span class="lang-en">Building an automated <strong>store KPI semantic layer</strong> to fuel a <em>Traffic
+              versus Sales</em> segmentation (akin to a cross ABC/XYZ model). Using "Leader" stores as a benchmark, I
+            calculated an improvement gap (upside unit potential) for each location. Ultimately, a Pareto analysis
+            isolated a highly leveraged action plan targeting just 6 "Alert" stores.</span>
         </p>
 
         <!-- Key metrics mini-cards -->
         <div class="metrics-mini">
           <div class="metric-mini">
-            <div class="metric-value">83%</div>
+            <div class="metric-value highlight">83%</div>
             <div class="metric-label">
-              <span class="lang-fr">Top 6</span>
-              <span class="lang-en">Top 6</span>
+              <span class="lang-fr">Potentiel dans le Top 6</span>
+              <span class="lang-en">Potential in Top 6</span>
             </div>
           </div>
           <div class="metric-mini">
-            <div class="metric-value">129M</div>
+            <div class="metric-value success">129<small>M</small></div>
             <div class="metric-label">
-              <span class="lang-fr">Unités</span>
-              <span class="lang-en">Units</span>
+              <span class="lang-fr">Unités d'Opportunité</span>
+              <span class="lang-en">Opportunity Units</span>
             </div>
           </div>
           <div class="metric-mini">
             <div class="metric-value">3</div>
             <div class="metric-label">
-              <span class="lang-fr">Segments</span>
-              <span class="lang-en">Segments</span>
+              <span class="lang-fr">Segments de Pilotage</span>
+              <span class="lang-en">Drive Segments</span>
             </div>
           </div>
         </div>
@@ -92,14 +214,20 @@
 
       <!-- Tech Stack + GitHub -->
       <div class="card">
-        <h3><span class="lang-fr">Stack technique</span><span class="lang-en">Tech stack</span></h3>
+        <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
         <p>
-          <span class="lang-fr">Analyse complète en Python&nbsp;: segmentation, diagnostic mix, dashboard interactif et plan d'action priorisé.</span>
-          <span class="lang-en">Full Python analysis: segmentation, mix diagnostic, interactive dashboard and prioritised action plan.</span>
+          <span class="lang-fr">Script Python reproductible adossé au moteur en-mémoire <strong>DuckDB</strong> pour
+            accélérer la compilation KPI. Génération programmatique d’un portail d'exploration interactive via
+            <strong>Plotly</strong>.</span>
+          <span class="lang-en">Reproducible Python pipeline leveraging the <strong>DuckDB</strong> in-memory engine to
+            speed up big-data KPI compilation. Automatic generation of a self-service exploration portal powered by
+            <strong>Plotly</strong>.</span>
         </p>
         <p>
-          <span class="lang-fr">Livrables&nbsp;: table <code>store_kpis</code>, notebook d'analyse et dashboard HTML exporté.</span>
-          <span class="lang-en">Deliverables: <code>store_kpis</code> table, analysis notebook and exported HTML dashboard.</span>
+          <span class="lang-fr"><strong>Livrables :</strong> Table de faits <code>store_kpis</code>, Notebook
+            ETL/Diagnostic commenté ("Executive Summary"), Web Dashboard embarqué.</span>
+          <span class="lang-en"><strong>Deliverables:</strong> <code>store_kpis</code> fact table, Executive Summary
+            diagnostic notebook, embedded Web Dashboard.</span>
         </p>
         <div class="tech-stack">
           <span class="tech-tag">🐍 Python</span>
@@ -109,91 +237,81 @@
           <span class="tech-tag">📓 Jupyter</span>
         </div>
         <a href="https://github.com/R-midolli/retail-ba-diagnostic" target="_blank" rel="noopener" class="btn-github">
-          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-          <span class="lang-fr">Code sur GitHub</span>
-          <span class="lang-en">View on GitHub</span>
+          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+          </svg>
+          <span class="lang-fr">Dépôt GitHub du Projet</span>
+          <span class="lang-en">View GitHub Repository</span>
         </a>
       </div>
     </div>
 
-    <!-- NOVA SEÇÃO: ARQUITETURA -->
+    <!-- SEÇÃO: ARQUITETURA -->
     <div class="card">
-      <h3>🏗️ <span class="lang-fr">Architecture du pipeline d'analyse</span><span class="lang-en">Analysis pipeline architecture</span></h3>
+      <h3>🏗️ <span class="lang-fr">Workflow Analytique</span><span class="lang-en">Analytical Workflow</span></h3>
       <div class="architecture-flow">
         <div class="arch-step">
           <div class="arch-icon">📥</div>
-          <div class="arch-title">Extract</div>
+          <div class="arch-title">Ingest</div>
           <div class="arch-desc">
-            <span class="lang-fr">Données sell-out</span>
-            <span class="lang-en">Sell-out data</span>
+            <span class="lang-fr">Données transactionnelles massives</span>
+            <span class="lang-en">Massive transactional data</span>
           </div>
         </div>
         <div class="arch-step">
-          <div class="arch-icon">🔧</div>
-          <div class="arch-title">Transform</div>
+          <div class="arch-icon">🔌</div>
+          <div class="arch-title">Compile KPIs</div>
           <div class="arch-desc">
-            <span class="lang-fr">Python + DuckDB (KPI, ABC/XYZ)</span>
-            <span class="lang-en">Python + DuckDB (KPI, ABC/XYZ)</span>
+            <span class="lang-fr">DuckDB + Python (Performances en mémoire)</span>
+            <span class="lang-en">DuckDB + Python (In-Memory speed)</span>
           </div>
         </div>
         <div class="arch-step">
-          <div class="arch-icon">📊</div>
-          <div class="arch-title">Analyze</div>
+          <div class="arch-icon">🔍</div>
+          <div class="arch-title">Segment</div>
           <div class="arch-desc">
-            <span class="lang-fr">Segmentation & Pareto</span>
-            <span class="lang-en">Segmentation & Pareto</span>
+            <span class="lang-fr">Cartographie Trafic/Performances</span>
+            <span class="lang-en">Traffic vs Conversion maps</span>
           </div>
         </div>
         <div class="arch-step">
           <div class="arch-icon">📈</div>
           <div class="arch-title">Visualize</div>
-          <div class="arch-desc">Plotly Dashboard</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Dashboard Plotly interactif</span>
+            <span class="lang-en">Interactive Plotly Dashboard</span>
+          </div>
         </div>
       </div>
-      <p>
-        <span class="lang-fr">Le pipeline construit une couche KPI magasin, puis segmente via ABC/XYZ (trafic vs ventes, benchmark d'efficacité) et Pareto pour prioriser les actions. Le dashboard Plotly offre l'interactivité (zoom, hover, filtres) pour l'exploration self-service.</span>
-        <span class="lang-en">The pipeline builds a store KPI layer, then segments via ABC/XYZ (traffic vs sales, efficiency benchmark) and Pareto to prioritize actions. The Plotly dashboard offers interactivity (zoom, hover, filters) for self-service exploration.</span>
-      </p>
     </div>
 
-    <!-- NOVA SEÇÃO: INSIGHTS -->
-    <h2 class="insights-title">💡 <span class="lang-fr">Insights clés du dashboard</span><span class="lang-en">Key dashboard insights</span></h2>
-
-    <div class="insight-card">
-      <h4>
-        <span class="insight-icon">🌍</span>
-        <span>
-          <span class="lang-fr">Concentration géographique extrême</span>
-          <span class="lang-en">Extreme geographic concentration</span>
-        </span>
-      </h4>
-      <div class="insight-content">
-        <p>
-          <span class="lang-fr">
-            L'analyse révèle une <span class="insight-highlight">concentration extrême</span> : 6 magasins génèrent 83% du volume (83% de l'opportunité sur 129M unités). Cette hyper-concentration indique que la majorité de l'opportunité de croissance se trouve dans la longue traîne.
-          </span>
-          <span class="lang-en">
-            The analysis reveals <span class="insight-highlight">extreme concentration</span>: 6 stores generate 83% of volume (83% of opportunity on 129M units). This hyper-concentration indicates that the majority of growth opportunity lies in the long tail.
-          </span>
-        </p>
-      </div>
-    </div>
+    <!-- SEÇÃO: INSIGHTS -->
+    <h2 class="insights-title">💡 <span class="lang-fr">Insights Actionnables & Stratégie</span><span
+        class="lang-en">Actionable Insights & Strategy</span></h2>
 
     <div class="insight-card">
       <h4>
         <span class="insight-icon">🎯</span>
         <span>
-          <span class="lang-fr">Segmentation ABC/XYZ actionnable</span>
-          <span class="lang-en">Actionable ABC/XYZ Segmentation</span>
+          <span class="lang-fr">Opportunité Chiffrée & Pareto de Croissance</span>
+          <span class="lang-en">Quantified Opportunity & Growth Pareto</span>
         </span>
       </h4>
       <div class="insight-content">
         <p>
           <span class="lang-fr">
-            La méthodologie ABC/XYZ permet de cartographier les opportunités : <strong>Segment A (Leaders)</strong> = magasins à préserver, <strong>Segment B (Standard)</strong> = potentiel de montée rapide, <strong>Segment C (Alerte)</strong> = nécessitent un diagnostic approfondi.
+            L'analyse révèle une <span class="insight-highlight">concentration d'opportunité extrême</span>. En
+            calculant l'écart d'efficacité "Panier Moyen vs Benchmark de type", le modèle a identifié un manque à gagner
+            simulé de 129 Millions d'unités potentielles. Mais surtout, une analyse de Pareto a identifié que cibler
+            <strong>seulement 6 magasins sous-performants suffirait à capter 83%</strong> de ce "growth gap" réseau
+            global.
           </span>
           <span class="lang-en">
-            The ABC/XYZ methodology maps opportunities: <strong>Segment A (Leaders)</strong> = stores to preserve, <strong>Segment B (Standard)</strong> = quick rise potential, <strong>Segment C (Alert)</strong> = require in-depth diagnosis.
+            The data demonstrates an <span class="insight-highlight">extreme concentration of opportunity</span>.
+            Calculating the "Basket Units vs Format Benchmark" gap isolated a simulated network uplift potential of 129
+            Million units. Crucially, applying a Pareto filter showed that targeting <strong>merely 6 under-indexing
+              stores would be enough to capture 83%</strong> of this network-wide growth gap.
           </span>
         </p>
       </div>
@@ -201,154 +319,148 @@
 
     <div class="insight-card">
       <h4>
-        <span class="insight-icon">📈</span>
+        <span class="insight-icon">🚦</span>
         <span>
-          <span class="lang-fr">Gap vs benchmark quantifié</span>
-          <span class="lang-en">Quantified gap vs benchmark</span>
+          <span class="lang-fr">Segmentation Descriptive ABC / XYZ</span>
+          <span class="lang-en">Descriptive ABC / XYZ Profiling</span>
         </span>
       </h4>
       <div class="insight-content">
         <p>
           <span class="lang-fr">
-            En calculant l'<strong>écart vs benchmark</strong>, chaque magasin reçoit un <span class="insight-highlight">potentiel d'unités additionnelles</span>. Cela permet de prioriser les efforts sur les magasins à plus fort potentiel absolu et facilite la construction d'un business case.
+            La méthodologie a permis de classifier l'intégralité du parc automatiquement. <strong>Segment A
+              (Leaders)</strong> : Pôles d'excellence à préserver. <strong>Segment B (Standard)</strong> : La base avec
+            des potentiels de "quick wins". <strong>Segment C (Alerte)</strong> : Lieux où le trafic piéton
+            (transactions) est très fort mais ne se convertit pas en volumes de panier.
           </span>
           <span class="lang-en">
-            By calculating the <strong>gap vs benchmark</strong>, each store receives an <span class="insight-highlight">additional unit potential</span>. This allows prioritizing efforts on stores with highest absolute potential and facilitates building a business case.
+            The diagnostic methodology automatically mapped all locations. <strong>Segment A (Leaders)</strong>:
+            Excellence centers to preserve. <strong>Segment B (Standard)</strong>: Base network with incremental "quick
+            win" potential. <strong>Segment C (Alert)</strong>: Highly tracked "footfall" stores (huge daily
+            transactions) actively failing to cross-sell into larger basket volumes.
           </span>
         </p>
       </div>
     </div>
 
     <div class="card">
-      <h3><span class="lang-fr">Données &amp; contexte</span><span class="lang-en">Data &amp; context</span></h3>
+      <h3><span class="lang-fr">Contexte métier (Corporación Favorita)</span><span class="lang-en">Business Context
+          (Corporación Favorita)</span></h3>
       <p>
-        <span class="lang-fr">Cas construit à partir de la compétition Kaggle <em>Store Sales — Time Series Forecasting</em> (Corporación Favorita, Équateur).</span>
-        <span class="lang-en">Case built on the Kaggle competition <em>Store Sales — Time Series Forecasting</em> (Corporación Favorita, Ecuador).</span>
-      </p>
-      <p>
-        <span class="lang-fr">Sources utilisées&nbsp;: <code>train.csv</code> (ventes journalières par magasin et famille), <code>transactions.csv</code> (transactions journalières, proxy d'activité) et <code>stores.csv</code> (référentiel magasins). Le périmètre n'est pas la prévision&nbsp;: objectif = diagnostic de performance au niveau magasin.</span>
-        <span class="lang-en">Sources used: <code>train.csv</code> (daily sales by store and product family), <code>transactions.csv</code> (daily transactions, activity proxy) and <code>stores.csv</code> (store master data). The scope is not forecasting: the goal is store‑level performance diagnosis.</span>
+        <span class="lang-fr">Les données brutes sont dérivées de l'environnement réel d'un Retailer phare (compétition
+          Kaggle *Store Sales*). <strong>Le périmètre traité ici relève de l'Analytics Engineering et du Business
+            Intelligence, pas du Machine Learning prédictif.</strong> Les tables sourcées incluent la journalité du
+          "sell-out" catégoriel (training set), les transactions en caisse (pour modéliser le taux de dépendance client)
+          et les nomenclatures magasins.</span>
+        <span class="lang-en">The raw dataset stems from a premier grocery retailer’s actual transactional environment
+          (via the Kaggle *Store Sales* competition). <strong>The objective here focuses deeply on Analytics Engineering
+            and descriptive Business Intelligence, explicitly shifting away from Machine Learning forecasting.</strong>
+          Core tables integrated: Daily categorical sell-out, POS transactions (to approximate footfall/customer
+          dependency), and standard store dimensions.</span>
       </p>
     </div>
 
     <div class="card">
-      <h3><span class="lang-fr">Dashboard interactif</span><span class="lang-en">Interactive dashboard</span></h3>
+      <h3><span class="lang-fr">Dashboard Stratégique (Self-Service)</span><span class="lang-en">Strategic Dashboard
+          (Self-Service)</span></h3>
+      <p style="margin-bottom: 20px;">
+        <span class="lang-fr">Le portail Data Viz final offre une cartographie où l'audience peut "survoler", filtrer et
+          creuser sa géographie commerciale. Entièrement généré dynamiquement en Python, exporté en HTML.</span>
+        <span class="lang-en">The final DataViz portal provides a network map where stakeholders can intuitively hover,
+          filter, and zoom into their geography. Entirely scripted in Python and exported to a stand-alone HTML
+          layout.</span>
+      </p>
       <iframe src="reports/dashboard_retail.html" class="embed-frame" id="dashFrame" loading="lazy"></iframe>
       <div class="embed-fallback" id="dashFallback">
-        <span class="lang-fr">Si l'iframe ne charge pas, <a href="reports/dashboard_retail.html" target="_blank" rel="noopener">ouvrez le dashboard dans un nouvel onglet</a>.</span>
-        <span class="lang-en">If the iframe doesn't load, <a href="reports/dashboard_retail.html" target="_blank" rel="noopener">open the dashboard in a new tab</a>.</span>
+        <span class="lang-fr">Si le module dynamique d'analyse tarde à charger, <a href="reports/dashboard_retail.html"
+            target="_blank" rel="noopener">cliquez ici pour l'ouvrir en plein écran</a>.</span>
+        <span class="lang-en">If the dynamic exploratory module is slow to load, <a href="reports/dashboard_retail.html"
+            target="_blank" rel="noopener">click here to launch it in full screen</a>.</span>
       </div>
     </div>
 
-    <div class="card">
-      <h3><span class="lang-fr">Étapes de l'analyse</span><span class="lang-en">Analysis steps</span></h3>
+    <div class="card conclusion">
+      <h3><span class="lang-fr">Recommandations & Valeur Ajoutée (ROI)</span><span class="lang-en">Recommendations &
+          Value Added (ROI)</span></h3>
       <p>
-        <span class="lang-fr">Workflow volontairement simple&nbsp;: fiabiliser une couche KPI magasin → segmenter le parc → mesurer l'écart au benchmark → prioriser l'effort.</span>
-        <span class="lang-en">Deliberately simple workflow: build a reliable store KPI layer → segment the network → measure the gap to benchmark → prioritise effort.</span>
-      </p>
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">ETL &amp; couche KPI magasin&nbsp;: agrégation ventes + transactions et calcul des indicateurs <code>store_kpis</code>.</span>
-            <span class="lang-en">ETL &amp; store KPI layer: aggregate sales + transactions and compute <code>store_kpis</code> indicators.</span>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">Segmentation trafic vs ventes&nbsp;: classer les magasins en Leaders, Standard et Alerte.</span>
-            <span class="lang-en">Traffic vs sales segmentation: classify stores into Leader, Standard and Alert.</span>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">Écart vs benchmark&nbsp;: quantifier le potentiel d'amélioration pour chaque magasin.</span>
-            <span class="lang-en">Gap vs benchmark: quantify the improvement potential for each store.</span>
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-marker"></div>
-          <div class="timeline-content">
-            <span class="lang-fr">Pareto — Top 6&nbsp;: identifier les 6 magasins qui concentrent ~83&nbsp;% du potentiel.</span>
-            <span class="lang-en">Pareto — Top 6: identify the 6 stores that concentrate ~83% of the potential.</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="card">
-      <h3><span class="lang-fr">Recommandations</span><span class="lang-en">Recommendations</span></h3>
-      <p>
-        <span class="lang-fr">Le diagnostic met en évidence les magasins prioritaires et la nature de l'écart (<em>trafic vs ventes</em>). Les leviers ci‑dessous servent de checklist de diagnostic pour convertir le trafic en ventes sur les magasins ciblés.</span>
-        <span class="lang-en">The diagnostic highlights priority stores and the nature of the gap (<em>traffic vs sales</em>). The levers below act as a diagnostic checklist to convert traffic into sales on the targeted stores.</span>
+        <span class="lang-fr">
+          Le ciblage des 6 hypermarchés de la "liste d'alerte" (Stores: M46, M48, M50, M34, M1 et M14) déverrouillerait
+          logiquement des gisements de rentabilité (EBITDA). Un plan de redressement prioritaire devrait investiguer:
+        </span>
+        <span class="lang-en">
+          Commencing a targeted task force on the 6 "Alert List" hypermarkets (Stores: M46, M48, M50, M34, M1, and M14)
+          can definitively unlock dormant EBITDA margins. A remediation plan should investigate the "why" driving the
+          poor conversion gap via:
+        </span>
       </p>
       <div class="bullets">
         <div class="bullet">
           <div class="bullet-ico">🛒</div>
           <div class="bullet-content">
-            <strong><span class="lang-fr">Optimiser l'assortiment</span><span class="lang-en">Optimize assortment</span></strong>
+            <strong><span class="lang-fr">Mix Produit (Assortiment)</span><span class="lang-en">Product Mix
+                (Assortment)</span></strong>
             <div class="bullet-details">
-              <span class="lang-fr">Comparer le mix (familles/catégories) des magasins en écart vs les leaders et identifier les contributions sous‑performantes à approfondir.</span>
-              <span class="lang-en">Compare the mix (families/categories) of gap stores vs leaders and identify under‑performing contributions to investigate.</span>
+              <span class="lang-fr">Auditer la vacance ou la sous-performance des catégories-clés en rayon par rapport à
+                la "Top Liste" des magasins Leaders.</span>
+              <span class="lang-en">Auditing the vacancy or under-indexing of key category items on the shelves versus
+                the product "Top List" found in Leader locations.</span>
             </div>
           </div>
         </div>
         <div class="bullet">
           <div class="bullet-ico">🏷️</div>
           <div class="bullet-content">
-            <strong><span class="lang-fr">Ajuster prix &amp; promotions</span><span class="lang-en">Adjust price &amp; promotions</span></strong>
+            <strong><span class="lang-fr">Politique de Pricing et Promos</span><span class="lang-en">Pricing & Promos
+                Execution</span></strong>
             <div class="bullet-details">
-              <span class="lang-fr">À compléter avec des données prix/promo si disponibles&nbsp;: tester des actions ciblées sur les magasins en écart et suivre l'effet via les KPI.</span>
-              <span class="lang-en">To be complemented with price/promo data if available: test targeted actions on gap stores and track the impact through KPIs.</span>
+              <span class="lang-fr">L'élasticité prix locale (agressivité des concurrents croisés) pourrait détruire le
+                volume du panier sur la localité spécifique de M46/M48.</span>
+              <span class="lang-en">Investigating local price elasticity: aggressive cross-competitor behaviors in
+                specific M46/M48 localities could be cratering their individual basket volumes.</span>
             </div>
           </div>
         </div>
         <div class="bullet">
           <div class="bullet-ico">💼</div>
           <div class="bullet-content">
-            <strong><span class="lang-fr">Renforcer l'exécution</span><span class="lang-en">Reinforce execution</span></strong>
+            <strong><span class="lang-fr">Supply Chain / Ruptures Opérationnelles</span><span class="lang-en">Supply
+                Chain / OOS Issues</span></strong>
             <div class="bullet-details">
-              <span class="lang-fr">Vérifier l'exécution (disponibilité, mise en avant) sur les familles motrices et suivre le ratio ventes/transactions (proxy) pour objectiver l'évolution.</span>
-              <span class="lang-en">Check execution (availability, visibility) on key families and track the sales/transactions ratio (proxy) to monitor changes.</span>
+              <span class="lang-fr">Une baisse si brutale du "Panier en unités vs Trafic" peut indiquer des ruptures de
+                stock fréquentes (Out of Stock), pénalisant ainsi mécaniquement un afflux pourtant important de piétons
+                en magasin.</span>
+              <span class="lang-en">Such a brutally sharp drop in the "Unit Basket vs Headcount" ratio heavily implies
+                frequent Out of Stock (OOS) conditions actively barring transactions despite high traffic.</span>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <div class="card conclusion">
-      <h3><span class="lang-fr">Conclusion</span><span class="lang-en">Conclusion</span></h3>
-      <p>
-        <span class="lang-fr">Les six magasins M46, M48, M50, M34, M1 et M14 concentrent environ 83&nbsp;% des 129&nbsp;M d'unités d'opportunité. En priorisant ces points de vente et en activant des leviers adaptés (assortiment, prix/promo, exécution), on cible l'essentiel du potentiel identifié. Le dashboard permet de naviguer du réseau au magasin pour suivre l'écart et piloter la priorisation.</span>
-        <span class="lang-en">The six stores M46, M48, M50, M34, M1 and M14 concentrate about 83% of the 129 M units of opportunity. By prioritising these points of sale and activating the right levers (assortment, pricing/promotions, execution), you focus on most of the identified potential. The dashboard lets you drill down from network to store to track the gap and manage prioritisation.</span>
-      </p>
-    </div>
   </main>
 
   <script src="assets/js/shared.js"></script>
   <script>
-  (function(){
-    document.querySelectorAll('.bullets .bullet').forEach(function(b){
-      b.addEventListener('click', function(){ b.classList.toggle('active'); });
-    });
-    var frame = document.getElementById('dashFrame');
-    var fallback = document.getElementById('dashFallback');
-    if(frame){
-      frame.addEventListener('load', function(){ if(fallback) fallback.style.display='none'; }, {once:true});
-      setTimeout(function(){
-        if(!frame.contentDocument || frame.contentDocument.body.childElementCount===0){
-          if(fallback) fallback.style.display='block';
-        }
-      }, 6000);
-      window.addEventListener('message', function(e){
-        if(e.data && e.data.type==='rm-iframe-height' && typeof e.data.height==='number'){
-          if(e.data.height>200) frame.style.height = e.data.height+'px';
-        }
+    (function () {
+      document.querySelectorAll('.bullets .bullet').forEach(function (b) {
+        b.addEventListener('click', function () { b.classList.toggle('active'); });
       });
-    }
-  })();
+      var frame = document.getElementById('dashFrame');
+      var fallback = document.getElementById('dashFallback');
+      if (frame) {
+        frame.addEventListener('load', function () { if (fallback) fallback.style.display = 'none'; }, { once: true });
+        setTimeout(function () {
+          if (!frame.contentDocument || frame.contentDocument.body.childElementCount === 0) {
+            if (fallback) fallback.style.display = 'block';
+          }
+        }, 6000);
+        window.addEventListener('message', function (e) {
+          if (e.data && e.data.type === 'rm-iframe-height' && typeof e.data.height === 'number') {
+            if (e.data.height > 200) frame.style.height = e.data.height + 'px';
+          }
+        });
+      }
+    })();
   </script>
 </body>
+
 </html>

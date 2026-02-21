@@ -1,21 +1,130 @@
-
 <!doctype html>
 <html lang="fr" data-theme="dark" data-lang="fr">
-<head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <meta name="description" content="Case study — Supply Chain ETL : Analyse des retards de livraison sur 181K commandes avec 54,8% late rate. Pipeline Python, KPI logistiques, dashboard Power BI. Portfolio Rafael Midolli."/>
-  <title>Supply Chain ETL — Case Study</title>
-  <meta property="og:title" content="Supply Chain ETL — Delivery Performance"/>
-  <meta property="og:description" content="Pipeline ETL Python, KPI logistiques, 181K commandes, Power BI. Portfolio Rafael Midolli."/>
-  <meta property="og:type" content="website"/>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📊</text></svg>"/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 
-  <link rel="stylesheet" href="assets/css/project.css"/>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="Case study — Supply Chain ETL : Analyse des retards de livraison sur 181K commandes avec 54,8% late rate. Pipeline Python, KPI logistiques, dashboard Power BI. Portfolio Rafael Midolli." />
+  <title>Supply Chain Analytics — Case Study</title>
+  <meta property="og:title" content="Supply Chain ETL — Delivery Performance" />
+  <meta property="og:description"
+    content="Pipeline ETL Python, KPI logistiques, 181K commandes, Power BI. Portfolio Rafael Midolli." />
+  <meta property="og:type" content="website" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📊</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/project.css" />
+  <style>
+    /* Inline specific UI enhancements for this project */
+    .metric-value.highlight {
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .metric-value.success {
+      background: linear-gradient(135deg, #10B981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .metric-value.warning {
+      background: linear-gradient(135deg, #F87171, #DC2626);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+    }
+
+    .insight-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: default;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    :root[data-theme="dark"] .insight-card:hover {
+      border-color: rgba(91, 140, 255, 0.4);
+      box-shadow: 0 15px 35px rgba(91, 140, 255, 0.1);
+    }
+
+    .architecture-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2rem 0;
+    }
+
+    .arch-step {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .arch-step:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .arch-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .arch-step:not(:last-child)::after {
+        content: '↓';
+        right: 50%;
+        bottom: -24px;
+        top: auto;
+        transform: translateX(50%);
+      }
+
+      .architecture-flow {
+        flex-direction: column;
+      }
+    }
+
+    .arch-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .arch-title {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .arch-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
 </head>
+
 <body>
   <div class="bg-mesh" aria-hidden="true"></div>
   <div class="bg-grid" aria-hidden="true"></div>
@@ -27,8 +136,8 @@
     </a>
     <div class="nav-right">
       <a href="index.html#projects" class="btn-back">
-        <span class="lang-fr">← Projets</span>
-        <span class="lang-en">← Projects</span>
+        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
+            class="back-label">Back</span></span>
       </a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme">
         <span id="themeIcon">🌙</span>
@@ -42,19 +151,23 @@
   <main class="main">
     <header class="case-header">
       <div class="case-label">
-        <span class="lang-fr">Case Study #3</span>
-        <span class="lang-en">Case Study #3</span>
+        <span class="lang-fr">Étude de cas Stratégique</span>
+        <span class="lang-en">Strategic Case Study</span>
       </div>
       <h1 class="case-title">
-        <span class="lang-fr">Supply Chain ETL — Performance Livraison</span>
-        <span class="lang-en">Supply Chain ETL — Delivery Performance</span>
+        <span class="lang-fr">Supply Chain Analytics — Diagnostic de Livraison</span>
+        <span class="lang-en">Supply Chain Analytics — Delivery Diagnostics</span>
       </h1>
       <p class="case-subtitle">
         <span class="lang-fr">
-          Pipeline ETL Python pour diagnostiquer les retards de livraison sur 181K commandes avec seulement 45,2% OnTime. Identification des modes de transport critiques (First Class 95,3% late) et priorisation des actions pour atteindre les standards de l'industrie.
+          Pipeline Data automatisé (Python) révélant une hémorragie d'On-Time In-Full (OTIF). Identification des modes
+          de transport défaillants (First Class bloquée à 95,3% de retard) et élaboration d'un plan de redressement pour
+          le service client.
         </span>
         <span class="lang-en">
-          Python ETL pipeline to diagnose delivery delays on 181K orders with only 45.2% OnTime. Identification of critical shipping modes (First Class 95.3% late) and prioritization of actions to reach industry standards.
+          Automated Data Pipeline (Python) uncovering severe On-Time In-Full (OTIF) bleeding. Identification of failed
+          carrier layers (First Class stuck at 95.3% late) and formulation of a turnaround plan to rescue customer
+          service.
         </span>
       </p>
     </header>
@@ -62,41 +175,51 @@
     <div class="info-grid">
       <div class="card">
         <h3>
-          <span class="lang-fr">🎯 Contexte business</span>
-          <span class="lang-en">🎯 Business context</span>
+          <span class="lang-fr">Le Défi Business</span>
+          <span class="lang-en">The Business Challenge</span>
         </h3>
         <p>
           <span class="lang-fr">
-            Diagnostic complet de la performance logistique sur 181K commandes et $36,78M de ventes. L'objectif : quantifier les retards (54,8% late rate), identifier les modes de transport problématiques et prioriser les actions correctives pour atteindre les standards de l'industrie (>85% on-time).
+            Un acteur majeur traite 181K commandes générant 36,78M$ de revenu global. L'entreprise observe une explosion
+            invisible de son coût de logistique inversée (SAV, retours, churn). <strong>La mission :</strong> Mettre
+            sous monitoring factuel chaque étape du flux de transport et identifier où la promesse de livraison
+            s'effondre face au client (taux de retard global atteignant un alarmant 54,8%).
           </span>
           <span class="lang-en">
-            Complete logistics performance diagnosis on 181K orders and $36.78M in sales. Objective: quantify delays (54.8% late rate), identify problematic shipping modes and prioritize corrective actions to reach industry standards (>85% on-time).
+            A key player processes 181K orders driving $36.78M in gross revenue but suffers an invisible explosion in
+            reverse logistics costs (customer service, returns, churn). <strong>The mission:</strong> Factually monitor
+            every step of the transit flow and isolate exactly where the delivery promise collapses (overall late rate
+            spiking to an alarming 54.8%).
           </span>
         </p>
+
         <div class="metrics-mini">
           <div class="metric-mini">
             <div class="metric-value">181K</div>
             <div class="metric-label">
-              <span class="lang-fr">Commandes</span>
-              <span class="lang-en">Orders</span>
-            </div>
-          </div>
-          <div class="metric-mini warning">
-            <div class="metric-value warning">45,2%</div>
-            <div class="metric-label">OnTime</div>
-          </div>
-          <div class="metric-mini warning">
-            <div class="metric-value warning">54,8%</div>
-            <div class="metric-label">
-              <span class="lang-fr">Taux Retard</span>
-              <span class="lang-en">Late Rate</span>
+              <span class="lang-fr">Commandes Traitées</span>
+              <span class="lang-en">Processed Orders</span>
             </div>
           </div>
           <div class="metric-mini">
-            <div class="metric-value">$36,8M</div>
+            <div class="metric-value warning">54,8%</div>
             <div class="metric-label">
-              <span class="lang-fr">Ventes</span>
-              <span class="lang-en">Sales</span>
+              <span class="lang-fr">Commandes en Retard</span>
+              <span class="lang-en">Late Orders Rate</span>
+            </div>
+          </div>
+          <div class="metric-mini">
+            <div class="metric-value warning">95,3%</div>
+            <div class="metric-label">
+              <span class="lang-fr">Échec 'First Class'</span>
+              <span class="lang-en">'First Class' Failure</span>
+            </div>
+          </div>
+          <div class="metric-mini">
+            <div class="metric-value success">$36,8M</div>
+            <div class="metric-label">
+              <span class="lang-fr">Ventes Exposées</span>
+              <span class="lang-en">Exposed Sales</span>
             </div>
           </div>
         </div>
@@ -104,113 +227,136 @@
 
       <div class="card">
         <h3>
-          <span class="lang-fr">🛠️ Stack technique</span>
-          <span class="lang-en">🛠️ Tech stack</span>
+          <span class="lang-fr">Architecture Technique</span>
+          <span class="lang-en">Technical Architecture</span>
         </h3>
+        <p>
+          <span class="lang-fr">
+            Conception d'un Pipeline Extraction-Transformation-Chargement (ETL) en <strong>Python / Pandas</strong> pour
+            ingérer les logs sources, imputer les valeurs manquantes et calculer les features logistiques complexes (ex:
+            <code>shipping_gap</code>). Les données enrichies servent de socle à un outil de décision multidimensionnel
+            (Power BI).
+          </span>
+          <span class="lang-en">
+            Design of an Extract-Transform-Load (ETL) pipeline in <strong>Python / Pandas</strong> to ingest raw logs,
+            impute missing values, and engineer complex logic features (e.g., <code>shipping_gap</code>). The engineered
+            semantic layer acts as the foundation for a multidimensional decision tool (Power BI).
+          </span>
+        </p>
         <div class="tech-stack">
           <span class="tech-tag"><span>🐍</span> Python</span>
           <span class="tech-tag"><span>🐼</span> Pandas</span>
-          <span class="tech-tag"><span>📊</span> Power BI</span>
+          <span class="tech-tag"><span>📊</span> Power BI / DAX</span>
           <span class="tech-tag"><span>📓</span> Jupyter</span>
-          <span class="tech-tag"><span>🔢</span> NumPy</span>
         </div>
-        <p>
-          <span class="lang-fr">
-            Pipeline ETL Python : extraction et nettoyage des données Kaggle, feature engineering pour créer les KPI logistiques (<code>is_late</code>, <code>on_time_%</code>, <code>shipping_gap</code>), et visualisation Power BI avec analyse temporelle et par mode de transport.
-          </span>
-          <span class="lang-en">
-            Python ETL pipeline: Kaggle data extraction and cleaning, feature engineering to create logistics KPIs (<code>is_late</code>, <code>on_time_%</code>, <code>shipping_gap</code>), and Power BI visualization with temporal analysis and by shipping mode.
-          </span>
-        </p>
         <a href="https://github.com/R-midolli/supply_chain_analytics" target="_blank" rel="noopener" class="btn-github">
-          <svg class="github-icon" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-          <span class="lang-fr">Voir le code</span>
-          <span class="lang-en">View code</span>
+          <svg class="github-icon" viewBox="0 0 24 24">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+          <span class="lang-fr">Dépôt GitHub du Projet</span>
+          <span class="lang-en">View GitHub Repository</span>
         </a>
       </div>
     </div>
 
+    <!-- SEÇÃO: ARQUITETURA ETL -->
     <section class="card">
       <h3>
-        <span class="lang-fr">🏗️ Architecture du pipeline ETL</span>
-        <span class="lang-en">🏗️ ETL Pipeline architecture</span>
+        <span class="lang-fr">🏗️ Data Workflow & Modélisation</span>
+        <span class="lang-en">🏗️ Data Workflow & Modeling</span>
       </h3>
       <div class="architecture-flow">
         <div class="arch-step">
           <div class="arch-icon">📥</div>
           <div class="arch-title">Extract</div>
           <div class="arch-desc">
-            <span class="lang-fr">CSV Kaggle (181K lignes)</span>
-            <span class="lang-en">Kaggle CSV (181K rows)</span>
+            <span class="lang-fr">Logs Transactionnels Kaggle</span>
+            <span class="lang-en">Kaggle Transaction Logs</span>
           </div>
         </div>
         <div class="arch-step">
           <div class="arch-icon">🔧</div>
           <div class="arch-title">Transform</div>
           <div class="arch-desc">
-            <span class="lang-fr">Python + Pandas (nettoyage, KPI)</span>
-            <span class="lang-en">Python + Pandas (cleaning, KPIs)</span>
+            <span class="lang-fr">Feature Engineering Python / Pandas</span>
+            <span class="lang-en">Python / Pandas Feature Engineering</span>
           </div>
         </div>
         <div class="arch-step">
           <div class="arch-icon">💾</div>
           <div class="arch-title">Load</div>
           <div class="arch-desc">
-            <span class="lang-fr">Export CSV enrichi</span>
-            <span class="lang-en">Enriched CSV export</span>
+            <span class="lang-fr">Table de Faits normalisée</span>
+            <span class="lang-en">Normalized Fact Table</span>
           </div>
         </div>
         <div class="arch-step">
           <div class="arch-icon">📊</div>
           <div class="arch-title">Visualize</div>
-          <div class="arch-desc">Power BI</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Dashboard Power BI Exécutif</span>
+            <span class="lang-en">Executive Power BI Dashboard</span>
+          </div>
         </div>
       </div>
       <p>
         <span class="lang-fr">
-          Le pipeline ETL standardise le dataset Kaggle <em>DataCo Supply Chain</em> et calcule les KPI logistiques clés : <code>on_time_%</code> (45,2%), <code>late_rate_%</code> (54,8%), <code>avg_shipping_gap</code> (0,6 jours). Les dates sont normalisées et le dataset enrichi est exporté pour analyse interactive dans Power BI.
+          Le pipeline convertit la donnée brute <em>DataCo Supply Chain</em> en indicateurs métiers concrets et
+          factuels. J'ai modélisé les calculs de dates asynchrones pour en extraire l'écart d'exécution
+          (<code>avg_shipping_gap</code> : 0,6 jours), révélant la dure réalité d'un OTIF (On-Time In-Full) à seulement
+          45,2%.
         </span>
         <span class="lang-en">
-          The ETL pipeline standardizes the Kaggle <em>DataCo Supply Chain</em> dataset and calculates key logistics KPIs: <code>on_time_%</code> (45.2%), <code>late_rate_%</code> (54.8%), <code>avg_shipping_gap</code> (0.6 days). Dates are normalized and the enriched dataset is exported for interactive analysis in Power BI.
+          The pipeline transforms the raw <em>DataCo Supply Chain</em> dataset into bold, factual business intelligence.
+          I modeled asynchronous date logic to extract true operational variance (<code>avg_shipping_gap</code>: 0.6
+          days), uncovering the harsh reality of an On-Time In-Full (OTIF) rate sitting at merely 45.2%.
         </span>
       </p>
     </section>
 
+    <!-- SEÇÃO: INSIGHTS -->
     <section class="insights-section">
       <h2 class="case-title" style="font-size:2rem;margin-bottom:32px">
-        <span class="lang-fr">💡 Insights clés du dashboard</span>
-        <span class="lang-en">💡 Key dashboard insights</span>
+        <span class="lang-fr">💡 Actionable Data Insights</span>
+        <span class="lang-en">💡 Actionable Data Insights</span>
       </h2>
 
       <div class="insight-card">
         <h4>
           <span class="insight-icon">🚨</span>
           <span>
-            <span class="lang-fr">Performance en-dessous des standards : 45,2% OnTime</span>
-            <span class="lang-en">Below-standard performance: 45.2% OnTime</span>
+            <span class="lang-fr">Crise Systémique : OTIF à ~45%</span>
+            <span class="lang-en">Systemic Crisis: ~45% OTIF Rate</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Avec seulement <span class="insight-highlight warning">45,2% de livraisons à temps</span>, la performance est largement inférieure aux standards de l'industrie (>85% OTIF). Cela signifie que <strong>plus de la moitié des clients</strong> (54,8% — soit ~99K commandes) reçoivent leur commande en retard.
+              Avec un taux de service validé à <span class="insight-highlight warning">45,2%</span>, la performance
+              logistique est en-dessous de tout standard E-Commerce (qui dicte un objectif sain >85%). Mathématiquement,
+              <strong>plus d'un client sur deux</strong> (~99K commandes) subit une friction critique de livraison
+              (Retard).
             </span>
             <span class="lang-en">
-              With only <span class="insight-highlight warning">45.2% on-time deliveries</span>, performance is well below industry standards (>85% OTIF). This means that <strong>more than half of customers</strong> (54.8% — approx. 99K orders) receive their order late.
+              With a validated service level index at <span class="insight-highlight warning">45.2%</span>, operational
+              performance is wholly outside acceptable E-Commerce benchmarks (usually targeting >85%). Mathematically,
+              <strong>over one in two customers</strong> (roughly 99K orders) experiences a critical friction point:
+              Late Delivery.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr"><strong>Gap vs benchmark</strong> : 40 points sous le standard (85% - 45,2% = 39,8%)</span>
-              <span class="lang-en"><strong>Gap vs benchmark</strong>: 40 points below standard (85% - 45.2% = 39.8%)</span>
+              <span class="lang-fr"><strong>Coût de non-qualité (CNQ)</strong> : Risque d'explosion du taux de Churn
+                (désabonnement) et du SAV.</span>
+              <span class="lang-en"><strong>Cost of Poor Quality (COPQ)</strong>: Severe risk of compounding Churn and
+                customer service meltdown.</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Impact satisfaction</strong> : Risque élevé de churn et d'avis négatifs</span>
-              <span class="lang-en"><strong>Satisfaction impact</strong>: High risk of churn and negative reviews</span>
-            </div>
-            <div class="insight-item">
-              <span class="lang-fr"><strong>Coût caché</strong> : Service client surchargé avec 99K réclamations potentielles</span>
-              <span class="lang-en"><strong>Hidden cost</strong>: Customer service overloaded with 99K potential complaints</span>
+              <span class="lang-fr"><strong>Inertie Opérationnelle</strong> : L'analyse temporelle confirme que ce taux
+                de retard reste dramatiquement plat (M-o-M) sur des années.</span>
+              <span class="lang-en"><strong>Operational Inertia</strong>: Time-series analysis confirms this late rate
+                is dramatically flat (M-o-M) over years, suggesting inaction.</span>
             </div>
           </div>
         </div>
@@ -220,31 +366,35 @@
         <h4>
           <span class="insight-icon">📦</span>
           <span>
-            <span class="lang-fr">First Class : problème critique à résoudre d'urgence</span>
-            <span class="lang-en">First Class: critical issue requiring urgent resolution</span>
+            <span class="lang-fr">Le "Black Swan" : L'urgence du mode 'First Class'</span>
+            <span class="lang-en">The "Black Swan": 'First Class' Urgent Failure</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              Le mode <strong>First Class</strong> affiche un taux de retard catastrophique de <span class="insight-highlight warning">95,3%</span> — pratiquement aucune commande n'arrive à temps. C'est le principal driver du problème global et nécessite une <strong>action immédiate</strong>.
+              L'agrégation des KPI de logistique indique un échec stupéfiant sur le tier le plus premium : le mode
+              <strong>First Class</strong> affiche un <span class="insight-highlight warning">taux d'échec total (en
+                retard) de 95,3%</span>. Les clients payant le prix maximal subissent paradoxalement le pire service.
             </span>
             <span class="lang-en">
-              The <strong>First Class</strong> mode shows a catastrophic late rate of <span class="insight-highlight warning">95.3%</span> — virtually no orders arrive on time. This is the main driver of the overall problem and requires <strong>immediate action</strong>.
+              Logistics KPI aggregation points down to a staggering execution failure on the highest-priced tier: the
+              <strong>First Class</strong> mode displays an <span class="insight-highlight warning">absolute failure
+                rate (late) of 95.3%</span>. Clients paying top-dollar are paradoxically handed the worst SLAs.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr"><strong>Second Class</strong> : 76,6% retard — également problématique</span>
-              <span class="lang-en"><strong>Second Class</strong>: 76.6% late — also problematic</span>
+              <span class="lang-fr"><strong>Standard Class</strong> : Avec 38,1% de retard, il demeure étrangement le
+                canal le plus fiable.</span>
+              <span class="lang-en"><strong>Standard Class</strong>: Sitting at 38.1% late, it ironically remains the
+                most robust channel.</span>
             </div>
             <div class="insight-item">
-              <span class="lang-fr"><strong>Same Day</strong> : 45,7% retard — performance acceptable mais à améliorer</span>
-              <span class="lang-en"><strong>Same Day</strong>: 45.7% late — acceptable performance but needs improvement</span>
-            </div>
-            <div class="insight-item">
-              <span class="lang-fr"><strong>Standard Class</strong> : 38,1% retard — meilleur mode actuellement</span>
-              <span class="lang-en"><strong>Standard Class</strong>: 38.1% late — currently best mode</span>
+              <span class="lang-fr"><strong>Recommandation BI</strong> : Geler l'offre First Class ou auditer de force
+                les sous-traitants (3PL).</span>
+              <span class="lang-en"><strong>BI Recommendation</strong>: Freeze the First Class offering or enforce
+                immediate Third-Party Logistics (3PL) forensic audits.</span>
             </div>
           </div>
         </div>
@@ -252,171 +402,104 @@
 
       <div class="insight-card">
         <h4>
-          <span class="insight-icon">🎯</span>
+          <span class="insight-icon">⛳</span>
           <span>
-            <span class="lang-fr">Top 10 catégories à risque identifiées</span>
-            <span class="lang-en">Top 10 at-risk categories identified</span>
+            <span class="lang-fr">Audits Catégoriels Ciblés</span>
+            <span class="lang-en">Targeted Categorical Audits</span>
           </span>
         </h4>
         <div class="insight-content">
           <p>
             <span class="lang-fr">
-              L'analyse par catégorie révèle des produits systématiquement en retard : <strong>Golf Bags & Carts</strong> (68,9%), <strong>Lacrosse</strong> (60,1%), <strong>Pet Supplies</strong> (58,9%), <strong>Cameras</strong> (58,1%). Ces catégories nécessitent un audit approfondi.
+              La segmentation produit montre que de nombreuses références souffrent d'un retard systématique très
+              prononcé dépassant les 58%. Notamment : <strong>Golf Bags (68,9%), Lacrosse (60,1%) et Pet Supplies
+                (58,9%)</strong>.
             </span>
             <span class="lang-en">
-              Category analysis reveals products systematically late: <strong>Golf Bags & Carts</strong> (68.9%), <strong>Lacrosse</strong> (60.1%), <strong>Pet Supplies</strong> (58.9%), <strong>Cameras</strong> (58.1%). These categories require in-depth audit.
+              Product segmentation demonstrates that many high-ticket or niche SKU lines suffer an extreme systematic
+              lag surpassing 58%. Most notably: <strong>Golf Bags (68.9%), Lacrosse (60.1%), and Pet Supplies
+                (58.9%)</strong>.
             </span>
           </p>
           <div class="insight-list">
             <div class="insight-item">
-              <span class="lang-fr">Strength Training (57,2%), As Seen on TV (57,4%), Music (57,1%)</span>
-              <span class="lang-en">Strength Training (57.2%), As Seen on TV (57.4%), Music (57.1%)</span>
-            </div>
-            <div class="insight-item">
-              <span class="lang-fr">Accessories (57,0%), Fitness Accessories (57,0%), Books (56,5%)</span>
-              <span class="lang-en">Accessories (57.0%), Fitness Accessories (57.0%), Books (56.5%)</span>
-            </div>
-            <div class="insight-item">
-              <span class="lang-fr"><strong>Hypothèse</strong> : Problèmes de stock, préparation longue ou contraintes fournisseurs</span>
-              <span class="lang-en"><strong>Hypothesis</strong>: Stock issues, long preparation or supplier constraints</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="insight-card">
-        <h4>
-          <span class="insight-icon">📊</span>
-          <span>
-            <span class="lang-fr">Tendance mensuelle stable : problème structurel</span>
-            <span class="lang-en">Stable monthly trend: structural problem</span>
-          </span>
-        </h4>
-        <div class="insight-content">
-          <p>
-            <span class="lang-fr">
-              Le graphique <strong>OnTime % by Month</strong> montre une tendance stable oscillant entre <span class="insight-highlight">44% et 46%</span> tout au long de l'année, sans pic saisonnier marqué ni amélioration. Cela confirme un <strong>problème structurel organisationnel</strong> et non un incident ponctuel.
-            </span>
-            <span class="lang-en">
-              The <strong>OnTime % by Month</strong> chart shows a stable trend oscillating between <span class="insight-highlight">44% and 46%</span> throughout the year, with no marked seasonal peak or improvement. This confirms a <strong>structural organizational problem</strong> and not a one-time incident.
-            </span>
-          </p>
-          <div class="insight-list">
-            <div class="insight-item">
-              <span class="lang-fr">Aucune amélioration visible entre 2015 et 2018 → inaction ou échec des initiatives</span>
-              <span class="lang-en">No visible improvement between 2015 and 2018 → inaction or initiative failure</span>
-            </div>
-            <div class="insight-item">
-              <span class="lang-fr">Pic légèrement positif en juillet (~46%) vs creux en août (~44%)</span>
-              <span class="lang-en">Slightly positive peak in July (~46%) vs low in August (~44%)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="insight-card">
-        <h4>
-          <span class="insight-icon">⏱️</span>
-          <span>
-            <span class="lang-fr">Avg Shipping Gap : 0,6 jours de retard moyen</span>
-            <span class="lang-en">Avg Shipping Gap: 0.6 days average delay</span>
-          </span>
-        </h4>
-        <div class="insight-content">
-          <p>
-            <span class="lang-fr">
-              En moyenne, les commandes en retard arrivent avec <span class="insight-highlight">0,6 jours de retard</span>. Bien que ce chiffre puisse sembler faible, il cache une grande disparité : certaines commandes arrivent plusieurs jours voire semaines en retard, tandis que d'autres sont légèrement en retard.
-            </span>
-            <span class="lang-en">
-              On average, late orders arrive <span class="insight-highlight">0.6 days late</span>. While this number may seem low, it hides great disparity: some orders arrive several days or even weeks late, while others are slightly late.
-            </span>
-          </p>
-          <div class="insight-list">
-            <div class="insight-item">
-              <span class="lang-fr">Nécessite une analyse de distribution pour identifier les retards extrêmes</span>
-              <span class="lang-en">Requires distribution analysis to identify extreme delays</span>
-            </div>
-            <div class="insight-item">
-              <span class="lang-fr">Même 0,6 jours = impact négatif sur NPS et satisfaction client</span>
-              <span class="lang-en">Even 0.6 days = negative impact on NPS and customer satisfaction</span>
+              <span class="lang-fr"><strong>Hypothèse Data</strong> : Dimensionnement logistique inadapté ou Sourcing
+                Asie très instable pour ces produits volumineux/spécialisés.</span>
+              <span class="lang-en"><strong>Data Hypothesis</strong>: Inadequate volumetric logistics planning, or
+                highly unstable Asian sourcing for these oversized/specialized products.</span>
             </div>
           </div>
         </div>
       </div>
     </section>
 
+    <!-- SEÇÃO: DASHBOARD -->
     <section class="card">
       <h3>
-        <span class="lang-fr">📊 Dashboard Power BI interactif</span>
-        <span class="lang-en">📊 Interactive Power BI dashboard</span>
+        <span class="lang-fr">📊 Executive Dashboard — Reporting Décisionnel</span>
+        <span class="lang-en">📊 Executive Dashboard — Decision Reporting</span>
       </h3>
       <p>
         <span class="lang-fr">
-          Le dashboard offre une vue exécutive complète avec filtres par année (2015-2018) et région géographique (Africa, Europe, LATAM, Pacific Asia, USCA). Explorez les performances par mode de transport, catégorie produit et évolution temporelle pour identifier les leviers d'action prioritaires.
+          Le portail décisionnel DAX offre une vision panoramique permettant de "drill-down" par Continents, Années et
+          Catégories. Cela favorise l'exploration *Self-Service* des décideurs pour isoler visuellement les foyers
+          d'inefficacité (les 95,3% de retard First Class s'identifient en 2 clics).
         </span>
         <span class="lang-en">
-          The dashboard provides a complete executive view with filters by year (2015-2018) and geographic region (Africa, Europe, LATAM, Pacific Asia, USCA). Explore performance by shipping mode, product category and time evolution to identify priority action levers.
+          The DAX-powered decision portal offers a panoramic lens to dynamically "drill down" across Continents, Years,
+          and SKUs. This enforces *Self-Service* BI, allowing stakeholders to visually isolate inefficiency hotbeds (the
+          95.3% First Class failure rate is reachable within 2 clicks).
         </span>
       </p>
-      
-      <div class="embed-responsive">
-        <iframe 
-          title="Supply Chain Analytics" 
-          src="https://app.powerbi.com/view?r=eyJrIjoiN2FmNWZjNTktMTc4Yi00YzJjLWI2ZDctYTUxOGNlMjg1MWQyIiwidCI6IjdlOTNlMjg2LWIyOWEtNDQ1NC1hNDFhLWU4NDE5ZWM5ZGViNSJ9" 
-          frameborder="0" 
-          allowFullScreen="true">
-        </iframe>
-      </div>
 
-      <div class="embed-note">
-        <strong>
-          <span class="lang-fr">💡 Astuce :</span>
-          <span class="lang-en">💡 Tip:</span>
-        </strong>
-        <span class="lang-fr">
-          Utilisez les filtres de région (Africa, Europe, LATAM, Pacific Asia, USCA) pour segmenter l'analyse. Le graphique "Late orders mix by shipping mode" montre la distribution mensuelle des modes de transport problématiques. Identifiez les catégories avec >60% de retard pour prioriser les audits.
-        </span>
-        <span class="lang-en">
-          Use region filters (Africa, Europe, LATAM, Pacific Asia, USCA) to segment analysis. The "Late orders mix by shipping mode" chart shows monthly distribution of problematic shipping modes. Identify categories with >60% late to prioritize audits.
-        </span>
+      <div class="embed-responsive">
+        <iframe title="Supply Chain Analytics"
+          src="https://app.powerbi.com/view?r=eyJrIjoiN2FmNWZjNTktMTc4Yi00YzJjLWI2ZDctYTUxOGNlMjg1MWQyIiwidCI6IjdlOTNlMjg2LWIyOWEtNDQ1NC1hNDFhLWU4NDE5ZWM5ZGViNSJ9"
+          frameborder="0" allowFullScreen="true">
+        </iframe>
       </div>
     </section>
 
+    <!-- SEÇÃO: CONCLUSION -->
     <section class="conclusion conclusion--highlight">
       <h3>
-        <span class="lang-fr">🎯 Recommandations stratégiques</span>
-        <span class="lang-en">🎯 Strategic recommendations</span>
+        <span class="lang-fr">🎯 Plan d'action & Résolution du ROI</span>
+        <span class="lang-en">🎯 Action Plan & ROI Resolution</span>
       </h3>
       <p>
         <span class="lang-fr">
-          <strong>1. Action urgente sur First Class et Second Class :</strong> Ces deux modes représentent la majorité du problème (95,3% et 76,6%). Renégocier les SLA avec les transporteurs ou migrer immédiatement les volumes vers Standard Class (38,1%) jusqu'à résolution.
+          <strong>1. Gestion de crise sur les SLA Transporteurs (Modes Class) :</strong> La First Class coûte
+          probablement des millions en remboursements SAV. Recommander un report des volumes sur le Standard Class le
+          temps de re-signer des pénalités financières contre les transporteurs défaillants.
         </span>
         <span class="lang-en">
-          <strong>1. Urgent action on First Class and Second Class:</strong> These two modes represent the majority of the problem (95.3% and 76.6%). Renegotiate SLAs with carriers or immediately migrate volumes to Standard Class (38.1%) until resolution.
+          <strong>1. Carrier SLA Crisis Management (Class Modes):</strong> First Class is likely burning millions in
+          unrecorded customer service refunds. Immediate cap and shift of volumes toward Standard Class logistics should
+          be enforced until new financial penalty clauses are negotiated against failing carriers.
         </span>
       </p>
       <p>
         <span class="lang-fr">
-          <strong>2. Audit approfondi des catégories >60% retard :</strong> Golf Bags & Carts (68,9%), Lacrosse (60,1%), Pet Supplies (58,9%) et Cameras (58,1%) nécessitent un diagnostic complet : disponibilité stock, processus de préparation, contraintes fournisseurs. Timeline : 30 jours maximum.
+          <strong>2. Ajustement brutal de la Promesse Client :</strong> Une entreprise ne peut promettre ce qu'elle ne
+          tient qu'à 45,2%. Sur le Front-End (E-commerce), il faut allonger les délais affichés pour stopper l'attrition
+          (churn) liée aux fausses promesses.
         </span>
         <span class="lang-en">
-          <strong>2. In-depth audit of categories >60% late:</strong> Golf Bags & Carts (68.9%), Lacrosse (60.1%), Pet Supplies (58.9%) and Cameras (58.1%) require complete diagnosis: stock availability, preparation process, supplier constraints. Timeline: 30 days maximum.
+          <strong>2. Brutal Adjustment of the Customer Promise:</strong> An enterprise cannot promise what it only
+          honors 45.2% of the time. Front-End (E-commerce UI) delivery ETAs must be forcefully extended to halt the
+          massive attrition (churn) linked to unkept promises.
         </span>
       </p>
       <p>
         <span class="lang-fr">
-          <strong>3. Ajuster les promesses de livraison :</strong> Avec 45,2% OnTime, les délais communiqués aux clients sont trop optimistes. Revoir les promesses pour refléter la réalité opérationnelle actuelle et éviter la sur-promesse qui détruit la confiance.
+          <strong>3. Roadmap Stratégique :</strong> Objectif Q1 : Abaisser la First Class à moins de 40% de retard
+          (quick wins logistiques). Q2 : Casser la barre des 60% OTIF réseau via un audit lourd sur les produits
+          volumineux (Sourcing Golf/Lacrosse). Target Année 2 : 85% d'OTIF normatif.
         </span>
         <span class="lang-en">
-          <strong>3. Adjust delivery promises:</strong> With 45.2% OnTime, delivery times communicated to customers are too optimistic. Review promises to reflect current operational reality and avoid over-promising that destroys trust.
-        </span>
-      </p>
-      <p>
-        <span class="lang-fr">
-          <strong>4. Plan d'amélioration par étapes :</strong> Objectif court terme (3 mois) : atteindre 60% OnTime via quick wins (First/Second Class). Moyen terme (6 mois) : 75% OnTime via optimisation catégories. Long terme (12 mois) : >85% OnTime (standard industrie).
-        </span>
-        <span class="lang-en">
-          <strong>4. Phased improvement plan:</strong> Short-term goal (3 months): reach 60% OnTime via quick wins (First/Second Class). Medium-term (6 months): 75% OnTime via category optimization. Long-term (12 months): >85% OnTime (industry standard).
+          <strong>3. Strategic Turnaround Roadmap:</strong> Q1 Goal: Crash First Class failure rates below 40%
+          (logistical quick wins). Q2 Goal: Breach the 60% network OTIF ceiling by severely auditing bulky SKU
+          operations (Golf/Lacrosse Sourcing). Year 2 Target: Benchmarked 85% OTIF.
         </span>
       </p>
     </section>
@@ -424,6 +507,6 @@
   </main>
 
   <script src="assets/js/shared.js"></script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script>
 </body>
+
 </html>

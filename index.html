@@ -1,1775 +1,2608 @@
 <!doctype html>
 <html lang="fr" data-theme="dark" data-lang="fr">
+
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<meta name="description" content="Rafael Midolli — Business Analyst orienté data. Basé en France, disponible. 4 ans d'expérience (Retail & FMCG). Portfolio avec case studies, dashboards interactifs et analyses Pareto."/>
-<title>Rafael Midolli — Business Analyst</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>"/>
-<meta property="og:title" content="Rafael Midolli — Business Analyst"/>
-<meta property="og:description" content="Portfolio Business Analyst — case studies, dashboards interactifs, analyses Pareto."/>
-<meta property="og:type" content="website"/>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet"/>
-<style>
-/* ========== RESET & ROOT ========== */
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#0e1117;
-  --surface:rgba(255,255,255,.06);
-  --surface-hover:rgba(255,255,255,.10);
-  --text:#f0f2f7;
-  --text-muted:#7a8494;
-  --accent:#5b8cff;
-  --accent-2:#8b5cf6;
-  --accent-glow:rgba(91,140,255,.25);
-  --border:rgba(255,255,255,.08);
-  --radius:20px;
-  --font-head:'Playfair Display',Georgia,serif;
-  --font-body:'DM Sans',system-ui,sans-serif;
-}
-:root[data-theme="light"]{
-  --bg:#f6f7fb;
-  --surface:rgba(255,255,255,.7);
-  --surface-hover:rgba(255,255,255,.92);
-  --text:#0e1320;
-  --text-muted:rgba(14,19,32,.70);
-  --border:rgba(14,19,32,.10);
-  --accent:#4f7cff;
-  --accent-2:#7b5cff;
-  --accent-glow:rgba(91,140,255,.25);
-}
-[data-lang="fr"] .lang-en{display:none}
-[data-lang="en"] .lang-fr{display:none}
-html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
-body{
-  font-family:var(--font-body);
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.6;
-  overflow-x:hidden;
-  min-height:100vh;
-}
-a{color:inherit;text-decoration:none}
-img{max-width:100%;display:block}
-button{font-family:inherit;cursor:pointer}
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="Rafael Midolli — Business Analyst orienté data. Basé en France, disponible. 4 ans d'expérience (Retail & FMCG). Portfolio avec case studies, dashboards interactifs et analyses Pareto." />
+  <title>Rafael Midolli — Business Analyst</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📊</text></svg>" />
+  <meta property="og:title" content="Rafael Midolli — Business Analyst" />
+  <meta property="og:description"
+    content="Portfolio Business Analyst — case studies, dashboards interactifs, analyses Pareto." />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&family=Fira+Code:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* ========== RESET & ROOT ========== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* utility */
-.nowrap{white-space:nowrap}
+    :root {
+      --bg: #0e1117;
+      --surface: rgba(255, 255, 255, .06);
+      --surface-hover: rgba(255, 255, 255, .10);
+      --text: #f0f2f7;
+      --text-muted: #7a8494;
+      --accent: #5b8cff;
+      --accent-2: #8b5cf6;
+      --accent-glow: rgba(91, 140, 255, .25);
+      --border: rgba(255, 255, 255, .08);
+      --radius: 20px;
+      --font-head: 'Playfair Display', Georgia, serif;
+      --font-body: 'DM Sans', system-ui, sans-serif;
+    }
 
-/* ========== AMBIENT BACKGROUND ========== */
-.bg-mesh{
-  position:fixed;inset:0;z-index:0;
-  pointer-events:none;
-  background:
-    radial-gradient(ellipse 70% 50% at 20% 20%, rgba(91,140,255,.12) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 60% at 80% 70%, rgba(139,92,246,.10) 0%, transparent 70%),
-    radial-gradient(ellipse 40% 40% at 60% 10%, rgba(91,140,255,.06) 0%, transparent 60%);
-}
-.bg-grid{
-  position:fixed;inset:0;z-index:0;
-  pointer-events:none;
-  opacity:.035;
-  background-image:
-    linear-gradient(rgba(255,255,255,1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,1) 1px, transparent 1px);
-  background-size:60px 60px;
-  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-  -webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
-}
-:root[data-theme="light"] .bg-grid{
-  opacity:.055;
-  background-image:
-    linear-gradient(rgba(14,19,32,.4) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(14,19,32,.4) 1px, transparent 1px);
-}
+    :root[data-theme="light"] {
+      --bg: #f6f7fb;
+      --surface: rgba(255, 255, 255, .7);
+      --surface-hover: rgba(255, 255, 255, .92);
+      --text: #0e1320;
+      --text-muted: rgba(14, 19, 32, .70);
+      --border: rgba(14, 19, 32, .10);
+      --accent: #4f7cff;
+      --accent-2: #7b5cff;
+      --accent-glow: rgba(91, 140, 255, .25);
+    }
 
-/* ========== SCROLL PROGRESS ========== */
-.scroll-bar{
-  position:fixed;top:0;left:0;height:2px;width:0;
-  background:linear-gradient(90deg,var(--accent),var(--accent-2));
-  z-index:100;
-  transition:width .15s linear;
-}
+    [data-lang="fr"] .lang-en {
+      display: none
+    }
 
-/* ========== NAV ========== */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:90;
-  padding:16px 0;
-  transition:background .3s, backdrop-filter .3s, padding .3s;
-}
-.nav.scrolled{
-  background:rgba(14,17,23,.7);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-}
-:root[data-theme="light"] .nav.scrolled .logo,
-:root[data-theme="light"] .nav.scrolled .nav-links a{color:#f0f2f7}
-:root[data-theme="light"] .nav.scrolled .nav-links a:hover{background:rgba(255,255,255,.15);color:#fff}
-:root[data-theme="light"] .nav.scrolled .btn-cv,
-:root[data-theme="light"] .nav.scrolled .theme-toggle,
-:root[data-theme="light"] .nav.scrolled .lang-toggle{color:#fff;border-color:rgba(255,255,255,.3);background:transparent}
-:root[data-theme="light"] .nav.scrolled .btn-cv:hover,
-:root[data-theme="light"] .nav.scrolled .theme-toggle:hover,
-:root[data-theme="light"] .nav.scrolled .lang-toggle:hover{background:rgba(255,255,255,.2);border-color:transparent}
+    [data-lang="en"] .lang-fr {
+      display: none
+    }
 
-.nav-inner{
-  max-width:1100px;margin:0 auto;padding:0 28px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.logo{
-  font-family:var(--font-head);
-  font-weight:800;font-size:1.25rem;
-  letter-spacing:-.02em;
-  display:flex;align-items:center;gap:10px;
-}
-.logo-ring{
-  width:34px;height:34px;border-radius:50%;
-  border:2px solid var(--accent);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.72rem;font-weight:700;color:var(--accent);
-  font-family:var(--font-body);
-}
-.nav-links{display:flex;gap:6px;align-items:center}
-.nav-links a{
-  font-size:.85rem;font-weight:600;
-  color:var(--text-muted);
-  padding:8px 14px;border-radius:999px;
-  transition:color .2s, background .2s;
-}
-.nav-links a:hover{color:var(--text);background:var(--surface)}
-.nav-links a.active{color:var(--accent);background:rgba(91,140,255,.1)}
-.btn-cv{
-  font-size:.82rem;font-weight:700;
-  color:var(--accent);
-  border:1px solid rgba(91,140,255,.35);
-  padding:8px 16px;border-radius:999px;
-  transition:background .2s, border-color .2s;
-  display:inline-flex;align-items:center;gap:6px;
-}
-.btn-cv:hover{background:rgba(91,140,255,.1);border-color:var(--accent)}
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased
+    }
 
-/* ========== HERO ========== */
-.hero{
-  position:relative;z-index:1;
-  min-height:100vh;
-  display:flex;align-items:center;
-  padding:120px 0 80px;
-}
-.hero-inner{
-  max-width:1100px;margin:0 auto;padding:0 28px;
-  display:grid;grid-template-columns:1fr 380px;
-  gap:48px;align-items:center;
-}
-.pill{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:8px 16px;border-radius:999px;
-  border:1px solid rgba(91,140,255,.25);
-  background:rgba(91,140,255,.08);
-  font-size:.82rem;font-weight:600;
-  color:var(--accent);
-  margin-bottom:24px;
-}
-.pill-dot{
-  width:7px;height:7px;border-radius:50%;
-  background:var(--accent);
-  animation:pulse-dot 2s infinite;
-}
-@keyframes pulse-dot{
-  0%,100%{opacity:1;transform:scale(1)}
-  50%{opacity:.4;transform:scale(.85)}
-}
-.hero h1{
-  font-family:var(--font-head);
-  font-size:clamp(2.6rem,5vw,3.8rem);
-  font-weight:800;line-height:1.08;
-  letter-spacing:-.03em;
-  color:var(--text);
-}
-.hero h1 em{
-  font-style:italic;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-}
-.hero-desc{
-  margin-top:22px;
-  color:var(--text-muted);
-  font-size:1.05rem;
-  max-width:520px;
-  line-height:1.7;
-}
-.hero-ctas{
-  display:flex;
-  gap:14px;
-  margin-top:32px;
-  flex-wrap:wrap;
-}
-.btn-primary{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:14px 28px;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#fff;
-  border-radius:999px;
-  font-weight:700;font-size:.9rem;
-  transition:transform .2s, box-shadow .2s;
-  border:none;
-}
-.btn-primary:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 32px rgba(91,140,255,.35);
-}
-.btn-secondary{
-  display:inline-flex;align-items:center;gap:10px;
-  padding:14px 28px;
-  background:var(--surface);
-  color:var(--text);
-  border:1px solid var(--border);
-  border-radius:999px;
-  font-weight:700;font-size:.9rem;
-  transition:background .2s, border-color .2s, transform .2s;
-}
-.btn-secondary:hover{
-  background:var(--surface-hover);
-  border-color:var(--accent);
-  transform:translateY(-2px);
-}
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
 
-/* ========== HERO TERMINAL ========== */
-.hero-terminal{
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(91,140,255,.2);
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 20px 50px rgba(0,0,0,.3), 0 0 40px rgba(91,140,255,.06);
-  backdrop-filter:blur(10px);
-  animation:floaty 10s ease-in-out infinite;
-}
-:root[data-theme="light"] .hero-terminal{
-  background:rgba(17,24,39,.92);
-  border-color:rgba(91,140,255,.25);
-}
-.terminal-bar{
-  display:flex;align-items:center;gap:7px;
-  padding:10px 14px;
-  background:rgba(255,255,255,.04);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-.terminal-dot{width:9px;height:9px;border-radius:50%}
-.terminal-dot.r{background:#ff5f57}
-.terminal-dot.y{background:#febc2e}
-.terminal-dot.g{background:#28c840}
-.terminal-title{
-  flex:1;text-align:center;
-  font-size:.72rem;font-weight:600;
-  color:rgba(255,255,255,.35);
-  font-family:'Fira Code','DM Sans',monospace;
-}
-.terminal-body{
-  padding:14px 16px;
-  font-family:'Fira Code','DM Sans',monospace;
-  font-size:.75rem;
-  line-height:1.8;
-  color:rgba(255,255,255,.7);
-}
-.terminal-body .t-keyword{color:#c678dd}
-.terminal-body .t-key{color:#56b6c2}
-.terminal-body .t-string{color:#98c379}
-.terminal-body .t-comment{color:rgba(255,255,255,.28);font-style:italic}
-.terminal-body .t-method{color:#61afef}
-.terminal-body .t-number{color:#d19a66}
-.terminal-body .t-punct{color:#abb2bf}
-.terminal-body .t-var{color:#e06c75}
-.terminal-body .t-lib{color:#e5c07b}
-.terminal-line{opacity:0;animation:typeLine .4s ease forwards}
-.terminal-line:nth-child(1){animation-delay:.3s}
-.terminal-line:nth-child(2){animation-delay:.6s}
-.terminal-line:nth-child(3){animation-delay:.9s}
-.terminal-line:nth-child(4){animation-delay:1.2s}
-.terminal-line:nth-child(5){animation-delay:1.5s}
-.terminal-line:nth-child(6){animation-delay:1.8s}
-.terminal-line:nth-child(7){animation-delay:2.1s}
-.terminal-line:nth-child(8){animation-delay:2.4s}
-.terminal-line:nth-child(9){animation-delay:2.7s}
-.terminal-line:nth-child(10){animation-delay:3.0s}
-.terminal-line:nth-child(11){animation-delay:3.3s}
-.terminal-cursor{
-  display:inline-block;
-  width:8px;height:15px;
-  background:var(--accent);
-  margin-left:4px;
-  vertical-align:text-bottom;
-  animation:blink 1s step-end infinite;
-}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-@keyframes typeLine{to{opacity:1}}
-@keyframes floaty{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-10px)}
-}
+    a {
+      color: inherit;
+      text-decoration: none
+    }
 
-/* ========== SECTIONS ========== */
-.section{
-  position:relative;z-index:1;
-  padding:80px 0;
-}
-.section-inner{
-  max-width:1100px;margin:0 auto;padding:0 28px;
-}
-.section-label{
-  font-size:.82rem;font-weight:700;
-  color:var(--accent);
-  text-transform:uppercase;
-  letter-spacing:.1em;
-  margin-bottom:12px;
-}
-.section-title{
-  font-family:var(--font-head);
-  font-size:clamp(2rem,4vw,2.8rem);
-  font-weight:800;
-  line-height:1.2;
-  margin-bottom:48px;
-}
+    img {
+      max-width: 100%;
+      display: block
+    }
 
-/* ========== ABOUT (compact, only metrics) ========== */
-.about-title{margin-bottom:22px}
-.about-desc{
-  max-width:820px;
-  color:var(--text-muted);
-  font-size:1.02rem;
-  line-height:1.8;
-}
-.metrics-strip{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:22px;
-  margin-top:28px;
-}
-.metric-card{
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:16px;
-  padding:26px;
-  text-align:center;
-  transition:transform .2s, border-color .2s;
-}
-.metric-card:hover{
-  transform:translateY(-4px);
-  border-color:var(--accent);
-}
-.metric-value{
-  font-family:var(--font-head);
-  font-size:2.2rem;
-  font-weight:800;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  background-clip:text;
-  line-height:1.3;
-  margin-bottom:10px;
-}
-.metric-value.text-fit{font-size:1.4rem}
-.metric-label{
-  font-size:.88rem;
-  color:var(--text-muted);
-  line-height:1.5;
-}
+    button {
+      font-family: inherit;
+      cursor: pointer
+    }
 
-/* Clickable metric cards */
-.metric-card.clickable{
-  cursor:pointer;
-  position:relative;
-}
-.metric-card.clickable::after{
-  content:"";
-  position:absolute;
-  bottom:10px;right:12px;
-  width:18px;height:18px;
-  border-radius:50%;
-  background:rgba(91,140,255,.12);
-  border:1px solid rgba(91,140,255,.25);
-  opacity:0;
-  transition:opacity .25s ease;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235b8cff' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;
-  background-position:center;
-}
-.metric-card.clickable:hover::after{opacity:1}
-.metric-card.clickable:hover{
-  border-color:var(--accent);
-  box-shadow:0 0 0 1px rgba(91,140,255,.1), 0 8px 20px rgba(91,140,255,.1);
-}
+    /* utility */
+    .nowrap {
+      white-space: nowrap
+    }
 
-/* Diploma overlay */
-.diploma-overlay{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(14,17,23,.88);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  opacity:0;
-  transition:opacity .3s ease;
-}
-.diploma-overlay.show{display:flex;opacity:1}
-.diploma-card{
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:28px;
-  max-width:700px;
-  width:100%;
-  position:relative;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-  text-align:center;
-}
-:root[data-theme="dark"] .diploma-card{background:#0e1117}
-:root[data-theme="light"] .diploma-card{background:#f6f7fb}
-.diploma-close{
-  position:absolute;top:16px;right:16px;
-  width:36px;height:36px;
-  border-radius:50%;
-  border:1px solid var(--border);
-  background:var(--surface);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;
-  color:var(--text-muted);
-  transition:background .2s, color .2s;
-}
-.diploma-close:hover{background:var(--surface-hover);color:var(--text)}
-.diploma-title{
-  font-family:var(--font-head);
-  font-size:1.4rem;font-weight:800;
-  margin-bottom:6px;
-}
-.diploma-subtitle{
-  font-size:.88rem;
-  color:var(--accent);
-  font-weight:600;
-  margin-bottom:20px;
-}
-.diploma-frame{
-  width:100%;
-  height:min(65vh, 500px);
-  border:1px solid var(--border);
-  border-radius:12px;
-  overflow:hidden;
-}
-.diploma-frame iframe{
-  width:100%;height:100%;border:0;
-}
-.diploma-download{
-  display:inline-flex;align-items:center;gap:8px;
-  margin-top:16px;
-  padding:10px 20px;
-  border-radius:999px;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#fff;
-  font-size:.85rem;font-weight:700;
-  transition:transform .2s, box-shadow .2s;
-}
-.diploma-download:hover{
-  transform:translateY(-2px);
-  box-shadow:0 8px 20px rgba(91,140,255,.25);
-}
+    /* ========== AMBIENT BACKGROUND ========== */
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 70% 50% at 20% 20%, rgba(91, 140, 255, .12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(139, 92, 246, .10) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 60% 10%, rgba(91, 140, 255, .06) 0%, transparent 60%);
+    }
 
-/* ========== SQL CONSOLE ========== */
-.sql-console{
-  background:rgba(0,0,0,.45);
-  border:1px solid rgba(91,140,255,.15);
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 16px 40px rgba(0,0,0,.2), 0 0 30px rgba(91,140,255,.04);
-  backdrop-filter:blur(10px);
-  margin-top:36px;
-  margin-bottom:16px;
-}
-:root[data-theme="light"] .sql-console{
-  background:rgba(17,24,39,.92);
-  border-color:rgba(91,140,255,.2);
-}
-.sql-bar{
-  display:flex;align-items:center;gap:7px;
-  padding:10px 14px;
-  background:rgba(255,255,255,.04);
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-.sql-bar-title{
-  flex:1;text-align:center;
-  font-size:.72rem;font-weight:600;
-  color:rgba(255,255,255,.35);
-  font-family:'Fira Code','DM Sans',monospace;
-}
-.sql-body{
-  padding:16px 18px;
-  font-family:'Fira Code','DM Sans',monospace;
-  font-size:.72rem;
-  line-height:1.7;
-  color:rgba(255,255,255,.7);
-  overflow-x:auto;
-}
-.sql-prompt{color:#61afef;font-weight:700}
-.sql-code{margin-bottom:4px}
-.sql-code .s-kw{color:#c678dd;font-weight:600}
-.sql-code .s-fn{color:#61afef}
-.sql-code .s-str{color:#98c379}
-.sql-code .s-tbl{color:#e5c07b}
-.sql-code .s-col{color:#e06c75}
-.sql-code .s-op{color:#56b6c2}
-.sql-results{
-  margin-top:14px;
-  opacity:0;
-  transform:translateY(8px);
-  transition:opacity .5s ease, transform .5s ease;
-}
-.sql-console.active .sql-results{opacity:1;transform:translateY(0)}
-.sql-table{
-  width:100%;
-  border-collapse:collapse;
-  font-size:.7rem;
-}
-.sql-table th{
-  text-align:left;
-  padding:8px 14px;
-  color:#61afef;
-  font-weight:700;
-  border-bottom:2px solid rgba(97,175,239,.3);
-  white-space:nowrap;
-}
-.sql-table td{
-  padding:8px 14px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-  color:rgba(255,255,255,.75);
-  white-space:nowrap;
-}
-.sql-table td .s-str{color:#98c379}
-.sql-table td .s-num{color:#d19a66}
-.sql-table tbody tr{
-  opacity:0;
-  transform:translateX(-12px);
-  transition:opacity .4s ease, transform .4s ease;
-}
-.sql-console.active .sql-table tbody tr.row-show{opacity:1;transform:translateX(0)}
-.sql-row-count{
-  margin-top:12px;
-  font-size:.68rem;
-  color:rgba(255,255,255,.28);
-  font-style:italic;
-  opacity:0;
-  transition:opacity .4s ease .6s;
-}
-.sql-console.active .sql-row-count{opacity:1}
-.sql-cursor-block{
-  display:inline-block;
-  width:7px;height:13px;
-  background:#61afef;
-  vertical-align:text-bottom;
-  margin-left:3px;
-  animation:blink 1s step-end infinite;
-}
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: .035;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 1) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+      -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+    }
 
-/* ========== BIO OVERLAY ========== */
-.bio-overlay{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(14,17,23,.85);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  opacity:0;
-  transition:opacity .3s ease;
-}
-.bio-overlay.show{
-  display:flex;
-  opacity:1;
-}
-.bio-card{
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  padding:40px;
-  max-width:700px;
-  width:100%;
-  max-height:85vh;
-  overflow-y:auto;
-  position:relative;
-  box-shadow:0 20px 60px rgba(0,0,0,.5);
-}
-:root[data-theme="dark"] .bio-card{ background:#0e1117; }
-:root[data-theme="light"] .bio-card{ background:#f6f7fb; }
-.bio-close{
-  position:absolute;top:20px;right:20px;
-  width:36px;height:36px;
-  border-radius:50%;
-  border:1px solid var(--border);
-  background:var(--surface);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.3rem;
-  color:var(--text-muted);
-  transition:background .2s, color .2s;
-}
-.bio-close:hover{background:var(--surface-hover);color:var(--text)}
-.bio-header{
-  display:flex;align-items:center;gap:24px;
-  margin-bottom:28px;
-}
-.bio-avatar{
-  width:90px;height:90px;
-  border-radius:50%;
-  object-fit:cover;
-  border:3px solid var(--accent);
-}
-.bio-title{
-  font-family:var(--font-head);
-  font-size:1.7rem;font-weight:800;
-  margin-bottom:6px;
-}
-.bio-subtitle{
-  font-size:.9rem;
-  color:var(--accent);
-  font-weight:600;
-}
-.bio-body{
-  line-height:1.8;
-  color:var(--text-muted);
-}
-.bio-body p{margin-bottom:18px}
-.bio-body p:last-child{margin-bottom:0}
+    :root[data-theme="light"] .bg-grid {
+      opacity: .055;
+      background-image:
+        linear-gradient(rgba(14, 19, 32, .4) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14, 19, 32, .4) 1px, transparent 1px);
+    }
 
-/* ========== SKILLS ========== */
-.skills-tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:28px;
-  flex-wrap:wrap;
-}
-.skill-tab{
-  padding:10px 20px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text-muted);
-  font-size:.88rem;font-weight:600;
-  transition:background .2s, color .2s, border-color .2s;
-  display:flex;align-items:center;gap:8px;
-}
-.skill-tab.active{
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#fff;
-  border-color:transparent;
-}
-.skill-tab:hover:not(.active){background:var(--surface-hover);color:var(--text)}
-.skills-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
-  gap:12px;
-}
-.skill-chip{
-  padding:14px;
-  border-radius:12px;
-  background:var(--surface);
-  border:1px solid var(--border);
-  text-align:center;
-  font-size:.86rem;font-weight:600;
-  color:var(--text);
-  transition:transform .2s, border-color .2s, opacity .3s;
-  animation:fade-in .5s ease;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-}
-.skill-chip:hover{transform:translateY(-3px);border-color:var(--accent)}
-.skill-icon{width:20px;height:20px;flex-shrink:0;object-fit:contain}
-.skill-chip[hidden]{display:none !important}
-@keyframes fade-in{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
-}
+    /* ========== SCROLL PROGRESS ========== */
+    .scroll-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      z-index: 100;
+      transition: width .15s linear;
+    }
 
-/* ========== PROJECTS ========== */
-.projects-grid{display:grid;gap:28px}
-.project-card{
-  position:relative;
-  padding:32px;
-  border-radius:var(--radius);
-  background:var(--surface);
-  border:1px solid var(--border);
-  transition:transform .3s, border-color .3s, box-shadow .3s;
-}
-.project-card:hover{
-  transform:translateY(-6px);
-  border-color:var(--accent);
-  box-shadow:0 16px 40px rgba(91,140,255,.15);
-}
-.project-status{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:6px 12px;
-  border-radius:999px;
-  font-size:.75rem;font-weight:700;
-  text-transform:uppercase;
-  margin-bottom:14px;
-}
-.status-live{background:rgba(34,197,94,.12);color:#22c55e;border:1px solid rgba(34,197,94,.3)}
-.status-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:currentColor;
-  animation:pulse-dot 2s infinite;
-}
-.project-card h3{
-  font-family:var(--font-head);
-  font-size:1.5rem;font-weight:700;
-  color:var(--text);
-  margin-bottom:12px;
-}
-.project-card p{
-  color:var(--text-muted);
-  line-height:1.7;
-  margin-bottom:18px;
-}
-.project-tags{
-  display:flex;
-  gap:8px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-}
-.project-tag{
-  padding:6px 12px;
-  border-radius:6px;
-  background:rgba(91,140,255,.1);
-  border:1px solid rgba(91,140,255,.25);
-  color:var(--accent);
-  font-size:.78rem;font-weight:600;
-}
-.btn-case{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 20px;
-  border-radius:999px;
-  background:linear-gradient(135deg,var(--accent),var(--accent-2));
-  color:#fff;
-  font-size:.88rem;font-weight:700;
-  transition:transform .2s, box-shadow .2s;
-}
-.btn-case:hover{transform:translateX(4px);box-shadow:0 8px 20px rgba(91,140,255,.25)}
+    /* ========== NAV ========== */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      padding: 16px 0;
+      transition: background .3s, backdrop-filter .3s, padding .3s;
+    }
 
-/* ========== PROJECT CARD HOVER HINT ========== */
-.project-card{cursor:pointer}
-.project-card a, .project-card button{cursor:pointer}
-.project-card::after{
-  content:"Cliquez pour un aperçu";
-  position:absolute;
-  right:24px;
-  bottom:22px;
-  font-size:.78rem;
-  font-weight:700;
-  letter-spacing:.01em;
-  color:rgba(240,242,247,.45);
-  opacity:0;
-  transform:translateY(6px);
-  transition:opacity .18s ease, transform .18s ease;
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(14,17,23,.32);
-  backdrop-filter:blur(10px);
-  -webkit-backdrop-filter:blur(10px);
-  pointer-events:none;
-}
-.project-card:hover::after,
-.project-card:focus-within::after{
-  opacity:1;
-  transform:translateY(0);
-}
-:root[data-theme="light"] .project-card::after{
-  color:rgba(14,19,32,.55);
-  border-color:rgba(14,19,32,.12);
-  background:rgba(255,255,255,.55);
-}
-html[data-lang="en"] .project-card::after{
-  content:"Click for a preview";
-}
+    .nav.scrolled {
+      background: rgba(14, 17, 23, .7);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    :root[data-theme="light"] .nav.scrolled .logo,
+    :root[data-theme="light"] .nav.scrolled .nav-links a {
+      color: #f0f2f7
+    }
+
+    :root[data-theme="light"] .nav.scrolled .nav-links a:hover {
+      background: rgba(255, 255, 255, .15);
+      color: #fff
+    }
+
+    :root[data-theme="light"] .nav.scrolled .btn-cv,
+    :root[data-theme="light"] .nav.scrolled .theme-toggle,
+    :root[data-theme="light"] .nav.scrolled .lang-toggle {
+      color: #fff;
+      border-color: rgba(255, 255, 255, .3);
+      background: transparent
+    }
+
+    :root[data-theme="light"] .nav.scrolled .btn-cv:hover,
+    :root[data-theme="light"] .nav.scrolled .theme-toggle:hover,
+    :root[data-theme="light"] .nav.scrolled .lang-toggle:hover {
+      background: rgba(255, 255, 255, .2);
+      border-color: transparent
+    }
+
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-ring {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: 2px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: var(--font-body);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center
+    }
+
+    .nav-links a {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      padding: 8px 14px;
+      border-radius: 999px;
+      transition: color .2s, background .2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      background: var(--surface)
+    }
+
+    .nav-links a.active {
+      color: var(--accent);
+      background: rgba(91, 140, 255, .1)
+    }
+
+    .btn-cv {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--accent);
+      border: 1px solid rgba(91, 140, 255, .35);
+      padding: 8px 16px;
+      border-radius: 999px;
+      transition: background .2s, border-color .2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-cv:hover {
+      background: rgba(91, 140, 255, .1);
+      border-color: var(--accent)
+    }
+
+    /* ========== HERO ========== */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
+
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 28px;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(91, 140, 255, .25);
+      background: rgba(91, 140, 255, .08);
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1)
+      }
+
+      50% {
+        opacity: .4;
+        transform: scale(.85)
+      }
+    }
+
+    .hero h1 {
+      font-family: var(--font-head);
+      font-size: clamp(2.6rem, 5vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.08;
+      letter-spacing: -.03em;
+      color: var(--text);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-desc {
+      margin-top: 22px;
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 14px;
+      margin-top: 32px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .9rem;
+      transition: transform .2s, box-shadow .2s;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(91, 140, 255, .35);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: .9rem;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ========== HERO TERMINAL ========== */
+    .hero-terminal {
+      background: rgba(0, 0, 0, .45);
+      border: 1px solid rgba(91, 140, 255, .2);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .3), 0 0 40px rgba(91, 140, 255, .06);
+      backdrop-filter: blur(10px);
+      animation: floaty 10s ease-in-out infinite;
+    }
+
+    :root[data-theme="light"] .hero-terminal {
+      background: rgba(17, 24, 39, .92);
+      border-color: rgba(91, 140, 255, .25);
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, .04);
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .terminal-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%
+    }
+
+    .terminal-dot.r {
+      background: #ff5f57
+    }
+
+    .terminal-dot.y {
+      background: #febc2e
+    }
+
+    .terminal-dot.g {
+      background: #28c840
+    }
+
+    .terminal-title {
+      flex: 1;
+      text-align: center;
+      font-size: .72rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, .35);
+      font-family: 'Fira Code', 'DM Sans', monospace;
+    }
+
+    .terminal-body {
+      padding: 14px 16px;
+      font-family: 'Fira Code', 'DM Sans', monospace;
+      font-size: .75rem;
+      line-height: 1.8;
+      color: rgba(255, 255, 255, .7);
+    }
+
+    .terminal-body .t-keyword {
+      color: #c678dd
+    }
+
+    .terminal-body .t-key {
+      color: #56b6c2
+    }
+
+    .terminal-body .t-string {
+      color: #98c379
+    }
+
+    .terminal-body .t-comment {
+      color: rgba(255, 255, 255, .28);
+      font-style: italic
+    }
+
+    .terminal-body .t-method {
+      color: #61afef
+    }
+
+    .terminal-body .t-number {
+      color: #d19a66
+    }
+
+    .terminal-body .t-punct {
+      color: #abb2bf
+    }
+
+    .terminal-body .t-var {
+      color: #e06c75
+    }
+
+    .terminal-body .t-lib {
+      color: #e5c07b
+    }
+
+    .terminal-line {
+      opacity: 0;
+      animation: typeLine .4s ease forwards
+    }
+
+    .terminal-line:nth-child(1) {
+      animation-delay: .3s
+    }
+
+    .terminal-line:nth-child(2) {
+      animation-delay: .6s
+    }
+
+    .terminal-line:nth-child(3) {
+      animation-delay: .9s
+    }
+
+    .terminal-line:nth-child(4) {
+      animation-delay: 1.2s
+    }
+
+    .terminal-line:nth-child(5) {
+      animation-delay: 1.5s
+    }
+
+    .terminal-line:nth-child(6) {
+      animation-delay: 1.8s
+    }
+
+    .terminal-line:nth-child(7) {
+      animation-delay: 2.1s
+    }
+
+    .terminal-line:nth-child(8) {
+      animation-delay: 2.4s
+    }
+
+    .terminal-line:nth-child(9) {
+      animation-delay: 2.7s
+    }
+
+    .terminal-line:nth-child(10) {
+      animation-delay: 3.0s
+    }
+
+    .terminal-line:nth-child(11) {
+      animation-delay: 3.3s
+    }
+
+    .terminal-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 15px;
+      background: var(--accent);
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+
+      0%,
+      100% {
+        opacity: 1
+      }
+
+      50% {
+        opacity: 0
+      }
+    }
+
+    @keyframes typeLine {
+      to {
+        opacity: 1
+      }
+    }
+
+    @keyframes floaty {
+
+      0%,
+      100% {
+        transform: translateY(0)
+      }
+
+      50% {
+        transform: translateY(-10px)
+      }
+    }
+
+    /* ========== SECTIONS ========== */
+    .section {
+      position: relative;
+      z-index: 1;
+      padding: 80px 0;
+    }
+
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    .section-label {
+      font-size: .82rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 48px;
+    }
+
+    /* ========== ABOUT (compact, only metrics) ========== */
+    .about-title {
+      margin-bottom: 22px
+    }
+
+    .about-desc {
+      max-width: 820px;
+      color: var(--text-muted);
+      font-size: 1.02rem;
+      line-height: 1.8;
+    }
+
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 26px;
+      text-align: center;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .metric-value {
+      font-family: var(--font-head);
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.3;
+      margin-bottom: 10px;
+    }
+
+    .metric-value.text-fit {
+      font-size: 1.4rem
+    }
+
+    .metric-label {
+      font-size: .88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Clickable metric cards */
+    .metric-card.clickable {
+      cursor: pointer;
+      position: relative;
+    }
+
+    .metric-card.clickable::after {
+      content: "";
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(91, 140, 255, .12);
+      border: 1px solid rgba(91, 140, 255, .25);
+      opacity: 0;
+      transition: opacity .25s ease;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235b8cff' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .metric-card.clickable:hover::after {
+      opacity: 1
+    }
+
+    .metric-card.clickable:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(91, 140, 255, .1), 0 8px 20px rgba(91, 140, 255, .1);
+    }
+
+    /* Diploma overlay */
+    .diploma-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(14, 17, 23, .88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+
+    .diploma-overlay.show {
+      display: flex;
+      opacity: 1
+    }
+
+    .diploma-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      max-width: 700px;
+      width: 100%;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+      text-align: center;
+    }
+
+    :root[data-theme="dark"] .diploma-card {
+      background: #0e1117
+    }
+
+    :root[data-theme="light"] .diploma-card {
+      background: #f6f7fb
+    }
+
+    .diploma-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      transition: background .2s, color .2s;
+    }
+
+    .diploma-close:hover {
+      background: var(--surface-hover);
+      color: var(--text)
+    }
+
+    .diploma-title {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .diploma-subtitle {
+      font-size: .88rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .diploma-frame {
+      width: 100%;
+      height: min(65vh, 500px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .diploma-frame iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .diploma-download {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-size: .85rem;
+      font-weight: 700;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .diploma-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(91, 140, 255, .25);
+    }
+
+    /* ========== SQL CONSOLE ========== */
+    .sql-console {
+      background: rgba(0, 0, 0, .45);
+      border: 1px solid rgba(91, 140, 255, .15);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .2), 0 0 30px rgba(91, 140, 255, .04);
+      backdrop-filter: blur(10px);
+      margin-top: 36px;
+      margin-bottom: 16px;
+    }
+
+    :root[data-theme="light"] .sql-console {
+      background: rgba(17, 24, 39, .92);
+      border-color: rgba(91, 140, 255, .2);
+    }
+
+    .sql-bar {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 14px;
+      background: rgba(255, 255, 255, .04);
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+    }
+
+    .sql-bar-title {
+      flex: 1;
+      text-align: center;
+      font-size: .72rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, .35);
+      font-family: 'Fira Code', 'DM Sans', monospace;
+    }
+
+    .sql-body {
+      padding: 16px 18px;
+      font-family: 'Fira Code', 'DM Sans', monospace;
+      font-size: .72rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, .7);
+      overflow-x: auto;
+    }
+
+    .sql-prompt {
+      color: #61afef;
+      font-weight: 700
+    }
+
+    .sql-code {
+      margin-bottom: 4px
+    }
+
+    .sql-code .s-kw {
+      color: #c678dd;
+      font-weight: 600
+    }
+
+    .sql-code .s-fn {
+      color: #61afef
+    }
+
+    .sql-code .s-str {
+      color: #98c379
+    }
+
+    .sql-code .s-tbl {
+      color: #e5c07b
+    }
+
+    .sql-code .s-col {
+      color: #e06c75
+    }
+
+    .sql-code .s-op {
+      color: #56b6c2
+    }
+
+    .sql-results {
+      margin-top: 14px;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .5s ease, transform .5s ease;
+    }
+
+    .sql-console.active .sql-results {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .sql-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .7rem;
+    }
+
+    .sql-table th {
+      text-align: left;
+      padding: 8px 14px;
+      color: #61afef;
+      font-weight: 700;
+      border-bottom: 2px solid rgba(97, 175, 239, .3);
+      white-space: nowrap;
+    }
+
+    .sql-table td {
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      color: rgba(255, 255, 255, .75);
+      white-space: nowrap;
+    }
+
+    .sql-table td .s-str {
+      color: #98c379
+    }
+
+    .sql-table td .s-num {
+      color: #d19a66
+    }
+
+    .sql-table tbody tr {
+      opacity: 0;
+      transform: translateX(-12px);
+      transition: opacity .4s ease, transform .4s ease;
+    }
+
+    .sql-console.active .sql-table tbody tr.row-show {
+      opacity: 1;
+      transform: translateX(0)
+    }
+
+    .sql-row-count {
+      margin-top: 12px;
+      font-size: .68rem;
+      color: rgba(255, 255, 255, .28);
+      font-style: italic;
+      opacity: 0;
+      transition: opacity .4s ease .6s;
+    }
+
+    .sql-console.active .sql-row-count {
+      opacity: 1
+    }
+
+    .sql-cursor-block {
+      display: inline-block;
+      width: 7px;
+      height: 13px;
+      background: #61afef;
+      vertical-align: text-bottom;
+      margin-left: 3px;
+      animation: blink 1s step-end infinite;
+    }
+
+    /* ========== BIO OVERLAY ========== */
+    .bio-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(14, 17, 23, .85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity .3s ease;
+    }
+
+    .bio-overlay.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .bio-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      max-width: 700px;
+      width: 100%;
+      max-height: 85vh;
+      overflow-y: auto;
+      position: relative;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .5);
+    }
+
+    :root[data-theme="dark"] .bio-card {
+      background: #0e1117;
+    }
+
+    :root[data-theme="light"] .bio-card {
+      background: #f6f7fb;
+    }
+
+    .bio-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      color: var(--text-muted);
+      transition: background .2s, color .2s;
+    }
+
+    .bio-close:hover {
+      background: var(--surface-hover);
+      color: var(--text)
+    }
+
+    .bio-header {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .bio-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+    }
+
+    .bio-title {
+      font-family: var(--font-head);
+      font-size: 1.7rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .bio-subtitle {
+      font-size: .9rem;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .bio-body {
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+
+    .bio-body p {
+      margin-bottom: 18px
+    }
+
+    .bio-body p:last-child {
+      margin-bottom: 0
+    }
+
+    /* ========== SKILLS ========== */
+    .skills-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .skill-tab {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: .88rem;
+      font-weight: 600;
+      transition: background .2s, color .2s, border-color .2s;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .skill-tab.active {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      border-color: transparent;
+    }
+
+    .skill-tab:hover:not(.active) {
+      background: var(--surface-hover);
+      color: var(--text)
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .skill-chip {
+      padding: 14px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      text-align: center;
+      font-size: .86rem;
+      font-weight: 600;
+      color: var(--text);
+      transition: transform .2s, border-color .2s, opacity .3s;
+      animation: fade-in .5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .skill-chip:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent)
+    }
+
+    .skill-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      object-fit: contain
+    }
+
+    .skill-chip[hidden] {
+      display: none !important
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    /* ========== PROJECTS ========== */
+    .projects-grid {
+      display: grid;
+      gap: 28px
+    }
+
+    .project-card {
+      position: relative;
+      padding: 32px;
+      border-radius: var(--radius);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: transform .3s, border-color .3s, box-shadow .3s;
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent);
+      box-shadow: 0 16px 40px rgba(91, 140, 255, .15);
+    }
+
+    .project-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .status-live {
+      background: rgba(34, 197, 94, .12);
+      color: #22c55e;
+      border: 1px solid rgba(34, 197, 94, .3)
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse-dot 2s infinite;
+    }
+
+    .project-card h3 {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
+    .project-card p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 18px;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .project-tag {
+      padding: 6px 12px;
+      border-radius: 6px;
+      background: rgba(91, 140, 255, .1);
+      border: 1px solid rgba(91, 140, 255, .25);
+      color: var(--accent);
+      font-size: .78rem;
+      font-weight: 600;
+    }
+
+    .btn-case {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-size: .88rem;
+      font-weight: 700;
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .btn-case:hover {
+      transform: translateX(4px);
+      box-shadow: 0 8px 20px rgba(91, 140, 255, .25)
+    }
+
+    /* ========== PROJECT CARD HOVER HINT ========== */
+    .project-card {
+      cursor: pointer
+    }
+
+    .project-card a,
+    .project-card button {
+      cursor: pointer
+    }
+
+    .project-card::after {
+      content: "Cliquez pour un aperçu";
+      position: absolute;
+      right: 24px;
+      bottom: 22px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .01em;
+      color: rgba(240, 242, 247, .45);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity .18s ease, transform .18s ease;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, .08);
+      background: rgba(14, 17, 23, .32);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      pointer-events: none;
+    }
+
+    .project-card:hover::after,
+    .project-card:focus-within::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    :root[data-theme="light"] .project-card::after {
+      color: rgba(14, 19, 32, .55);
+      border-color: rgba(14, 19, 32, .12);
+      background: rgba(255, 255, 255, .55);
+    }
+
+    html[data-lang="en"] .project-card::after {
+      content: "Click for a preview";
+    }
 
 
-/* ========== CONTACT ========== */
-.contact-wrap{
-  max-width:700px;
-  margin:0 auto;
-  text-align:center;
-}
-.contact-desc{
-  font-size:1.05rem;
-  color:var(--text-muted);
-  margin-bottom:40px;
-  line-height:1.7;
-}
-.contact-btns{
-  display:flex;
-  gap:14px;
-  justify-content:center;
-  flex-wrap:wrap;
-  position:relative;
-}
-.btn-contact{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:13px 26px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-  font-size:.92rem;font-weight:700;
-  transition:background .2s, border-color .2s, transform .2s;
-}
-.btn-contact:hover{
-  background:var(--surface-hover);
-  border-color:var(--accent);
-  transform:translateY(-2px);
-}
-.email-pop{
-  position:absolute;
-  top:calc(100% + 12px);
-  left:50%;
-  transform:translateX(-50%);
-  background:var(--surface);
-  border:1px solid var(--border);
-  border-radius:12px;
-  padding:16px;
-  box-shadow:0 8px 24px rgba(0,0,0,.3);
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .2s, transform .2s;
-  min-width:320px;
-  z-index:10;
-}
-.email-pop.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
-.email-pop-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.email-addr{
-  flex:1;
-  font-size:.92rem;
-  color:var(--text);
-  font-weight:600;
-}
-.copy-btn{
-  width:36px;height:36px;
-  border-radius:8px;
-  border:1px solid var(--border);
-  background:var(--surface-hover);
-  display:flex;align-items:center;justify-content:center;
-  color:var(--accent);
-  transition:background .2s, border-color .2s;
-}
-.copy-btn:hover{background:var(--accent);color:#fff}
-.copy-hint{
-  margin-top:8px;
-  font-size:.78rem;
-  color:var(--text-muted);
-  text-align:center;
-}
+    /* ========== CONTACT ========== */
+    .contact-wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+    }
 
-/* ========== FOOTER ========== */
-.footer{
-  position:relative;z-index:1;
-  text-align:center;
-  padding:30px 28px;
-  color:var(--text-muted);
-  font-size:.85rem;
-  border-top:1px solid var(--border);
-}
+    .contact-desc {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 40px;
+      line-height: 1.7;
+    }
 
-/* ========== TOGGLES ========== */
-.theme-toggle, .lang-toggle{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:42px;height:42px;
-  border-radius:999px;
-  border:1px solid var(--border);
-  background:var(--surface);
-  color:var(--text);
-  transition:transform .15s ease, background .2s ease, border-color .2s ease;
-}
-.theme-toggle:hover, .lang-toggle:hover{
-  transform:translateY(-2px);
-  background:var(--surface-hover);
-  border-color:var(--accent);
-}
-.theme-toggle span, .lang-toggle span{
-  font-size:1.25rem;
-  line-height:1;
-}
+    .contact-btns {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
 
-/* ========== REVEAL ANIMATION ========== */
-.reveal{
-  opacity:0;
-  transform:translateY(30px);
-  transition:opacity .7s ease, transform .7s ease;
-}
-.reveal.show{opacity:1;transform:translateY(0)}
-.reveal-d1{transition-delay:.1s}
-.reveal-d2{transition-delay:.2s}
-.reveal-d3{transition-delay:.3s}
-.reveal-d4{transition-delay:.4s}
+    .btn-contact {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: .92rem;
+      font-weight: 700;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+
+    .btn-contact:hover {
+      background: var(--surface-hover);
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .email-pop {
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, .3);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      min-width: 320px;
+      z-index: 10;
+    }
+
+    .email-pop.show {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(-50%) translateY(0)
+    }
+
+    .email-pop-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .email-addr {
+      flex: 1;
+      font-size: .92rem;
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface-hover);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      transition: background .2s, border-color .2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent);
+      color: #fff
+    }
+
+    .copy-hint {
+      margin-top: 8px;
+      font-size: .78rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 30px 28px;
+      color: var(--text-muted);
+      font-size: .85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ========== TOGGLES ========== */
+    .theme-toggle,
+    .lang-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .theme-toggle:hover,
+    .lang-toggle:hover {
+      transform: translateY(-2px);
+      background: var(--surface-hover);
+      border-color: var(--accent);
+    }
+
+    .theme-toggle span,
+    .lang-toggle span {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    /* ========== REVEAL ANIMATION ========== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .reveal-d1 {
+      transition-delay: .1s
+    }
+
+    .reveal-d2 {
+      transition-delay: .2s
+    }
+
+    .reveal-d3 {
+      transition-delay: .3s
+    }
+
+    .reveal-d4 {
+      transition-delay: .4s
+    }
 
 
-/* ========== PROJECT PREVIEW OVERLAY ========== */
-.project-preview-overlay{
-  position:fixed;inset:0;z-index:210;
-  background:rgba(14,17,23,.86);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  opacity:0;
-  transition:opacity .28s ease;
-}
-.project-preview-overlay.show{display:flex;opacity:1}
-.project-preview-card{
-  background:var(--bg);
-  border:1px solid var(--border);
-  border-radius:var(--radius);
-  width:min(1100px, 100%);
-  height:min(82vh, 760px);
-  display:flex;
-  flex-direction:column;
-  overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.55);
-}
-:root[data-theme="dark"] .project-preview-card{ background:#0e1117; }
-:root[data-theme="light"] .project-preview-card{ background:#f6f7fb; }
+    /* ========== PROJECT PREVIEW OVERLAY ========== */
+    .project-preview-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 210;
+      background: rgba(14, 17, 23, .86);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      transition: opacity .28s ease;
+    }
 
-.project-preview-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:16px;
-  padding:18px 18px 14px;
-  border-bottom:1px solid var(--border);
-}
-.project-preview-title{
-  font-family:var(--font-head);
-  font-weight:800;
-  font-size:1.25rem;
-  line-height:1.2;
-}
-.project-preview-close{
-  width:38px;height:38px;
-  border-radius:50%;
-  border:1px solid var(--border);
-  background:var(--surface);
-  display:flex;align-items:center;justify-content:center;
-  font-size:1.35rem;
-  color:var(--text-muted);
-  transition:background .2s, color .2s, transform .15s;
-}
-.project-preview-close:hover{background:var(--surface-hover);color:var(--text);transform:translateY(-1px)}
+    .project-preview-overlay.show {
+      display: flex;
+      opacity: 1
+    }
 
-.project-preview-frame{
-  position:relative;
-  flex:1;
-  padding:14px 18px;
-}
-.project-preview-iframe{
-  width:100%;
-  height:100%;
-  border:0;
-  border-radius:16px;
-  background:rgba(0,0,0,.15);
-}
-.project-preview-loading{
-  position:absolute;
-  inset:14px 18px;
-  border-radius:16px;
-  background:rgba(14,17,23,.55);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:var(--text-muted);
-  font-weight:700;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .2s ease;
-}
-.project-preview-loading.show{opacity:1;pointer-events:auto}
+    .project-preview-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      width: min(1100px, 100%);
+      height: min(82vh, 760px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .55);
+    }
 
-.project-preview-footer{
-  padding:14px 18px 18px;
-  border-top:1px solid var(--border);
-  display:flex;
-  justify-content:flex-end;
-}
-@media(max-width:600px){
-  .project-preview-card{height:90vh}
-  .project-preview-title{font-size:1.05rem}
-}
+    :root[data-theme="dark"] .project-preview-card {
+      background: #0e1117;
+    }
 
-/* ========== RESPONSIVE ========== */
-@media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr;gap:32px}
-  .hero-terminal{order:-1}
-  .metrics-strip{grid-template-columns:1fr}
-  .skills-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
-}
-@media(max-width:600px){
-  .nav-links{display:none}
-  .metrics-strip{grid-template-columns:1fr}
-}
-</style>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
+    :root[data-theme="light"] .project-preview-card {
+      background: #f6f7fb;
+    }
+
+    .project-preview-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 18px 18px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .project-preview-title {
+      font-family: var(--font-head);
+      font-weight: 800;
+      font-size: 1.25rem;
+      line-height: 1.2;
+    }
+
+    .project-preview-close {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      color: var(--text-muted);
+      transition: background .2s, color .2s, transform .15s;
+    }
+
+    .project-preview-close:hover {
+      background: var(--surface-hover);
+      color: var(--text);
+      transform: translateY(-1px)
+    }
+
+    .project-preview-frame {
+      position: relative;
+      flex: 1;
+      padding: 14px 18px;
+    }
+
+    .project-preview-iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      border-radius: 16px;
+      background: rgba(0, 0, 0, .15);
+    }
+
+    .project-preview-loading {
+      position: absolute;
+      inset: 14px 18px;
+      border-radius: 16px;
+      background: rgba(14, 17, 23, .55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+
+    .project-preview-loading.show {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .project-preview-footer {
+      padding: 14px 18px 18px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    @media(max-width:600px) {
+      .project-preview-card {
+        height: 90vh
+      }
+
+      .project-preview-title {
+        font-size: 1.05rem
+      }
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media(max-width:900px) {
+      .hero-inner {
+        grid-template-columns: 1fr;
+        gap: 32px
+      }
+
+      .hero-terminal {
+        order: -1
+      }
+
+      .metrics-strip {
+        grid-template-columns: 1fr
+      }
+
+      .skills-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr))
+      }
+    }
+
+    @media(max-width:600px) {
+      .nav-links {
+        display: none
+      }
+
+      .metrics-strip {
+        grid-template-columns: 1fr
+      }
+    }
+  </style>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
 </head>
+
 <body>
-<div class="bg-mesh"></div>
-<div class="bg-grid"></div>
-<div class="scroll-bar" id="scrollBar"></div>
+  <div class="bg-mesh"></div>
+  <div class="bg-grid"></div>
+  <div class="scroll-bar" id="scrollBar"></div>
 
-<nav class="nav" id="mainNav">
-  <div class="nav-inner">
-    <a href="#" class="logo">
-      <span class="logo-ring">RM</span>
-      Rafael Midolli
-    </a>
-    <div style="display:flex;align-items:center;gap:12px">
-      <div class="nav-links">
-        <a href="#about" class="nav-link"><span class="lang-fr">À propos</span><span class="lang-en">About</span></a>
-        <a href="#skills" class="nav-link"><span class="lang-fr">Compétences</span><span class="lang-en">Skills</span></a>
-        <a href="#projects" class="nav-link"><span class="lang-fr">Projets</span><span class="lang-en">Projects</span></a>
-        <a href="#contact" class="nav-link">Contact</a>
-      </div>
-      <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" class="btn-cv" target="_blank" rel="noopener">
-        <span class="lang-fr">📄 CV</span><span class="lang-en">📄 Resume</span>
+  <nav class="nav" id="mainNav">
+    <div class="nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-ring">RM</span>
+        Rafael Midolli
       </a>
-      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
-        <span id="themeIcon">🌙</span>
-      </button>
-      <button class="lang-toggle" id="langToggle" aria-label="Toggle language" type="button">
-        <span id="langIcon">FR</span>
-      </button>
-    </div>
-  </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <div class="pill">
-        <span class="pill-dot"></span>
-        <span class="lang-fr">Retail & FMCG · KPI · Dashboards · Disponible</span>
-        <span class="lang-en">Retail & FMCG · KPI · Dashboards · Available</span>
-      </div>
-      <h1>
-        <span class="lang-fr">Bonjour, je suis Rafael — <em>Business Analyst</em><br/>orienté data</span>
-        <span class="lang-en">Hello, I'm Rafael — <em>Business Analyst</em><br/>data-driven</span>
-      </h1>
-      <p class="hero-desc">
-        <span class="lang-fr">Avec 4 ans d'expérience en Retail & FMCG, je transforme les données en KPI, dashboards et recommandations actionnables pour piloter la performance (ventes, supply chain, opérations).</span>
-        <span class="lang-en">With 4 years of experience in Retail & FMCG, I turn data into KPIs, dashboards, and actionable recommendations to drive performance (sales, supply chain, operations).</span>
-      </p>
-      <div class="hero-ctas">
-        <a href="#projects" class="btn-primary">
-          <span class="lang-fr">Voir mes projets</span><span class="lang-en">View my projects</span>
-          <span>↓</span>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="nav-links">
+          <a href="#about" class="nav-link"><span class="lang-fr">À propos</span><span class="lang-en">About</span></a>
+          <a href="#skills" class="nav-link"><span class="lang-fr">Compétences</span><span
+              class="lang-en">Skills</span></a>
+          <a href="#projects" class="nav-link"><span class="lang-fr">Projets</span><span
+              class="lang-en">Projects</span></a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" class="btn-cv" target="_blank" rel="noopener">
+          <span class="lang-fr">📄 CV</span><span class="lang-en">📄 Resume</span>
         </a>
-        <button class="btn-secondary" id="bioToggleBtn" type="button">
-          <span class="lang-fr">📖 Biographie</span><span class="lang-en">📖 Biography</span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" type="button">
+          <span id="themeIcon">🌙</span>
+        </button>
+        <button class="lang-toggle" id="langToggle" aria-label="Toggle language" type="button">
+          <span id="langIcon">FR</span>
         </button>
       </div>
     </div>
-    <div class="hero-terminal">
-      <div class="terminal-bar">
-        <span class="terminal-dot r"></span>
-        <span class="terminal-dot y"></span>
-        <span class="terminal-dot g"></span>
-        <span class="terminal-title">rafael.py</span>
-      </div>
-      <div class="terminal-body">
-        <div class="lang-fr">
-          <div class="terminal-line"><span class="t-comment"># qui suis-je ?</span></div>
-          <div class="terminal-line"><span class="t-keyword">import</span> <span class="t-lib">pandas</span> <span class="t-keyword">as</span> <span class="t-lib">pd</span></div>
-          <div class="terminal-line">&nbsp;</div>
-          <div class="terminal-line"><span class="t-var">rafael</span> <span class="t-punct">=</span> <span class="t-punct">{</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"rôle"</span><span class="t-punct">:</span> <span class="t-string">"Business Analyst"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"xp"</span><span class="t-punct">:</span> <span class="t-string">"4 ans · FMCG &amp; Retail"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"focus"</span><span class="t-punct">:</span> <span class="t-string">"KPI · Sell-Out · Category Mgmt"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"stack"</span><span class="t-punct">:</span> <span class="t-punct">[</span><span class="t-string">"Python"</span><span class="t-punct">,</span> <span class="t-string">"SQL"</span><span class="t-punct">,</span> <span class="t-string">"Power BI"</span><span class="t-punct">],</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"formation"</span><span class="t-punct">:</span> <span class="t-string">"Ingénieur + MBA IA &amp; Big Data"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"mission"</span><span class="t-punct">:</span> <span class="t-string">"données → décisions concrètes"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-string">"Disponible"</span> <span class="t-comment"># 🚀</span></div>
-          <div class="terminal-line"><span class="t-punct">}</span><span class="terminal-cursor"></span></div>
-        </div>
-        <div class="lang-en">
-          <div class="terminal-line"><span class="t-comment"># who am I?</span></div>
-          <div class="terminal-line"><span class="t-keyword">import</span> <span class="t-lib">pandas</span> <span class="t-keyword">as</span> <span class="t-lib">pd</span></div>
-          <div class="terminal-line">&nbsp;</div>
-          <div class="terminal-line"><span class="t-var">rafael</span> <span class="t-punct">=</span> <span class="t-punct">{</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"role"</span><span class="t-punct">:</span> <span class="t-string">"Business Analyst"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"xp"</span><span class="t-punct">:</span> <span class="t-string">"4 years · FMCG &amp; Retail"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"focus"</span><span class="t-punct">:</span> <span class="t-string">"KPI · Sell-Out · Category Mgmt"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"stack"</span><span class="t-punct">:</span> <span class="t-punct">[</span><span class="t-string">"Python"</span><span class="t-punct">,</span> <span class="t-string">"SQL"</span><span class="t-punct">,</span> <span class="t-string">"Power BI"</span><span class="t-punct">],</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"education"</span><span class="t-punct">:</span> <span class="t-string">"Engineer + AI &amp; Big Data MBA"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"mission"</span><span class="t-punct">:</span> <span class="t-string">"data → actionable decisions"</span><span class="t-punct">,</span></div>
-          <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-string">"Available"</span> <span class="t-comment"># 🚀</span></div>
-          <div class="terminal-line"><span class="t-punct">}</span><span class="terminal-cursor"></span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  </nav>
 
-<div class="bio-overlay" id="bioOverlay">
-  <div class="bio-card" role="dialog" aria-modal="true" aria-label="Biographie">
-    <button class="bio-close" id="bioCloseBtn" type="button" aria-label="Close">×</button>
-    <div class="bio-header">
-      <img src="assets/img/photo_bio.jpg" alt="Rafael Midolli" class="bio-avatar"/>
+  <section class="hero">
+    <div class="hero-inner">
       <div>
-        <div class="bio-title">Rafael Midolli</div>
-        <div class="bio-subtitle">
-          <span class="lang-fr">Business Analyst · orienté data</span>
-          <span class="lang-en">Business Analyst · data-driven</span>
+        <div class="pill">
+          <span class="pill-dot"></span>
+          <span class="lang-fr">Retail & FMCG · KPI · Dashboards · Disponible</span>
+          <span class="lang-en">Retail & FMCG · KPI · Dashboards · Available</span>
+        </div>
+        <h1>
+          <span class="lang-fr">Bonjour, je suis Rafael — <em>Business Analyst</em><br />Impact & Stratégie</span>
+          <span class="lang-en">Hello, I'm Rafael — <em>Business Analyst</em><br />Impact & Strategy</span>
+        </h1>
+        <p class="hero-desc">
+          <span class="lang-fr">Je conçois des pipelines Data <em>(Python/SQL)</em> et des <strong>Modèles Décisionnels
+              (Power BI)</strong> pour les leaders du Retail & FMCG. Mon objectif : traquer la déperdition de marge,
+            optimiser la Supply Chain et monétiser chaque point de donnée.</span>
+          <span class="lang-en">I engineer Data pipelines <em>(Python/SQL)</em> and architect <strong>Decision Models
+              (Power BI)</strong> for Retail & FMCG leaders. My mission: track margin leakage, optimize the Supply
+            Chain, and monetize every single data touchpoint.</span>
+        </p>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-primary">
+            <span class="lang-fr">Voir mes projets</span><span class="lang-en">View my projects</span>
+            <span>↓</span>
+          </a>
+          <button class="btn-secondary" id="bioToggleBtn" type="button">
+            <span class="lang-fr">📖 Biographie</span><span class="lang-en">📖 Biography</span>
+          </button>
+        </div>
+      </div>
+      <div class="hero-terminal">
+        <div class="terminal-bar">
+          <span class="terminal-dot r"></span>
+          <span class="terminal-dot y"></span>
+          <span class="terminal-dot g"></span>
+          <span class="terminal-title">rafael.py</span>
+        </div>
+        <div class="terminal-body">
+          <div class="lang-fr">
+            <div class="terminal-line"><span class="t-comment"># qui suis-je ?</span></div>
+            <div class="terminal-line"><span class="t-keyword">import</span> <span class="t-lib">pandas</span> <span
+                class="t-keyword">as</span> <span class="t-lib">pd</span></div>
+            <div class="terminal-line">&nbsp;</div>
+            <div class="terminal-line"><span class="t-var">rafael</span> <span class="t-punct">=</span> <span
+                class="t-punct">{</span></div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"rôle"</span><span class="t-punct">:</span> <span
+                class="t-string">"Business Analyst / Consultant"</span><span class="t-punct">,</span></div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"xp"</span><span class="t-punct">:</span> <span
+                class="t-string">"4 ans · FMCG &amp; Retail Leaders"</span><span class="t-punct">,</span></div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"focus"</span><span class="t-punct">:</span>
+              <span class="t-string">"ROI · Profitability · Process Mining"</span><span class="t-punct">,</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"stack"</span><span class="t-punct">:</span>
+              <span class="t-punct">[</span><span class="t-string">"Python"</span><span class="t-punct">,</span> <span
+                class="t-string">"SQL"</span><span class="t-punct">,</span> <span class="t-string">"Power
+                BI"</span><span class="t-punct">],</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"formation"</span><span class="t-punct">:</span>
+              <span class="t-string">"Ingénieur + MBA Intelligence Artificielle"</span><span class="t-punct">,</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"mission"</span><span class="t-punct">:</span>
+              <span class="t-string">"Monétisation de la Data &amp; Gouvernance"</span><span class="t-punct">,</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"status"</span><span class="t-punct">:</span>
+              <span class="t-string">"Disponible"</span> <span class="t-comment"># 🚀</span>
+            </div>
+            <div class="terminal-line"><span class="t-punct">}</span><span class="terminal-cursor"></span></div>
+          </div>
+          <div class="lang-en">
+            <div class="terminal-line"><span class="t-comment"># who am I?</span></div>
+            <div class="terminal-line"><span class="t-keyword">import</span> <span class="t-lib">pandas</span> <span
+                class="t-keyword">as</span> <span class="t-lib">pd</span></div>
+            <div class="terminal-line">&nbsp;</div>
+            <div class="terminal-line"><span class="t-var">rafael</span> <span class="t-punct">=</span> <span
+                class="t-punct">{</span></div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"role"</span><span class="t-punct">:</span> <span
+                class="t-string">"Business Analyst / Consultant"</span><span class="t-punct">,</span></div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"xp"</span><span class="t-punct">:</span> <span
+                class="t-string">"4 years · FMCG &amp; Retail Leaders"</span><span class="t-punct">,</span></div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"focus"</span><span class="t-punct">:</span>
+              <span class="t-string">"ROI · Profitability · Process Mining"</span><span class="t-punct">,</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"stack"</span><span class="t-punct">:</span>
+              <span class="t-punct">[</span><span class="t-string">"Python"</span><span class="t-punct">,</span> <span
+                class="t-string">"SQL"</span><span class="t-punct">,</span> <span class="t-string">"Power
+                BI"</span><span class="t-punct">],</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"education"</span><span class="t-punct">:</span>
+              <span class="t-string">"Engineering + Artificial Intelligence MBA"</span><span class="t-punct">,</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"mission"</span><span class="t-punct">:</span>
+              <span class="t-string">"Data Monetization &amp; Governance"</span><span class="t-punct">,</span>
+            </div>
+            <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"status"</span><span class="t-punct">:</span>
+              <span class="t-string">"Available"</span> <span class="t-comment"># 🚀</span>
+            </div>
+            <div class="terminal-line"><span class="t-punct">}</span><span class="terminal-cursor"></span></div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="bio-body">
-      <p class="lang-fr">
-        Business Analyst avec 4 ans d'expérience en FMCG et retail, auprès de marques comme Colgate-Palmolive, Lactalis, Nestlé et Tetra Pak. Diplômé en Ingénierie de Gestion et titulaire d'un MBA IA &amp; Big Data, je fais le lien entre les équipes terrain et les outils data pour transformer les données en décisions concrètes.
-      </p>
-      <p class="lang-fr">
-        Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing ou direction. Basé en France, disponible immédiatement.
-      </p>
+  </section>
 
-      <p class="lang-en">
-        Business Analyst with 4 years of experience in FMCG and retail, working with brands like Colgate-Palmolive, Lactalis, Nestlé, and Tetra Pak. With an Engineering degree and an AI &amp; Big Data MBA, I bridge field teams and data tools to turn data into actionable decisions.
-      </p>
-      <p class="lang-en">
-        My approach: start from data, build a clear diagnosis, and make it actionable for sales, marketing, or management teams. Based in France, available immediately.
-      </p>
-    </div>
-  </div>
-</div>
-
-<!-- Diploma Overlay -->
-<div class="diploma-overlay" id="diplomaOverlay">
-  <div class="diploma-card" role="dialog" aria-modal="true">
-    <button class="diploma-close" id="diplomaCloseBtn" type="button" aria-label="Close">×</button>
-    <div class="diploma-title">
-      <span class="lang-fr">MBA Intelligence Artificielle &amp; Big Data</span>
-      <span class="lang-en">MBA Artificial Intelligence &amp; Big Data</span>
-    </div>
-    <div class="diploma-subtitle">
-      <span class="lang-fr">Université de São Paulo (USP) · 2024–2025</span>
-      <span class="lang-en">University of São Paulo (USP) · 2024–2025</span>
-    </div>
-    <div class="diploma-frame">
-      <iframe src="" id="diplomaIframe" loading="lazy"></iframe>
-    </div>
-    <a href="assets/docs/MBA_IA_USP_MIDOLLI_Rafael.pdf" target="_blank" rel="noopener" class="diploma-download">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      <span class="lang-fr">Télécharger le diplôme</span>
-      <span class="lang-en">Download diploma</span>
-    </a>
-  </div>
-</div>
-
-<div class="project-preview-overlay" id="projectPreviewOverlay" aria-hidden="true">
-  <div class="project-preview-card" role="dialog" aria-modal="true" aria-label="Project preview">
-    <div class="project-preview-header">
-      <div class="project-preview-title" id="projectPreviewTitle">
-        <span class="lang-fr">Aperçu du projet</span><span class="lang-en">Project preview</span>
+  <div class="bio-overlay" id="bioOverlay">
+    <div class="bio-card" role="dialog" aria-modal="true" aria-label="Biographie">
+      <button class="bio-close" id="bioCloseBtn" type="button" aria-label="Close">×</button>
+      <div class="bio-header">
+        <img src="assets/img/photo_bio.jpg" alt="Rafael Midolli" class="bio-avatar" />
+        <div>
+          <div class="bio-title">Rafael Midolli</div>
+          <div class="bio-subtitle">
+            <span class="lang-fr">Business Analyst · orienté data</span>
+            <span class="lang-en">Business Analyst · data-driven</span>
+          </div>
+        </div>
       </div>
-      <button class="project-preview-close" id="projectPreviewCloseBtn" type="button" aria-label="Close">×</button>
-    </div>
-    <div class="project-preview-frame">
-      <iframe id="projectPreviewIframe" class="project-preview-iframe" loading="lazy"></iframe>
-      <div class="project-preview-loading" id="projectPreviewLoading">
-        <span class="lang-fr">Chargement…</span><span class="lang-en">Loading…</span>
+      <div class="bio-body">
+        <p class="lang-fr">
+          Business Analyst avec 4 ans d'expérience opérationnelle en FMCG et retail (Colgate-Palmolive, Lactalis,
+          Nestlé, Tetra Pak). Ingénieur de formation et spécialisé via un MBA en IA &amp; Big Data, j'accompagne les
+          Directions Générales, Ventes et Marketing dans la structuration de leurs décisions stratégiques.
+        </p>
+        <p class="lang-fr">
+          Ma promesse : <strong>Fiabiliser l'Insight métier</strong>. Je crée des pipelines résilients et des tableaux
+          de bord haute-définition (Power BI) pour isoler la déperdition de CA, sécuriser la Supply Chain et auditer les
+          comportements d'achat B2B/B2C. Basé en France, disponible immédiatement pour bâtir votre stratégie Data.
+        </p>
+
+        <p class="lang-en">
+          Business Analyst with 4 years of operational experience across FMCG and retail leaders (Colgate-Palmolive,
+          Lactalis, Nestlé, Tetra Pak). Holding an Engineering backbone paired with an AI &amp; Big Data MBA, I partner
+          with C-Level, Sales, and Marketing teams to architect strategic decisions.
+        </p>
+        <p class="lang-en">
+          My commitment: <strong>Securing Business Insights</strong>. I build resilient ELT pipelines and
+          high-definition dashboards (Power BI) mathematically designed to isolate P&amp;L leakage, secure Supply Chain
+          flows, and audit complex B2B/B2C purchasing behaviors. Based in France, ready to accelerate your Data strategy
+          now.
+        </p>
       </div>
     </div>
-    <div class="project-preview-footer">
-      <a href="#" class="btn-case" id="projectPreviewOpenBtn" target="_blank" rel="noopener">
-        <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
-        <span>→</span>
+  </div>
+
+  <!-- Diploma Overlay -->
+  <div class="diploma-overlay" id="diplomaOverlay">
+    <div class="diploma-card" role="dialog" aria-modal="true">
+      <button class="diploma-close" id="diplomaCloseBtn" type="button" aria-label="Close">×</button>
+      <div class="diploma-title">
+        <span class="lang-fr">MBA Intelligence Artificielle &amp; Big Data</span>
+        <span class="lang-en">MBA Artificial Intelligence &amp; Big Data</span>
+      </div>
+      <div class="diploma-subtitle">
+        <span class="lang-fr">Université de São Paulo (USP) · 2024–2025</span>
+        <span class="lang-en">University of São Paulo (USP) · 2024–2025</span>
+      </div>
+      <div class="diploma-frame">
+        <iframe src="" id="diplomaIframe" loading="lazy"></iframe>
+      </div>
+      <a href="assets/docs/MBA_IA_USP_MIDOLLI_Rafael.pdf" target="_blank" rel="noopener" class="diploma-download">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+          stroke-linecap="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="7 10 12 15 17 10" />
+          <line x1="12" y1="15" x2="12" y2="3" />
+        </svg>
+        <span class="lang-fr">Télécharger le diplôme</span>
+        <span class="lang-en">Download diploma</span>
       </a>
     </div>
   </div>
-</div>
 
-<section class="section" id="about">
-  <div class="section-inner">
-    <div class="section-label reveal">
-      <span class="lang-fr">À propos</span>
-      <span class="lang-en">About</span>
-    </div>
-    <h2 class="section-title reveal reveal-d1 about-title">
-      <span class="lang-fr">Ce qui me distingue</span>
-      <span class="lang-en">What sets me apart</span>
-    </h2>
-
-    <p class="about-desc reveal reveal-d2">
-      <span class="lang-fr">
-        Business Analyst spécialisé en Retail & PGC (FMCG), je construis des analyses qui passent directement à l'action.
-        Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes ventes, marketing ou direction.
-      </span>
-      <span class="lang-en">
-        Business Analyst specialized in Retail & FMCG, I deliver analyses that translate directly into action.
-        My approach: start from data, structure a clear diagnosis, and make it usable for sales, marketing, and leadership teams.
-      </span>
-    </p>
-
-    <!-- SQL Career Console -->
-    <div class="sql-console reveal reveal-d2" id="sqlConsole">
-      <div class="sql-bar">
-        <span class="terminal-dot r"></span>
-        <span class="terminal-dot y"></span>
-        <span class="terminal-dot g"></span>
-        <span class="sql-bar-title">rafael_db — psql</span>
-      </div>
-      <div class="sql-body">
-        <div class="sql-code">
-          <span class="sql-prompt">rafael_db=&gt;</span>
-          <span class="lang-fr">
-            <span class="s-kw">SELECT</span> <span class="s-col">entreprise</span>, <span class="s-col">poste</span>, <span class="s-col">période</span>, <span class="s-col">focus</span><br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s-kw">FROM</span> <span class="s-tbl">parcours</span>
-            <span class="s-kw">ORDER BY</span> <span class="s-col">début</span> <span class="s-kw">DESC</span>;
-          </span>
-          <span class="lang-en">
-            <span class="s-kw">SELECT</span> <span class="s-col">company</span>, <span class="s-col">role</span>, <span class="s-col">period</span>, <span class="s-col">focus</span><br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="s-kw">FROM</span> <span class="s-tbl">career</span>
-            <span class="s-kw">ORDER BY</span> <span class="s-col">start_date</span> <span class="s-kw">DESC</span>;
-          </span>
-          <span class="sql-cursor-block"></span>
+  <div class="project-preview-overlay" id="projectPreviewOverlay" aria-hidden="true">
+    <div class="project-preview-card" role="dialog" aria-modal="true" aria-label="Project preview">
+      <div class="project-preview-header">
+        <div class="project-preview-title" id="projectPreviewTitle">
+          <span class="lang-fr">Aperçu du projet</span><span class="lang-en">Project preview</span>
         </div>
-
-        <div class="sql-results">
-          <table class="sql-table">
-            <thead>
-              <tr>
-                <th><span class="lang-fr">entreprise</span><span class="lang-en">company</span></th>
-                <th><span class="lang-fr">poste</span><span class="lang-en">role</span></th>
-                <th><span class="lang-fr">période</span><span class="lang-en">period</span></th>
-                <th>focus</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Kantar</td>
-                <td><span class="lang-fr">BA – Performance &amp; Data</span><span class="lang-en">BA – Performance &amp; Data</span></td>
-                <td><span class="s-num">2023</span>–<span class="s-num">2024</span></td>
-                <td><span class="s-str">Panel · CMI Insights · Market Research</span></td>
-              </tr>
-              <tr>
-                <td>Scanntech</td>
-                <td><span class="lang-fr">BA – Retail Data</span><span class="lang-en">BA – Retail Data</span></td>
-                <td><span class="s-num">2023</span></td>
-                <td><span class="s-str">Sell-Out · Retail · Assortiment</span></td>
-              </tr>
-              <tr>
-                <td>Colgate-Palmolive</td>
-                <td><span class="lang-fr">Analyst Ventes &amp; Trade Mktg</span><span class="lang-en">Sales &amp; Trade Mktg Analyst</span></td>
-                <td><span class="s-num">2021</span>–<span class="s-num">2023</span></td>
-                <td><span class="s-str">Sell-In/Out · Multi-Sources · KPI</span></td>
-              </tr>
-              <tr>
-                <td>Aperam</td>
-                <td><span class="lang-fr">Stage Market Intelligence</span><span class="lang-en">Market Intelligence Intern</span></td>
-                <td><span class="s-num">2019</span>–<span class="s-num">2020</span></td>
-                <td><span class="s-str">Veille · Pricing · Reporting</span></td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="sql-row-count">(4 <span class="lang-fr">lignes retournées</span><span class="lang-en">rows returned</span>)</div>
+        <button class="project-preview-close" id="projectPreviewCloseBtn" type="button" aria-label="Close">×</button>
+      </div>
+      <div class="project-preview-frame">
+        <iframe id="projectPreviewIframe" class="project-preview-iframe" loading="lazy"></iframe>
+        <div class="project-preview-loading" id="projectPreviewLoading">
+          <span class="lang-fr">Chargement…</span><span class="lang-en">Loading…</span>
         </div>
       </div>
-    </div>
-
-    <div class="metrics-strip reveal reveal-d3">
-      <div class="metric-card">
-        <div class="metric-value"><span class="lang-fr">4 ans</span><span class="lang-en">4 years</span></div>
-        <div class="metric-label">
-          <span class="lang-fr">Expérience en Retail & FMCG</span>
-          <span class="lang-en">Retail & FMCG experience</span>
-        </div>
-      </div>
-
-      <div class="metric-card">
-        <div class="metric-value text-fit">
-          <span class="lang-fr">Expertise auprès de<br>leaders mondiaux</span>
-          <span class="lang-en">Expertise with<br>global leaders</span>
-        </div>
-        <div class="metric-label">
-          (Colgate · Lactalis · Tetra Pak · Kantar)
-        </div>
-      </div>
-
-      <div class="metric-card clickable" id="mbaCard">
-        <div class="metric-value">MBA</div>
-        <div class="metric-label">
-          <span class="lang-fr">Intelligence Artificielle +<br>Diplôme d'Ingénieur</span>
-          <span class="lang-en">Artificial Intelligence +<br>Engineering Degree</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="skills">
-  <div class="section-inner">
-    <div class="section-label reveal">
-      <span class="lang-fr">Compétences</span>
-      <span class="lang-en">Skills</span>
-    </div>
-    <h2 class="section-title reveal reveal-d1">
-      <span class="lang-fr">Stack technique & expertise métier</span>
-      <span class="lang-en">Tech stack & business expertise</span>
-    </h2>
-
-    <div class="skills-tabs reveal reveal-d2" id="skillsTabs">
-      <button class="skill-tab active" data-tab="bi" type="button">
-        <span>📊</span>
-        <span class="lang-fr">BI & Viz</span>
-        <span class="lang-en">BI & Viz</span>
-      </button>
-      <button class="skill-tab" data-tab="engineering" type="button">
-        <span>🧱</span>
-        <span class="lang-fr">Data Engineering</span>
-        <span class="lang-en">Data Engineering</span>
-      </button>
-      <button class="skill-tab" data-tab="business" type="button">
-        <span>📈</span>
-        <span class="lang-fr">Métier</span>
-        <span class="lang-en">Business</span>
-      </button>
-      <button class="skill-tab" data-tab="tools" type="button">
-        <span>🛠️</span>
-        <span class="lang-fr">Outils</span>
-        <span class="lang-en">Tools</span>
-      </button>
-    </div>
-
-    <div class="skills-grid">
-      <!-- BI & Viz -->
-      <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24"><rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811"/><rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65"/><rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35"/></svg> Power BI</div>
-      <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24"><rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811"/><rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65"/><rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35"/></svg> DAX</div>
-      <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24"><rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811"/><rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65"/><rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35"/></svg> Power Query (M)</div>
-      <div class="skill-chip" data-scope="bi"><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/plotly/plotly-original.svg" alt="" loading="lazy"/> Plotly</div>
-      <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Data Visualization</div>
-      <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg> KPI Reporting</div>
-
-      <!-- Data Engineering -->
-      <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="" loading="lazy"/> Python</div>
-      <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt="" loading="lazy"/> Pandas</div>
-      <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg> SQL</div>
-      <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg> DuckDB</div>
-      <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt="" loading="lazy"/> PostgreSQL</div>
-      <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="11" fill="#FF694B"/><path d="M8 12a4 4 0 0 1 4-4v8a4 4 0 0 1-4-4z" fill="#fff"/></svg> dbt</div>
-      <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/><polyline points="12 5 19 12 12 19"/></svg> ETL / ELT</div>
-      <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Star Schema</div>
-      <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><circle cx="18" cy="6" r="3"/><line x1="8.5" y1="7.5" x2="15.5" y2="16.5"/><line x1="8.5" y1="5" x2="15.5" y2="5.5"/></svg> Data Modeling</div>
-
-      <!-- Métier -->
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> Retail Analytics</div>
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> Sell-Out</div>
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg> Category Mgmt</div>
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg> Pricing &amp; Assortment</div>
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg> Supply Chain KPIs</div>
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg> Segmentation</div>
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><path d="M2 20l20-14" stroke-dasharray="3 3" opacity=".5"/></svg> Pareto Analysis</div>
-      <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> Gap Analysis</div>
-
-      <!-- Outils -->
-      <div class="skill-chip" data-scope="tools" hidden><svg class="skill-icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="3" fill="#217346"/><path d="M7 7l4 5-4 5M13 7h4M13 12h4M13 17h3" stroke="#fff" stroke-width="1.8" stroke-linecap="round" fill="none"/></svg> Excel</div>
-      <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="" loading="lazy"/> Git &amp; GitHub</div>
-      <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original-wordmark.svg" alt="" loading="lazy"/> Jupyter</div>
-      <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="" loading="lazy"/> VS Code</div>
-      <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="" loading="lazy"/> Docker</div>
-      <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg" alt="" loading="lazy"/> Streamlit</div>
-    </div>
-  </div>
-</section>
-
-<section class="section" id="projects">
-  <div class="section-inner">
-    <div class="section-label reveal">
-      <span class="lang-fr">Projets</span>
-      <span class="lang-en">Projects</span>
-    </div>
-    <h2 class="section-title reveal reveal-d1">
-      <span class="lang-fr">Case studies avec dashboards & code</span>
-      <span class="lang-en">Case studies with dashboards & code</span>
-    </h2>
-
-    <div class="projects-grid">
-      <article class="project-card reveal reveal-d1">
-        <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
-        <h3><span class="lang-fr">Retail Analytics — Pareto & Segmentation</span><span class="lang-en">Retail Analytics — Pareto & Segmentation</span></h3>
-        <p>
-          <span class="lang-fr">Analyse complète sell-out avec segmentation ABC/XYZ, tableaux Pareto, et dashboard interactif Plotly embarqué dans une page HTML.</span>
-          <span class="lang-en">Complete sell-out analysis with ABC/XYZ segmentation, Pareto tables, and interactive Plotly dashboard embedded in an HTML page.</span>
-        </p>
-        <div class="project-tags">
-          <span class="project-tag">Python</span>
-          <span class="project-tag">Pandas</span>
-          <span class="project-tag">Plotly</span>
-          <span class="project-tag">Pareto</span>
-        </div>
-        <a href="project-retail.html" class="btn-case">
+      <div class="project-preview-footer">
+        <a href="#" class="btn-case" id="projectPreviewOpenBtn" target="_blank" rel="noopener">
           <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
           <span>→</span>
         </a>
-      </article>
-
-      <article class="project-card reveal reveal-d2">
-        <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
-        <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales & Profitability</span></h3>
-        <p>
-          <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de rentabilité par produit et client, dashboard Power BI.</span>
-          <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema), profitability analysis by product and customer, Power BI dashboard.</span>
-        </p>
-        <div class="project-tags">
-          <span class="project-tag">ELT</span>
-          <span class="project-tag">Python</span>
-          <span class="project-tag">dbt</span>
-          <span class="project-tag">Postgres</span>
-          <span class="project-tag">Power BI</span>
-        </div>
-        <a href="project-elt-retail.html" class="btn-case">
-          <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
-          <span>→</span>
-        </a>
-      </article>
-
-      <article class="project-card reveal reveal-d3">
-        <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En ligne</span><span class="lang-en">Live</span></div>
-        <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain — Delivery Performance</span></h3>
-        <p>
-          <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery), analyse des causes de retard, et dashboard Power BI.</span>
-          <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root cause analysis of delays, and Power BI dashboard.</span>
-        </p>
-        <div class="project-tags">
-          <span class="project-tag">Python</span>
-          <span class="project-tag">ETL</span>
-          <span class="project-tag">Power BI</span>
-          <span class="project-tag">KPI</span>
-        </div>
-        <a href="project-supply-chain.html" class="btn-case">
-          <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
-          <span>→</span>
-        </a>
-      </article>
+      </div>
     </div>
   </div>
-</section>
 
-<section class="section" id="contact">
-  <div class="section-inner">
-    <div class="contact-wrap">
-      <div class="section-label reveal" style="text-align:center">
-        <span class="lang-fr">Contact</span><span class="lang-en">Contact</span>
+  <section class="section" id="about">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="lang-fr">À propos</span>
+        <span class="lang-en">About</span>
       </div>
-      <h2 class="section-title reveal reveal-d1" style="text-align:center">
-        <span class="lang-fr">Disponible pour une mission <span class="nowrap">BA&nbsp;/&nbsp;Data</span></span><span class="lang-en">Available for <span class="nowrap">BA&nbsp;/&nbsp;Data</span> roles</span>
+      <h2 class="section-title reveal reveal-d1 about-title">
+        <span class="lang-fr">Ce qui me distingue</span>
+        <span class="lang-en">What sets me apart</span>
       </h2>
-      <p class="contact-desc reveal reveal-d1">
-        <span class="lang-fr">Basé en France, disponible pour des missions BA orientées data (Business / Data Analyst). Un échange rapide par email ou LinkedIn ?</span>
-        <span class="lang-en">Based in France, available for data-driven BA / Data Analyst roles. Shall we have a quick chat via email or LinkedIn?</span>
+
+      <p class="about-desc reveal reveal-d2">
+        <span class="lang-fr">
+          Business Analyst spécialisé en Retail & PGC (FMCG), je construis des analyses qui passent directement à
+          l'action.
+          Mon approche : partir des données, structurer un diagnostic clair, et le rendre exploitable pour les équipes
+          ventes, marketing ou direction.
+        </span>
+        <span class="lang-en">
+          Business Analyst specialized in Retail & FMCG, I deliver analyses that translate directly into action.
+          My approach: start from data, structure a clear diagnosis, and make it usable for sales, marketing, and
+          leadership teams.
+        </span>
       </p>
 
-      <div class="contact-btns reveal reveal-d2">
-        <button class="btn-contact" id="emailBtn" type="button">
-          ✉️ &nbsp;Email
-        </button>
-
-        <div class="email-pop" id="emailPop">
-          <div class="email-pop-row">
-            <span class="email-addr" id="emailText">rbmidolli@gmail.com</span>
-            <button class="copy-btn" id="copyBtn" type="button" aria-label="Copier">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                <rect x="9" y="9" width="13" height="13" rx="2"/>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-              </svg>
-            </button>
+      <!-- SQL Career Console -->
+      <div class="sql-console reveal reveal-d2" id="sqlConsole">
+        <div class="sql-bar">
+          <span class="terminal-dot r"></span>
+          <span class="terminal-dot y"></span>
+          <span class="terminal-dot g"></span>
+          <span class="sql-bar-title">rafael_db — psql</span>
+        </div>
+        <div class="sql-body">
+          <div class="sql-code">
+            <span class="sql-prompt">rafael_db=&gt;</span>
+            <span class="lang-fr">
+              <span class="s-kw">SELECT</span> <span class="s-col">entreprise</span>, <span class="s-col">poste</span>,
+              <span class="s-col">période</span>, <span class="s-col">focus</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                class="s-kw">FROM</span> <span class="s-tbl">parcours</span>
+              <span class="s-kw">ORDER BY</span> <span class="s-col">début</span> <span class="s-kw">DESC</span>;
+            </span>
+            <span class="lang-en">
+              <span class="s-kw">SELECT</span> <span class="s-col">company</span>, <span class="s-col">role</span>,
+              <span class="s-col">period</span>, <span class="s-col">focus</span><br />
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                class="s-kw">FROM</span> <span class="s-tbl">career</span>
+              <span class="s-kw">ORDER BY</span> <span class="s-col">start_date</span> <span class="s-kw">DESC</span>;
+            </span>
+            <span class="sql-cursor-block"></span>
           </div>
-          <div class="copy-hint" id="copyHint"></div>
+
+          <div class="sql-results">
+            <table class="sql-table">
+              <thead>
+                <tr>
+                  <th><span class="lang-fr">entreprise</span><span class="lang-en">company</span></th>
+                  <th><span class="lang-fr">poste</span><span class="lang-en">role</span></th>
+                  <th><span class="lang-fr">période</span><span class="lang-en">period</span></th>
+                  <th>focus</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Kantar</td>
+                  <td><span class="lang-fr">BA – Performance &amp; Data</span><span class="lang-en">BA – Performance
+                      &amp; Data</span></td>
+                  <td><span class="s-num">2023</span>–<span class="s-num">2024</span></td>
+                  <td><span class="s-str">Panel · CMI Insights · Market Research</span></td>
+                </tr>
+                <tr>
+                  <td>Scanntech</td>
+                  <td><span class="lang-fr">BA – Retail Data</span><span class="lang-en">BA – Retail Data</span></td>
+                  <td><span class="s-num">2023</span></td>
+                  <td><span class="s-str">Sell-Out · Retail · Assortiment</span></td>
+                </tr>
+                <tr>
+                  <td>Colgate-Palmolive</td>
+                  <td><span class="lang-fr">Analyst Ventes &amp; Trade Mktg</span><span class="lang-en">Sales &amp;
+                      Trade Mktg Analyst</span></td>
+                  <td><span class="s-num">2021</span>–<span class="s-num">2023</span></td>
+                  <td><span class="s-str">Sell-In/Out · Multi-Sources · KPI</span></td>
+                </tr>
+                <tr>
+                  <td>Aperam</td>
+                  <td><span class="lang-fr">Stage Market Intelligence</span><span class="lang-en">Market Intelligence
+                      Intern</span></td>
+                  <td><span class="s-num">2019</span>–<span class="s-num">2020</span></td>
+                  <td><span class="s-str">Veille · Pricing · Reporting</span></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="sql-row-count">(4 <span class="lang-fr">lignes retournées</span><span class="lang-en">rows
+                returned</span>)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metrics-strip reveal reveal-d3">
+        <div class="metric-card">
+          <div class="metric-value"><span class="lang-fr">4 ans</span><span class="lang-en">4 years</span></div>
+          <div class="metric-label">
+            <span class="lang-fr">Expérience en Retail & FMCG</span>
+            <span class="lang-en">Retail & FMCG experience</span>
+          </div>
         </div>
 
-        <a class="btn-contact" href="https://www.linkedin.com/in/rafael-midolli/" target="_blank" rel="noopener">
-          in &nbsp;LinkedIn
-        </a>
-        <a class="btn-contact" href="https://github.com/R-midolli" target="_blank" rel="noopener">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M9 19c-4 1.5-4-2.5-5-3m10 6v-3.5c0-1 .1-1.4-.5-2 2 0 4-.2 5-1 1.2-1 .8-3 .3-4.2A3 3 0 0 0 19 7s-1-.3-3 1.2a10 10 0 0 0-6 0C8 6.7 7 7 7 7a3 3 0 0 0-.3 4.3c-.5 1.2-.9 3.2.3 4.2 1 .8 3 1 5 1-.6.6-.6 1.2-.5 2V22"/>
-          </svg>
-          GitHub
-        </a>
+        <div class="metric-card">
+          <div class="metric-value text-fit">
+            <span class="lang-fr">Expertise auprès de<br>leaders mondiaux</span>
+            <span class="lang-en">Expertise with<br>global leaders</span>
+          </div>
+          <div class="metric-label">
+            (Colgate · Lactalis · Tetra Pak · Kantar)
+          </div>
+        </div>
+
+        <div class="metric-card clickable" id="mbaCard">
+          <div class="metric-value">MBA</div>
+          <div class="metric-label">
+            <span class="lang-fr">Intelligence Artificielle +<br>Diplôme d'Ingénieur</span>
+            <span class="lang-en">Artificial Intelligence +<br>Engineering Degree</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<footer class="footer">© 2026 — Rafael Midolli — Portfolio Business Analyst</footer>
+  <section class="section" id="skills">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="lang-fr">Compétences</span>
+        <span class="lang-en">Skills</span>
+      </div>
+      <h2 class="section-title reveal reveal-d1">
+        <span class="lang-fr">Stack technique & expertise métier</span>
+        <span class="lang-en">Tech stack & business expertise</span>
+      </h2>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script src="assets/js/shared.js"></script>
-<script>
-(function(){
-  const $ = s => document.querySelector(s);
-  const $$ = s => [...document.querySelectorAll(s)];
+      <div class="skills-tabs reveal reveal-d2" id="skillsTabs">
+        <button class="skill-tab active" data-tab="bi" type="button">
+          <span>📊</span>
+          <span class="lang-fr">BI & Viz</span>
+          <span class="lang-en">BI & Viz</span>
+        </button>
+        <button class="skill-tab" data-tab="engineering" type="button">
+          <span>🧱</span>
+          <span class="lang-fr">Data Engineering</span>
+          <span class="lang-en">Data Engineering</span>
+        </button>
+        <button class="skill-tab" data-tab="business" type="button">
+          <span>📈</span>
+          <span class="lang-fr">Métier</span>
+          <span class="lang-en">Business</span>
+        </button>
+        <button class="skill-tab" data-tab="tools" type="button">
+          <span>🛠️</span>
+          <span class="lang-fr">Outils</span>
+          <span class="lang-en">Tools</span>
+        </button>
+      </div>
 
-  // --- scroll progress ---
-  const scrollBar = $('#scrollBar');
-  function onScroll(){
-    const d = document.documentElement;
-    const max = d.scrollHeight - d.clientHeight;
-    scrollBar.style.width = (max > 0 ? (d.scrollTop/max)*100 : 0) + '%';
-    $('#mainNav')?.classList.toggle('scrolled', d.scrollTop > 40);
-  }
-  window.addEventListener('scroll', onScroll, {passive:true});
-  onScroll();
+      <div class="skills-grid">
+        <!-- BI & Viz -->
+        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24">
+            <rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811" />
+            <rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65" />
+            <rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35" />
+          </svg> Power BI</div>
+        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24">
+            <rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811" />
+            <rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65" />
+            <rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35" />
+          </svg> DAX</div>
+        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24">
+            <rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811" />
+            <rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65" />
+            <rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35" />
+          </svg> Power Query (M)</div>
+        <div class="skill-chip" data-scope="bi"><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/plotly/plotly-original.svg" alt=""
+            loading="lazy" /> Plotly</div>
+        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg> Data Visualization</div>
+        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <line x1="3" y1="9" x2="21" y2="9" />
+            <line x1="9" y1="21" x2="9" y2="9" />
+          </svg> KPI Reporting</div>
 
-  // --- reveal on scroll ---
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show') });
-  }, {threshold:0.12});
-  $$('.reveal').forEach(el => io.observe(el));
+        <!-- Data Engineering -->
+        <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt=""
+            loading="lazy" /> Python</div>
+        <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt=""
+            loading="lazy" /> Pandas</div>
+        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
+          </svg> SQL</div>
+        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <ellipse cx="12" cy="5" rx="9" ry="3" />
+            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
+          </svg> DuckDB</div>
+        <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt=""
+            loading="lazy" /> PostgreSQL</div>
+        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="11" fill="#FF694B" />
+            <path d="M8 12a4 4 0 0 1 4-4v8a4 4 0 0 1-4-4z" fill="#fff" />
+          </svg> dbt</div>
+        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <path d="M5 12h14" />
+            <polyline points="12 5 19 12 12 19" />
+          </svg> ETL / ELT</div>
+        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg> Star Schema</div>
+        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="6" cy="6" r="3" />
+            <circle cx="18" cy="18" r="3" />
+            <circle cx="18" cy="6" r="3" />
+            <line x1="8.5" y1="7.5" x2="15.5" y2="16.5" />
+            <line x1="8.5" y1="5" x2="15.5" y2="5.5" />
+          </svg> Data Modeling</div>
 
-  // --- scrollspy (SAFE) ---
-  const navLinks = $$('.nav-link');
-  const sections = ['about','skills','projects','contact']
-    .map(id => document.getElementById(id))
-    .filter(Boolean);
+        <!-- Métier -->
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg> Retail Analytics</div>
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+            <polyline points="17 6 23 6 23 12" />
+          </svg> Sell-Out</div>
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg> Category Mgmt</div>
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+            <line x1="7" y1="7" x2="7.01" y2="7" />
+          </svg> Pricing &amp; Assortment</div>
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="1" y="3" width="15" height="13" />
+            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+            <circle cx="5.5" cy="18.5" r="2.5" />
+            <circle cx="18.5" cy="18.5" r="2.5" />
+          </svg> Supply Chain KPIs</div>
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+            <path d="M22 12A10 10 0 0 0 12 2v10z" />
+          </svg> Segmentation</div>
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+            <path d="M2 20l20-14" stroke-dasharray="3 3" opacity=".5" />
+          </svg> Pareto Analysis</div>
+        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+          </svg> Gap Analysis</div>
 
-  const ioSpy = new IntersectionObserver(entries => {
-    const vis = entries.filter(e => e.isIntersecting)
-      .sort((a,b) => b.intersectionRatio - a.intersectionRatio)[0];
-    if(vis){
-      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#'+vis.target.id));
-    }
-  }, {threshold:[.15,.3,.5], rootMargin:'-15% 0px -55% 0px'});
+        <!-- Outils -->
+        <div class="skill-chip" data-scope="tools" hidden><svg class="skill-icon" viewBox="0 0 24 24">
+            <rect x="2" y="2" width="20" height="20" rx="3" fill="#217346" />
+            <path d="M7 7l4 5-4 5M13 7h4M13 12h4M13 17h3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"
+              fill="none" />
+          </svg> Excel</div>
+        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt=""
+            loading="lazy" /> Git &amp; GitHub</div>
+        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original-wordmark.svg" alt=""
+            loading="lazy" /> Jupyter</div>
+        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt=""
+            loading="lazy" /> VS Code</div>
+        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt=""
+            loading="lazy" /> Docker</div>
+        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg" alt=""
+            loading="lazy" /> Streamlit</div>
+      </div>
+    </div>
+  </section>
 
-  sections.forEach(s => ioSpy.observe(s));
+  <section class="section" id="projects">
+    <div class="section-inner">
+      <div class="section-label reveal">
+        <span class="lang-fr">Projets</span>
+        <span class="lang-en">Projects</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+        <h2 class="section-title reveal reveal-d1" style="margin-bottom: 0;">
+          <span class="lang-fr">Case studies avec dashboards & code</span>
+          <span class="lang-en">Case studies with dashboards & code</span>
+        </h2>
+        <!-- NOUVEAU: Grid vs List Layout Toggle -->
+        <button id="layoutToggle" class="btn-layout-toggle reveal reveal-d1" aria-label="Toggle Layout"
+          title="Changer l'affichage" type="button">
+          <div class="layout-slider" id="layoutSlider"></div>
+          <svg class="icon-grid" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM11 13a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+          </svg>
+          <svg class="icon-list" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+              clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
 
-  // --- skills tabs ---
-  const tabs = $('#skillsTabs');
-  const chips = $$('.skill-chip');
-  if(tabs){
-    tabs.addEventListener('click', e => {
-      const btn = e.target.closest('.skill-tab');
-      if(!btn) return;
+      <div class="projects-grid" id="projectsContainer">
+        <article class="project-card reveal reveal-d1">
+          <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En
+              ligne</span><span class="lang-en">Live</span></div>
+          <h3><span class="lang-fr">Retail Analytics — Pareto & Segmentation</span><span class="lang-en">Retail
+              Analytics — Pareto & Segmentation</span></h3>
+          <p>
+            <span class="lang-fr">Analyse complète sell-out avec segmentation ABC/XYZ, tableaux Pareto, et dashboard
+              interactif Plotly embarqué dans une page HTML.</span>
+            <span class="lang-en">Complete sell-out analysis with ABC/XYZ segmentation, Pareto tables, and interactive
+              Plotly dashboard embedded in an HTML page.</span>
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Python</span>
+            <span class="project-tag">Pandas</span>
+            <span class="project-tag">Plotly</span>
+            <span class="project-tag">Pareto</span>
+          </div>
+          <a href="project-retail.html" class="btn-case">
+            <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+            <span>→</span>
+          </a>
+        </article>
 
-      $$('.skill-tab').forEach(t => t.classList.remove('active'));
-      btn.classList.add('active');
+        <article class="project-card reveal reveal-d2">
+          <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En
+              ligne</span><span class="lang-en">Live</span></div>
+          <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales &
+              Profitability</span></h3>
+          <p>
+            <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de
+              rentabilité par produit et client, dashboard Power BI.</span>
+            <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema),
+              profitability analysis by product and customer, Power BI dashboard.</span>
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">ELT</span>
+            <span class="project-tag">Python</span>
+            <span class="project-tag">dbt</span>
+            <span class="project-tag">Postgres</span>
+            <span class="project-tag">Power BI</span>
+          </div>
+          <a href="project-elt-retail.html" class="btn-case">
+            <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+            <span>→</span>
+          </a>
+        </article>
 
-      const scope = btn.dataset.tab;
+        <article class="project-card reveal reveal-d3">
+          <div class="project-status status-live"><span class="status-dot"></span> <span class="lang-fr">En
+              ligne</span><span class="lang-en">Live</span></div>
+          <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain —
+              Delivery Performance</span></h3>
+          <p>
+            <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery),
+              analyse des causes de retard, et dashboard Power BI.</span>
+            <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root
+              cause analysis of delays, and Power BI dashboard.</span>
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Python</span>
+            <span class="project-tag">ETL</span>
+            <span class="project-tag">Power BI</span>
+            <span class="project-tag">KPI</span>
+          </div>
+          <a href="project-supply-chain.html" class="btn-case">
+            <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+            <span>→</span>
+          </a>
+        </article>
 
-      chips.forEach((ch, i) => {
-        if (ch.dataset.scope === scope) {
-          ch.hidden = false;
-          ch.style.animationDelay = (i % 8) * 0.06 + 's';
-        } else {
-          ch.hidden = true;
+        <article class="project-card reveal reveal-d4"
+          style="border: 2px solid var(--accent); position: relative; overflow: hidden;">
+          <div
+            style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #3b82f6, #ec4899);">
+          </div>
+          <div class="project-status status-live">
+            <span class="status-dot"></span> <span class="lang-fr">Reactif</span><span class="lang-en">Reactive</span>
+          </div>
+          <h3>
+            <span class="lang-fr">Pricing & Marge FMCG — Macro Shock</span>
+            <span class="lang-en">FMCG Pricing & Margin — Macro Shock</span>
+          </h3>
+          <p>
+            <span class="lang-fr">Jointure de données marché (INSEE, BCE) et transactions internes (DuckDB) pour
+              modéliser la destruction de marge via un Dashboard PL interactif.</span>
+            <span class="lang-en">Joining market data (INSEE, ECB) and internal transactions (DuckDB) to model margin
+              destruction via an interactive PL Dashboard.</span>
+          </p>
+          <div class="project-tags">
+            <span class="project-tag">Python</span>
+            <span class="project-tag">DuckDB</span>
+            <span class="project-tag">Plotly.js</span>
+            <span class="project-tag">Macro-ECO</span>
+          </div>
+          <a href="project-pricing.html" class="btn-case" style="color: var(--accent); border-color: var(--accent);">
+            <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+            <span>→</span>
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="section-inner">
+      <div class="contact-wrap">
+        <div class="section-label reveal" style="text-align:center">
+          <span class="lang-fr">Contact</span><span class="lang-en">Contact</span>
+        </div>
+        <h2 class="section-title reveal reveal-d1" style="text-align:center">
+          <span class="lang-fr">Disponible pour une mission <span class="nowrap">BA&nbsp;/&nbsp;Data</span></span><span
+            class="lang-en">Available for <span class="nowrap">BA&nbsp;/&nbsp;Data</span> roles</span>
+        </h2>
+        <p class="contact-desc reveal reveal-d1">
+          <span class="lang-fr">Basé en France, disponible pour des missions BA orientées data (Business / Data
+            Analyst). Un échange rapide par email ou LinkedIn ?</span>
+          <span class="lang-en">Based in France, available for data-driven BA / Data Analyst roles. Shall we have a
+            quick chat via email or LinkedIn?</span>
+        </p>
+
+        <div class="contact-btns reveal reveal-d2">
+          <button class="btn-contact" id="emailBtn" type="button">
+            ✉️ &nbsp;Email
+          </button>
+
+          <div class="email-pop" id="emailPop">
+            <div class="email-pop-row">
+              <span class="email-addr" id="emailText">rbmidolli@gmail.com</span>
+              <button class="copy-btn" id="copyBtn" type="button" aria-label="Copier">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round">
+                  <rect x="9" y="9" width="13" height="13" rx="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+              </button>
+            </div>
+            <div class="copy-hint" id="copyHint"></div>
+          </div>
+
+          <a class="btn-contact" href="https://www.linkedin.com/in/rafael-midolli/" target="_blank" rel="noopener">
+            in &nbsp;LinkedIn
+          </a>
+          <a class="btn-contact" href="https://github.com/R-midolli" target="_blank" rel="noopener">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M9 19c-4 1.5-4-2.5-5-3m10 6v-3.5c0-1 .1-1.4-.5-2 2 0 4-.2 5-1 1.2-1 .8-3 .3-4.2A3 3 0 0 0 19 7s-1-.3-3 1.2a10 10 0 0 0-6 0C8 6.7 7 7 7 7a3 3 0 0 0-.3 4.3c-.5 1.2-.9 3.2.3 4.2 1 .8 3 1 5 1-.6.6-.6 1.2-.5 2V22" />
+            </svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">© 2026 — Rafael Midolli — Portfolio Business Analyst</footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+  <script src="assets/js/shared.js"></script>
+  <script>
+    (function () {
+      const $ = s => document.querySelector(s);
+      const $$ = s => [...document.querySelectorAll(s)];
+
+      // --- scroll progress ---
+      const scrollBar = $('#scrollBar');
+      function onScroll() {
+        const d = document.documentElement;
+        const max = d.scrollHeight - d.clientHeight;
+        scrollBar.style.width = (max > 0 ? (d.scrollTop / max) * 100 : 0) + '%';
+        $('#mainNav')?.classList.toggle('scrolled', d.scrollTop > 40);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // --- reveal on scroll ---
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show') });
+      }, { threshold: 0.12 });
+      $$('.reveal').forEach(el => io.observe(el));
+
+      // --- scrollspy (SAFE) ---
+      const navLinks = $$('.nav-link');
+      const sections = ['about', 'skills', 'projects', 'contact']
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+      const ioSpy = new IntersectionObserver(entries => {
+        const vis = entries.filter(e => e.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (vis) {
+          navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + vis.target.id));
         }
+      }, { threshold: [.15, .3, .5], rootMargin: '-15% 0px -55% 0px' });
+
+      sections.forEach(s => ioSpy.observe(s));
+
+      // --- skills tabs ---
+      const tabs = $('#skillsTabs');
+      const chips = $$('.skill-chip');
+      if (tabs) {
+        tabs.addEventListener('click', e => {
+          const btn = e.target.closest('.skill-tab');
+          if (!btn) return;
+
+          $$('.skill-tab').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+
+          const scope = btn.dataset.tab;
+
+          chips.forEach((ch, i) => {
+            if (ch.dataset.scope === scope) {
+              ch.hidden = false;
+              ch.style.animationDelay = (i % 8) * 0.06 + 's';
+            } else {
+              ch.hidden = true;
+            }
+          });
+        });
+      }
+
+      // --- email popover ---
+      const emailBtn = $('#emailBtn');
+      const emailPop = $('#emailPop');
+      const copyBtn = $('#copyBtn');
+      const copyHint = $('#copyHint');
+
+      function getLang() { return document.documentElement.dataset.lang || 'fr'; }
+      function setCopyHintDefault() {
+        if (copyHint) copyHint.textContent = getLang() === 'fr' ? 'Cliquez pour copier' : 'Click to copy';
+      }
+
+      if (emailBtn && emailPop) {
+        emailBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          emailPop.classList.toggle('show');
+          if (emailPop.classList.contains('show')) setCopyHintDefault();
+        });
+      }
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText($('#emailText').textContent.trim());
+            if (copyHint) copyHint.textContent = getLang() === 'fr' ? '✓ Copié !' : '✓ Copied!';
+            setTimeout(() => setCopyHintDefault(), 1400);
+          } catch {
+            if (copyHint) copyHint.textContent = getLang() === 'fr' ? 'Copie impossible' : 'Copy failed';
+          }
+        });
+      }
+
+      document.addEventListener('click', e => {
+        if (!emailPop || !emailPop.classList.contains('show')) return;
+        if (!emailPop.contains(e.target) && !emailBtn.contains(e.target)) emailPop.classList.remove('show');
       });
-    });
-  }
+      document.addEventListener('keydown', e => { if (e.key === 'Escape' && emailPop) emailPop.classList.remove('show') });
 
-  // --- email popover ---
-  const emailBtn = $('#emailBtn');
-  const emailPop = $('#emailPop');
-  const copyBtn = $('#copyBtn');
-  const copyHint = $('#copyHint');
+      // --- biography toggle ---
+      const bioBtn = $('#bioToggleBtn');
+      const bioOverlay = $('#bioOverlay');
+      const bioClose = $('#bioCloseBtn');
 
-  function getLang(){ return document.documentElement.dataset.lang || 'fr'; }
-  function setCopyHintDefault(){
-    if(copyHint) copyHint.textContent = getLang() === 'fr' ? 'Cliquez pour copier' : 'Click to copy';
-  }
+      if (bioBtn && bioOverlay) {
+        bioBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          bioOverlay.classList.add('show');
+        });
 
-  if(emailBtn && emailPop){
-    emailBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      emailPop.classList.toggle('show');
-      if(emailPop.classList.contains('show')) setCopyHintDefault();
-    });
-  }
-
-  if(copyBtn){
-    copyBtn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText($('#emailText').textContent.trim());
-        if(copyHint) copyHint.textContent = getLang() === 'fr' ? '✓ Copié !' : '✓ Copied!';
-        setTimeout(() => setCopyHintDefault(), 1400);
-      } catch {
-        if(copyHint) copyHint.textContent = getLang() === 'fr' ? 'Copie impossible' : 'Copy failed';
-      }
-    });
-  }
-
-  document.addEventListener('click', e => {
-    if(!emailPop || !emailPop.classList.contains('show')) return;
-    if(!emailPop.contains(e.target) && !emailBtn.contains(e.target)) emailPop.classList.remove('show');
-  });
-  document.addEventListener('keydown', e => { if(e.key==='Escape' && emailPop) emailPop.classList.remove('show') });
-
-  // --- biography toggle ---
-  const bioBtn = $('#bioToggleBtn');
-  const bioOverlay = $('#bioOverlay');
-  const bioClose = $('#bioCloseBtn');
-
-  if(bioBtn && bioOverlay){
-    bioBtn.addEventListener('click', e => { 
-      e.stopPropagation(); 
-      bioOverlay.classList.add('show');
-    });
-    
-    if(bioClose) {
-      bioClose.addEventListener('click', e => {
-        e.stopPropagation();
-        bioOverlay.classList.remove('show');
-      });
-    }
-    
-    bioOverlay.addEventListener('click', e => {
-      if(e.target === bioOverlay) {
-        bioOverlay.classList.remove('show');
-      }
-    });
-    
-    document.addEventListener('keydown', e => { 
-      if(e.key==='Escape' && bioOverlay.classList.contains('show')) {
-        bioOverlay.classList.remove('show');
-      }
-    });
-  }
-
-  
-  // --- project preview (click on card) ---
-  const previewOverlay = $('#projectPreviewOverlay');
-  const previewCard = previewOverlay ? previewOverlay.querySelector('.project-preview-card') : null;
-  const previewCloseBtn = $('#projectPreviewCloseBtn');
-  const previewTitle = $('#projectPreviewTitle');
-  const previewIframe = $('#projectPreviewIframe');
-  const previewOpenBtn = $('#projectPreviewOpenBtn');
-  const previewLoading = $('#projectPreviewLoading');
-
-  function openProjectPreview(card){
-    if(!previewOverlay) return;
-
-    const openBtn = card.querySelector('.btn-case');
-    if(!openBtn) return;
-
-    const href = openBtn.getAttribute('href');
-    if(!href) return;
-
-    const h3 = card.querySelector('h3');
-    if(previewTitle){
-      previewTitle.innerHTML = h3 ? h3.innerHTML : (getLang()==='fr' ? 'Aperçu du projet' : 'Project preview');
-    }
-    if(previewOpenBtn) previewOpenBtn.href = href;
-
-    if(previewIframe){
-      if(previewLoading) previewLoading.classList.add('show');
-      previewIframe.onload = () => { if(previewLoading) previewLoading.classList.remove('show'); };
-      previewIframe.src = href;
-    }
-
-    previewOverlay.classList.add('show');
-  }
-
-  function closeProjectPreview(){
-    if(!previewOverlay) return;
-    previewOverlay.classList.remove('show');
-    if(previewIframe) previewIframe.src = 'about:blank';
-    if(previewLoading) previewLoading.classList.remove('show');
-  }
-
-  // Open preview when clicking on a project card (except the main button/link)
-  $$('.project-card').forEach(card => {
-    card.addEventListener('click', (e) => {
-      if(e.target.closest('.btn-case')) return; // keep default navigation
-      if(e.target.closest('a')) return; // any link should behave normally
-      openProjectPreview(card);
-    });
-  });
-
-  if(previewCloseBtn) previewCloseBtn.addEventListener('click', closeProjectPreview);
-
-  if(previewOverlay){
-    previewOverlay.addEventListener('click', (e) => {
-      if(previewCard && !previewCard.contains(e.target)) closeProjectPreview();
-    });
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape' && previewOverlay && previewOverlay.classList.contains('show')) closeProjectPreview();
-  });
-
-
-// --- sync language with shared.js ---
-  document.addEventListener('langchange', () => setCopyHintDefault());
-  setCopyHintDefault();
-
-  // --- MBA diploma overlay ---
-  const mbaCard = $('#mbaCard');
-  const diplomaOverlay = $('#diplomaOverlay');
-  const diplomaClose = $('#diplomaCloseBtn');
-  const diplomaIframe = $('#diplomaIframe');
-
-  if(mbaCard && diplomaOverlay){
-    mbaCard.addEventListener('click', () => {
-      if(diplomaIframe) diplomaIframe.src = 'assets/docs/MBA_IA_USP_MIDOLLI_Rafael.pdf';
-      diplomaOverlay.classList.add('show');
-    });
-    if(diplomaClose){
-      diplomaClose.addEventListener('click', e => {
-        e.stopPropagation();
-        diplomaOverlay.classList.remove('show');
-        if(diplomaIframe) diplomaIframe.src = '';
-      });
-    }
-    diplomaOverlay.addEventListener('click', e => {
-      if(e.target === diplomaOverlay){
-        diplomaOverlay.classList.remove('show');
-        if(diplomaIframe) diplomaIframe.src = '';
-      }
-    });
-    document.addEventListener('keydown', e => {
-      if(e.key === 'Escape' && diplomaOverlay.classList.contains('show')){
-        diplomaOverlay.classList.remove('show');
-        if(diplomaIframe) diplomaIframe.src = '';
-      }
-    });
-  }
-
-  // --- SQL console animation ---
-  const sqlConsole = $('#sqlConsole');
-  if(sqlConsole){
-    const sqlObs = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if(e.isIntersecting){
-          setTimeout(() => {
-            sqlConsole.classList.add('active');
-            const rows = [...sqlConsole.querySelectorAll('.sql-table tbody tr')];
-            rows.forEach((row, i) => {
-              setTimeout(() => row.classList.add('row-show'), 200 + i * 250);
-            });
-          }, 400);
-          sqlObs.unobserve(sqlConsole);
+        if (bioClose) {
+          bioClose.addEventListener('click', e => {
+            e.stopPropagation();
+            bioOverlay.classList.remove('show');
+          });
         }
-      });
-    }, {threshold:0.25});
-    sqlObs.observe(sqlConsole);
-  }
 
-})();
-</script>
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
+        bioOverlay.addEventListener('click', e => {
+          if (e.target === bioOverlay) {
+            bioOverlay.classList.remove('show');
+          }
+        });
+
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape' && bioOverlay.classList.contains('show')) {
+            bioOverlay.classList.remove('show');
+          }
+        });
+      }
+
+
+      // --- project preview (click on card) ---
+      const previewOverlay = $('#projectPreviewOverlay');
+      const previewCard = previewOverlay ? previewOverlay.querySelector('.project-preview-card') : null;
+      const previewCloseBtn = $('#projectPreviewCloseBtn');
+      const previewTitle = $('#projectPreviewTitle');
+      const previewIframe = $('#projectPreviewIframe');
+      const previewOpenBtn = $('#projectPreviewOpenBtn');
+      const previewLoading = $('#projectPreviewLoading');
+
+      function openProjectPreview(card) {
+        if (!previewOverlay) return;
+
+        const openBtn = card.querySelector('.btn-case');
+        if (!openBtn) return;
+
+        const href = openBtn.getAttribute('href');
+        if (!href) return;
+
+        const h3 = card.querySelector('h3');
+        if (previewTitle) {
+          previewTitle.innerHTML = h3 ? h3.innerHTML : (getLang() === 'fr' ? 'Aperçu du projet' : 'Project preview');
+        }
+        if (previewOpenBtn) previewOpenBtn.href = href;
+
+        if (previewIframe) {
+          if (previewLoading) previewLoading.classList.add('show');
+          previewIframe.onload = () => { if (previewLoading) previewLoading.classList.remove('show'); };
+          previewIframe.src = href;
+        }
+
+        previewOverlay.classList.add('show');
+      }
+
+      function closeProjectPreview() {
+        if (!previewOverlay) return;
+        previewOverlay.classList.remove('show');
+        if (previewIframe) previewIframe.src = 'about:blank';
+        if (previewLoading) previewLoading.classList.remove('show');
+      }
+
+      // Open preview when clicking on a project card (except the main button/link)
+      $$('.project-card').forEach(card => {
+        card.addEventListener('click', (e) => {
+          if (e.target.closest('.btn-case')) return; // keep default navigation
+          if (e.target.closest('a')) return; // any link should behave normally
+          openProjectPreview(card);
+        });
+      });
+
+      if (previewCloseBtn) previewCloseBtn.addEventListener('click', closeProjectPreview);
+
+      if (previewOverlay) {
+        previewOverlay.addEventListener('click', (e) => {
+          if (previewCard && !previewCard.contains(e.target)) closeProjectPreview();
+        });
+      }
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && previewOverlay && previewOverlay.classList.contains('show')) closeProjectPreview();
+      });
+
+
+      // --- sync language with shared.js ---
+      document.addEventListener('langchange', () => setCopyHintDefault());
+      setCopyHintDefault();
+
+      // --- MBA diploma overlay ---
+      const mbaCard = $('#mbaCard');
+      const diplomaOverlay = $('#diplomaOverlay');
+      const diplomaClose = $('#diplomaCloseBtn');
+      const diplomaIframe = $('#diplomaIframe');
+
+      if (mbaCard && diplomaOverlay) {
+        mbaCard.addEventListener('click', () => {
+          if (diplomaIframe) diplomaIframe.src = 'assets/docs/MBA_IA_USP_MIDOLLI_Rafael.pdf';
+          diplomaOverlay.classList.add('show');
+        });
+        if (diplomaClose) {
+          diplomaClose.addEventListener('click', e => {
+            e.stopPropagation();
+            diplomaOverlay.classList.remove('show');
+            if (diplomaIframe) diplomaIframe.src = '';
+          });
+        }
+        diplomaOverlay.addEventListener('click', e => {
+          if (e.target === diplomaOverlay) {
+            diplomaOverlay.classList.remove('show');
+            if (diplomaIframe) diplomaIframe.src = '';
+          }
+        });
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape' && diplomaOverlay.classList.contains('show')) {
+            diplomaOverlay.classList.remove('show');
+            if (diplomaIframe) diplomaIframe.src = '';
+          }
+        });
+      }
+
+      // --- SQL console animation ---
+      const sqlConsole = $('#sqlConsole');
+      if (sqlConsole) {
+        const sqlObs = new IntersectionObserver(entries => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              setTimeout(() => {
+                sqlConsole.classList.add('active');
+                const rows = [...sqlConsole.querySelectorAll('.sql-table tbody tr')];
+                rows.forEach((row, i) => {
+                  setTimeout(() => row.classList.add('row-show'), 200 + i * 250);
+                });
+              }, 400);
+              sqlObs.unobserve(sqlConsole);
+            }
+          });
+        }, { threshold: 0.25 });
+        sqlObs.observe(sqlConsole);
+      }
+
+    })();
+  </script>
+  <!-- Cloudflare Web Analytics -->
+  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
+    data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
+
 </html>
