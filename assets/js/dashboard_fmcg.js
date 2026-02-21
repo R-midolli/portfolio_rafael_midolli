@@ -44,20 +44,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ─── TRANSLATIONS ─────────────────────────────────────────────────
     const TR = {
         fr: {
-            comm: 'Évolution Mondiale des Prix (USD)',
+            comm: 'Évolution Mondiale des Prix (Base 100)',
             fx: 'Taux de Change EUR/USD',
             yoy: 'Inflation Matières (% YoY - Mois Actuel)',
-            inf: 'Inflation Consommateur France (% YoY - Mois Actuel)',
+            inf: 'Historique Inflation Consommateur (France)',
             squeeze: 'Matrice Squeeze (Impact Instantané)',
             sqTip: 'Squeeze Score',
             zoomTip: 'Glissez pour zoomer',
             click: 'Cliquez sur la légende pour filtrer'
         },
         en: {
-            comm: 'Global Commodity Price Evolution (USD)',
+            comm: 'Global Commodity Price Evolution (Base 100)',
             fx: 'EUR/USD Exchange Rate',
             yoy: 'Commodity Inflation (% YoY - Current Month)',
-            inf: 'France Consumer Inflation (% YoY - Current Month)',
+            inf: 'Historical Consumer Inflation (France)',
             squeeze: 'Squeeze Matrix (Instantaneous Impact)',
             sqTip: 'Squeeze Score',
             zoomTip: 'Drag to zoom',
@@ -173,13 +173,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         const commFr = frNames[selectedCommodity] || selectedCommodity;
 
         if (selectedCommodity === 'all') {
-            kpiTitle.innerHTML = `<span class="lang-fr">Cacao (YoY)</span><span class="lang-en">Cocoa (YoY)</span>`; // Top mover anchor
-            kpiVal.textContent = "+60%";
-            kpiDesc.innerHTML = `<span class="lang-fr">Pic historique</span><span class="lang-en">Historical Peak</span>`;
+            kpiTitle.innerHTML = `<span class="lang-fr">Inflation Globale (YoY)</span><span class="lang-en">Global Inflation (YoY)</span>`; // Top mover anchor
+            const avgYoy = data.charts.yoy_inflation.values.reduce((a, b) => a + b, 0) / data.charts.yoy_inflation.values.length;
+            kpiVal.textContent = "+" + avgYoy.toFixed(1) + "%";
+            kpiDesc.innerHTML = `<span class="lang-fr">Moyenne des catégories</span><span class="lang-en">Category Average</span>`;
 
-            if (spotTitle) spotTitle.innerHTML = `<span class="lang-fr">Cours Cacao (Live)</span><span class="lang-en">Cocoa Spot (Live)</span>`;
-            if (spotVal) spotVal.textContent = `+$${Math.round(data.kpis.cocoa_usd_t).toLocaleString('en-US')}`;
-            if (spotDesc) spotDesc.textContent = "Yahoo Finance";
+            if (spotTitle) spotTitle.innerHTML = `<span class="lang-fr">Tendance Globale</span><span class="lang-en">Global Trend</span>`;
+            if (spotVal) {
+                spotVal.textContent = "Élevée";
+                spotVal.style.fontSize = "2.2rem"; // Auto size text
+                spotVal.style.color = "#ef4444";
+            }
+            if (spotDesc) spotDesc.textContent = "Macro Monitor";
 
             if (dynInsight) dynInsight.innerHTML = `<strong><span class="lang-fr">Diagnostic Global :</span><span class="lang-en">Global Diagnostic:</span></strong><span class="lang-fr"> Pression généralisée sur les chaînes de valeur. Le Cacao draine la vaste majorité des marges de l'industrie sucrière et chocolatière.</span><span class="lang-en"> Widespread pressure across value chains. Cocoa is draining the vast majority of margins in the chocolate industry.</span>`;
         } else {
@@ -198,6 +203,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const prices = data.charts.commodities[selectedCommodity].prices;
                 const latest = prices[prices.length - 1];
                 spotTitle.innerHTML = `<span class="lang-fr">Cours ${commFr} (Live)</span><span class="lang-en">${selectedCommodity} Spot</span>`;
+                spotVal.style.fontSize = "3rem";
                 spotVal.textContent = `$${latest >= 1000 ? (latest / 1000).toFixed(1) + 'k' : Math.round(latest)}`;
                 if (spotDesc) spotDesc.textContent = "Yahoo Finance";
             }
@@ -308,6 +314,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 name, type: 'line', smooth: 0.4, symbol: 'none', sampling: 'lttb',
                 lineStyle: { width: isOnly ? 3.5 : 2.5, color: p.main },
                 itemStyle: { color: p.main },
+                endLabel: { show: true, formatter: '{a}', color: 'inherit', fontFamily: 'DM Sans', fontWeight: 700, fontSize: 13, distance: 8 },
                 emphasis: { lineStyle: { width: 4, shadowBlur: 12, shadowColor: p.glow }, focus: 'series' },
                 areaStyle: isOnly ? { color: areaGradient(p.main, 0.35, 0.02) } : undefined,
                 animationDuration: 1200, animationEasing: 'cubicOut',
@@ -325,7 +332,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             title: titleStyle(t.comm),
             tooltip: { ...tipStyle().tooltip, valueFormatter: v => typeof v === 'number' ? v.toFixed(0) : v },
             legend: { show: false }, // Controlled cleanly by HTML toggle buttons instead of ECharts natively
-            grid: { left: '2%', right: '3%', bottom: '8%', top: '18%', containLabel: true },
+            grid: { left: '2%', right: '8%', bottom: '8%', top: '18%', containLabel: true },
             xAxis: {
                 type: 'time', ...axisBase(), splitLine: { show: false },
                 axisLabel: { ...axisBase().axisLabel, formatter: '{MMM} {yyyy}', hideOverlap: true }
@@ -432,47 +439,56 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ─── CHART 4: INFLATION ───────────────────────────────────────────
     function renderInf() {
-        if (!chartYoyInf || !data) return;
+        if (!chartYoyInf || !data || !data.charts.inflation_timeseries) return;
         const t = lang();
-        const d = data.charts.yoy_inflation;
+        const d = data.charts.inflation_timeseries;
+        const cats = Object.keys(d);
+        if (cats.length === 0) return;
+
+        const series = cats.map(c => {
+            const isHighlighted = selectedCommodity === 'all' ||
+                (selectedCommodity === 'Cocoa' && c === 'Coffee, Tea, Cocoa') ||
+                (selectedCommodity === 'Coffee' && c === 'Coffee, Tea, Cocoa') ||
+                (selectedCommodity === 'Sugar' && c === 'Sugar, Jam, Honey, Chocolate') ||
+                (selectedCommodity === 'Wheat' && c === 'Bread & Cereals');
+
+            return {
+                name: c,
+                type: 'line',
+                smooth: true,
+                symbol: 'none',
+                data: d[c].values,
+                lineStyle: { width: isHighlighted ? 3 : 1, opacity: isHighlighted ? 1 : 0.2 },
+                itemStyle: { opacity: isHighlighted ? 1 : 0.2 },
+                endLabel: { show: isHighlighted, formatter: '{a}', color: 'inherit', fontSize: 11, fontFamily: 'DM Sans' }
+            };
+        });
+
+        const dates = d[cats[0]].dates; // Shared date vector
 
         const option = {
             backgroundColor: 'transparent',
             title: titleStyle(t.inf),
             tooltip: {
-                ...tipStyle(), trigger: 'item',
-                formatter: p => `<strong>${p.name}</strong><br/>${p.value > 0 ? '+' : ''}${p.value.toFixed(2)}%`
+                ...tipStyle(), trigger: 'axis',
+                valueFormatter: v => typeof v === 'number' ? v.toFixed(2) + '%' : v
             },
-            grid: { left: '2%', right: '12%', bottom: '5%', top: '12%', containLabel: true },
+            grid: { left: '2%', right: '18%', bottom: '15%', top: '16%', containLabel: true },
+            dataZoom: [
+                { type: 'slider', show: true, bottom: 5, height: 20, borderColor: 'transparent', textStyle: { color: theme().muted } },
+                { type: 'inside' }
+            ],
             xAxis: {
-                type: 'value', ...axisBase(), splitLine: { show: false },
-                axisLabel: { ...axisBase().axisLabel, formatter: v => Math.round(v) + '%' }
+                type: 'category', data: dates, ...axisBase(),
+                splitLine: { show: false },
+                axisLabel: { ...axisBase().axisLabel, formatter: v => v.substring(0, 7) }
             },
             yAxis: {
-                type: 'category', data: d.labels, ...axisBase(),
-                axisLabel: { color: theme().text, width: 200, overflow: 'truncate', fontSize: 12 }
+                type: 'value', ...axisBase(),
+                axisLabel: { ...axisBase().axisLabel, formatter: v => Math.round(v) + '%' }
             },
-            series: [{
-                type: 'bar', barWidth: '60%',
-                animationDuration: 800, animationEasing: 'elasticOut',
-                data: d.values.map(v => ({
-                    value: v,
-                    itemStyle: {
-                        color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
-                            { offset: 0, color: v > 2 ? '#ef4444' : v > 1 ? '#f59e0b' : '#22c55e' },
-                            { offset: 1, color: v > 2 ? '#fca5a5' : v > 1 ? '#fcd34d' : '#86efac' }
-                        ]),
-                        borderRadius: [0, 6, 6, 0],
-                        shadowBlur: 6,
-                        shadowColor: hexToRgba(v > 2 ? '#ef4444' : '#22c55e', 0.2)
-                    }
-                })),
-                label: {
-                    show: true, position: 'right', fontFamily: 'DM Sans', fontWeight: 700, fontSize: 12,
-                    formatter: p => '+' + p.value.toFixed(2) + '%',
-                    color: theme().text
-                }
-            }]
+            color: ['#10b981', '#3b82f6', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#f97316'],
+            series: series
         };
         chartYoyInf.setOption(option, true);
     }
