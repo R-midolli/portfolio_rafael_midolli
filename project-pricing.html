@@ -145,6 +145,36 @@
             align-items: center;
         }
 
+        .category-toggle {
+            background: var(--surface);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-toggle:hover {
+            border-color: var(--text);
+            color: var(--text);
+            transform: translateY(-2px);
+        }
+
+        .category-toggle.active {
+            background: var(--btn-color, #818cf8);
+            color: #fff;
+            border-color: transparent;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+            transform: translateY(-2px);
+        }
+
         .native-select {
             background: var(--surface);
             color: var(--text);

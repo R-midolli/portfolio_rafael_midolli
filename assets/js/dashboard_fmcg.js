@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         fr: {
             comm: 'Évolution Mondiale des Prix (USD)',
             fx: 'Taux de Change EUR/USD',
-            yoy: 'Variation sur 1 an (%)',
-            inf: 'Inflation Consommateur France (% YoY)',
-            squeeze: 'Matrice de Compression de Marge',
+            yoy: 'Inflation Matières (% YoY - Mois Actuel)',
+            inf: 'Inflation Consommateur France (% YoY - Mois Actuel)',
+            squeeze: 'Matrice Squeeze (Impact Instantané)',
             sqTip: 'Squeeze Score',
             zoomTip: 'Glissez pour zoomer',
             click: 'Cliquez sur la légende pour filtrer'
@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         en: {
             comm: 'Global Commodity Price Evolution (USD)',
             fx: 'EUR/USD Exchange Rate',
-            yoy: '1-Year Price Change (%)',
-            inf: 'France Consumer Inflation (% YoY)',
-            squeeze: 'Margin Squeeze Matrix',
+            yoy: 'Commodity Inflation (% YoY - Current Month)',
+            inf: 'France Consumer Inflation (% YoY - Current Month)',
+            squeeze: 'Squeeze Matrix (Instantaneous Impact)',
             sqTip: 'Squeeze Score',
             zoomTip: 'Drag to zoom',
             click: 'Click legend to filter'
@@ -397,7 +397,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             grid: { left: '5%', right: '18%', bottom: '5%', top: '16%', containLabel: true },
             xAxis: {
                 type: 'value', ...axisBase(), splitLine: { show: false },
-                axisLabel: { ...axisBase().axisLabel, formatter: '{value}%' }
+                axisLabel: { ...axisBase().axisLabel, formatter: v => Math.round(v) + '%' }
             },
             yAxis: {
                 type: 'category', data: d.labels, ...axisBase(),
@@ -446,7 +446,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             grid: { left: '2%', right: '12%', bottom: '5%', top: '12%', containLabel: true },
             xAxis: {
                 type: 'value', ...axisBase(), splitLine: { show: false },
-                axisLabel: { ...axisBase().axisLabel, formatter: '{value}%' }
+                axisLabel: { ...axisBase().axisLabel, formatter: v => Math.round(v) + '%' }
             },
             yAxis: {
                 type: 'category', data: d.labels, ...axisBase(),
