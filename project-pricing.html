@@ -5,14 +5,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description"
-        content="Case study — Retail Pricing Pressure Monitor, Inflation vs Volume elasticity, FX exposure. Python, DuckDB, Plotly. Portfolio Rafael Midolli." />
-    <title>Pricing & Margin Analytics — Case Study</title>
-    <meta property="og:title" content="Retail Pricing Pressure Monitor" />
+        content="Case study — FMCG Cost Pressure Monitor, 100% real data from ECB, INSEE, Yahoo Finance & Open Food Facts. Python, DuckDB, Plotly Dash, Airflow. Portfolio Rafael Midolli." />
+    <title>FMCG Cost Pressure Monitor — Case Study</title>
+    <meta property="og:title" content="FMCG Cost Pressure Monitor — 100% Real Data" />
     <meta property="og:description"
-        content="Diagnostic Marge, Élasticité Inflation et Dashboards Interactifs (Plotly/DuckDB). Portfolio Rafael Midolli." />
+        content="Multi-source macro pipeline: Commodities, FX, Inflation and Product data. Plotly Dash Dashboard. Portfolio Rafael Midolli." />
     <meta property="og:type" content="website" />
     <link rel="icon"
-        href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🌍</text></svg>" />
+        href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🛒</text></svg>" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -34,6 +34,12 @@
 
         .metric-value.danger {
             background: linear-gradient(135deg, #ef4444, #f87171);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric-value.success {
+            background: linear-gradient(135deg, #22c55e, #4ade80);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -120,6 +126,20 @@
             font-size: 0.85rem;
             color: var(--text-muted);
         }
+
+        .source-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 8px;
+            background: rgba(91, 140, 255, .08);
+            border: 1px solid rgba(91, 140, 255, .2);
+            font-size: .82rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin: 4px;
+        }
     </style>
 </head>
 
@@ -136,9 +156,9 @@
             <a href="index.html#projects" class="btn-back">
                 <span class="lang-fr">← Retour</span><span class="lang-en">← Back</span>
             </a>
-            <a href="../ELT_retail_analytics/project_pricing_monitor/index.html" target="_blank" rel="noopener"
+            <a href="https://github.com/R-midolli/fmcg_pricing_macro_monitor" target="_blank" rel="noopener"
                 class="btn-fullscreen">
-                <span class="lang-fr">↗ Dashboard Actif</span><span class="lang-en">↗ Live Dashboard</span>
+                <span class="lang-fr">↗ GitHub Repo</span><span class="lang-en">↗ GitHub Repo</span>
             </a>
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
                 <span id="themeIcon">🌙</span>
@@ -152,18 +172,19 @@
     <main class="main">
         <div class="case-header">
             <div class="case-label">
-                <span class="lang-fr">Macro-Économie & Marge</span>
-                <span class="lang-en">Macroeconomics & Margin</span>
+                <span class="lang-fr">Macro-Économie & FMCG · 100% Données Réelles</span>
+                <span class="lang-en">Macroeconomics & FMCG · 100% Real Data</span>
             </div>
             <h1 class="case-title">
-                <span class="lang-fr">Retail Pricing Pressure Monitor — Analyse d'Élasticité & Chocs Exogènes</span>
-                <span class="lang-en">Retail Pricing Pressure Monitor — Elasticity & Exogenous Shock Analysis</span>
+                <span class="lang-fr">European FMCG Cost Pressure Monitor</span>
+                <span class="lang-en">European FMCG Cost Pressure Monitor</span>
             </h1>
             <div class="case-subtitle">
-                <span class="lang-fr">Diagnostic macro des impacts de l'Inflation (INSEE) et du Taux de Change (BCE) sur
-                    la rentabilité FMCG.</span>
-                <span class="lang-en">Macro diagnostic connecting Inflation (INSEE) and FX Rates (ECB) to FMCG
-                    profitability.</span>
+                <span class="lang-fr">Pipeline multi-sources reliant les coûts de matières premières agricoles
+                    (Commodities) à l'inflation alimentaire française (INSEE) via un Dashboard interactif Plotly
+                    Dash.</span>
+                <span class="lang-en">Multi-source pipeline connecting agricultural commodity costs to French food
+                    inflation (INSEE) through an interactive Plotly Dash Dashboard.</span>
             </div>
         </div>
 
@@ -173,51 +194,62 @@
                 <h3><span class="lang-fr">Le Défi Stratégique</span><span class="lang-en">The Strategic Challenge</span>
                 </h3>
                 <p>
-                    <span class="lang-fr">Les marques et distributeurs FMCG subissent une pression colossale : inflation
-                        des coûts, volatilité des devises (EUR/USD) et ajustement des comportements d'achat. <strong>La
-                            question cruciale de la Direction :</strong> "Quels sont les produits où notre marge est la
-                        plus exposée, et jusqu'où le consommateur absorbera-t-il les hausses de prix sans détruire nos
-                        volumes ?"</span>
-                    <span class="lang-en">FMCG brands face immense pressure: supply cost inflation, extreme FX
-                        volatility (EUR/USD), and shifting consumer behavior. <strong>The C-Suite's burning
-                            question:</strong> "Which products face the highest margin exposure, and how much price hike
-                        can consumers absorb before we destroy volume?"</span>
+                    <span class="lang-fr">Le secteur FMCG européen fait face à une triple pression : <strong>explosion
+                            des prix des matières premières</strong> (Cacao +60%, Café +40%), <strong>volatilité du taux
+                            de change EUR/USD</strong> impactant les coûts d'importation, et <strong>inflation
+                            alimentaire persistante</strong> mesurant le niveau de pression transmis au consommateur
+                        final. <strong>Question clé :</strong> "Les hausses des coûts inputés sont-elles absorbées ou
+                        transmises aux consommateurs ? Quelles catégories de produits sont les plus exposées ?"</span>
+                    <span class="lang-en">The European FMCG sector faces a triple squeeze: <strong>commodity price
+                            shocks</strong> (Cocoa +60%, Coffee +40%), <strong>EUR/USD FX volatility</strong> impacting
+                        import costs, and <strong>persistent food inflation</strong> measuring consumer-level pressure.
+                        <strong>Key question:</strong> "Are input cost increases absorbed or passed through to
+                        consumers?
+                        Which product categories are most exposed?"</span>
                 </p>
 
-                <h3 style="margin-top:20px"><span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The
-                        Analytical Approach</span></h3>
+                <h3 style="margin-top:20px"><span class="lang-fr">L'Approche 100% Données Réelles</span><span
+                        class="lang-en">The 100% Real Data Approach</span></h3>
                 <p>
-                    <span class="lang-fr">J'ai modélisé un suivi croisé inédit : l'extraction et la jointure des
-                        <strong>API publiques (INSEE + BCE)</strong> avec un dataset transactionnel "Sell-Out" interne.
-                        Via des transformations SQL légères (DuckDB), j'ai isolé la destruction de marge liée à la
-                        dévaluation de l'Euro sur les produits importés, et modélisé l'élasticité Volume/Prix pour
-                        déduire la perte de parts de marché.</span>
-                    <span class="lang-en">I architected a cross-functional monitor: joining <strong>public APIs (INSEE +
-                            ECB)</strong> with internal "Sell-Out" transactional data. Using lightweight SQL
-                        transformations (DuckDB), I isolated margin destruction tied to Euro devaluation on imported
-                        goods, and modeled Volume/Price elasticity to anticipate market share erosion.</span>
+                    <span class="lang-fr">J'ai conçu un pipeline de données entièrement alimenté par des <strong>APIs
+                            publiques réelles</strong> — aucune donnée simulée. Les données macro (BCE, INSEE) sont
+                        croisées avec les prix de commodités agricoles (Yahoo Finance) et le catalogue produit réel
+                        (Open
+                        Food Facts) pour identifier les catégories sous pression et quantifier le « Cost Squeeze
+                        Score ».</span>
+                    <span class="lang-en">I designed a data pipeline fed entirely by <strong>real public APIs</strong> —
+                        zero simulated data. Macro data (ECB, INSEE) is cross-referenced with agricultural commodity
+                        prices (Yahoo Finance) and real product catalog (Open Food Facts) to identify pressured
+                        categories and quantify the "Cost Squeeze Score".</span>
                 </p>
+
+                <div style="margin-top: 1.5rem;">
+                    <span class="source-badge">🏦 ECB — EUR/USD</span>
+                    <span class="source-badge">📊 INSEE — CPI France</span>
+                    <span class="source-badge">📈 Yahoo Finance — Commodities</span>
+                    <span class="source-badge">🥫 Open Food Facts — Produits</span>
+                </div>
 
                 <div class="metrics-mini">
                     <div class="metric-mini">
-                        <div class="metric-value highlight">2 <small>Ans</small></div>
+                        <div class="metric-value highlight">4 <small>APIs</small></div>
                         <div class="metric-label">
-                            <span class="lang-fr">D'historique transactionnel</span>
-                            <span class="lang-en">Of transactional history</span>
+                            <span class="lang-fr">Sources de données réelles</span>
+                            <span class="lang-en">Real data sources</span>
                         </div>
                     </div>
                     <div class="metric-mini">
-                        <div class="metric-value danger">40<small>%</small></div>
+                        <div class="metric-value danger">8 <small>cat.</small></div>
                         <div class="metric-label">
-                            <span class="lang-fr">Produits ciblés "À Risque"</span>
-                            <span class="lang-en">Targeted "At Risk" products</span>
+                            <span class="lang-fr">Catégories CPI alimentaires</span>
+                            <span class="lang-en">Food CPI categories</span>
                         </div>
                     </div>
                     <div class="metric-mini">
-                        <div class="metric-value warning">NRT</div>
+                        <div class="metric-value success">10/10</div>
                         <div class="metric-label">
-                            <span class="lang-fr">Simulateur (What-If) en Reactivité Complète</span>
-                            <span class="lang-en">Full Reactivity "What-If" Simulator</span>
+                            <span class="lang-fr">Tests Pytest réussis</span>
+                            <span class="lang-en">Pytest tests passed</span>
                         </div>
                     </div>
                 </div>
@@ -225,103 +257,137 @@
 
             <!-- Execution Stack -->
             <div class="card bg-alt">
-                <h3><span class="lang-fr">Stack & Couche Sémantique</span><span class="lang-en">Stack & Semantic
-                        Layer</span></h3>
+                <h3><span class="lang-fr">Stack & Architecture</span><span class="lang-en">Stack &
+                        Architecture</span></h3>
 
                 <div class="architecture-flow">
                     <div class="arch-step">
                         <div class="arch-icon">🌐</div>
-                        <div class="arch-title">APIs Macro</div>
-                        <div class="arch-desc">INSEE, ECB & OpenFoodFacts</div>
+                        <div class="arch-title">APIs Réelles</div>
+                        <div class="arch-desc">ECB, INSEE, Yahoo Finance, Open Food Facts</div>
+                    </div>
+                    <div class="arch-step">
+                        <div class="arch-icon">🐍</div>
+                        <div class="arch-title">Python Extract</div>
+                        <div class="arch-desc">Requests + yfinance → Parquet</div>
                     </div>
                     <div class="arch-step">
                         <div class="arch-icon">🦆</div>
                         <div class="arch-title">DuckDB</div>
-                        <div class="arch-desc">Modélisation & Jointures in-memory SQL</div>
+                        <div class="arch-desc">Star Schema SQL (Dims, Facts, Marts)</div>
                     </div>
                     <div class="arch-step">
-                        <div class="arch-icon">📈</div>
-                        <div class="arch-title">Plotly.JS</div>
-                        <div class="arch-desc">DataViz & Simulateur P&L Reactif</div>
+                        <div class="arch-icon">📊</div>
+                        <div class="arch-title">Plotly Dash</div>
+                        <div class="arch-desc">Dashboard Interactif 4 Pages</div>
                     </div>
                 </div>
 
                 <ul class="methodology-list" style="margin-top:1.5rem;">
                     <li>
-                        <strong>Orchestration Léger (Airflow Concept) :</strong>
-                        <span class="lang-fr">Mise en place d'un pipeline Python automatisé générant et croisant des
-                            DataFrames multi-sources avec une fiabilité parfaite.</span>
-                        <span class="lang-en">Implementation of an automated Python pipeline generating and
-                            cross-referencing multi-source DataFrames with perfect reliability.</span>
+                        <strong>Orchestration Airflow :</strong>
+                        <span class="lang-fr">DAG hebdomadaire exécutant l'extraction parallèle des 4 APIs →
+                            Transformation DuckDB → Tests de qualité automatisés.</span>
+                        <span class="lang-en">Weekly DAG running parallel extraction of 4 APIs → DuckDB transformation →
+                            Automated quality tests.</span>
                     </li>
                     <li>
-                        <strong>Star Schema Macro-Orienté :</strong>
-                        <span class="lang-fr">Création d'un data mart consolidé associant données produits et métriques
-                            macro (Inflation/Devises) par granularité hebdomadaire.</span>
-                        <span class="lang-en">Creation of a consolidated data mart linking product data to macro metrics
-                            (Inflation/FX) at a weekly granularity.</span>
+                        <strong>Star Schema DuckDB :</strong>
+                        <span class="lang-fr">Modèle dimensionnel complet avec dim_date, dim_product (exposition
+                            ingrédient), fact_commodities, fact_inflation, fact_fx et mart_category_pressure.</span>
+                        <span class="lang-en">Complete dimensional model with dim_date, dim_product (ingredient
+                            exposure), fact_commodities, fact_inflation, fact_fx and mart_category_pressure.</span>
                     </li>
                     <li>
-                        <strong>Dashboard "Single Page App" 100% JS :</strong>
-                        <span class="lang-fr">S'affranchissant des contraintes de Streamlit/Power BI pour offrir une
-                            interactivité instantanée dans le navigateur client (Plotly.js + Tailwind).</span>
-                        <span class="lang-en">Bpassing Streamlit/Power BI constraints to offer instantaneous
-                            interactivity directly within the client browser (Plotly.js + Tailwind).</span>
+                        <strong>CI/CD GitHub Actions :</strong>
+                        <span class="lang-fr">Pipeline automatisée : extraction → transformation → pytest → upload
+                            artifacts Parquet.</span>
+                        <span class="lang-en">Automated pipeline: extraction → transformation → pytest → Parquet
+                            artifacts upload.</span>
                     </li>
                 </ul>
             </div>
         </div>
 
-        <!-- Insights Section -->
+        <!-- Dashboard Pages Section -->
         <div style="margin-top:3rem;">
             <h2 style="font-size:1.5rem; margin-bottom:1.5rem;">
-                <span class="lang-fr">Résultats Business & Recommandations</span>
-                <span class="lang-en">Business Results & Recommendations</span>
+                <span class="lang-fr">Pages du Dashboard</span>
+                <span class="lang-en">Dashboard Pages</span>
             </h2>
             <div class="grid"
-                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:1.5rem;">
+                style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem;">
 
                 <div class="card insight-card">
                     <div style="color:var(--accent); font-size:2rem; margin-bottom:1rem;">🌍</div>
                     <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
-                        <span class="lang-fr">Risque de Change Quantifié</span>
-                        <span class="lang-en">Quantified FX Risk</span>
+                        <span class="lang-fr">Macro Overview</span>
+                        <span class="lang-en">Macro Overview</span>
                     </h3>
-                    <p class="lang-fr text-muted">L'isolation mathématique de la dévaluation EUR/USD a prouvé une
-                        sur-dégradation continue (-14%) de la marge sur les portefeuilles de produits estampillés
-                        "importés", justifiant un sourcing alternatif immédiat.</p>
-                    <p class="lang-en text-muted">Mathematical isolation of the EUR/USD devaluation proved a continuous
-                        margin degradation (-14%) across portfolios designated as "imported", justifying immediate
-                        alternative sourcing.</p>
+                    <p class="lang-fr text-muted">KPIs temps réel (EUR/USD, CPI France, prix Cacao/Café/Blé/Sucre),
+                        tendances commodités et inflation YoY par catégorie alimentaire.</p>
+                    <p class="lang-en text-muted">Real-time KPIs (EUR/USD, France CPI, Cocoa/Coffee/Wheat/Sugar prices),
+                        commodity trends and YoY inflation by food category.</p>
                 </div>
 
                 <div class="card insight-card">
-                    <div style="color:#f59e0b; font-size:2rem; margin-bottom:1rem;">🛒</div>
+                    <div style="color:#f59e0b; font-size:2rem; margin-bottom:1rem;">📈</div>
                     <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
-                        <span class="lang-fr">Matrice de Dépendance Promo</span>
-                        <span class="lang-en">Promo Dependency Matrix</span>
+                        <span class="lang-fr">Cost Shock Analysis</span>
+                        <span class="lang-en">Cost Shock Analysis</span>
                     </h3>
-                    <p class="lang-fr text-muted">Croisement de l'élasticité face à l'inflation avec le "Promo Share".
-                        J'ai identifié que la catégorie "Confectionery" perdait dramatiquement son volume lors des chocs
-                        sans subventions agressives.</p>
-                    <p class="lang-en text-muted">Crossing inflation elasticity with "Promo Share". I identified that
-                        the "Confectionery" category dramatically lost volume during shocks without aggressive
-                        promotional subsidies.</p>
+                    <p class="lang-fr text-muted">Heatmap YoY des variations de prix des commodités et scatter plot
+                        croisant les coûts input vs l'inflation consommateur pour identifier les « pass-through ».</p>
+                    <p class="lang-en text-muted">YoY commodity price change heatmap and scatter plot crossing input
+                        costs vs consumer inflation to identify cost pass-through patterns.</p>
+                </div>
+
+                <div class="card insight-card">
+                    <div style="color:#3b82f6; font-size:2rem; margin-bottom:1rem;">🏷️</div>
+                    <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
+                        <span class="lang-fr">Inflation Translation</span>
+                        <span class="lang-en">Inflation Translation</span>
+                    </h3>
+                    <p class="lang-fr text-muted">Overlay interactif : coûts matières premières vs CPI par catégorie
+                        alimentaire INSEE. Score de « Cost Squeeze » identifiant la compression de marge.</p>
+                    <p class="lang-en text-muted">Interactive overlay: raw material costs vs CPI by INSEE food category.
+                        "Cost Squeeze" score identifying margin compression.</p>
                 </div>
 
                 <div class="card insight-card" style="border-left: 4px solid var(--accent);">
-                    <div style="color:#ef4444; font-size:2rem; margin-bottom:1rem;">🔮</div>
+                    <div style="color:#ef4444; font-size:2rem; margin-bottom:1rem;">⚠️</div>
                     <h3 style="font-size:1.1rem; margin-bottom:0.8rem;">
-                        <span class="lang-fr">Simulateur Exécutif "What-If"</span>
-                        <span class="lang-en">Executive "What-If" Simulator</span>
+                        <span class="lang-fr">Category Risk Exposure</span>
+                        <span class="lang-en">Category Risk Exposure</span>
                     </h3>
-                    <p class="lang-fr text-muted">Création en Javascript natif d'un outil de scenario planning. Le Top
-                        Management peut glisser les curseurs macro "Choc Inflation +5%" et estimer instantanément la
-                        perte en euros de la marge P&L N+1 via un graphique Waterfall dynamique.</p>
-                    <p class="lang-en text-muted">Native Javascript creation of a scenario planning tool. Top Management
-                        can drag macro sliders "Inflation Shock +5%" and instantly estimate the nominal euro loss of the
-                        N+1 P&L margin via a dynamic Waterfall chart.</p>
+                    <p class="lang-fr text-muted">Heatmap de « squeeze » et tableau détaillé mappant les catégories Open
+                        Food Facts (Biscuits, Chocolats, Céréales…) aux chocs de commodités actuels.</p>
+                    <p class="lang-en text-muted">Squeeze heatmap and detailed table mapping Open Food Facts categories
+                        (Biscuits, Chocolates, Cereals…) to current commodity shocks.</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Key Concept -->
+        <div style="margin-top:3rem;">
+            <h2 style="font-size:1.5rem; margin-bottom:1.5rem;">
+                <span class="lang-fr">Concept Clé : le « Cost Squeeze Score »</span>
+                <span class="lang-en">Key Concept: the "Cost Squeeze Score"</span>
+            </h2>
+            <div class="card" style="border-left: 4px solid var(--accent);">
+                <p>
+                    <span class="lang-fr"><strong>Cost Squeeze = Variation YoY Commodité (%) − Variation YoY CPI
+                            (%)</strong><br>
+                        Positif → Les coûts matières premières augmentent plus vite que l'inflation consommateur =
+                        <strong>compression de marge</strong>.<br>
+                        Négatif → Les distributeurs répercutent les coûts sur les consommateurs → marge
+                        protégée.</span>
+                    <span class="lang-en"><strong>Cost Squeeze = Commodity YoY Change (%) − CPI YoY Change
+                            (%)</strong><br>
+                        Positive → Input costs rising faster than consumer inflation = <strong>margin
+                            compression</strong>.<br>
+                        Negative → Retailers passing costs through to consumers → margin protected.</span>
+                </p>
             </div>
         </div>
     </main>
@@ -330,7 +396,7 @@
         <div class="footer-inner">
             <div class="footer-links">
                 <a href="https://linkedin.com/in/rmidolli" target="_blank" rel="noopener">LinkedIn</a>
-                <a href="https://github.com/rmidolli" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/R-midolli" target="_blank" rel="noopener">GitHub</a>
             </div>
             <div class="footer-copy">© 2026 Rafael Midolli. Analytics & Impact.</div>
         </div>
