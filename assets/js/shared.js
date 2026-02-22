@@ -192,26 +192,20 @@
     }
     .projects-grid.layout-list .project-card {
       display: grid;
-      grid-template-columns: 240px 1fr auto auto;
+      grid-template-columns: 200px 1fr auto auto;
       grid-template-rows: auto auto;
       align-items: center;
-      gap: 8px 20px;
-      padding: 20px 24px;
+      gap: 8px 16px;
+      padding: 16px 20px;
     }
     .projects-grid.layout-list .project-card:hover {
       transform: translateY(-2px);
-    }
-    .projects-grid.layout-list .project-card > div.project-status {
-      position: absolute;
-      top: 14px;
-      right: 16px;
-      margin: 0;
     }
     .projects-grid.layout-list .project-card > h3 {
       grid-column: 1;
       grid-row: 1 / -1;
       margin: 0;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       line-height: 1.3;
     }
     .projects-grid.layout-list .project-card > p {
@@ -236,14 +230,26 @@
       font-size: .72rem;
       padding: 3px 8px;
     }
+    
+    /* Put the status and the button in a column on the far right */
+    .projects-grid.layout-list .project-card > div.project-status {
+      position: static;
+      grid-column: 4;
+      grid-row: 1;
+      margin: 0 auto 0 0;
+      padding: 4px 10px;
+    }
     .projects-grid.layout-list .project-card > .btn-case {
       grid-column: 4;
-      grid-row: 1 / -1;
+      grid-row: 2;
       margin: 0;
       white-space: nowrap;
-      font-size: .82rem;
+      font-size: .8rem;
       padding: 8px 16px;
+      width: 100%;
+      justify-content: center;
     }
+    
     @media (max-width: 900px) {
       .projects-grid.layout-list .project-card {
         grid-template-columns: 1fr;
