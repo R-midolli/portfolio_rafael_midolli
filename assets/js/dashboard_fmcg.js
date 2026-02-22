@@ -721,15 +721,19 @@ document.addEventListener('DOMContentLoaded', async () => {
         Object.values(m).forEach(d => d.dates.forEach(dt => allDates.add(dt)));
         allDates = [...allDates].sort();
 
-        const series = Object.entries(m).map(([name, d]) => {
-            const show = localMomentumComm === 'all' || localMomentumComm === name;
+        // Filter entries based on the local slicer
+        const entries = localMomentumComm === 'all'
+            ? Object.entries(m)
+            : Object.entries(m).filter(([name]) => name === localMomentumComm);
+
+        const series = entries.map(([name, d]) => {
             const col = PALETTE[name] ? PALETTE[name].main : '#818cf8';
             return {
                 name: name,
-                type: 'line', smooth: 0.3, symbol: 'circle', symbolSize: show ? 5 : 0,
-                lineStyle: { width: show ? 2.5 : 0.8, color: col, opacity: show ? 1 : 0.15 },
+                type: 'line', smooth: 0.3, symbol: 'circle', symbolSize: 5,
+                lineStyle: { width: 2.5, color: col, opacity: 1 },
                 itemStyle: { color: col, borderWidth: 0 },
-                areaStyle: show ? {
+                areaStyle: {
                     color: {
                         type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
                         colorStops: [
@@ -737,8 +741,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                             { offset: 1, color: hexToRgba(col, 0.01) }
                         ]
                     }
-                } : undefined,
-                endLabel: show ? {
+                },
+                endLabel: {
                     show: true,
                     formatter: p => {
                         const frN = frNames[name] || name;
@@ -749,9 +753,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                         name: { fontSize: 11, fontWeight: 600, color: col, fontFamily: 'DM Sans', padding: [3, 6], backgroundColor: hexToRgba(col, 0.1), borderRadius: 4 },
                         val: { fontSize: 11, fontWeight: 700, color: theme().text, fontFamily: 'DM Sans' }
                     }
-                } : { show: false },
+                },
                 data: d.dates.map((dt, i) => [dt, d.prices[i]]),
-                z: show ? 5 : 1,
+                z: 5,
                 animationDuration: 800, animationEasing: 'cubicOut'
             };
         });
