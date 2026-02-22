@@ -2883,6 +2883,26 @@
       const submitBtn = $('#submitBtn');
 
       if (contactForm && formStatus && submitBtn) {
+
+        // Custom validity messages
+        const formInputs = contactForm.querySelectorAll('input[required], textarea[required]');
+        formInputs.forEach(input => {
+          input.addEventListener('invalid', function (e) {
+            e.preventDefault();
+            const isFr = getLang() === 'fr';
+            if (!e.target.value) {
+              this.setCustomValidity(isFr ? "Veuillez remplir ce champ." : "Please fill out this field.");
+            }
+            // Trigger native tooltip display with custom message
+            this.reportValidity();
+          });
+
+          input.addEventListener('input', function (e) {
+            // Clear custom validity on typing to allow natural re-validation
+            this.setCustomValidity('');
+          });
+        });
+
         contactForm.addEventListener('submit', async (e) => {
           e.preventDefault();
           const isFr = getLang() === 'fr';
