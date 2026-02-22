@@ -146,27 +146,36 @@ document.addEventListener('DOMContentLoaded', async () => {
         const frNames = { 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' };
 
         if (selectedCommodity === 'all') {
-            // Find the top mover (highest absolute YoY change)
+            // Show a compact overview of all 4 commodities
             const yoy = data.charts.yoy_commodity;
-            let maxIdx = 0;
-            yoy.values.forEach((v, i) => { if (Math.abs(v) > Math.abs(yoy.values[maxIdx])) maxIdx = i; });
-            const topName = yoy.labels[maxIdx];
-            const topVal = yoy.values[maxIdx];
-            const topFr = frNames[topName] || topName;
-            const prefix = topVal > 0 ? '+' : '';
+            kpiTitle.innerHTML = `<span class="lang-fr">Aperçu Global</span><span class="lang-en">Overview</span>`;
 
-            kpiTitle.innerHTML = `<span class="lang-fr">${topFr} (YoY)</span><span class="lang-en">${topName} (YoY)</span>`;
-            kpiVal.textContent = prefix + Math.round(topVal) + '%';
-            kpiVal.style.color = PALETTE[topName] ? PALETTE[topName].main : '#818cf8';
-            kpiDesc.innerHTML = `<span class="lang-fr">Plus forte variation</span><span class="lang-en">Largest Swing</span>`;
+            // Build a mini grid showing all 4 commodity changes
+            let miniHtml = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 16px;margin-top:8px;">';
+            yoy.labels.forEach((name, i) => {
+                const val = Math.round(yoy.values[i] * 10) / 10;
+                const prefix = val > 0 ? '+' : '';
+                const col = PALETTE[name] ? PALETTE[name].main : '#818cf8';
+                const frName = frNames[name] || name;
+                miniHtml += `<div style="text-align:center;">
+                    <div style="font-size:.72rem;color:${theme().muted};font-weight:500;margin-bottom:2px;">
+                        <span class="lang-fr">${frName}</span><span class="lang-en">${name}</span>
+                    </div>
+                    <div style="font-size:1.6rem;font-weight:800;color:${col};line-height:1.1;">${prefix}${val}%</div>
+                </div>`;
+            });
+            miniHtml += '</div>';
+            kpiVal.innerHTML = miniHtml;
+            kpiVal.style.color = '';
+            kpiDesc.innerHTML = `<span class="lang-fr">Variation annuelle</span><span class="lang-en">Year-over-Year</span>`;
 
             if (spotTitle) {
-                const latestPrice = data.charts.commodities[topName].prices.slice(-1)[0];
-                spotTitle.innerHTML = `<span class="lang-fr">Cours ${topFr}</span><span class="lang-en">${topName} Spot</span>`;
-                spotVal.textContent = '$' + (latestPrice >= 1000 ? (latestPrice / 1000).toFixed(1) + 'k' : Math.round(latestPrice));
-                spotVal.style.color = PALETTE[topName] ? PALETTE[topName].main : '#818cf8';
-                spotVal.style.fontSize = '3rem';
-                if (spotDesc) spotDesc.textContent = 'Yahoo Finance';
+                // Show FX rate in the spot card when no commodity is selected
+                spotTitle.innerHTML = `<span class="lang-fr">Change EUR/USD</span><span class="lang-en">EUR/USD Rate</span>`;
+                spotVal.textContent = data.kpis.fx_eur_usd.toFixed(4);
+                spotVal.style.color = PALETTE.Fx.main;
+                spotVal.style.fontSize = '2.5rem';
+                if (spotDesc) spotDesc.innerHTML = `<span class="lang-fr">Banque Centrale Européenne</span><span class="lang-en">European Central Bank</span>`;
             }
 
             if (dynInsight) dynInsight.innerHTML = buildGlobalInsight();
@@ -557,74 +566,103 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // ═══════════════════════════════════════════════════════════════════
-    // CHART 5 — SQUEEZE MATRIX (Heatmap)
+    // CHART 5 — PRESSURE RANKING (replaces sparse heatmap)
     // ═══════════════════════════════════════════════════════════════════
     function renderSqueeze() {
         if (!chartSqueeze || !data) return;
         const t = lang();
         const d = data.charts.squeeze_matrix;
 
-        const heatData = [];
+        // Flatten matrix into ranked list of non-zero pressure points
+        const points = [];
         for (let y = 0; y < d.y_labels.length; y++) {
             for (let x = 0; x < d.x_labels.length; x++) {
                 const val = Math.round(d.z_values[y][x] * 10) / 10;
-                const isActive = selectedCommodity === 'all' || d.x_labels[x] === selectedCommodity;
-                heatData.push([x, y, val, isActive]);
+                if (val !== 0) {
+                    points.push({
+                        commodity: d.x_labels[x],
+                        category: d.y_labels[y],
+                        value: val
+                    });
+                }
             }
         }
+
+        // Sort by absolute value descending (top pressure first)
+        points.sort((a, b) => Math.abs(b.value) - Math.abs(a.value));
+
+        const labels = points.map(p => p.commodity + ' × ' + p.category);
+        const values = points.map(p => p.value);
 
         const option = {
             backgroundColor: 'transparent',
             title: titleStyle(t.squeeze),
             tooltip: {
-                ...tipStyle().tooltip,
-                position: 'top',
+                ...tipStyle().tooltip, trigger: 'item',
                 formatter: p => {
-                    const xL = d.x_labels[p.value[0]];
-                    const yL = d.y_labels[p.value[1]];
-                    const v = p.value[2].toFixed(1);
-                    const color = p.value[2] > 20 ? '#f87171' : p.value[2] > 0 ? '#fbbf24' : '#4ade80';
-                    return `<strong>${yL}</strong> × <strong>${xL}</strong><br/>${t.sqTip}: <span style="font-size:16px;font-weight:700;color:${color}">${v}</span>`;
+                    const pt = points[p.dataIndex];
+                    const severity = pt.value > 30 ? '🔴' : pt.value > 10 ? '🟠' : pt.value > 0 ? '🟡' : '🟢';
+                    const label = pt.value > 0
+                        ? `<span class="lang-fr">Pression forte</span><span class="lang-en">High pressure</span>`
+                        : `<span class="lang-fr">Détente</span><span class="lang-en">Relief</span>`;
+                    return `<strong>${pt.commodity}</strong> × <strong>${pt.category}</strong><br/>${severity} <span style="font-size:18px;font-weight:700">${pt.value > 0 ? '+' : ''}${pt.value.toFixed(1)}</span>`;
                 }
             },
-            grid: { left: '3%', right: '5%', bottom: '14%', top: '14%', containLabel: true },
+            grid: { left: '3%', right: '12%', bottom: '6%', top: '16%', containLabel: true },
             xAxis: {
-                type: 'category', data: d.x_labels, ...axisBase(),
-                axisLabel: { color: theme().text, fontWeight: 600, fontSize: 12, fontFamily: 'DM Sans' },
-                splitArea: { show: false }
+                type: 'value', ...axisBase(),
+                splitLine: { show: false },
+                axisLabel: { show: false }
             },
             yAxis: {
-                type: 'category', data: d.y_labels, ...axisBase(),
-                axisLabel: { color: theme().text, fontWeight: 500, fontSize: 11, fontFamily: 'DM Sans', width: 180, overflow: 'truncate' },
-                splitArea: { show: false }
-            },
-            visualMap: {
-                min: -15, max: 45, calculable: false, show: true,
-                orient: 'horizontal', left: 'center', bottom: 2,
-                itemWidth: 12, itemHeight: 100,
-                inRange: { color: ['#164e63', '#0e7490', '#06b6d4', '#a3e635', '#facc15', '#f97316', '#ef4444', '#b91c1c'] },
-                textStyle: { color: theme().muted, fontSize: 10, fontFamily: 'DM Sans' }
+                type: 'category',
+                data: labels.slice().reverse(),
+                ...axisBase(),
+                axisLabel: {
+                    color: theme().text, fontWeight: 500, fontSize: 11, fontFamily: 'DM Sans',
+                    width: 220, overflow: 'truncate'
+                }
             },
             series: [{
-                type: 'heatmap',
-                data: heatData.map(d => ({
-                    value: [d[0], d[1], d[2]],
-                    itemStyle: { opacity: d[3] ? 1 : 0.12 }
-                })),
+                type: 'bar', barWidth: 24,
+                animationDuration: 900, animationEasing: 'cubicOut',
+                data: values.slice().reverse().map((v, i) => {
+                    const pt = points[points.length - 1 - i];
+                    const isHighlighted = selectedCommodity === 'all' || selectedCommodity === pt.commodity;
+                    const severity = v > 30 ? '#ef4444' : v > 10 ? '#f97316' : v > 0 ? '#fbbf24' : '#22c55e';
+                    const endColor = v > 30 ? '#b91c1c' : v > 10 ? '#ea580c' : v > 0 ? '#eab308' : '#16a34a';
+                    return {
+                        value: v,
+                        itemStyle: {
+                            color: isHighlighted
+                                ? barGradient(hexToRgba(severity, 0.65), endColor)
+                                : hexToRgba(severity, 0.12),
+                            borderRadius: v > 0 ? [0, 6, 6, 0] : [6, 0, 0, 6],
+                            shadowBlur: isHighlighted ? 10 : 0,
+                            shadowColor: isHighlighted ? hexToRgba(severity, 0.3) : 'transparent'
+                        }
+                    };
+                }),
                 label: {
-                    show: true, fontFamily: 'DM Sans', fontWeight: 700, fontSize: 15,
+                    show: true,
+                    position: 'right',
+                    fontFamily: 'DM Sans',
+                    fontWeight: 700,
+                    fontSize: 12.5,
                     formatter: p => {
-                        const v = p.value[2];
-                        return v === 0 ? '–' : v.toFixed(1);
+                        const sign = p.value > 0 ? '+' : '';
+                        return `{val|${sign}${p.value.toFixed(1)}}`;
                     },
-                    color: '#fff',
-                    textShadowBlur: 6, textShadowColor: 'rgba(0,0,0,0.6)'
-                },
-                itemStyle: { borderColor: isDark() ? '#0e1117' : '#f6f7fb', borderWidth: 5, borderRadius: 10 },
-                emphasis: {
-                    itemStyle: { shadowBlur: 20, shadowColor: 'rgba(0,0,0,0.45)', borderColor: '#fff', borderWidth: 2 }
-                },
-                animationDuration: 700, animationEasing: 'cubicOut'
+                    rich: {
+                        val: {
+                            fontSize: 13,
+                            fontWeight: 700,
+                            fontFamily: 'DM Sans',
+                            color: theme().text,
+                            padding: [0, 0, 0, 6]
+                        }
+                    }
+                }
             }]
         };
         chartSqueeze.setOption(option, true);
