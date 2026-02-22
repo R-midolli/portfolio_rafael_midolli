@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const domYoyComm = document.getElementById('chart-yoy');
     const domYoyInf = document.getElementById('chart-inflation');
     const domSqueeze = document.getElementById('chart-squeeze');
+    const domMomentum = document.getElementById('chart-momentum');
 
-    let chartComm, chartFx, chartYoyComm, chartYoyInf, chartSqueeze;
+    let chartComm, chartFx, chartYoyComm, chartYoyInf, chartSqueeze, chartMomentum;
 
     // ─── COLOR PALETTE ───────────────────────────────────────────────
     const PALETTE = {
@@ -63,7 +64,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             yoy: 'Variation Annuelle des Matières Premières',
             inf: 'Inflation par Catégorie Alimentaire (INSEE)',
             squeeze: 'Matrice de Pression sur les Marges',
-            sqTip: 'Score de Pression'
+            sqTip: 'Score de Pression',
+            momentum: 'Évolution Court Terme (16 semaines)'
         },
         en: {
             comm: 'Commodity Price Evolution (Base 100 = Jan 2023)',
@@ -71,7 +73,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             yoy: 'Year-over-Year Commodity Price Change',
             inf: 'Food Category Inflation Over Time (INSEE)',
             squeeze: 'Margin Pressure Matrix',
-            sqTip: 'Pressure Score'
+            sqTip: 'Pressure Score',
+            momentum: 'Short-Term Price Momentum (16 Weeks)'
         }
     };
 
@@ -106,6 +109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (domYoyComm) chartYoyComm = echarts.init(domYoyComm);
         if (domYoyInf) chartYoyInf = echarts.init(domYoyInf);
         if (domSqueeze) chartSqueeze = echarts.init(domSqueeze);
+        if (domMomentum) chartMomentum = echarts.init(domMomentum);
     }
 
     function bindEvents() {
@@ -126,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         window.addEventListener('resize', () => {
-            [chartComm, chartFx, chartYoyComm, chartYoyInf, chartSqueeze]
+            [chartComm, chartFx, chartYoyComm, chartYoyInf, chartSqueeze, chartMomentum]
                 .forEach(c => c && c.resize());
         });
     }
@@ -668,6 +672,83 @@ document.addEventListener('DOMContentLoaded', async () => {
         chartSqueeze.setOption(option, true);
     }
 
+    // ═══════════════════════════════════════════════════════════════════
+    // CHART 6 — SHORT-TERM MOMENTUM (16 weeks)
+    // ═══════════════════════════════════════════════════════════════════
+    function renderMomentum() {
+        if (!chartMomentum || !data || !data.charts.momentum) return;
+        const t = lang();
+        const m = data.charts.momentum;
+        const frNames = { 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' };
+
+        // Collect all unique dates among the 4 commodities
+        let allDates = new Set();
+        Object.values(m).forEach(d => d.dates.forEach(dt => allDates.add(dt)));
+        allDates = [...allDates].sort();
+
+        const series = Object.entries(m).map(([name, d]) => {
+            const show = selectedCommodity === 'all' || selectedCommodity === name;
+            const col = PALETTE[name] ? PALETTE[name].main : '#818cf8';
+            return {
+                name: name,
+                type: 'line', smooth: 0.3, symbol: 'circle', symbolSize: show ? 5 : 0,
+                lineStyle: { width: show ? 2.5 : 0.8, color: col, opacity: show ? 1 : 0.15 },
+                itemStyle: { color: col, borderWidth: 0 },
+                areaStyle: show ? {
+                    color: {
+                        type: 'linear', x: 0, y: 0, x2: 0, y2: 1,
+                        colorStops: [
+                            { offset: 0, color: hexToRgba(col, 0.2) },
+                            { offset: 1, color: hexToRgba(col, 0.01) }
+                        ]
+                    }
+                } : undefined,
+                endLabel: show ? {
+                    show: true,
+                    formatter: p => {
+                        const frN = frNames[name] || name;
+                        const label = document.documentElement.getAttribute('data-lang') === 'en' ? name : frN;
+                        return `{name|${label}}  {val|$${Math.round(p.value)}}`;
+                    },
+                    rich: {
+                        name: { fontSize: 11, fontWeight: 600, color: col, fontFamily: 'DM Sans', padding: [3, 6], backgroundColor: hexToRgba(col, 0.1), borderRadius: 4 },
+                        val: { fontSize: 11, fontWeight: 700, color: theme().text, fontFamily: 'DM Sans' }
+                    }
+                } : { show: false },
+                data: d.dates.map((dt, i) => [dt, d.prices[i]]),
+                z: show ? 5 : 1,
+                animationDuration: 800, animationEasing: 'cubicOut'
+            };
+        });
+
+        const option = {
+            backgroundColor: 'transparent',
+            title: titleStyle(t.momentum),
+            ...tipStyle(),
+            legend: { show: false },
+            grid: { left: '3%', right: '14%', bottom: '10%', top: '14%', containLabel: true },
+            xAxis: {
+                type: 'category', data: allDates, ...axisBase(),
+                axisLabel: {
+                    ...axisBase().axisLabel,
+                    formatter: v => {
+                        const d = new Date(v);
+                        const m = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                        return d.getDate() + ' ' + m[d.getMonth()];
+                    },
+                    interval: 'auto'
+                }
+            },
+            yAxis: {
+                type: 'value', ...axisBase(),
+                axisLabel: { ...axisBase().axisLabel, formatter: v => '$' + (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : Math.round(v)) },
+                splitNumber: 5
+            },
+            series
+        };
+        chartMomentum.setOption(option, true);
+    }
+
     // ─── RENDER ALL ──────────────────────────────────────────────────
     function renderAll() {
         renderComm();
@@ -675,5 +756,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderYoyComm();
         renderInf();
         renderSqueeze();
+        renderMomentum();
     }
 });
