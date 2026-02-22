@@ -1616,6 +1616,123 @@
         grid-template-columns: 1fr
       }
     }
+
+    /* ========== TYPING ANIMATION ========== */
+    .typing-container {
+      display: inline-block;
+      min-width: 250px;
+    }
+
+    .typed-text {
+      color: var(--accent);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 3px;
+      height: 1.1em;
+      background-color: var(--text);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink-cursor 1s step-end infinite;
+    }
+
+    .cursor.typing {
+      animation: none;
+    }
+
+    @keyframes blink-cursor {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0;
+      }
+    }
+
+    /* ========== CONTACT FORM ========== */
+    .contact-form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 40px;
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: left;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, .2);
+    }
+
+    .contact-form-title {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(14, 17, 23, 0.4);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .form-control::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(91, 140, 255, 0.15);
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(91, 140, 255, 0.3);
+    }
+
+    :root[data-theme="light"] .form-control {
+      background: rgba(255, 255, 255, 0.6);
+    }
   </style>
   <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
@@ -1658,14 +1775,32 @@
   <section class="hero">
     <div class="hero-inner">
       <div>
-        <div class="pill">
-          <span class="pill-dot"></span>
-          <span class="lang-fr">Retail · Grande Conso · Dashboards · Disponible</span>
-          <span class="lang-en">Retail · Consumer Goods · Dashboards · Available</span>
+        <div class="pill" style="gap: 8px;">
+          <span class="pill-dot" style="background: #10b981; box-shadow: 0 0 10px rgba(16, 185, 129, 0.4);"></span>
+          <span class="lang-fr" style="font-weight: 600;">Disponible</span>
+          <span class="lang-en" style="font-weight: 600;">Available</span>
         </div>
-        <h1>
-          <span class="lang-fr">Bonjour, je suis Rafael — <em>Business Analyst</em><br />Impact & Stratégie</span>
-          <span class="lang-en">Hello, I'm Rafael — <em>Business Analyst</em><br />Impact & Strategy</span>
+        <h1 style="line-height: 1.15; letter-spacing: -0.02em;">
+          <span class="lang-fr">
+            Bonjour, je suis<br />
+            Rafael<br />
+            Midolli<br />
+            <span class="typing-container"
+              style="font-size: 0.65em; margin-top: 12px; display: block; font-family: var(--font-body); font-weight: 600;">
+              <span style="color: var(--text);">Je suis un&nbsp;</span><span class="typed-text"
+                id="typed-text-fr"></span><span class="cursor" id="cursor-fr">&nbsp;</span>
+            </span>
+          </span>
+          <span class="lang-en">
+            Hello, I am<br />
+            Rafael<br />
+            Midolli<br />
+            <span class="typing-container"
+              style="font-size: 0.65em; margin-top: 12px; display: block; font-family: var(--font-body); font-weight: 600;">
+              <span style="color: var(--text);">I am a&nbsp;</span><span class="typed-text"
+                id="typed-text-en"></span><span class="cursor" id="cursor-en">&nbsp;</span>
+            </span>
+          </span>
         </h1>
         <p class="hero-desc">
           <span class="lang-fr">Je conçois des pipelines Data <em>(Python/SQL)</em> et des <strong>tableaux de bord
@@ -1708,9 +1843,9 @@
               <span class="t-string">"ROI · Profitability · Process Mining"</span><span class="t-punct">,</span>
             </div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"stack"</span><span class="t-punct">:</span>
-              <span class="t-punct">[</span><span class="t-string">"Python"</span><span class="t-punct">,</span> <span
-                class="t-string">"SQL"</span><span class="t-punct">,</span> <span class="t-string">"Power
-                BI"</span><span class="t-punct">],</span>
+              <span class="t-punct">[</span><span class="t-string">"Python / SQL"</span><span class="t-punct">,</span>
+              <span class="t-string">"Power BI"</span><span class="t-punct">,</span> <span class="t-string">"RAG /
+                LLMs"</span><span class="t-punct">],</span>
             </div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"formation"</span><span class="t-punct">:</span>
               <span class="t-string">"Ingénieur + MBA Intelligence Artificielle"</span><span class="t-punct">,</span>
@@ -1738,9 +1873,9 @@
               <span class="t-string">"ROI · Profitability · Process Mining"</span><span class="t-punct">,</span>
             </div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"stack"</span><span class="t-punct">:</span>
-              <span class="t-punct">[</span><span class="t-string">"Python"</span><span class="t-punct">,</span> <span
-                class="t-string">"SQL"</span><span class="t-punct">,</span> <span class="t-string">"Power
-                BI"</span><span class="t-punct">],</span>
+              <span class="t-punct">[</span><span class="t-string">"Python / SQL"</span><span class="t-punct">,</span>
+              <span class="t-string">"Power BI"</span><span class="t-punct">,</span> <span class="t-string">"RAG /
+                LLMs"</span><span class="t-punct">],</span>
             </div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"education"</span><span class="t-punct">:</span>
               <span class="t-string">"Engineering + Artificial Intelligence MBA"</span><span class="t-punct">,</span>
@@ -1773,26 +1908,25 @@
       </div>
       <div class="bio-body">
         <p class="lang-fr">
-          Business Analyst avec 4 ans d'expérience opérationnelle en FMCG et retail (Colgate-Palmolive, Lactalis,
-          Nestlé, Tetra Pak). Ingénieur de formation et spécialisé via un MBA en IA &amp; Big Data, j'accompagne les
-          Directions Générales, Ventes et Marketing dans la structuration de leurs décisions stratégiques.
+          Business Data Analyst avec 4 ans d'expérience (Colgate-Palmolive, Lactalis, Kantar). Ingénieur de formation
+          complété par un MBA en IA &amp; Big Data, j'accompagne les directions opérationnelles dans la structuration de
+          leurs décisions stratégiques par la donnée.
         </p>
         <p class="lang-fr">
-          Ma promesse : <strong>Fiabiliser l'Insight métier</strong>. Je crée des pipelines résilients et des tableaux
-          de bord haute-définition (Power BI) pour isoler la déperdition de CA, sécuriser la Supply Chain et auditer les
-          comportements d'achat B2B/B2C. Basé en France, disponible immédiatement pour bâtir votre stratégie Data.
+          Mon approche cible l'impact business : j'audite les process, conçois des pipelines ELT scalables (Python/SQL)
+          et des solutions analytiques avancées (RAG, BI conversationnelle) pour révéler la déperdition de P&amp;L et
+          optimiser la performance Retail/Supply. Basé en France, disponible immédiatement.
         </p>
 
         <p class="lang-en">
-          Business Analyst with 4 years of operational experience across FMCG and retail leaders (Colgate-Palmolive,
-          Lactalis, Nestlé, Tetra Pak). Holding an Engineering backbone paired with an AI &amp; Big Data MBA, I partner
-          with C-Level, Sales, and Marketing teams to architect strategic decisions.
+          Business Data Analyst with 4 years of experience across FMCG and retail leaders (Colgate-Palmolive, Lactalis,
+          Kantar). Leveraging an Engineering background and an MBA in AI &amp; Big Data, I partner with C-Level and
+          operational teams to drive data-centric strategic decisions.
         </p>
         <p class="lang-en">
-          My commitment: <strong>Securing Business Insights</strong>. I build resilient ELT pipelines and
-          high-definition dashboards (Power BI) mathematically designed to isolate P&amp;L leakage, secure Supply Chain
-          flows, and audit complex B2B/B2C purchasing behaviors. Based in France, ready to accelerate your Data strategy
-          now.
+          My focus is pure business impact: I audit processes and architect scalable ELT pipelines (Python/SQL) combined
+          with advanced analytics (RAG, Conversational BI) to isolate P&amp;L leakage and optimize Retail/Supply
+          performance. Based in France, available immediately.
         </p>
       </div>
     </div>
@@ -1995,6 +2129,11 @@
           <span class="lang-fr">BI & Viz</span>
           <span class="lang-en">BI & Viz</span>
         </button>
+        <button class="skill-tab" data-tab="ai" type="button">
+          <span>🧠</span>
+          <span class="lang-fr">IA & GenAI</span>
+          <span class="lang-en">AI & GenAI</span>
+        </button>
         <button class="skill-tab" data-tab="engineering" type="button">
           <span>🧱</span>
           <span class="lang-fr">Data Engineering</span>
@@ -2013,6 +2152,25 @@
       </div>
 
       <div class="skills-grid">
+        <!-- IA & GenAI -->
+        <div class="skill-chip" data-scope="ai" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" alt=""
+            loading="lazy" /> LLMs & Gemini API</div>
+        <div class="skill-chip" data-scope="ai" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="17 8 12 3 7 8" />
+            <line x1="12" y1="3" x2="12" y2="15" />
+          </svg> RAG Architecture</div>
+        <div class="skill-chip" data-scope="ai" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polyline points="4 17 10 11 4 5" />
+            <line x1="12" y1="19" x2="20" y2="19" />
+          </svg> Prompt Engineering</div>
+        <div class="skill-chip" data-scope="ai" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" alt=""
+            loading="lazy" /> Machine Learning</div>
+
         <!-- BI & Viz -->
         <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24">
             <rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811" />
@@ -2278,24 +2436,19 @@
           </a>
         </article>
 
-        <!-- HIDING OMNI-RAG PROJECT TEMPORARILY UNTIL DEPLOYED
-        <article class="project-card reveal reveal-d5"
-          style="border: 2px solid var(--accent); position: relative; overflow: hidden;">
-          <div
-            style="position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, #5b8cff, #8b5cf6, #ec4899);">
-          </div>
+        <article class="project-card reveal reveal-d5">
           <h3>
-            <span class="lang-fr">BevCo NOVA — Intelligence IA d'Entreprise</span>
-            <span class="lang-en">BevCo NOVA — Enterprise AI Intelligence</span>
+            <span class="lang-fr">BevCo NOVA — Agent IA conversationnel (RAG)</span>
+            <span class="lang-en">BevCo NOVA — Conversational AI Agent (RAG)</span>
           </h3>
           <p>
-            <span class="lang-fr">Système d'intelligence IA : dashboards interactifs sur 500k transactions
-              et un analyste IA (Gemini Flash API) interrogeable en langage naturel.</span>
-            <span class="lang-en">AI intelligence system: interactive dashboards over 500k transactions
-              and a live AI analyst (Gemini Flash API) queryable in natural language.</span>
+            <span class="lang-fr">Analyste IA autonome intégré : système RAG exploitant l'API Gemini Flash, couplé à des
+              dashboards interactifs pour interroger les données en langage naturel.</span>
+            <span class="lang-en">Autonomous AI Analyst: robust RAG system powered by the Gemini Flash API, seamlessly
+              integrated with predictive dashboards for natural language data querying.</span>
           </p>
           <div class="project-tags">
-            <span class="project-tag">AI</span>
+            <span class="project-tag">GenAI</span>
             <span class="project-tag">RAG</span>
             <span class="project-tag">Gemini API</span>
             <span class="project-tag">Qdrant</span>
@@ -2306,7 +2459,6 @@
             <span>→</span>
           </a>
         </article>
-        -->
 
       </div>
     </div>
@@ -2318,36 +2470,43 @@
         <div class="section-label reveal" style="text-align:center">
           <span class="lang-fr">Contact</span><span class="lang-en">Contact</span>
         </div>
-        <h2 class="section-title reveal reveal-d1" style="text-align:center">
+        <h2 class="section-title reveal reveal-d1" style="text-align:center; margin-bottom: 24px;">
           <span class="lang-fr">Disponible pour une mission <span class="nowrap">BA&nbsp;/&nbsp;Data</span></span><span
             class="lang-en">Available for <span class="nowrap">BA&nbsp;/&nbsp;Data</span> roles</span>
         </h2>
-        <p class="contact-desc reveal reveal-d1">
-          <span class="lang-fr">Basé en France, disponible pour des missions BA orientées data (Business / Data
-            Analyst). Un échange rapide par email ou LinkedIn ?</span>
-          <span class="lang-en">Based in France, available for data-driven BA / Data Analyst roles. Shall we have a
-            quick chat via email or LinkedIn?</span>
-        </p>
 
-        <div class="contact-btns reveal reveal-d2">
-          <button class="btn-contact" id="emailBtn" type="button">
-            ✉️ &nbsp;Email
-          </button>
-
-          <div class="email-pop" id="emailPop">
-            <div class="email-pop-row">
-              <span class="email-addr" id="emailText">rbmidolli@gmail.com</span>
-              <button class="copy-btn" id="copyBtn" type="button" aria-label="Copier">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round">
-                  <rect x="9" y="9" width="13" height="13" rx="2" />
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
-                </svg>
-              </button>
-            </div>
-            <div class="copy-hint" id="copyHint"></div>
+        <div class="contact-form-card reveal reveal-d2">
+          <div class="contact-form-title">
+            <span class="lang-fr">Envoyez-moi un Email 🚀</span>
+            <span class="lang-en">Email Me 🚀</span>
           </div>
 
+          <form action="https://formsubmit.co/rbmidolli@gmail.com" method="POST">
+            <!-- FormSubmit Configurations -->
+            <input type="hidden" name="_subject" value="Nouveau message depuis le portfolio Rafael Midolli!">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
+            <!-- Change this to your actual deployed URL later if you want to redirect, or remove for default thank you page -->
+            <input type="hidden" name="_next" value="https://r-midolli.github.io/portfolio_rafael_midolli/">
+
+            <div class="form-group">
+              <input type="text" name="name" class="form-control" placeholder="Votre Nom / Your Name" required>
+            </div>
+            <div class="form-group">
+              <input type="email" name="email" class="form-control" placeholder="Votre Email / Your Email" required>
+            </div>
+            <div class="form-group">
+              <textarea name="message" class="form-control" placeholder="Votre Message / Your Message"
+                required></textarea>
+            </div>
+            <button type="submit" class="btn-submit">
+              <span class="lang-fr">Envoyer</span>
+              <span class="lang-en">Send</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="contact-btns reveal reveal-d3" style="margin-top: 32px;">
           <a class="btn-contact" href="https://www.linkedin.com/in/rafael-midolli/" target="_blank" rel="noopener">
             in &nbsp;LinkedIn
           </a>
@@ -2596,6 +2755,71 @@
           }
         });
       }
+
+      // --- TYPING ANIMATION ---
+      const typedTextSpanFr = document.getElementById("typed-text-fr");
+      const cursorSpanFr = document.getElementById("cursor-fr");
+      const typedTextSpanEn = document.getElementById("typed-text-en");
+      const cursorSpanEn = document.getElementById("cursor-en");
+
+      const textArrayFr = ["Business Analyst", "Data Analyst", "Expert Power BI", "Stratège Data"];
+      const textArrayEn = ["Business Analyst", "Data Analyst", "Power BI Expert", "Data Strategist"];
+
+      const typingDelay = 100;
+      const erasingDelay = 50;
+      const newTextDelay = 2000; // Delay between current and next text
+      let textArrayIndex = 0;
+      let charIndex = 0;
+
+      function type() {
+        if (!typedTextSpanFr || !typedTextSpanEn) return;
+        const isEn = document.documentElement.getAttribute('data-lang') === 'en';
+        const currentText = isEn ? textArrayEn[textArrayIndex] : textArrayFr[textArrayIndex];
+        const typedSpan = isEn ? typedTextSpanEn : typedTextSpanFr;
+        const cursorSpan = isEn ? cursorSpanEn : cursorSpanFr;
+
+        if (charIndex < currentText.length) {
+          if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+          typedSpan.textContent += currentText.charAt(charIndex);
+          charIndex++;
+          setTimeout(type, typingDelay);
+        } else {
+          cursorSpan.classList.remove("typing");
+          setTimeout(erase, newTextDelay);
+        }
+      }
+
+      function erase() {
+        if (!typedTextSpanFr || !typedTextSpanEn) return;
+        const isEn = document.documentElement.getAttribute('data-lang') === 'en';
+        const currentText = isEn ? textArrayEn[textArrayIndex] : textArrayFr[textArrayIndex];
+        const typedSpan = isEn ? typedTextSpanEn : typedTextSpanFr;
+        const cursorSpan = isEn ? cursorSpanEn : cursorSpanFr;
+
+        if (charIndex > 0) {
+          if (!cursorSpan.classList.contains("typing")) cursorSpan.classList.add("typing");
+          typedSpan.textContent = currentText.substring(0, charIndex - 1);
+          charIndex--;
+          setTimeout(erase, erasingDelay);
+        } else {
+          cursorSpan.classList.remove("typing");
+          textArrayIndex++;
+          if (textArrayIndex >= textArrayFr.length) textArrayIndex = 0;
+          setTimeout(type, typingDelay + 1100);
+        }
+      }
+
+      // Start the animation
+      if (typedTextSpanFr) setTimeout(type, newTextDelay + 250);
+
+      // Reset typing on language switch to avoid weird states
+      document.getElementById('langToggle')?.addEventListener('click', () => {
+        if (typedTextSpanFr && typedTextSpanEn) {
+          typedTextSpanFr.textContent = "";
+          typedTextSpanEn.textContent = "";
+          charIndex = 0;
+        }
+      });
 
       // --- SQL console animation ---
       const sqlConsole = $('#sqlConsole');
