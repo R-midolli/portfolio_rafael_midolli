@@ -2479,13 +2479,11 @@
             <span class="lang-en">Email Me 🚀</span>
           </div>
 
-          <form action="https://formsubmit.co/rbmidolli@gmail.com" method="POST">
+          <form id="contactForm" action="https://formsubmit.co/ajax/rbmidolli@gmail.com" method="POST">
             <!-- FormSubmit Configurations -->
             <input type="hidden" name="_subject" value="Nouveau message depuis le portfolio Rafael Midolli!">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
-            <!-- Change this to your actual deployed URL later if you want to redirect, or remove for default thank you page -->
-            <input type="hidden" name="_next" value="https://r-midolli.github.io/portfolio_rafael_midolli/">
 
             <div class="form-group">
               <input type="text" name="name" class="form-control" placeholder="Votre Nom" required>
@@ -2496,10 +2494,12 @@
             <div class="form-group">
               <textarea name="message" class="form-control" placeholder="Votre Message" required></textarea>
             </div>
-            <button type="submit" class="btn-submit">
+            <button type="submit" class="btn-submit" id="submitBtn">
               <span class="lang-fr">Envoyer</span>
               <span class="lang-en">Send</span>
             </button>
+            <div id="formStatus"
+              style="display:none; text-align:center; margin-top:16px; font-weight:600; font-size: 0.95rem;"></div>
           </form>
         </div>
 
@@ -2875,6 +2875,53 @@
           });
         }, { threshold: 0.25 });
         sqlObs.observe(sqlConsole);
+      }
+
+      // --- AJAX Contact Form ---
+      const contactForm = $('#contactForm');
+      const formStatus = $('#formStatus');
+      const submitBtn = $('#submitBtn');
+
+      if (contactForm && formStatus && submitBtn) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const isFr = getLang() === 'fr';
+
+          submitBtn.disabled = true;
+          submitBtn.style.opacity = '0.5';
+          formStatus.style.display = 'none';
+
+          try {
+            const formData = new FormData(contactForm);
+            const res = await fetch(contactForm.action, {
+              method: 'POST',
+              body: formData,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+
+            if (res.ok) {
+              contactForm.reset();
+              formStatus.textContent = isFr ? 'Message envoyé avec succès !' : 'Message sent successfully!';
+              formStatus.style.color = '#10b981'; // Emerald
+            } else {
+              formStatus.textContent = isFr ? 'Erreur lors de l\'envoi. Veuillez réessayer.' : 'Error sending message. Please try again.';
+              formStatus.style.color = '#ef4444'; // Red
+            }
+          } catch (err) {
+            formStatus.textContent = isFr ? 'Erreur réseau. Veuillez réessayer.' : 'Network error. Please try again.';
+            formStatus.style.color = '#ef4444';
+          }
+
+          formStatus.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+
+          setTimeout(() => {
+            formStatus.style.display = 'none';
+          }, 6000);
+        });
       }
 
     })();
