@@ -196,7 +196,8 @@
       border: 1px solid var(--border) !important;
       overflow: visible !important;
     }
-    .projects-grid.layout-list .project-card[style] > div[style*="background: linear-gradient"] {
+    /* Prevent the project card from showing the hover-to-preview overlay in List view as it breaks the layout */
+    .projects-grid.layout-list .project-card::after {
       display: none !important;
     }
 

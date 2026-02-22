@@ -38,7 +38,7 @@
       --accent-glow: rgba(91, 140, 255, .25);
       --border: rgba(255, 255, 255, .08);
       --radius: 20px;
-      --font-head: 'Playfair Display', Georgia, serif;
+      --font-head: 'DM Sans', system-ui, sans-serif;
       --font-body: 'DM Sans', system-ui, sans-serif;
     }
 
@@ -598,10 +598,10 @@
 
     .section-title {
       font-family: var(--font-head);
-      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
       font-weight: 800;
-      line-height: 1.2;
-      margin-bottom: 48px;
+      line-height: 1.15;
+      margin-bottom: 24px;
     }
 
     /* ========== ABOUT (compact, only metrics) ========== */
@@ -1589,9 +1589,26 @@
 
     /* ========== RESPONSIVE ========== */
     @media(max-width:900px) {
+      .hero {
+        padding: 90px 0 60px;
+      }
+
       .hero-inner {
         grid-template-columns: 1fr;
-        gap: 32px
+        gap: 20px;
+        text-align: center;
+      }
+
+      .pill {
+        margin: 0 auto 16px auto;
+      }
+
+      .hero-desc {
+        margin: 0 auto 24px auto;
+      }
+
+      .hero-ctas {
+        justify-content: center;
       }
 
       .hero-terminal {
@@ -1780,35 +1797,27 @@
           <span class="lang-fr" style="font-weight: 600;">Disponible</span>
           <span class="lang-en" style="font-weight: 600;">Available</span>
         </div>
-        <h1 style="line-height: 1.15; letter-spacing: -0.02em;">
+        <h1 style="font-size: clamp(1.8rem, 3.5vw, 2.5rem); line-height: 1.15; letter-spacing: -0.03em;">
           <span class="lang-fr">
-            Bonjour, je suis<br />
-            Rafael<br />
-            Midolli<br />
+            Bonjour, je suis Rafael Midolli
             <span class="typing-container"
-              style="font-size: 0.65em; margin-top: 12px; display: block; font-family: var(--font-body); font-weight: 600;">
-              <span style="color: var(--text);">Je suis un&nbsp;</span><span class="typed-text"
-                id="typed-text-fr"></span><span class="cursor" id="cursor-fr">&nbsp;</span>
+              style="font-family: var(--font-body); font-weight: 800; display: inline-block; white-space: nowrap;">
+              <span class="typed-text" id="typed-text-fr"></span><span class="cursor" id="cursor-fr">&nbsp;</span>
             </span>
           </span>
           <span class="lang-en">
-            Hello, I am<br />
-            Rafael<br />
-            Midolli<br />
+            Hello, I am Rafael Midolli
             <span class="typing-container"
-              style="font-size: 0.65em; margin-top: 12px; display: block; font-family: var(--font-body); font-weight: 600;">
-              <span style="color: var(--text);">I am a&nbsp;</span><span class="typed-text"
-                id="typed-text-en"></span><span class="cursor" id="cursor-en">&nbsp;</span>
+              style="font-family: var(--font-body); font-weight: 800; display: inline-block; white-space: nowrap;">
+              <span class="typed-text" id="typed-text-en"></span><span class="cursor" id="cursor-en">&nbsp;</span>
             </span>
           </span>
         </h1>
         <p class="hero-desc">
-          <span class="lang-fr">Je conçois des pipelines Data <em>(Python/SQL)</em> et des <strong>tableaux de bord
-              décisionnels</strong> pour l'industrie agroalimentaire et le retail. Mon objectif : mesurer la déperdition
-            de marge et fournir des diagnostics exploitables à la direction.</span>
-          <span class="lang-en">I build Data pipelines <em>(Python/SQL)</em> and <strong>executive dashboards</strong>
-            for the food and retail industry. My goal: measure margin leakage and deliver actionable
-            diagnostics to leadership.</span>
+          <span class="lang-fr">Je conçois des pipelines Data et des <strong>tableaux de
+              bord</strong> pour piloter la performance Retail.</span>
+          <span class="lang-en">I build Data pipelines and <strong>executive dashboards</strong>
+            to drive Retail performance.</span>
         </p>
         <div class="hero-ctas">
           <a href="#projects" class="btn-primary">
@@ -1836,7 +1845,7 @@
             <div class="terminal-line"><span class="t-var">rafael</span> <span class="t-punct">=</span> <span
                 class="t-punct">{</span></div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"rôle"</span><span class="t-punct">:</span> <span
-                class="t-string">"Business Analyst / Consultant"</span><span class="t-punct">,</span></div>
+                class="t-string">"Business Analyst / Data Analyst"</span><span class="t-punct">,</span></div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"xp"</span><span class="t-punct">:</span> <span
                 class="t-string">"4 ans · FMCG &amp; Retail Leaders"</span><span class="t-punct">,</span></div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"focus"</span><span class="t-punct">:</span>
@@ -1866,7 +1875,7 @@
             <div class="terminal-line"><span class="t-var">rafael</span> <span class="t-punct">=</span> <span
                 class="t-punct">{</span></div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"role"</span><span class="t-punct">:</span> <span
-                class="t-string">"Business Analyst / Consultant"</span><span class="t-punct">,</span></div>
+                class="t-string">"Business Analyst / Data Analyst"</span><span class="t-punct">,</span></div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"xp"</span><span class="t-punct">:</span> <span
                 class="t-string">"4 years · FMCG &amp; Retail Leaders"</span><span class="t-punct">,</span></div>
             <div class="terminal-line">&nbsp;&nbsp;<span class="t-key">"focus"</span><span class="t-punct">:</span>
@@ -1908,24 +1917,24 @@
       </div>
       <div class="bio-body">
         <p class="lang-fr">
-          Business Data Analyst avec 4 ans d'expérience (Colgate-Palmolive, Lactalis, Kantar). Ingénieur de formation
+          Business Data Analyst avec 4 ans d'expérience en PGC (FMCG) et retail. Ingénieur de formation
           complété par un MBA en IA &amp; Big Data, j'accompagne les directions opérationnelles dans la structuration de
           leurs décisions stratégiques par la donnée.
         </p>
         <p class="lang-fr">
-          Mon approche cible l'impact business : j'audite les process, conçois des pipelines ELT scalables (Python/SQL)
-          et des solutions analytiques avancées (RAG, BI conversationnelle) pour révéler la déperdition de P&amp;L et
+          Mon approche cible l'impact business : j'audite les process, conçois des pipelines ELT scalables
+          et des solutions analytiques avancées pour révéler la déperdition de P&amp;L et
           optimiser la performance Retail/Supply. Basé en France, disponible immédiatement.
         </p>
 
         <p class="lang-en">
-          Business Data Analyst with 4 years of experience across FMCG and retail leaders (Colgate-Palmolive, Lactalis,
-          Kantar). Leveraging an Engineering background and an MBA in AI &amp; Big Data, I partner with C-Level and
+          Business Data Analyst with 4 years of experience across FMCG and retail leaders. Leveraging an Engineering
+          background and an MBA in AI &amp; Big Data, I partner with C-Level and
           operational teams to drive data-centric strategic decisions.
         </p>
         <p class="lang-en">
-          My focus is pure business impact: I audit processes and architect scalable ELT pipelines (Python/SQL) combined
-          with advanced analytics (RAG, Conversational BI) to isolate P&amp;L leakage and optimize Retail/Supply
+          My focus is pure business impact: I audit processes and architect scalable ELT pipelines combined
+          with advanced analytics to isolate P&amp;L leakage and optimize Retail/Supply
           performance. Based in France, available immediately.
         </p>
       </div>
@@ -1996,13 +2005,13 @@
 
       <p class="about-desc reveal reveal-d2">
         <span class="lang-fr">
-          Quatre ans dans l'agroalimentaire et le retail (Colgate-Palmolive, Lactalis, Nestlé). Je pars des données
+          Quatre ans dans l'agroalimentaire et le retail. Je pars des données
           brutes,
           je structure un diagnostic clair, et je le traduis en recommandations concrètes pour les équipes ventes,
           marketing ou direction.
         </span>
         <span class="lang-en">
-          Four years in food manufacturing and retail (Colgate-Palmolive, Lactalis, Nestlé). I start from raw data,
+          Four years in FMCG and Retail. I start from raw data,
           build a clear diagnosis, and translate it into concrete recommendations for sales, marketing, and
           leadership teams.
         </span>
@@ -2097,7 +2106,7 @@
             <span class="lang-en">Expertise with<br>global leaders</span>
           </div>
           <div class="metric-label">
-            (Colgate · Lactalis · Tetra Pak · Kantar)
+            (Colgate-Palmolive · Lactalis · Tetra Pak)
           </div>
         </div>
 
@@ -2155,7 +2164,7 @@
         <!-- IA & GenAI -->
         <div class="skill-chip" data-scope="ai" hidden><img class="skill-icon"
             src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" alt=""
-            loading="lazy" /> LLMs & Gemini API</div>
+            loading="lazy" /> LLMs</div>
         <div class="skill-chip" data-scope="ai" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -2247,6 +2256,11 @@
             <line x1="8.5" y1="7.5" x2="15.5" y2="16.5" />
             <line x1="8.5" y1="5" x2="15.5" y2="5.5" />
           </svg> Data Modeling</div>
+        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg> APIs</div>
 
         <!-- Métier -->
         <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
@@ -2316,6 +2330,14 @@
         <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
             src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg" alt=""
             loading="lazy" /> Streamlit</div>
+        <div class="skill-chip" data-scope="tools" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+            <path d="M22 12A10 10 0 0 0 12 2v10z" />
+          </svg> SAP</div>
+        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/salesforce/salesforce-original.svg" alt=""
+            loading="lazy" /> Salesforce</div>
       </div>
     </div>
   </section>
@@ -2436,30 +2458,6 @@
           </a>
         </article>
 
-        <article class="project-card reveal reveal-d5">
-          <h3>
-            <span class="lang-fr">BevCo NOVA — Agent IA conversationnel (RAG)</span>
-            <span class="lang-en">BevCo NOVA — Conversational AI Agent (RAG)</span>
-          </h3>
-          <p>
-            <span class="lang-fr">Analyste IA autonome intégré : système RAG exploitant l'API Gemini Flash, couplé à des
-              dashboards interactifs pour interroger les données en langage naturel.</span>
-            <span class="lang-en">Autonomous AI Analyst: robust RAG system powered by the Gemini Flash API, seamlessly
-              integrated with predictive dashboards for natural language data querying.</span>
-          </p>
-          <div class="project-tags">
-            <span class="project-tag">GenAI</span>
-            <span class="project-tag">RAG</span>
-            <span class="project-tag">Gemini API</span>
-            <span class="project-tag">Qdrant</span>
-            <span class="project-tag">Streamlit</span>
-          </div>
-          <a href="project-omni-rag.html" class="btn-case">
-            <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
-            <span>→</span>
-          </a>
-        </article>
-
       </div>
     </div>
   </section>
@@ -2490,14 +2488,13 @@
             <input type="hidden" name="_next" value="https://r-midolli.github.io/portfolio_rafael_midolli/">
 
             <div class="form-group">
-              <input type="text" name="name" class="form-control" placeholder="Votre Nom / Your Name" required>
+              <input type="text" name="name" class="form-control" placeholder="Votre Nom" required>
             </div>
             <div class="form-group">
-              <input type="email" name="email" class="form-control" placeholder="Votre Email / Your Email" required>
+              <input type="email" name="email" class="form-control" placeholder="Votre Email" required>
             </div>
             <div class="form-group">
-              <textarea name="message" class="form-control" placeholder="Votre Message / Your Message"
-                required></textarea>
+              <textarea name="message" class="form-control" placeholder="Votre Message" required></textarea>
             </div>
             <button type="submit" class="btn-submit">
               <span class="lang-fr">Envoyer</span>
@@ -2507,6 +2504,28 @@
         </div>
 
         <div class="contact-btns reveal reveal-d3" style="margin-top: 32px;">
+          <button class="btn-contact" id="emailCopyBtn" type="button">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            <span class="lang-fr">Email</span><span class="lang-en">Email</span>
+          </button>
+          <div class="email-pop" id="emailPop">
+            <div class="email-pop-row">
+              <span class="email-addr" id="emailAddrText">rbmidolli@gmail.com</span>
+              <button class="copy-btn" id="doCopyBtn" aria-label="Copier" type="button">
+                <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                  <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                </svg>
+              </button>
+            </div>
+            <div class="copy-hint" id="copyHint">
+              <span class="lang-fr">Prêt à copier !</span><span class="lang-en">Ready to copy!</span>
+            </div>
+          </div>
           <a class="btn-contact" href="https://www.linkedin.com/in/rafael-midolli/" target="_blank" rel="noopener">
             in &nbsp;LinkedIn
           </a>
@@ -2590,9 +2609,9 @@
       }
 
       // --- email popover ---
-      const emailBtn = $('#emailBtn');
+      const emailBtn = $('#emailCopyBtn');
       const emailPop = $('#emailPop');
-      const copyBtn = $('#copyBtn');
+      const copyBtn = $('#doCopyBtn');
       const copyHint = $('#copyHint');
 
       function getLang() { return document.documentElement.dataset.lang || 'fr'; }
@@ -2611,9 +2630,12 @@
       if (copyBtn) {
         copyBtn.addEventListener('click', async () => {
           try {
-            await navigator.clipboard.writeText($('#emailText').textContent.trim());
-            if (copyHint) copyHint.textContent = getLang() === 'fr' ? '✓ Copié !' : '✓ Copied!';
-            setTimeout(() => setCopyHintDefault(), 1400);
+            const addr = $('#emailAddrText');
+            if (addr) {
+              await navigator.clipboard.writeText(addr.textContent.trim());
+              if (copyHint) copyHint.textContent = getLang() === 'fr' ? '✓ Copié !' : '✓ Copied!';
+              setTimeout(() => setCopyHintDefault(), 1400);
+            }
           } catch {
             if (copyHint) copyHint.textContent = getLang() === 'fr' ? 'Copie impossible' : 'Copy failed';
           }
@@ -2721,8 +2743,22 @@
 
 
       // --- sync language with shared.js ---
-      document.addEventListener('langchange', () => setCopyHintDefault());
+      function updateFormPlaceholders() {
+        const isFr = (typeof getLang === 'function' ? getLang() : document.documentElement.getAttribute('data-lang')) === 'fr';
+        const nameInput = $('input[name="name"]');
+        const emailInput = $('input[name="email"]');
+        const messageInput = $('textarea[name="message"]');
+        if (nameInput) nameInput.placeholder = isFr ? "Votre Nom" : "Your Name";
+        if (emailInput) emailInput.placeholder = isFr ? "Votre Email" : "Your Email";
+        if (messageInput) messageInput.placeholder = isFr ? "Votre Message" : "Your Message";
+      }
+
+      document.addEventListener('langchange', () => {
+        setCopyHintDefault();
+        updateFormPlaceholders();
+      });
       setCopyHintDefault();
+      updateFormPlaceholders();
 
       // --- MBA diploma overlay ---
       const mbaCard = $('#mbaCard');
@@ -2762,8 +2798,8 @@
       const typedTextSpanEn = document.getElementById("typed-text-en");
       const cursorSpanEn = document.getElementById("cursor-en");
 
-      const textArrayFr = ["Business Analyst", "Data Analyst", "Expert Power BI", "Stratège Data"];
-      const textArrayEn = ["Business Analyst", "Data Analyst", "Power BI Expert", "Data Strategist"];
+      const textArrayFr = ["Business Analyst", "Data Analyst"];
+      const textArrayEn = ["Business Analyst", "Data Analyst"];
 
       const typingDelay = 100;
       const erasingDelay = 50;
