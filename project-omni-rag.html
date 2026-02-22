@@ -137,7 +137,7 @@
     <main class="main">
         <header class="case-header">
             <div class="case-label">
-                <span class="lang-fr">Étude de cas · IA Agentique (Híbrido ERP/CRM)</span>
+                <span class="lang-fr">Étude de cas · IA Agentique (Hybride ERP/CRM)</span>
                 <span class="lang-en">Case Study · Agentic AI (ERP/CRM Hybrid)</span>
             </div>
             <h1 class="case-title">
@@ -145,16 +145,15 @@
                 <span class="lang-en">BevCo NOVA Oracle</span>
             </h1>
             <p class="case-subtitle" style="max-width: 800px; margin: 0 auto;">
-                <span class="lang-fr">Um "Oráculo" corporativo construído com Streamlit e Gemini 2.0. Ele une dados
-                    transacionais (SQL), documentos internos e tendências live da web para apoiar a tomada de decisão da
-                    diretoria.</span>
+                <span class="lang-fr">Un "Oracle" d'entreprise construit avec Streamlit et Gemini 2.0. Il réunit des
+                    données transactionnelles (SQL), des documents internes et des tendances web en direct pour soutenir
+                    la prise de décision de la direction.</span>
                 <span class="lang-en">A corporate "Oracle" built with Streamlit and Gemini 2.0. It unites transactional
                     data (SQL), internal documents, and live web trends to support board-level decision-making.</span>
             </p>
             <div style="text-align: center; margin-top: 30px;">
-                <a href="#" class="launch-btn"
-                    onclick="alert('The Streamlit App will be linked here once deployed to Streamlit Community Cloud or Render.')">
-                    <span>🚀</span> <span class="lang-fr">Acessar o Oráculo (Streamlit App)</span><span
+                <a href="https://bevco-nova-oracle.loca.lt" target="_blank" class="launch-btn">
+                    <span>🚀</span> <span class="lang-fr">Accéder à l'Oracle (Streamlit App)</span><span
                         class="lang-en">Access the Oracle (Streamlit App)</span>
                 </a>
             </div>
@@ -165,14 +164,15 @@
             <!-- Problem -->
             <div class="bento-item col-8">
                 <div class="bento-title"><span class="icon">🎯</span>
-                    <span class="lang-fr">Problématique & Visão</span><span class="lang-en">The Problem & Vision</span>
+                    <span class="lang-fr">Problématique & Vision</span><span class="lang-en">The Problem & Vision</span>
                 </div>
                 <p class="bento-desc">
-                    <span class="lang-fr">Dashboards tradicionais exigem que o usuário saiba o que procurar. A visão
-                        aqui foi criar um <strong>Sistema Nervoso Central</strong> para a BevCo. Um agente IA que não
-                        apenas cospe gráficos, mas cruza dados internos pesados (500k transações via SQL) com o contexto
-                        de mercado aberto (DuckDuckGo) e PDFs estratégicos, respondendo perguntas complexas em segundos,
-                        sem alucinações.</span>
+                    <span class="lang-fr">Les tableaux de bord traditionnels exigent que l'utilisateur sache ce qu'il
+                        cherche. La vision ici était de créer un <strong>Système Nerveux Central</strong> pour BevCo. Un
+                        agent d'IA qui ne se contente pas de cracher des graphiques, mais croise de lourdes données
+                        internes (500k transactions via SQL) avec le contexte du marché ouvert (DuckDuckGo) et des PDF
+                        stratégiques, répondant à des questions complexes en quelques secondes, sans
+                        hallucinations.</span>
                     <span class="lang-en">Traditional dashboards require the user to know what to look for. The vision
                         here was to create a <strong>Central Nervous System</strong> for BevCo. An AI agent that doesn't
                         just spit out charts, but cross-references heavy internal data (500k transactions via SQL) with
@@ -184,7 +184,7 @@
             <!-- Tech Stack -->
             <div class="bento-item col-4">
                 <div class="bento-title"><span class="icon">⚙️</span>
-                    <span class="lang-fr">Stack Tecnológico</span><span class="lang-en">Tech Stack</span>
+                    <span class="lang-fr">Stack Technologique</span><span class="lang-en">Tech Stack</span>
                 </div>
                 <div class="project-tags" style="margin-top: 10px;">
                     <span class="project-tag">Python & Streamlit</span>
@@ -198,7 +198,7 @@
             <!-- Architecture Flow -->
             <div class="bento-item col-12">
                 <div class="bento-title"><span class="icon">🏗️</span>
-                    <span class="lang-fr">Arquitetura Agentic Tool-Calling</span><span class="lang-en">Agentic
+                    <span class="lang-fr">Architecture d'Appel d'Outils Agentique</span><span class="lang-en">Agentic
                         Tool-Calling Architecture</span>
                 </div>
                 <div class="architecture-flow" style="margin: 15px 0 0 0;">
@@ -231,9 +231,9 @@
                     </div>
                 </div>
                 <p class="bento-desc" style="margin-top: 20px; text-align: center;">
-                    <span class="lang-fr">O modelo Gemini recebe a pergunta e <strong>escolhe autonomamente</strong>
-                        qual ferramenta executar no servidor Python, injetando o resultado exato na resposta final para
-                        evitar alucinações.</span>
+                    <span class="lang-fr">Le modèle Gemini reçoit la question et <strong>choisit de manière
+                            autonome</strong> quel outil exécuter sur le serveur Python, injectant le résultat exact
+                        dans la réponse finale pour éviter les hallucinations.</span>
                     <span class="lang-en">The Gemini model receives the question and <strong>autonomously
                             chooses</strong> which tool to execute on the Python server, injecting the exact result into
                         the final answer to prevent hallucinations.</span>
@@ -252,23 +252,25 @@
         <!-- ═══ Key Takeaways ═══ -->
         <section class="conclusion conclusion--highlight" style="margin-top: 40px; border-radius: 20px;">
             <h3>
-                <span class="lang-fr">🎯 Enseignements Clés (Por que não CrewAI?)</span>
+                <span class="lang-fr">🎯 Enseignements Clés (Pourquoi pas CrewAI ?)</span>
                 <span class="lang-en">🎯 Key Takeaways (Why not CrewAI?)</span>
             </h3>
             <p>
-                <span class="lang-fr"><strong>1. Agente Único vs Multi-Agent:</strong> Inicialmente o projeto usava
-                    CrewAI (4 agentes debatiam a resposta). Em produção, isso demorava muito e os agentes perdiam o
-                    contexto. Usando a API nativa de <code>Tool Calling</code> do Gemini com um único agente
-                    orquestrador, a latência caiu 80% e as alucinações zeraram.</span>
+                <span class="lang-fr"><strong>1. Agent Unique vs Multi-Agents :</strong> Initialement, le projet
+                    utilisait CrewAI (4 agents débattaient de la réponse). En production, cela prenait trop de temps et
+                    les agents perdaient le contexte. L'utilisation de l'API native
+                    d'<code>Appel d'Outils (Tool Calling)</code> de Gemini avec un seul agent orchestrateur a réduit la
+                    latence de 80% et éliminé les hallucinations.</span>
                 <span class="lang-en"><strong>1. Single Agent vs Multi-Agent:</strong> Initially the project used CrewAI
                     (4 agents debated the answer). In production, this took too long and agents lost context. By using
                     Gemini's native <code>Tool Calling</code> API with a single orchestrator agent, latency dropped 80%
                     and hallucinations vanished.</span>
             </p>
             <p>
-                <span class="lang-fr"><strong>2. O Raciocínio (Workspace):</strong> A interface Streamlit não é uma
-                    "caixa preta". Ela tem uma visualização onde o usuário vê exatamente qual query SQL a IA executou ou
-                    qual palavra ela buscou na Web, construindo extrema **confiança corporativa**.</span>
+                <span class="lang-fr"><strong>2. Le Raisonnement (Workspace) :</strong> L'interface Streamlit n'est pas
+                    une "boîte noire". Elle dispose d'une vue où l'utilisateur voit exactement quelle requête SQL l'IA a
+                    exécutée ou quel mot-clé elle a recherché sur le Web, renforçant ainsi la **confiance de
+                    l'entreprise**.</span>
                 <span class="lang-en"><strong>2. The Reasoning (Workspace):</strong> The Streamlit interface is not a
                     "black box". It has a view where the user sees exactly what SQL query the AI executed or what
                     keyword it searched on the Web, building extreme **corporate trust**.</span>
