@@ -708,7 +708,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     formatter: p => {
                         const frN = frNames[name] || name;
                         const label = document.documentElement.getAttribute('data-lang') === 'en' ? name : frN;
-                        return `{name|${label}}  {val|$${Math.round(p.value)}}`;
+                        return `{name|${label}}  {val|$${Math.round(p.value[1])}}`;
                     },
                     rich: {
                         name: { fontSize: 11, fontWeight: 600, color: col, fontFamily: 'DM Sans', padding: [3, 6], backgroundColor: hexToRgba(col, 0.1), borderRadius: 4 },
@@ -740,7 +740,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             },
             yAxis: {
-                type: 'value', ...axisBase(),
+                type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
                 axisLabel: { ...axisBase().axisLabel, formatter: v => '$' + (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : Math.round(v)) },
                 splitNumber: 5
             },
