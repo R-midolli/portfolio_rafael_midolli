@@ -244,21 +244,24 @@
     }
 
     .btn-cv {
-      font-size: .82rem;
-      font-weight: 700;
-      color: var(--accent);
-      border: 1px solid rgba(91, 140, 255, .35);
-      padding: 8px 16px;
+      height: 42px;
+      padding: 0 20px;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--text);
+      background: var(--surface);
+      border: 1px solid var(--border);
       border-radius: 999px;
-      transition: background .2s, border-color .2s;
+      transition: transform .15s ease, background .2s ease, border-color .2s ease;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
     .btn-cv:hover {
-      background: rgba(91, 140, 255, .1);
-      border-color: var(--accent)
+      transform: translateY(-2px);
+      background: var(--surface-hover);
+      border-color: var(--accent);
     }
 
     /* ========== HERO ========== */
@@ -1889,7 +1892,7 @@
         Rafael Midolli
       </a>
       <div style="display:flex;align-items:center;gap:12px">
-        <div class="nav-links">
+        <div class="nav-links" style="margin-right: 20px;">
           <a href="#about" class="nav-link"><span class="lang-fr">À propos</span><span class="lang-en">About</span></a>
           <a href="#skills" class="nav-link"><span class="lang-fr">Compétences</span><span
               class="lang-en">Skills</span></a>
