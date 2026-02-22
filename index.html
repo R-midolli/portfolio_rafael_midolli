@@ -1747,6 +1747,127 @@
       box-shadow: 0 8px 24px rgba(91, 140, 255, 0.3);
     }
 
+    /* ========== EDUCATION TIMELINE ========== */
+    .edu-timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      padding-left: 32px;
+    }
+
+    .edu-timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 7px;
+      width: 2px;
+      background: rgba(91, 140, 255, 0.2);
+    }
+
+    .edu-card {
+      position: relative;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .edu-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(91, 140, 255, 0.4);
+    }
+
+    .edu-card::before {
+      content: '';
+      position: absolute;
+      top: 32px;
+      left: -30px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      z-index: 2;
+    }
+
+    .edu-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .edu-logo {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 6px;
+      object-fit: contain;
+    }
+
+    .edu-logo.google-logo {
+      padding: 8px;
+    }
+
+    .edu-title {
+      font-family: var(--font-head);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .edu-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .edu-date {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .edu-desc {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media(max-width: 600px) {
+      .edu-timeline {
+        padding-left: 24px;
+      }
+
+      .edu-timeline::before {
+        left: 3px;
+      }
+
+      .edu-card::before {
+        left: -26px;
+        width: 10px;
+        height: 10px;
+      }
+
+      .edu-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      .edu-title {
+        font-size: 1.15rem;
+      }
+    }
+
     :root[data-theme="light"] .form-control {
       background: rgba(255, 255, 255, 0.6);
     }
@@ -2457,6 +2578,84 @@
             <span>→</span>
           </a>
         </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="education">
+    <div class="section-inner">
+      <div class="section-label reveal" style="text-align:center">
+        <span class="lang-fr">Formation</span><span class="lang-en">Education</span>
+      </div>
+      <h2 class="section-title reveal reveal-d1" style="text-align:center; margin-bottom: 40px;">
+        <span class="lang-fr">Parcours Académique & Certifications</span>
+        <span class="lang-en">Academic Background & Certifications</span>
+      </h2>
+
+      <div class="edu-timeline reveal reveal-d2">
+
+        <!-- USP -->
+        <div class="edu-card">
+          <div class="edu-header">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Universidade_de_S%C3%A3o_Paulo_bras%C3%A3o.png/600px-Universidade_de_S%C3%A3o_Paulo_bras%C3%A3o.png"
+              alt="USP Logo" class="edu-logo" loading="lazy">
+            <div>
+              <div class="edu-title">Universidade de São Paulo (USP)</div>
+              <div class="edu-subtitle">Master MBA Intelligence Artificielle & Big Data</div>
+              <div class="edu-date">06/2024 – 10/2025</div>
+            </div>
+          </div>
+          <div class="edu-desc">
+            <span class="lang-fr">Formation d'excellence axée sur l'analyse de données complexes, le Machine Learning,
+              et l'intégration de solutions IA pour résoudre des problématiques métier (RAG, LLMs).</span>
+            <span class="lang-en">Executive program focused on complex data analysis, Machine Learning, and integrating
+              AI solutions to solve business problems (RAG, LLMs).</span>
+          </div>
+        </div>
+
+        <!-- UFABC -->
+        <div class="edu-card">
+          <div class="edu-header">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bras%C3%A3o_UFABC.svg/1200px-Bras%C3%A3o_UFABC.svg.png"
+              alt="UFABC Logo" class="edu-logo" loading="lazy">
+            <div>
+              <div class="edu-title">Universidade Federal do ABC (UFABC)</div>
+              <div class="edu-subtitle">
+                <span class="lang-fr">Double Diplôme : Ingéniorat de Gestion & Sciences</span>
+                <span class="lang-en">Dual Degree: Management Engineering & Science</span>
+              </div>
+              <div class="edu-date">2016 – 2023</div>
+            </div>
+          </div>
+          <div class="edu-desc">
+            <span class="lang-fr">Formation d'ingénieur combinant méthodes quantitatives, optimisation de processus, et
+              management stratégique. Base solide en modélisation mathématique et informatique.</span>
+            <span class="lang-en">Engineering program combining quantitative methods, process optimization, and
+              strategic management. Solid foundation in mathematical modeling and computer science.</span>
+          </div>
+        </div>
+
+        <!-- Google -->
+        <div class="edu-card">
+          <div class="edu-header">
+            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
+              alt="Google Logo" class="edu-logo google-logo" loading="lazy">
+            <div>
+              <div class="edu-title">Google</div>
+              <div class="edu-subtitle">Google Data Analytics Professional Certificate</div>
+              <div class="edu-date">2023</div>
+            </div>
+          </div>
+          <div class="edu-desc">
+            <span class="lang-fr">Certification professionnelle sur les fondamentaux de l'analyse de données :
+              préparation, nettoyage, analyse SQL/R, et visualisation (Tableau).</span>
+            <span class="lang-en">Professional certification on data analytics fundamentals: data preparation, cleaning,
+              SQL/R analysis, and visualization (Tableau).</span>
+          </div>
+        </div>
 
       </div>
     </div>
