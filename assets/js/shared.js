@@ -190,6 +190,16 @@
       flex-direction: column;
       gap: 14px;
     }
+    
+    /* Override inline styles for the FMCG card to make it look uniform in List Mode */
+    .projects-grid.layout-list .project-card[style] {
+      border: 1px solid var(--border) !important;
+      overflow: visible !important;
+    }
+    .projects-grid.layout-list .project-card[style] > div[style*="background: linear-gradient"] {
+      display: none !important;
+    }
+
     .projects-grid.layout-list .project-card {
       display: grid;
       grid-template-columns: 200px 1fr auto auto;
