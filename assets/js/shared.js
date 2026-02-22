@@ -39,8 +39,9 @@
 
     /* ── Theme Toggle Specifics ── */
     #themeToggle {
-      width: 80px;
+      width: 96px;
       height: 40px;
+      margin-left: 0;
       background-color: #bae6fd; /* sky-200 */
     }
     html[data-theme="dark"] #themeToggle {
@@ -55,7 +56,7 @@
       color: #fff;
     }
     html[data-theme="dark"] #themeToggle .thumb-liquid {
-      transform: translateX(40px);
+      transform: translateX(56px);
       background-color: #0f172a; /* slate-900 */
       color: #fef08a; /* yellow-200 */
     }
@@ -93,9 +94,9 @@
     #langToggle {
       width: 96px;
       height: 40px;
+      margin-left: 0;
       background-color: #e2e8f0; /* slate-200 */
       box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-      margin-left: 8px;
     }
     html[data-theme="dark"] #langToggle {
       background-color: #1e293b; /* slate-800 */
