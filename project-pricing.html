@@ -473,12 +473,39 @@
                 </div>
                 <!-- ── Chart 6: Short-Term Momentum ── -->
                 <div class="bento-item col-12" style="padding: 10px;">
-                    <div class="chart-narrative">
-                        <span class="lang-fr">💡 Momentum court terme : évolution des prix sur les 16 dernières
-                            semaines, permettant de repérer les retournements de tendance avant qu'ils n'impactent les
-                            moyennes annuelles.</span>
-                        <span class="lang-en">💡 Short-term momentum: price evolution over the last 16 weeks, helping to
-                            spot trend reversals before they impact annual averages.</span>
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; flex-wrap: wrap; margin-bottom: 8px;">
+                        <div class="chart-narrative" style="margin-bottom: 0; flex: 1; min-width: 280px;">
+                            <span class="lang-fr">💡 Momentum court terme : évolution des prix sur les 16 dernières
+                                semaines, permettant de repérer les retournements de tendance avant qu'ils n'impactent
+                                les
+                                moyennes annuelles.</span>
+                            <span class="lang-en">💡 Short-term momentum: price evolution over the last 16 weeks,
+                                helping to
+                                spot trend reversals before they impact annual averages.</span>
+                        </div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <button class="momentum-toggle active" data-comm="all"
+                                style="padding: 4px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 99px; border: 1px solid var(--text); background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.2s;">
+                                <span>🌍</span> <span class="lang-fr">Tous</span><span class="lang-en">All</span>
+                            </button>
+                            <button class="momentum-toggle" data-comm="Cocoa"
+                                style="padding: 4px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.2s;">
+                                <span>🍫</span> <span class="lang-fr">Cacao</span><span class="lang-en">Cocoa</span>
+                            </button>
+                            <button class="momentum-toggle" data-comm="Coffee"
+                                style="padding: 4px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.2s;">
+                                <span>☕</span> <span class="lang-fr">Café</span><span class="lang-en">Coffee</span>
+                            </button>
+                            <button class="momentum-toggle" data-comm="Sugar"
+                                style="padding: 4px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.2s;">
+                                <span>🍬</span> <span class="lang-fr">Sucre</span><span class="lang-en">Sugar</span>
+                            </button>
+                            <button class="momentum-toggle" data-comm="Wheat"
+                                style="padding: 4px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 99px; border: 1px solid var(--border); background: var(--surface); color: var(--text); cursor: pointer; transition: all 0.2s;">
+                                <span>🥖</span> <span class="lang-fr">Blé</span><span class="lang-en">Wheat</span>
+                            </button>
+                        </div>
                     </div>
                     <div id="chart-momentum" class="chart-native-container" style="height: 350px;"></div>
                 </div>

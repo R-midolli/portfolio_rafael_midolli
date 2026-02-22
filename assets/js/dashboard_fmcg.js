@@ -84,6 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let lang = () => TR[document.documentElement.getAttribute('data-lang') || 'fr'];
     let isDark = () => (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
     let selectedCommodity = 'all';
+    let localMomentumComm = 'all';
 
     // ─── DATA FETCH ──────────────────────────────────────────────────
     try {
@@ -124,8 +125,42 @@ document.addEventListener('DOMContentLoaded', async () => {
                 document.querySelectorAll('.category-toggle').forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
                 selectedCommodity = btn.getAttribute('data-comm');
+
+                // Keep the local momentum slicer synced with the global one
+                localMomentumComm = selectedCommodity;
+                document.querySelectorAll('.momentum-toggle').forEach(b => {
+                    if (b.getAttribute('data-comm') === localMomentumComm) {
+                        b.classList.add('active');
+                        const color = localMomentumComm === 'all' ? 'var(--text)' : PALETTE[localMomentumComm].main;
+                        b.style.borderColor = color;
+                        b.style.color = color;
+                    } else {
+                        b.classList.remove('active');
+                        b.style.borderColor = 'var(--border)';
+                        b.style.color = 'var(--text)';
+                    }
+                });
+
                 updateDynamicKPI();
                 renderAll();
+            });
+        });
+
+        document.querySelectorAll('.momentum-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.momentum-toggle').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.borderColor = 'var(--border)';
+                    b.style.color = 'var(--text)';
+                });
+                btn.classList.add('active');
+                localMomentumComm = btn.getAttribute('data-comm');
+
+                const color = localMomentumComm === 'all' ? 'var(--text)' : PALETTE[localMomentumComm].main;
+                btn.style.borderColor = color;
+                btn.style.color = color;
+
+                renderMomentum();
             });
         });
 
@@ -687,7 +722,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         allDates = [...allDates].sort();
 
         const series = Object.entries(m).map(([name, d]) => {
-            const show = selectedCommodity === 'all' || selectedCommodity === name;
+            const show = localMomentumComm === 'all' || localMomentumComm === name;
             const col = PALETTE[name] ? PALETTE[name].main : '#818cf8';
             return {
                 name: name,
