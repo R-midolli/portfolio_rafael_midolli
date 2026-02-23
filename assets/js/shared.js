@@ -379,6 +379,16 @@
     });
   }
 
+  /* ── 6. Internal Traffic Exclude (GA4) ── */
+  // If URL contains ?me=true, flag this browser to exclude GA4 tracking
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('me') === 'true') {
+    localStorage.setItem('ga_exclude', 'true');
+    console.log('GA4 Exclusion activated for this device.');
+    // Optional: provide visual feedback that it worked
+    alert('Filtre activé ! Vos visites sur cet appareil ne seront plus comptabilisées dans Google Analytics.');
+  }
+
   /* Expose for page-specific scripts */
   window.__rm = { getLang: getLang, setLanguage: setLanguage };
 })();

@@ -1900,11 +1900,14 @@
   <!-- Google Analytics 4 (GA4) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2ST18JFPN"></script>
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-
-    gtag('config', 'G-Z2ST18JFPN');
+    if (localStorage.getItem('ga_exclude') !== 'true') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-Z2ST18JFPN');
+    } else {
+      console.log('GA4 tracking disabled for internal device.');
+    }
   </script>
   <!-- End Google Analytics 4 -->
 </head>
@@ -3213,9 +3216,7 @@
 
     })();
   </script>
-  <!-- Cloudflare Web Analytics -->
-  <script defer src='https://static.cloudflareinsights.com/beacon.min.js'
-    data-cf-beacon='{"token": "71c6bc77fe664e55a7bbfb514c5f2fc4"}'></script><!-- End Cloudflare Web Analytics -->
+
 </body>
 
 </html>
