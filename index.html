@@ -266,6 +266,28 @@
       border-color: var(--accent);
     }
 
+    @media (max-width: 520px) {
+      .btn-cv {
+        width: 72px;
+        height: 36px;
+        font-size: .75rem;
+        gap: 4px;
+      }
+
+      .nav .logo {
+        font-size: 1rem;
+      }
+
+      .logo-ring {
+        width: 30px;
+        height: 30px;
+      }
+
+      .nav-inner>div {
+        gap: 6px !important;
+      }
+    }
+
     /* ========== HERO ========== */
     .hero {
       position: relative;
@@ -2585,7 +2607,8 @@
         <span class="lang-fr">Projets</span>
         <span class="lang-en">Projects</span>
       </div>
-      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 16px;">
         <h2 class="section-title reveal reveal-d1" style="margin-bottom: 0;">
           <span class="lang-fr">Case studies avec dashboards & code</span>
           <span class="lang-en">Case studies with dashboards & code</span>

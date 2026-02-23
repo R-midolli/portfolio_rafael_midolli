@@ -142,6 +142,7 @@
       border: 1px solid var(--border);
       padding: 4px;
       cursor: pointer;
+      flex-shrink: 0; /* Prevents squishing by long sibling text */
     }
     .layout-slider {
       position: absolute;
@@ -277,6 +278,24 @@
       .projects-grid.layout-list .project-card > div.project-status { position: static; margin-bottom: 8px; }
       .projects-grid.layout-list .project-card > .btn-case { width: 100%; justify-content: center; }
       .projects-grid.layout-list .project-card > p { -webkit-line-clamp: unset; }
+    }
+
+    /* ── Mobile Toggles Tweaks ── */
+    @media (max-width: 520px) {
+      #themeToggle, #langToggle {
+        width: 72px;
+        height: 36px;
+      }
+      #themeToggle .thumb-liquid, #langToggle .thumb-liquid {
+        width: 28px;
+        height: 28px;
+      }
+      html[data-theme="dark"] #themeToggle .thumb-liquid { transform: translateX(36px); }
+      html[data-lang="en"] #langToggle .thumb-liquid { transform: translateX(36px); }
+      #themeToggle .theme-clouds { padding-right: 6px; }
+      .lang-text { font-size: 11px; }
+      .lang-text.fr { left: 10px; }
+      .lang-text.en { right: 10px; }
     }
   `;
   document.head.appendChild(style);
