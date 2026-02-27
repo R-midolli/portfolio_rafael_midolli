@@ -251,22 +251,33 @@
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            width: 24px;
-            height: 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
+            width: 26px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             border-radius: 50%;
-            color: var(--text-muted);
-            font-size: 0.9rem;
+            color: var(--text);
+            font-size: 1rem;
             font-weight: 700;
             cursor: help;
-            transition: all 0.2s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        :root[data-theme="light"] .info-tooltip-icon {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.15);
         }
 
         .info-tooltip-icon:hover {
             color: var(--text);
-            border-color: var(--text);
-            background: var(--surface-hover);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        :root[data-theme="light"] .info-tooltip-icon:hover {
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .info-tooltip-content {
@@ -617,9 +628,9 @@
                 </div>
                 <!-- ── Chart 6: Short-Term Momentum ── -->
                 <div class="bento-item col-12" style="padding: 10px;">
-                    <div class="info-tooltip-wrapper">
+                    <div class="info-tooltip-wrapper" style="left: 20px; right: auto;">
                         <div class="info-tooltip-icon">?</div>
-                        <div class="info-tooltip-content" style="top: 100%; right: 0; bottom: auto;">
+                        <div class="info-tooltip-content" style="top: 100%; left: 0; right: auto; bottom: auto;">
                             <span class="lang-fr">Momentum court terme : évolution des prix sur les 16 dernières
                                 semaines, permettant de repérer les retournements de tendance avant qu'ils n'impactent
                                 les moyennes annuelles.</span>

@@ -575,25 +575,54 @@ document.addEventListener('DOMContentLoaded', async () => {
         const isGlobal = selectedCommodity === 'all';
         const series = cats.map(c => {
             const relatedComm = COMM_TO_INF[selectedCommodity];
-            const isHighlighted = isGlobal || c === relatedComm || c === 'All Items';
+
+            // Visual Hierarchy Logic
+            let op = 0.12;
+            let w = 0.8;
+            let showLabel = false;
+            let z = 0;
+
+            if (isGlobal) {
+                // In Global View: All Items is hero, others are visible but thinner
+                if (c === 'All Items') {
+                    op = 1; w = 3.5; showLabel = true; z = 5;
+                } else {
+                    op = 0.5; w = 1.5; showLabel = true; z = 2;
+                }
+            } else {
+                // In Specific View: Only related category + All Items are heroes
+                if (c === relatedComm || c === 'All Items') {
+                    op = 1; w = 2.5; showLabel = true; z = 5;
+                } else {
+                    op = 0.12; w = 0.8; showLabel = false; z = 0;
+                }
+            }
+
             const col = INF_COLORS[c] || '#666';
 
             return {
                 name: c, type: 'line', smooth: 0.3, symbol: 'none',
                 data: d[c].values,
+                z: z,
                 lineStyle: {
-                    width: isHighlighted ? 2.5 : 0.8,
-                    opacity: isHighlighted ? 1 : 0.12,
+                    width: w,
+                    opacity: op,
                     color: col, cap: 'round'
                 },
-                itemStyle: { color: col, opacity: isHighlighted ? 1 : 0.12 },
-                areaStyle: (isHighlighted && !isGlobal)
+                itemStyle: { color: col, opacity: op },
+                areaStyle: (!isGlobal && c === relatedComm)
                     ? { color: areaGradient(col, 0.12, 0.01) } : undefined,
                 endLabel: {
-                    show: isHighlighted && !isGlobal,
+                    show: showLabel,
                     formatter: '{a}', color: col,
-                    fontSize: 10.5, fontFamily: 'DM Sans', fontWeight: 600,
-                    backgroundColor: hexToRgba(col, 0.08), borderRadius: 4, padding: [2, 6]
+                    fontSize: c === 'All Items' ? 12 : 10.5,
+                    fontFamily: 'DM Sans', fontWeight: c === 'All Items' ? 800 : 600,
+                    backgroundColor: hexToRgba(col, c === 'All Items' ? 0.15 : 0.08),
+                    borderRadius: 4, padding: [2, 6],
+                    distance: 6
+                },
+                labelLayout: {
+                    moveOverlap: 'shiftY'
                 },
                 animationDuration: 900, animationEasing: 'cubicOut'
             };
@@ -606,15 +635,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ...tipStyle().tooltip, trigger: 'axis',
                 valueFormatter: v => typeof v === 'number' ? v.toFixed(2) + '%' : v
             },
-            legend: {
-                show: isGlobal,
-                type: 'scroll',
-                bottom: 0,
-                textStyle: { color: theme().text, fontFamily: 'DM Sans', fontSize: 11 },
-                icon: 'circle',
-                itemWidth: 10, itemHeight: 10
-            },
-            grid: { left: '3%', right: isGlobal ? '4%' : '22%', bottom: isGlobal ? '15%' : '8%', top: '16%', containLabel: true },
+            legend: { show: false },
+            grid: { left: '3%', right: '23%', bottom: '8%', top: '16%', containLabel: true },
             xAxis: {
                 type: 'category', data: dates, ...axisBase(),
                 splitLine: { show: false },
