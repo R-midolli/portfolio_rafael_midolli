@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let lang = () => TR[document.documentElement.getAttribute('data-lang') || 'fr'];
     let isDark = () => (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
     let selectedCommodity = 'all';
-    let localMomentumComm = 'all';
+    let localMomentumComm = 'Cocoa';
 
     // ─── DATA FETCH ──────────────────────────────────────────────────
     try {
@@ -100,8 +100,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         function formatUpdateDate(iso, lang) {
             const d = new Date(iso);
             return lang === 'en'
-                ? d.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'})
-                : d.toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'});
+                ? d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+                : d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
         }
         function refreshLastUpdated(lang) {
             const el = document.getElementById('last-updated-date');
@@ -129,6 +129,15 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     function bindEvents() {
+        // Init default visual state for Momentum Slicer
+        document.querySelectorAll('.momentum-toggle').forEach(b => {
+            if (b.getAttribute('data-comm') === localMomentumComm) {
+                b.classList.add('active');
+                b.style.borderColor = PALETTE[localMomentumComm].main;
+                b.style.color = PALETTE[localMomentumComm].main;
+            }
+        });
+
         const themeBtn = document.getElementById('themeToggle');
         if (themeBtn) themeBtn.addEventListener('click', () => setTimeout(renderAll, 60));
 
@@ -142,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 selectedCommodity = btn.getAttribute('data-comm');
 
                 // Keep the local momentum slicer synced with the global one
-                localMomentumComm = selectedCommodity;
+                localMomentumComm = selectedCommodity === 'all' ? 'Cocoa' : selectedCommodity;
                 document.querySelectorAll('.momentum-toggle').forEach(b => {
                     if (b.getAttribute('data-comm') === localMomentumComm) {
                         b.classList.add('active');
@@ -563,9 +572,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const dates = d[cats[0]].dates;
 
+        const isGlobal = selectedCommodity === 'all';
         const series = cats.map(c => {
             const relatedComm = COMM_TO_INF[selectedCommodity];
-            const isHighlighted = selectedCommodity === 'all' || c === relatedComm || c === 'All Items';
+            const isHighlighted = isGlobal || c === relatedComm || c === 'All Items';
             const col = INF_COLORS[c] || '#666';
 
             return {
@@ -577,10 +587,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                     color: col, cap: 'round'
                 },
                 itemStyle: { color: col, opacity: isHighlighted ? 1 : 0.12 },
-                areaStyle: (isHighlighted && selectedCommodity !== 'all')
+                areaStyle: (isHighlighted && !isGlobal)
                     ? { color: areaGradient(col, 0.12, 0.01) } : undefined,
                 endLabel: {
-                    show: isHighlighted,
+                    show: isHighlighted && !isGlobal,
                     formatter: '{a}', color: col,
                     fontSize: 10.5, fontFamily: 'DM Sans', fontWeight: 600,
                     backgroundColor: hexToRgba(col, 0.08), borderRadius: 4, padding: [2, 6]
@@ -596,7 +606,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 ...tipStyle().tooltip, trigger: 'axis',
                 valueFormatter: v => typeof v === 'number' ? v.toFixed(2) + '%' : v
             },
-            grid: { left: '3%', right: '22%', bottom: '8%', top: '16%', containLabel: true },
+            legend: {
+                show: isGlobal,
+                type: 'scroll',
+                bottom: 0,
+                textStyle: { color: theme().text, fontFamily: 'DM Sans', fontSize: 11 },
+                icon: 'circle',
+                itemWidth: 10, itemHeight: 10
+            },
+            grid: { left: '3%', right: isGlobal ? '4%' : '22%', bottom: isGlobal ? '15%' : '8%', top: '16%', containLabel: true },
             xAxis: {
                 type: 'category', data: dates, ...axisBase(),
                 splitLine: { show: false },
@@ -762,7 +780,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     formatter: p => {
                         const frN = frNames[name] || name;
                         const label = document.documentElement.getAttribute('data-lang') === 'en' ? name : frN;
-                        return `{name|${label}}  {val|$${Math.round(p.value[1])}}`;
+                        const v = p.value[1];
+                        const valStr = Math.abs(v) >= 1000 ? (v / 1000).toFixed(1) + 'k' : (Math.abs(v) < 50 ? v.toFixed(2) : Math.round(v));
+                        return `{name|${label}}  {val|$${valStr}}`;
                     },
                     rich: {
                         name: { fontSize: 11, fontWeight: 600, color: col, fontFamily: 'DM Sans', padding: [3, 6], backgroundColor: hexToRgba(col, 0.1), borderRadius: 4 },
@@ -795,7 +815,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             },
             yAxis: {
                 type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
-                axisLabel: { ...axisBase().axisLabel, formatter: v => '$' + (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : Math.round(v)) },
+                axisLabel: {
+                    ...axisBase().axisLabel, formatter: v => {
+                        if (Math.abs(v) >= 1000) return '$' + (v / 1000).toFixed(1) + 'k';
+                        if (Math.abs(v) < 50) return '$' + v.toFixed(2);
+                        return '$' + Math.round(v);
+                    }
+                },
                 splitNumber: 5
             },
             series

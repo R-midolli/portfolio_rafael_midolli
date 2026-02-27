@@ -5,3 +5,7 @@ demo_project-elt-retail.html
 # VS Code
 .vscode/
 cv.txt
+
+# OS
+.DS_Store
+Thumbs.db
