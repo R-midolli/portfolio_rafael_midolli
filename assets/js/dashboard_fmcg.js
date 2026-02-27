@@ -587,7 +587,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (c === 'All Items') {
                     op = 1; w = 3.5; showLabel = true; z = 5;
                 } else {
-                    op = 0.5; w = 1.5; showLabel = true; z = 2;
+                    op = 0.4; w = 1.2; showLabel = true; z = 2;
                 }
             } else {
                 // In Specific View: Only related category + All Items are heroes
@@ -599,6 +599,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
 
             const col = INF_COLORS[c] || '#666';
+            const hasArea = (isGlobal && c === 'All Items') || (!isGlobal && c === relatedComm);
 
             return {
                 name: c, type: 'line', smooth: 0.3, symbol: 'none',
@@ -610,8 +611,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     color: col, cap: 'round'
                 },
                 itemStyle: { color: col, opacity: op },
-                areaStyle: (!isGlobal && c === relatedComm)
-                    ? { color: areaGradient(col, 0.12, 0.01) } : undefined,
+                areaStyle: hasArea ? { color: areaGradient(col, 0.15, 0.01) } : undefined,
                 endLabel: {
                     show: showLabel,
                     formatter: '{a}', color: col,
@@ -623,6 +623,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 },
                 labelLayout: {
                     moveOverlap: 'shiftY'
+                },
+                emphasis: {
+                    focus: 'series',
+                    lineStyle: { width: Math.max(w + 1.5, 3), opacity: 1 },
+                    endLabel: { show: true, fontSize: 12, fontWeight: 800, backgroundColor: hexToRgba(col, 0.15) }
                 },
                 animationDuration: 900, animationEasing: 'cubicOut'
             };
@@ -652,7 +657,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             yAxis: {
                 type: 'value', ...axisBase(),
                 axisLabel: { ...axisBase().axisLabel, formatter: v => v.toFixed(0) + '%' },
-                splitNumber: 5
+                splitNumber: 5,
+                splitLine: { show: true, lineStyle: { type: 'dashed', color: 'rgba(255,255,255,0.05)', width: 1 } }
             },
             series
         };
