@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Inflation category colors (consistent across charts)
     const INF_COLORS = {
         'Oils & Fats': '#ef4444',
-        'Dairy, Cheese & Eggs': '#f97316',
-        'Coffee, Tea, Cocoa': '#f59e0b',
-        'Meat': '#eab308',
+        'Dairy, Cheese & Eggs': '#ec4899', // Pink
+        'Coffee, Tea, Cocoa': '#f59e0b',   // Amber
+        'Meat': '#14b8a6',                 // Teal
         'Sugar, Jam, Honey, Chocolate': '#a78bfa',
-        'All Items': '#3b82f6',
+        'All Items': '#3b82f6',            // Blue
         'Bread & Cereals': '#22c55e'
     };
 
