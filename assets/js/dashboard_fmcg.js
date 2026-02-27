@@ -96,6 +96,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (kpiFx) kpiFx.textContent = data.kpis.fx_eur_usd.toFixed(4);
 
         updateDynamicKPI();
+
+        function formatUpdateDate(iso, lang) {
+            const d = new Date(iso);
+            return lang === 'en'
+                ? d.toLocaleDateString('en-GB', {day:'2-digit',month:'short',year:'numeric'})
+                : d.toLocaleDateString('fr-FR', {day:'2-digit',month:'long',year:'numeric'});
+        }
+        function refreshLastUpdated(lang) {
+            const el = document.getElementById('last-updated-date');
+            if (!el || !data?.metadata?.last_updated) return;
+            el.textContent = formatUpdateDate(data.metadata.last_updated, lang);
+        }
+        refreshLastUpdated(window.__rm ? window.__rm.getLang() : 'fr');
+        document.addEventListener('langchange', e => refreshLastUpdated(e.detail.lang));
+
         initCharts();
         renderAll();
         bindEvents();
