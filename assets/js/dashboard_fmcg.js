@@ -457,7 +457,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const option = {
             backgroundColor: 'transparent',
             title: titleStyle(t.fx),
-            tooltip: { ...tipStyle().tooltip, valueFormatter: v => typeof v === 'number' ? v.toFixed(2) : v },
+            tooltip: { ...tipStyle().tooltip, valueFormatter: v => typeof v === 'number' ? v.toFixed(4) : v },
             grid: { left: '3%', right: '4%', bottom: '10%', top: '16%', containLabel: true },
             xAxis: {
                 type: 'category', data: dates, ...axisBase(),
@@ -466,7 +466,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             },
             yAxis: {
                 type: 'value', min: 'dataMin', max: 'dataMax', ...axisBase(),
-                axisLabel: { ...axisBase().axisLabel, formatter: v => v.toFixed(2) },
+                axisLabel: { ...axisBase().axisLabel, formatter: v => v.toFixed(4) },
                 splitNumber: 4
             },
             series: [{
