@@ -73,26 +73,25 @@
     // --- FAB config (size >= 40): 62px circle ---
     // --- Avatar config (size < 40): 42px circle ---
     var isFab = size >= 40;
+    var fontSize = isFab ? "24" : "16";
 
     // "M" letter
     var mText = document.createElementNS(ns, "text");
     mText.setAttribute("x", "50");
-    mText.setAttribute("y", "47");
+    mText.setAttribute("y", "33");
     mText.setAttribute("text-anchor", "middle");
     mText.setAttribute("dominant-baseline", "middle");
     mText.setAttribute("fill", "#ffffff");
     mText.setAttribute("font-family", "monospace");
     mText.setAttribute("font-weight", "900");
-    mText.setAttribute("font-size", isFab ? "22" : "15");
+    mText.setAttribute("font-size", fontSize);
     mText.textContent = "M";
     svg.appendChild(mText);
 
     // Divider line
     var line = document.createElementNS(ns, "line");
-    var lineX1 = isFab ? "35" : "38";
-    var lineX2 = isFab ? "65" : "62";
-    line.setAttribute("x1", lineX1); line.setAttribute("y1", "63");
-    line.setAttribute("x2", lineX2); line.setAttribute("y2", "63");
+    line.setAttribute("x1", "30"); line.setAttribute("y1", "50");
+    line.setAttribute("x2", "70"); line.setAttribute("y2", "50");
     line.setAttribute("stroke", "#c4b5fd");
     line.setAttribute("stroke-width", "1.5");
     line.setAttribute("opacity", "0.5");
@@ -101,13 +100,14 @@
     // "AI" text
     var aiText = document.createElementNS(ns, "text");
     aiText.setAttribute("x", "50");
-    aiText.setAttribute("y", "79");
+    aiText.setAttribute("y", "69");
     aiText.setAttribute("text-anchor", "middle");
     aiText.setAttribute("dominant-baseline", "middle");
-    aiText.setAttribute("fill", "#c4b5fd");
+    aiText.setAttribute("fill", "#ffffff");
     aiText.setAttribute("font-family", "monospace");
-    aiText.setAttribute("font-size", isFab ? "11" : "8");
-    aiText.setAttribute("letter-spacing", isFab ? "4" : "3");
+    aiText.setAttribute("font-weight", "900");
+    aiText.setAttribute("font-size", fontSize);
+    aiText.setAttribute("letter-spacing", "1");
     aiText.textContent = "AI";
     svg.appendChild(aiText);
 
