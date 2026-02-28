@@ -1,0 +1,394 @@
+/* ============================================================
+   Midolli-AI Widget — CSS
+   All selectors prefixed with .mai- for full isolation.
+   ============================================================ */
+
+/* --- Animations --- */
+@keyframes mai-fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes mai-bounce {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
+}
+@keyframes mai-slideUp {
+  from { opacity: 0; transform: translateY(40px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes mai-pulse {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  50%  { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* --- Floating Action Button (FAB) --- */
+.mai-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  border: none;
+  cursor: pointer;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(109, 40, 217, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.mai-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(109, 40, 217, 0.55);
+}
+.mai-fab svg { width: 38px; height: 38px; }
+
+/* --- Pulse Ring --- */
+.mai-pulse-ring {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 3px solid #6d28d9;
+  z-index: 99998;
+  pointer-events: none;
+  animation: mai-pulse 2s ease-out infinite;
+}
+
+/* --- Chat Panel --- */
+.mai-panel {
+  position: fixed;
+  bottom: 108px;
+  right: 28px;
+  width: 420px;
+  height: 600px;
+  border-radius: 22px;
+  z-index: 99998;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  animation: mai-slideUp 0.35s ease-out;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+.mai-panel.mai-open { display: flex; }
+
+/* --- Dark Theme --- */
+.mai-dark .mai-panel {
+  background: #0d1117;
+  color: #e6edf3;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.mai-dark .mai-header {
+  background: linear-gradient(180deg, #161b22, #0d1117);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.mai-dark .mai-bot-bubble {
+  background: rgba(255,255,255,0.07);
+  color: #e6edf3;
+}
+.mai-dark .mai-input-area {
+  background: #161b22;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.mai-dark .mai-textarea {
+  background: #0d1117;
+  color: #e6edf3;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.mai-dark .mai-textarea:focus {
+  border-color: #6d28d9;
+}
+.mai-dark .mai-chip {
+  background: rgba(109,40,217,0.15);
+  color: #c4b5fd;
+  border: 1px solid rgba(109,40,217,0.25);
+}
+.mai-dark .mai-chip:hover {
+  background: rgba(109,40,217,0.3);
+}
+.mai-dark .mai-disclaimer {
+  color: rgba(255,255,255,0.35);
+}
+.mai-dark .mai-timestamp {
+  color: rgba(255,255,255,0.3);
+}
+
+/* --- Light Theme --- */
+.mai-light .mai-panel {
+  background: #f3f4f8;
+  color: #111827;
+  border: 1px solid rgba(0,0,0,0.08);
+}
+.mai-light .mai-header {
+  background: linear-gradient(180deg, #ffffff, #f3f4f8);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.mai-light .mai-bot-bubble {
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+.mai-light .mai-input-area {
+  background: #ffffff;
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+.mai-light .mai-textarea {
+  background: #f3f4f8;
+  color: #111827;
+  border: 1px solid rgba(0,0,0,0.1);
+}
+.mai-light .mai-textarea:focus {
+  border-color: #6d28d9;
+}
+.mai-light .mai-chip {
+  background: rgba(109,40,217,0.08);
+  color: #6d28d9;
+  border: 1px solid rgba(109,40,217,0.15);
+}
+.mai-light .mai-chip:hover {
+  background: rgba(109,40,217,0.15);
+}
+.mai-light .mai-disclaimer {
+  color: rgba(0,0,0,0.35);
+}
+.mai-light .mai-timestamp {
+  color: rgba(0,0,0,0.3);
+}
+
+/* --- Header --- */
+.mai-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.mai-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+}
+.mai-avatar svg { width: 28px; height: 28px; }
+.mai-status-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 10px;
+  height: 10px;
+  background: #22c55e;
+  border-radius: 50%;
+  border: 2px solid #0d1117;
+}
+.mai-light .mai-status-dot {
+  border-color: #ffffff;
+}
+.mai-header-info { flex: 1; min-width: 0; }
+.mai-header-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.mai-header-subtitle {
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 1px;
+}
+.mai-header-actions {
+  display: flex;
+  gap: 4px;
+}
+.mai-header-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+  font-size: 13px;
+  opacity: 0.7;
+  transition: opacity 0.2s, background 0.2s;
+}
+.mai-header-btn:hover { opacity: 1; }
+.mai-dark .mai-header-btn { color: #e6edf3; }
+.mai-dark .mai-header-btn:hover { background: rgba(255,255,255,0.08); }
+.mai-light .mai-header-btn { color: #111827; }
+.mai-light .mai-header-btn:hover { background: rgba(0,0,0,0.05); }
+
+/* --- Messages Area --- */
+.mai-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+.mai-message {
+  max-width: 85%;
+  animation: mai-fadeUp 0.3s ease-out;
+}
+.mai-message-user { align-self: flex-end; }
+.mai-message-bot { align-self: flex-start; }
+.mai-user-bubble {
+  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  color: #ffffff;
+  padding: 10px 14px;
+  border-radius: 18px 18px 4px 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+.mai-bot-bubble {
+  padding: 10px 14px;
+  border-radius: 18px 18px 18px 4px;
+  font-size: 14px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+.mai-bot-bubble strong { font-weight: 600; }
+.mai-bot-bubble code {
+  background: rgba(109,40,217,0.12);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+}
+.mai-bot-bubble .mai-code-block {
+  background: #0d1117;
+  color: #e6edf3;
+  padding: 12px;
+  border-radius: 8px;
+  margin: 8px 0;
+  overflow-x: auto;
+  font-family: 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.mai-bot-bubble .mai-code-label {
+  font-size: 11px;
+  color: #8b949e;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.mai-typing-indicator {
+  display: flex;
+  gap: 5px;
+  padding: 12px 16px;
+}
+.mai-typing-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #6d28d9;
+  animation: mai-bounce 1.4s ease-in-out infinite;
+}
+.mai-typing-dot:nth-child(2) { animation-delay: 0.16s; }
+.mai-typing-dot:nth-child(3) { animation-delay: 0.32s; }
+
+/* --- Timestamp --- */
+.mai-timestamp {
+  text-align: center;
+  font-size: 11px;
+  padding: 4px 0;
+}
+
+/* --- Quick Action Chips --- */
+.mai-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 16px;
+  flex-shrink: 0;
+}
+.mai-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+/* --- Input Area --- */
+.mai-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 12px 16px;
+  flex-shrink: 0;
+  align-items: flex-end;
+}
+.mai-textarea {
+  flex: 1;
+  resize: none;
+  border-radius: 14px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: inherit;
+  outline: none;
+  min-height: 40px;
+  max-height: 100px;
+  transition: border-color 0.2s;
+  line-height: 1.4;
+}
+.mai-send-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6d28d9, #4f46e5);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: opacity 0.2s, transform 0.2s;
+}
+.mai-send-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.mai-send-btn:not(:disabled):hover {
+  transform: scale(1.06);
+}
+.mai-send-btn svg { width: 18px; height: 18px; }
+
+/* --- Disclaimer --- */
+.mai-disclaimer {
+  text-align: center;
+  font-size: 11px;
+  padding: 6px 16px 10px;
+  flex-shrink: 0;
+}
+
+/* --- Mobile Responsive --- */
+@media (max-width: 480px) {
+  .mai-panel {
+    width: calc(100vw - 16px);
+    height: calc(100vh - 120px);
+    right: 8px;
+    bottom: 100px;
+    border-radius: 18px;
+  }
+  .mai-fab {
+    bottom: 20px;
+    right: 20px;
+  }
+  .mai-pulse-ring {
+    bottom: 20px;
+    right: 20px;
+  }
+}

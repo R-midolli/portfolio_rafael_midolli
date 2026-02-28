@@ -3238,6 +3238,19 @@
     })();
   </script>
 
+  <!-- Midolli-AI Widget -->
+  <link rel="stylesheet" href="assets/midolli-widget.css">
+  <script src="assets/midolli-widget.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      MidolliAI.init({
+        apiUrl: 'https://midolli-ai.onrender.com',
+        lang: document.documentElement.dataset.lang || 'fr',
+        theme: document.documentElement.dataset.theme || 'dark'
+      });
+    });
+  </script>
+
 </body>
 
 </html>
