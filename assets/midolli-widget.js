@@ -278,28 +278,6 @@
 
     var actions = el("div", "mai-header-actions");
 
-    var langBtn = el("button", "mai-header-btn");
-    langBtn.textContent = _cfg.lang === "fr" ? "EN" : "FR";
-    langBtn.setAttribute("aria-label", "Toggle language");
-    langBtn.addEventListener("click", function () {
-      _cfg.lang = _cfg.lang === "fr" ? "en" : "fr";
-      langBtn.textContent = _cfg.lang === "fr" ? "EN" : "FR";
-      syncLang();
-    });
-    _els.langBtn = langBtn;
-    actions.appendChild(langBtn);
-
-    var themeBtn = el("button", "mai-header-btn");
-    themeBtn.textContent = _cfg.theme === "dark" ? "☀️" : "🌙";
-    themeBtn.setAttribute("aria-label", "Toggle theme");
-    themeBtn.addEventListener("click", function () {
-      _cfg.theme = _cfg.theme === "dark" ? "light" : "dark";
-      themeBtn.textContent = _cfg.theme === "dark" ? "☀️" : "🌙";
-      syncTheme();
-    });
-    _els.themeBtn = themeBtn;
-    actions.appendChild(themeBtn);
-
     var closeBtn = el("button", "mai-header-btn");
     closeBtn.textContent = "✕";
     closeBtn.setAttribute("aria-label", "Close chat");
@@ -526,33 +504,30 @@
   // Portfolio sync via MutationObserver
   // ---------------------------------------------------------------
   function setupObservers() {
-    // Theme observer — watches body dataset.theme or class
-    var bodyObs = new MutationObserver(function () {
-      var bodyTheme = document.body.dataset.theme;
-      if (!bodyTheme) {
-        bodyTheme = document.body.classList.contains("light-mode") ? "light" : "dark";
-      }
-      if (bodyTheme && bodyTheme !== _cfg.theme) {
-        _cfg.theme = bodyTheme;
+    // Theme observer — watches documentElement data-theme (set by shared.js)
+    var themeObs = new MutationObserver(function () {
+      var theme = document.documentElement.dataset.theme || "dark";
+      if (theme !== _cfg.theme) {
+        _cfg.theme = theme;
         syncTheme();
       }
     });
-    bodyObs.observe(document.body, {
+    themeObs.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme", "class"],
+      attributeFilter: ["data-theme"],
     });
 
-    // Language observer — watches html lang attribute
+    // Language observer — watches html data-lang attribute (set by shared.js setLanguage)
     var htmlObs = new MutationObserver(function () {
-      var htmlLang = document.documentElement.lang;
-      if (htmlLang && htmlLang.substring(0, 2) !== _cfg.lang) {
-        _cfg.lang = htmlLang.substring(0, 2) === "en" ? "en" : "fr";
+      var lang = document.documentElement.dataset.lang || "fr";
+      if (lang !== _cfg.lang) {
+        _cfg.lang = lang === "en" ? "en" : "fr";
         syncLang();
       }
     });
     htmlObs.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["lang"],
+      attributeFilter: ["data-lang"],
     });
 
     // Also listen to portfolio's custom langchange event (dispatched by shared.js setLanguage)

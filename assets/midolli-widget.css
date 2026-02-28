@@ -107,7 +107,7 @@
   bottom: 108px;
   right: 28px;
   width: 420px;
-  height: 600px;
+  height: min(560px, calc(100vh - 128px));
   border-radius: 22px;
   z-index: 99998;
   display: none;
@@ -502,9 +502,9 @@
 @media (max-width: 480px) {
   .mai-panel {
     width: calc(100vw - 16px);
-    height: calc(100vh - 120px);
+    height: min(520px, calc(100vh - 108px));
     right: 8px;
-    bottom: 100px;
+    bottom: 92px;
     border-radius: 18px;
   }
 
