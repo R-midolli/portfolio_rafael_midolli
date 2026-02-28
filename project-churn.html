@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="fr" data-theme="dark" data-lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="Case study — Customer Churn Prediction and Reactivation Propensity. XGBoost, RFM, CLV Segmentation. Portfolio Rafael Midolli." />
+  <title>Customer Churn Prediction & Reactivation Propensity</title>
+  <meta property="og:title" content="Customer Churn Prediction & Reactivation Propensity" />
+  <meta property="og:description"
+    content="XGBoost prediction, RFM behavioral features, and ROI driven reactivation strategy. Portfolio Rafael Midolli." />
+  <meta property="og:type" content="website" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🔮</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/project.css" />
+  <!-- Google Analytics 4 (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2ST18JFPN"></script>
+  <script>
+    if (localStorage.getItem('ga_exclude') !== 'true') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-Z2ST18JFPN');
+    } else {
+      console.log('GA4 tracking disabled for internal device.');
+    }
+  </script>
+  <!-- End Google Analytics 4 -->
+  <style>
+    /* Inline specific UI enhancements for this project */
+    .metric-value.highlight {
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .metric-value.success {
+      background: linear-gradient(135deg, #10B981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .insight-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: default;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    :root[data-theme="dark"] .insight-card:hover {
+      border-color: rgba(91, 140, 255, 0.4);
+      box-shadow: 0 15px 35px rgba(91, 140, 255, 0.1);
+    }
+
+    .architecture-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2rem 0;
+    }
+
+    .arch-step {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .arch-step:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .arch-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .arch-step:not(:last-child)::after {
+        content: '↓';
+        right: 50%;
+        bottom: -24px;
+        top: auto;
+        transform: translateX(50%);
+      }
+
+      .architecture-flow {
+        flex-direction: column;
+      }
+    }
+
+    .arch-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .arch-title {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .arch-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="index.html#projects" class="logo">
+      <span class="logo-ring">RM</span>
+      Rafael Midolli
+    </a>
+    <div class="nav-right">
+      <a href="index.html#projects" class="btn-back">
+        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
+            class="back-label">Back</span></span>
+      </a>
+      <a href="reports/demo_churn.html" target="_blank" rel="noopener" class="btn-fullscreen">
+        <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span
+            class="fs-label">Full&nbsp;screen</span></span>
+      </a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue">
+        <span id="langIcon">FR</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="case-header">
+      <div class="case-label"><span class="lang-fr">Machine Learning & CRM</span><span class="lang-en">Machine Learning & CRM</span></div>
+      <h1 class="case-title"><span class="lang-fr">Customer Churn Prediction & Reactivation Propensity</span><span
+          class="lang-en">Customer Churn Prediction & Reactivation Propensity</span></h1>
+      <div class="case-subtitle">
+        <span class="lang-fr">Modélisation de l'attrition avec XGBoost, feature engineering comportemental, et calcul du ROI de rétention.</span>
+        <span class="lang-en">Churn modeling with XGBoost, behavioral feature engineering, and retention ROI calculation.</span>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <!-- Problem + Approach -->
+      <div class="card">
+        <h3><span class="lang-fr">Le Défi Opérationnel</span><span class="lang-en">The Operational Challenge</span></h3>
+        <p>
+          <span class="lang-fr">L'acquisition de nouveaux clients coûte souvent bien plus cher que la fidélisation. <strong>La problématique métier clé :</strong> "Comment identifier de manière proactive les clients sur le point de churner, et déterminer quelle offre promotionnelle propose le meilleur retour sur investissement (ROI) sans éroder nos marges ?"</span>
+          <span class="lang-en">Acquiring new customers often costs far more than retail retention. <strong>The core business problem:</strong> "How to proactively identify at-risk customers, and determine which promotional offer yields the highest Return On Investment (ROI) without eroding margins?"</span>
+        </p>
+        <h3 style="margin-top:20px"><span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The
+            Analytical Approach</span></h3>
+        <p>
+          <span class="lang-fr">Création d'un pipeline d'apprentissage automatique entraînant un modèle <strong>XGBoost</strong> sur des données de panel réelles (Dunnhumby). Extraction de caractéristiques RFM et comportementales de consommation (fréquence de réduction, dépenses passées). Une couche d'optimisation financière a ensuite calculé un seuil de décision basé sur le coût de la campagne versus la Customer Lifetime Value (CLV).</span>
+          <span class="lang-en">Building a machine learning pipeline training an <strong>XGBoost</strong> model on real panel data (Dunnhumby). Extracting RFM and behavioral consumption features (discount frequency, past spend). A financial optimization layer then calculated a decision threshold based on campaign cost versus segmented Customer Lifetime Value (CLV).</span>
+        </p>
+
+        <!-- Key metrics mini-cards -->
+        <div class="metrics-mini">
+          <div class="metric-mini">
+            <div class="metric-value highlight">XGB</div>
+            <div class="metric-label">
+              <span class="lang-fr">Modèle de Classification</span>
+              <span class="lang-en">Classification Model</span>
+            </div>
+          </div>
+          <div class="metric-mini">
+            <div class="metric-value success">ROI</div>
+            <div class="metric-label">
+              <span class="lang-fr">Optimisation Financière</span>
+              <span class="lang-en">Financial Optimization</span>
+            </div>
+          </div>
+          <div class="metric-mini">
+            <div class="metric-value">RFM</div>
+            <div class="metric-label">
+              <span class="lang-fr">Features Transactionnelles</span>
+              <span class="lang-en">Transactional Features</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech Stack + GitHub -->
+      <div class="card">
+        <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
+        <p>
+          <span class="lang-fr">Un projet logiciel complet organisé avec <strong>uv</strong> pour la gestion des dépendances, et une documentation CI/CD. Les carnets de bord (notebooks) sont conçus de manière interactive et reproductible grâce à <strong>Marimo</strong>.</span>
+          <span class="lang-en">A fully structured software project using <strong>uv</strong> for dependency management with CI/CD documentation. Notebooks are built interactively and reproducibly via <strong>Marimo</strong>.</span>
+        </p>
+        <p>
+          <span class="lang-fr"><strong>Livrables :</strong> Pipeline `src/`, Notebooks Python réactifs, Fichiers d'exportation d'action CRM.</span>
+          <span class="lang-en"><strong>Deliverables:</strong> Core `src/` pipeline, reactive Python Marimo Notebooks, CRM action export files.</span>
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">🐍 Python</span>
+          <span class="tech-tag">🌲 XGBoost</span>
+          <span class="tech-tag">🧪 Pytest</span>
+          <span class="tech-tag">📉 SHAP</span>
+          <span class="tech-tag">📓 Marimo</span>
+        </div>
+        <a href="https://github.com/r-midolli/customer-churn-reactivation" target="_blank" rel="noopener" class="btn-github">
+          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+          </svg>
+          <span class="lang-fr">Dépôt GitHub du Projet</span>
+          <span class="lang-en">View GitHub Repository</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: ARQUITETURA -->
+    <div class="card">
+      <h3>🏗️ <span class="lang-fr">Workflow Analytique ML</span><span class="lang-en">Analytical ML Workflow</span></h3>
+      <div class="architecture-flow">
+        <div class="arch-step">
+          <div class="arch-icon">📥</div>
+          <div class="arch-title">Data Load</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Transactions & Produits (Dunnhumby)</span>
+            <span class="lang-en">Transactions & Products (Dunnhumby)</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">⚙️</div>
+          <div class="arch-title">Features</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Ingénierie RFM et comportements</span>
+            <span class="lang-en">RFM engineering and behaviors</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">🌲</div>
+          <div class="arch-title">Train</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Walk-forward validation & XGBoost</span>
+            <span class="lang-en">Walk-forward validation & XGBoost</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">💰</div>
+          <div class="arch-title">ROI</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Optimisation des seuils / CLV ROI</span>
+            <span class="lang-en">Threshold optimization / CLV ROI</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="lang-fr">Notebook Interactif (Marimo)</span><span class="lang-en">Interactive Notebook
+          (Marimo)</span></h3>
+      <p style="margin-bottom: 20px;">
+        <span class="lang-fr">Ci-dessous, la démo exportée du pipeline, incluant la matrice d'action CRM et les segments de clientèle visés, générés sans serveur grâce à WebAssembly sur Python.</span>
+        <span class="lang-en">Below is the exported demo of the pipeline charting SHAP importance and the CRM action matrix, completely rendered dynamically.</span>
+      </p>
+      <iframe src="reports/demo_churn.html" class="embed-frame" id="dashFrame" loading="lazy"></iframe>
+      <div class="embed-fallback" id="dashFallback">
+        <span class="lang-fr">Si le module dynamique d'analyse tarde à charger, <a href="reports/demo_churn.html"
+            target="_blank" rel="noopener">cliquez ici pour l'ouvrir en plein écran</a>.</span>
+        <span class="lang-en">If the dynamic notebook is slow to load, <a href="reports/demo_churn.html"
+            target="_blank" rel="noopener">click here to launch it in full screen</a>.</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="assets/js/shared.js"></script>
+  <script>
+    (function () {
+      document.querySelectorAll('.bullets .bullet').forEach(function (b) {
+        b.addEventListener('click', function () { b.classList.toggle('active'); });
+      });
+      var frame = document.getElementById('dashFrame');
+      var fallback = document.getElementById('dashFallback');
+      if (frame) {
+        frame.addEventListener('load', function () { if (fallback) fallback.style.display = 'none'; }, { once: true });
+        setTimeout(function () {
+          if (!frame.contentDocument || frame.contentDocument.body.childElementCount === 0) {
+            if (fallback) fallback.style.display = 'block';
+          }
+        }, 6000);
+        window.addEventListener('message', function (e) {
+          if (e.data && e.data.type === 'rm-iframe-height' && typeof e.data.height === 'number') {
+            if (e.data.height > 200) frame.style.height = e.data.height + 'px';
+          }
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>
