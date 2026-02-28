@@ -414,15 +414,15 @@
 
   <main class="main">
     <div class="case-header">
-      <div class="case-label"><span class="lang-fr">Machine Learning & CRM</span><span class="lang-en">Machine Learning
-          & CRM</span></div>
-      <h1 class="case-title"><span class="lang-fr">Customer Churn Prediction & Reactivation Propensity</span><span
-          class="lang-en">Customer Churn Prediction & Reactivation Propensity</span></h1>
+      <div class="case-label"><span class="lang-fr">GenAI & Backend</span><span class="lang-en">GenAI & Backend</span>
+      </div>
+      <h1 class="case-title"><span class="lang-fr">Midolli-AI: Chatbot RAG</span><span class="lang-en">Midolli-AI: RAG
+          Chatbot</span></h1>
       <div class="case-subtitle">
-        <span class="lang-fr">Modélisation de l'attrition avec XGBoost, feature engineering comportemental, et calcul du
-          ROI de rétention.</span>
-        <span class="lang-en">Churn modeling with XGBoost, behavioral feature engineering, and retention ROI
-          calculation.</span>
+        <span class="lang-fr">Chatbot RAG intelligent (FastAPI + ChromaDB) avec triple routeur LLM (Gemini/NVIDIA) pour
+          répondre instantanément sur mes projets.</span>
+        <span class="lang-en">Intelligent RAG chatbot (FastAPI + ChromaDB) featuring a triple LLM router (Gemini/NVIDIA)
+          to instantly answer questions about my portfolio.</span>
       </div>
     </div>
 
@@ -433,16 +433,39 @@
         <!-- Problem + Approach -->
         <div class="insight-card"
           style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
-          <h3>🎯 <span class="lang-fr">Le Défi Opérationnel</span><span class="lang-en">The Operational Challenge</span>
+          <h3>🎯 <span class="lang-fr">L'Objectif</span><span class="lang-en">The Main Goal</span>
           </h3>
-          <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;"><li style="margin-bottom: 8px;">❌ <span class="lang-fr">Les portfolios statiques limitent l'interaction.</span><span class="lang-en">Static portfolios strictly limit recruiter interaction.</span></li><li style="margin-bottom: 8px;">❌ <span class="lang-fr">La recherche d'informations dans un CV est fastidieuse.</span><span class="lang-en">Searching for specific data across a CV is tedious.</span></li><li>✅ <span class="lang-fr"><strong>Objectif :</strong> Offrir un assistant virtuel capable d'expliquer mon parcours et mes projets instantanément.</span><span class="lang-en"><strong>Goal:</strong> Provide a virtual assistant capable of instantly explaining my background and projects.</span></li></ul>
+          <ul
+            style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
+            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Les portfolios statiques limitent
+                l'interaction.</span><span class="lang-en">Static portfolios strictly limit recruiter
+                interaction.</span></li>
+            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">La recherche d'informations dans un CV est
+                fastidieuse.</span><span class="lang-en">Searching for specific data across a CV is tedious.</span></li>
+            <li>✅ <span class="lang-fr"><strong>Objectif :</strong> Offrir un assistant virtuel capable d'expliquer mon
+                parcours et mes projets instantanément.</span><span class="lang-en"><strong>Goal:</strong> Provide a
+                virtual assistant capable of instantly explaining my background and projects.</span></li>
+          </ul>
         </div>
 
         <div class="insight-card"
           style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
           <h3>💡 <span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The Analytical Approach</span>
           </h3>
-          <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;"><li style="margin-bottom: 10px;">🧠 <span class="lang-fr"><strong>Base de Connaissances :</strong> Ingestion de 12 sources (.md, PDF) stockées localement via ChromaDB.</span><span class="lang-en"><strong>Knowledge Base:</strong> Ingestion of 12 internal sources (.md, PDF) stored locally via ChromaDB.</span></li><li style="margin-bottom: 10px;">⚡ <span class="lang-fr"><strong>Backend FastAPI :</strong> Un moteur asynchrone ultra-rapide exposant les endpoints `/chat` et `/health`.</span><span class="lang-en"><strong>FastAPI Backend:</strong> An ultra-fast async engine exposing `/chat` and `/health` endpoints.</span></li><li>🛡️ <span class="lang-fr"><strong>Triple API Fallback :</strong> Redondance via Google AI Studio (2x) et NVIDIA (1x) garantissant zéro temps d'arrêt.</span><span class="lang-en"><strong>Triple API Fallback:</strong> Redundancy via Google AI Studio (2x) and NVIDIA (1x) ensuring zero downtime.</span></li></ul>
+          <ul
+            style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
+            <li style="margin-bottom: 10px;">🧠 <span class="lang-fr"><strong>Base de Connaissances :</strong> Ingestion
+                de 12 sources (.md, PDF) stockées localement via ChromaDB.</span><span class="lang-en"><strong>Knowledge
+                  Base:</strong> Ingestion of 12 internal sources (.md, PDF) stored locally via ChromaDB.</span></li>
+            <li style="margin-bottom: 10px;">⚡ <span class="lang-fr"><strong>Backend FastAPI :</strong> Un moteur
+                asynchrone ultra-rapide exposant les endpoints `/chat` et `/health`.</span><span
+                class="lang-en"><strong>FastAPI Backend:</strong> An ultra-fast async engine exposing `/chat` and
+                `/health` endpoints.</span></li>
+            <li>🛡️ <span class="lang-fr"><strong>Triple API Fallback :</strong> Redondance via Google AI Studio (2x) et
+                NVIDIA (1x) garantissant zéro temps d'arrêt.</span><span class="lang-en"><strong>Triple API
+                  Fallback:</strong> Redundancy via Google AI Studio (2x) and NVIDIA (1x) ensuring zero downtime.</span>
+            </li>
+          </ul>
         </div>
         <!-- Key metrics mini-cards -->
         <div class="insight-card"
@@ -494,8 +517,7 @@
           <span class="tech-tag">🤖 Gemini/LLaMA</span>
           <span class="tech-tag">🧪 Pytest</span>
         </div>
-        <a href="https://github.com/R-midolli/Midolli-AI" target="_blank"
-          rel="noopener" class="btn-github">
+        <a href="https://github.com/R-midolli/Midolli-AI" target="_blank" rel="noopener" class="btn-github">
           <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
@@ -546,26 +568,43 @@
       </div>
     </div>
 
-    
-    <section class="card" style="padding: 2rem; border-radius: 24px; margin-bottom: 40px; border: 1px solid var(--border);">
+
+    <section class="card"
+      style="padding: 2rem; border-radius: 24px; margin-bottom: 40px; border: 1px solid var(--border);">
       <div>
         <h3 style="margin-bottom: 16px;">
           <span class="lang-fr">🔌 Démontration Interactive Intégrée</span>
           <span class="lang-en">🔌 Integrated Interactive Demo</span>
         </h3>
         <p style="font-size: 1rem; color: var(--text-muted); line-height: 1.6; max-width: 800px;">
-          <span class="lang-fr">L'assistant RAG documenté sur cette page est le même widget flottant avec lequel vous pouvez interagir en bas à droite de l'écran right now. N'hésitez pas à cliquer sur le bouton violet "M-AI" pour tester sa réactivité, l'architecture de fallback, et sa connaissance détaillée de mon CV.</span>
-          <span class="lang-en">The RAG assistant documented on this page is the exact same floating widget you can interact with right now in the bottom right corner of your screen. Go ahead and click the purple "M-AI" button to test its responsiveness, fallback architecture, and deep knowledge of my background.</span>
+          <span class="lang-fr">L'assistant RAG documenté sur cette page est le même widget flottant avec lequel vous
+            pouvez interagir en bas à droite de l'écran right now. N'hésitez pas à cliquer sur le bouton violet "M-AI"
+            pour tester sa réactivité, l'architecture de fallback, et sa connaissance détaillée de mon CV.</span>
+          <span class="lang-en">The RAG assistant documented on this page is the exact same floating widget you can
+            interact with right now in the bottom right corner of your screen. Go ahead and click the purple "M-AI"
+            button to test its responsiveness, fallback architecture, and deep knowledge of my background.</span>
         </p>
       </div>
-      
+
       <div class="bento-grid" style="margin-top: 30px; margin-bottom: 0;">
-        <div class="bento-item col-12" style="padding: 24px; background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent); border-radius: 12px;">
-            <div class="bento-title">🔑 <span class="lang-fr">LLM Router & Failover Automatique</span><span class="lang-en">LLM Router & Automatic Failover</span></div>
-            <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-              <span class="lang-fr">L'architecture 2026 intègre un routeur intelligent qui évalue la complexité de chaque requête et distribue la charge de travail entre 3 API distinctes : <br><br><strong>1. Google Gemini 3.0 Flash</strong> (Routage primaire d'urgence, 70% du trafic)<br><strong>2. Google Gemini 2.5 Flash</strong> (Fallback secondaire immédiat)<br><strong>3. NVIDIA / Qwen 3.5 MoE</strong> (Modèle profond pour raisonnement logique de haut niveau) <br><br>Si une API rate ou subit des timeouts severes, le Backend gère les exceptions silencieusement et bascule chez la concurrence.</span>
-              <span class="lang-en">The 2026 architecture features a smart router that evaluates query complexity on the fly and balances workloads across 3 distinct APIs: <br><br><strong>1. Google Gemini 3.0 Flash</strong> (Primary sub-second routing, 70% of traffic)<br><strong>2. Google Gemini 2.5 Flash</strong> (Immediate secondary failover)<br><strong>3. NVIDIA / Qwen 3.5 MoE</strong> (Deep model for high-stakes logical reasoning)<br><br>If one API rate-limits or times out, the Backend silently catches the exception and routes to competitors seamlessly.</span>
-            </p>
+        <div class="bento-item col-12"
+          style="padding: 24px; background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent); border-radius: 12px;">
+          <div class="bento-title">🔑 <span class="lang-fr">LLM Router & Failover Automatique</span><span
+              class="lang-en">LLM Router & Automatic Failover</span></div>
+          <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+            <span class="lang-fr">L'architecture 2026 intègre un routeur intelligent qui évalue la complexité de chaque
+              requête et distribue la charge de travail entre 3 API distinctes : <br><br><strong>1. Google Gemini 3.0
+                Flash</strong> (Routage primaire d'urgence, 70% du trafic)<br><strong>2. Google Gemini 2.5
+                Flash</strong> (Fallback secondaire immédiat)<br><strong>3. NVIDIA / Qwen 3.5 MoE</strong> (Modèle
+              profond pour raisonnement logique de haut niveau) <br><br>Si une API rate ou subit des timeouts severes,
+              le Backend gère les exceptions silencieusement et bascule chez la concurrence.</span>
+            <span class="lang-en">The 2026 architecture features a smart router that evaluates query complexity on the
+              fly and balances workloads across 3 distinct APIs: <br><br><strong>1. Google Gemini 3.0 Flash</strong>
+              (Primary sub-second routing, 70% of traffic)<br><strong>2. Google Gemini 2.5 Flash</strong> (Immediate
+              secondary failover)<br><strong>3. NVIDIA / Qwen 3.5 MoE</strong> (Deep model for high-stakes logical
+              reasoning)<br><br>If one API rate-limits or times out, the Backend silently catches the exception and
+              routes to competitors seamlessly.</span>
+          </p>
         </div>
       </div>
     </section>
@@ -578,36 +617,36 @@
         <span class="lang-en">🎯 Key Takeaways & Recommendations</span>
       </h3>
       <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>1. Optimisation Ciblée vs. Réduction Massive :</strong> Modéliser la probabilité
-          de churn n'est utile que si on y associe la valeur financière du client. Accorder 20€ de réduction pour sauver
-          un client générant 500€ de marge (High CLV) est un excellent investissement, mais la même offre sur un client
-          à 15€ d'historique détruit le revenu.</span>
-        <span class="lang-en"><strong>1. Targeted Optimization vs. Carpet-bombing:</strong> Modeling churn probability
-          is only useful when crossed with customer value. Spending €20 to retain a client generating €500 margin is
-          excellent ROI, but the identical offer for a €15 historical value client destroys revenue.</span>
+        <span class="lang-fr"><strong>1. Séparation propre des préoccupations :</strong> Au lieu d'exposer la logique
+          d'IA sur le frontend, l'application délègue solidement le travail intensif de chunking, d'enchâssement et
+          d'orchestration LLM à un microservice FastAPI robuste déployé sur un serveur dédié.</span>
+        <span class="lang-en"><strong>1. Clean Separation of Concerns:</strong> Rather than exposing AI logic directly
+          on the frontend, the app securely delegates heavy embedding, chunking, and LLM orchestration workloads to a
+          robust FastAPI microservice hosted on a dedicated server.</span>
       </p>
       <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>2. L'Hyper-Réactivité Bat La Précision Absolue :</strong> Le pipeline produit une
-          matrice d'action quotidienne, isolant les profils chauds (Lift au décile 1 à 3.2x vs aléatoire). Appeler ces
-          clients <em>avant</em> qu'ils ne tarissent leurs dépenses est plus rentable que d'avoir un modèle précis à 99%
-          exécuté trop tard.</span>
-        <span class="lang-en"><strong>2. Hyper-Reactivity Over Absolute Precision:</strong> The data pipeline creates a
-          daily actionable matrix isolating hot profiles (First decile lift of 3.2x vs random). Contacting these clients
-          <em>before</em> they stop spending is more profitable than having a 99% accurate model deployed too
-          late.</span>
+        <span class="lang-fr"><strong>2. Redondance des Modèles :</strong> L'implémentation d'un routeur multi-modèles
+          (Gemini 3.0, 2.5 et NVIDIA Qwen) assure la haute disponibilité de l'API. En interceptant silencieusement les
+          erreurs de rate-limit et en basculant vers des clés de secours, on garantit un "100% uptime" apparent pour
+          l'utilisateur final.</span>
+        <span class="lang-en"><strong>2. Model Redundancy:</strong> Implementing a multi-model router (Gemini 3.0, 2.5,
+          and NVIDIA Qwen) ensures high API availability. By silently intercepting rate-limit errors and failing over to
+          backup keys, it guarantees a seamless "100% uptime" experience for the end user.</span>
       </p>
       <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>3. Automatisation CRM :</strong> En exportant la sous-table `Matrice CRM`
-          directement vers les outils marketing (ex: Salesforce, Braze), on transforme une modélisation théorique en
-          machine génératrice de chiffre d'affaires.</span>
-        <span class="lang-en"><strong>3. CRM Automation:</strong> By pushing the `CRM Matrix` subset directly into
-          marketing automation tools (e.g., Salesforce, Braze), we transform a theoretical model into a daily
-          revenue-generating engine.</span>
+        <span class="lang-fr"><strong>3. Automatisation de l'Ingestion :</strong> Une simple commande reconstruit
+          entièrement la base vectorielle ChromaDB en scannant les README mis à jour de mon dépôt local, garantissant
+          une évolution de l'agent synchronisée avec mon parcours sans requérir de code supplémentaire.</span>
+        directement vers les outils marketing (ex: Salesforce, Braze), on transforme une modélisation théorique en
+        machine génératrice de chiffre d'affaires.</span>
+        <span class="lang-en"><strong>3. Ingestion Automation:</strong> A single command fully rebuilds the ChromaDB
+          vector database by scanning updated READMEs across my local repositories, ensuring the AI agent evolves
+          synchronously with my career profile without requiring any extra code.</span>
       </p>
     </section>
   </main>
 
-  
+
 
   <script>
     (function () {
