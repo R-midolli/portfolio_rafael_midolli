@@ -582,90 +582,97 @@
               instant financial impact of a reactivation campaign.</span>
           </p>
         </div>
+        <!-- Sticky Controls Wrapper -->
+        <div
+          style="position: sticky; top: 20px; z-index: 100; background: var(--surface); padding: 20px; border-radius: 16px; border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 30px; margin-left: -10px; margin-right: -10px;">
 
-        <!-- Category Toggles (from Pricing dashboard style) -->
-        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;" id="segment-toggles">
-          <button class="category-toggle active" data-seg="All" style="--btn-color: #3b82f6;">
-            <span>🌍</span>
-            <span class="lang-fr">Tous</span><span class="lang-en">All</span>
-          </button>
-          <button class="category-toggle" data-seg="High" style="--btn-color: #10b981;">
-            <span>💎</span>
-            <span class="lang-fr">Top CLV</span><span class="lang-en">High CLV</span>
-          </button>
-          <button class="category-toggle" data-seg="Mid" style="--btn-color: #6366f1;">
-            <span>⭐</span>
-            <span class="lang-fr">Mid CLV</span><span class="lang-en">Mid CLV</span>
-          </button>
-          <button class="category-toggle" data-seg="Low" style="--btn-color: #f43f5e;">
-            <span>🥉</span>
-            <span class="lang-fr">Low CLV</span><span class="lang-en">Low CLV</span>
-          </button>
-        </div>
-      </div>
-
-      <div class="bento-grid" style="margin-bottom:0;">
-
-        <!-- Controls 1 -->
-        <div class="bento-item col-6" style="padding: 16px 24px;">
-          <div class="bento-title" style="margin-bottom: 4px;">🎯 <span class="lang-fr">Min Churn Score</span><span
-              class="lang-en">Min Churn Score</span> <span id="score-val" class="val-display"
-              style="color:var(--accent);">0.70</span></div>
-          <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Seuil de
-              probabilité d'attrition</span><span class="lang-en">Churn probability threshold</span></div>
-          <input type="range" id="score-slider" min="0.5" max="0.95" step="0.01" value="0.70">
-        </div>
-
-        <!-- Controls 2 -->
-        <div class="bento-item col-6" style="padding: 16px 24px;">
-          <div class="bento-title" style="margin-bottom: 4px;">💶 <span class="lang-fr">ROI Net Minimum</span><span
-              class="lang-en">Min Net ROI</span> <span id="budget-val" class="val-display"
-              style="color:var(--accent);">€ 50</span></div>
-          <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Filtrer les
-              clients selon le gain espéré</span><span class="lang-en">Filter clients by expected gain</span></div>
-          <input type="range" id="budget-slider" min="0" max="250" step="5" value="50">
-        </div>
-
-        <!-- KPI 1 -->
-        <div class="bento-item col-3" style="text-align: center;">
-          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);">AUC-ROC
+          <!-- Category Toggles (from Pricing dashboard style) -->
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;" id="segment-toggles">
+            <button class="category-toggle active" data-seg="All" style="--btn-color: #3b82f6;">
+              <span>🌍</span>
+              <span class="lang-fr">Tous</span><span class="lang-en">All</span>
+            </button>
+            <button class="category-toggle" data-seg="High" style="--btn-color: #10b981;">
+              <span>💎</span>
+              <span class="lang-fr">Top CLV</span><span class="lang-en">High CLV</span>
+            </button>
+            <button class="category-toggle" data-seg="Mid" style="--btn-color: #6366f1;">
+              <span>⭐</span>
+              <span class="lang-fr">Mid CLV</span><span class="lang-en">Mid CLV</span>
+            </button>
+            <button class="category-toggle" data-seg="Low" style="--btn-color: #f43f5e;">
+              <span>🥉</span>
+              <span class="lang-fr">Low CLV</span><span class="lang-en">Low CLV</span>
+            </button>
           </div>
-          <div class="kpi-huge" style="color: #10b981;">0.84</div>
-          <div class="bento-desc" style="font-size: 0.75rem;">Discriminative Power</div>
-        </div>
 
-        <!-- KPI 2 -->
-        <div class="bento-item col-3" style="text-align: center;">
-          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);"><span
-              class="lang-fr">Lift au Décile 1</span><span class="lang-en">Lift @ Decile 1</span></div>
-          <div class="kpi-huge" style="color: #10b981;">3.2x</div>
-          <div class="bento-desc" style="font-size: 0.75rem;">vs Random Selection</div>
-        </div>
+          <div class="bento-grid" style="margin-bottom:0;">
 
-        <!-- KPI 3 -->
-        <div class="bento-item col-3" style="text-align: center;">
-          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);"><span
-              class="lang-fr">Clients Ciblés</span><span class="lang-en">Targeted Clients</span></div>
-          <div class="kpi-huge" style="color: #3b82f6;" id="kpi-clients">0</div>
-          <div class="bento-desc" style="font-size: 0.75rem;">Fitting Criteria</div>
-        </div>
-
-        <!-- KPI 4 -->
-        <div class="bento-item col-3" style="text-align: center;">
-          <div class="info-tooltip-wrap" style="top:10px; left:10px;">
-            <div class="info-tooltip-icon" style="width:20px; height:20px; font-size:0.8rem;">?</div>
-            <div class="info-tooltip-content">
-              <span class="lang-fr">ROI net positif généré uniquement par les clients sauvés du churn après déduction de
-                tous les coûts de coupons.</span>
-              <span class="lang-en">Net positive ROI generated solely by clients saved from churn after deducting all
-                given coupon costs.</span>
+            <!-- Controls 1 -->
+            <div class="bento-item col-6" style="padding: 16px 24px;">
+              <div class="bento-title" style="margin-bottom: 4px;">🎯 <span class="lang-fr">Min Churn Score</span><span
+                  class="lang-en">Min Churn Score</span> <span id="score-val" class="val-display"
+                  style="color:var(--accent);">0.70</span></div>
+              <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Seuil de
+                  probabilité d'attrition</span><span class="lang-en">Churn probability threshold</span></div>
+              <input type="range" id="score-slider" min="0.5" max="0.95" step="0.01" value="0.70">
             </div>
-          </div>
-          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);"><span
-              class="lang-fr">ROI Net Cumulé</span><span class="lang-en">Expected Net ROI</span></div>
-          <div class="kpi-huge" id="kpi-roi">€ 0</div>
-          <div class="bento-desc" style="font-size: 0.75rem;">Cumulative upside</div>
-        </div>
+
+            <!-- Controls 2 -->
+            <div class="bento-item col-6" style="padding: 16px 24px;">
+              <div class="bento-title" style="margin-bottom: 4px;">💶 <span class="lang-fr">ROI Net Minimum</span><span
+                  class="lang-en">Min Net ROI</span> <span id="budget-val" class="val-display"
+                  style="color:var(--accent);">€ 50</span></div>
+              <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Filtrer les
+                  clients selon le gain espéré</span><span class="lang-en">Filter clients by expected gain</span></div>
+              <input type="range" id="budget-slider" min="0" max="250" step="5" value="50">
+            </div>
+
+            <!-- KPI 1 -->
+            <div class="bento-item col-3" style="text-align: center;">
+              <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);">
+                AUC-ROC
+              </div>
+              <div class="kpi-huge" style="color: #10b981;">0.84</div>
+              <div class="bento-desc" style="font-size: 0.75rem;">Discriminative Power</div>
+            </div>
+
+            <!-- KPI 2 -->
+            <div class="bento-item col-3" style="text-align: center;">
+              <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);">
+                <span class="lang-fr">Lift au Décile 1</span><span class="lang-en">Lift @ Decile 1</span></div>
+              <div class="kpi-huge" style="color: #10b981;">3.2x</div>
+              <div class="bento-desc" style="font-size: 0.75rem;">vs Random Selection</div>
+            </div>
+
+            <!-- KPI 3 -->
+            <div class="bento-item col-3" style="text-align: center;">
+              <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);">
+                <span class="lang-fr">Clients Ciblés</span><span class="lang-en">Targeted Clients</span></div>
+              <div class="kpi-huge" style="color: #3b82f6;" id="kpi-clients">0</div>
+              <div class="bento-desc" style="font-size: 0.75rem;">Fitting Criteria</div>
+            </div>
+
+            <!-- KPI 4 -->
+            <div class="bento-item col-3" style="text-align: center;">
+              <div class="info-tooltip-wrap" style="top:10px; left:10px;">
+                <div class="info-tooltip-icon" style="width:20px; height:20px; font-size:0.8rem;">?</div>
+                <div class="info-tooltip-content">
+                  <span class="lang-fr">ROI net positif généré uniquement par les clients sauvés du churn après
+                    déduction de
+                    tous les coûts de coupons.</span>
+                  <span class="lang-en">Net positive ROI generated solely by clients saved from churn after deducting
+                    all
+                    given coupon costs.</span>
+                </div>
+              </div>
+              <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);">
+                <span class="lang-fr">ROI Net Cumulé</span><span class="lang-en">Expected Net ROI</span></div>
+              <div class="kpi-huge" id="kpi-roi">€ 0</div>
+              <div class="bento-desc" style="font-size: 0.75rem;">Cumulative upside</div>
+            </div>
+          </div> <!-- End Bento Grid -->
+        </div> <!-- End Sticky Wrapper -->
 
         <!-- Chart 1: Top Bar -->
         <div class="bento-item col-12" style="padding: 10px;">
@@ -685,9 +692,9 @@
         <div class="bento-item col-12"
           style="padding: 16px 24px; background: rgba(59, 130, 246, 0.05); border-left: 4px solid var(--accent); border-radius: 12px;">
           <p style="margin: 0; color: var(--text); font-size: 0.95rem; line-height: 1.5;">
-            <strong>💡 Insight :</strong> <span class="lang-fr">Le Top 10 des clients listés ci-dessus concentre le plus
+            <span class="lang-fr">💡 Le Top 10 des clients listés ci-dessus concentre le plus
               gros potentiel de retour sur investissement. Les cibler en priorité absolue maximise l'impact financier de
-              la campagne dès les premiers jours.</span><span class="lang-en">The Top 10 clients listed above
+              la campagne dès les premiers jours.</span><span class="lang-en">💡 The Top 10 clients listed above
               concentrate the highest potential return on investment. Targeting them with absolute priority maximizes
               the campaign's financial impact from day one.</span>
           </p>
@@ -711,10 +718,11 @@
         <div class="bento-item col-12"
           style="padding: 16px 24px; background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--success); border-radius: 12px;">
           <p style="margin: 0; color: var(--text); font-size: 0.95rem; line-height: 1.5;">
-            <strong>💡 Insight :</strong> <span class="lang-fr">Le nuage de points ci-dessus révèle que l'action CRM
+            <span class="lang-fr">💡 Le nuage de points ci-dessus révèle que l'action CRM
               n'est véritablement rentable que sur une zone précise (haute valeur CLV + haut risque). La courbe de
               Pareto ci-dessous confirme qu'accorder des remises en dehors de cette zone détruit la marge.</span><span
-              class="lang-en">The scatter plot above reveals that CRM action is only truly profitable in a specific zone
+              class="lang-en">💡 The scatter plot above reveals that CRM action is only truly profitable in a specific
+              zone
               (high CLV + high risk). The Pareto curve below confirms that granting discounts outside this zone destroys
               margins.</span>
           </p>
