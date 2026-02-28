@@ -232,7 +232,7 @@
     var fab = el("button", "mai-fab");
     fab.id = "mai-fab";
     fab.setAttribute("aria-label", "Open Midolli-AI chat");
-    fab.appendChild(logoSVG(38));
+    fab.appendChild(logoSVG(52));
     fab.addEventListener("click", togglePanel);
     root.appendChild(fab);
     _els.fab = fab;
