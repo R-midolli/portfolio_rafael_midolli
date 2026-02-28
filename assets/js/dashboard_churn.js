@@ -107,7 +107,7 @@ function initDashboard() {
             gridColor: isDark ? '#334155' : '#e2e8f0',
             success: '#10b981',
             danger: '#ef4444',
-            hoverBg: isDark ? '#1e293b' : '#ffffff',
+            hoverBg: isDark ? '#0f172a' : '#ffffff',
             hoverText: isDark ? '#f8fafc' : '#1e293b'
         };
     }
@@ -170,7 +170,12 @@ function initDashboard() {
             margin: { l: 80, r: 20, t: 40, b: 40 },
             xaxis: { gridcolor: theme.gridColor, title: "ROI (€)", zerolinecolor: theme.danger },
             yaxis: { gridcolor: theme.gridColor },
-            hovermode: !1
+            hovermode: 'closest',
+            hoverlabel: {
+                bgcolor: theme.hoverBg,
+                font: { color: theme.hoverText, family: 'DM Sans, sans-serif' },
+                bordercolor: theme.gridColor
+            }
         }, { responsive: true, displayModeBar: false });
 
         // Scatter Chart CLV vs Score
@@ -209,7 +214,12 @@ function initDashboard() {
             margin: { l: 50, r: 20, t: 40, b: 40 },
             xaxis: { title: currentLang === 'fr' ? "Probabilité (Score)" : "Score", gridcolor: theme.gridColor },
             yaxis: { title: "CLV (€)", gridcolor: theme.gridColor },
-            legend: { orientation: 'h', y: -0.2 }
+            legend: { orientation: 'h', y: -0.2 },
+            hoverlabel: {
+                bgcolor: theme.hoverBg,
+                font: { color: theme.hoverText, family: 'DM Sans, sans-serif' },
+                bordercolor: theme.gridColor
+            }
         }, { responsive: true, displayModeBar: false });
 
         // Pareto Chart
@@ -264,8 +274,11 @@ function initDashboard() {
                 showgrid: true,
                 gridcolor: theme.gridColor
             },
-            legend: { orientation: 'h', y: -0.2 },
-            hovermode: 'x unified'
+            hoverlabel: {
+                bgcolor: theme.hoverBg,
+                font: { color: theme.hoverText, family: 'DM Sans, sans-serif' },
+                bordercolor: theme.gridColor
+            }
         }, { responsive: true, displayModeBar: false });
 
         // Table rendering
