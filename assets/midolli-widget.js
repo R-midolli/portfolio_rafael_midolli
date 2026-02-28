@@ -49,70 +49,71 @@
     svg.setAttribute("width", String(size));
     svg.setAttribute("height", String(size));
 
-    // Circle background
+    // Gradient fill
     var defs = document.createElementNS(ns, "defs");
     var grad = document.createElementNS(ns, "linearGradient");
     grad.id = "mai-grad-" + size;
-    grad.setAttribute("x1", "0%");
-    grad.setAttribute("y1", "0%");
-    grad.setAttribute("x2", "100%");
-    grad.setAttribute("y2", "100%");
+    grad.setAttribute("x1", "0%"); grad.setAttribute("y1", "0%");
+    grad.setAttribute("x2", "100%"); grad.setAttribute("y2", "100%");
     var s1 = document.createElementNS(ns, "stop");
-    s1.setAttribute("offset", "0%");
-    s1.setAttribute("stop-color", "#6d28d9");
+    s1.setAttribute("offset", "0%"); s1.setAttribute("stop-color", "#6d28d9");
     var s2 = document.createElementNS(ns, "stop");
-    s2.setAttribute("offset", "100%");
-    s2.setAttribute("stop-color", "#4f46e5");
-    grad.appendChild(s1);
-    grad.appendChild(s2);
+    s2.setAttribute("offset", "100%"); s2.setAttribute("stop-color", "#4f46e5");
+    grad.appendChild(s1); grad.appendChild(s2);
     defs.appendChild(grad);
     svg.appendChild(defs);
 
+    // Circle
     var circle = document.createElementNS(ns, "circle");
-    circle.setAttribute("cx", "50");
-    circle.setAttribute("cy", "50");
+    circle.setAttribute("cx", "50"); circle.setAttribute("cy", "50");
     circle.setAttribute("r", "50");
     circle.setAttribute("fill", "url(#mai-grad-" + size + ")");
     svg.appendChild(circle);
 
+    // --- FAB config (size >= 40): 62px circle ---
+    // --- Avatar config (size < 40): 42px circle ---
+    var isFab = size >= 40;
+
     // "M" letter
     var mText = document.createElementNS(ns, "text");
     mText.setAttribute("x", "50");
-    mText.setAttribute("y", size > 50 ? "48" : "46");
+    mText.setAttribute("y", "47");
     mText.setAttribute("text-anchor", "middle");
     mText.setAttribute("dominant-baseline", "middle");
     mText.setAttribute("fill", "#ffffff");
-    mText.setAttribute("font-family", "'Consolas','Courier New',monospace");
-    mText.setAttribute("font-weight", "bold");
-    mText.setAttribute("font-size", size > 50 ? "34" : "26");
+    mText.setAttribute("font-family", "monospace");
+    mText.setAttribute("font-weight", "900");
+    mText.setAttribute("font-size", isFab ? "22" : "15");
     mText.textContent = "M";
     svg.appendChild(mText);
 
     // Divider line
     var line = document.createElementNS(ns, "line");
-    line.setAttribute("x1", "30");
-    line.setAttribute("y1", size > 50 ? "64" : "62");
-    line.setAttribute("x2", "70");
-    line.setAttribute("y2", size > 50 ? "64" : "62");
-    line.setAttribute("stroke", "rgba(255,255,255,0.3)");
-    line.setAttribute("stroke-width", "1");
+    var lineX1 = isFab ? "35" : "38";
+    var lineX2 = isFab ? "65" : "62";
+    line.setAttribute("x1", lineX1); line.setAttribute("y1", "63");
+    line.setAttribute("x2", lineX2); line.setAttribute("y2", "63");
+    line.setAttribute("stroke", "#c4b5fd");
+    line.setAttribute("stroke-width", "1.5");
+    line.setAttribute("opacity", "0.5");
     svg.appendChild(line);
 
     // "AI" text
     var aiText = document.createElementNS(ns, "text");
     aiText.setAttribute("x", "50");
-    aiText.setAttribute("y", size > 50 ? "80" : "78");
+    aiText.setAttribute("y", "79");
     aiText.setAttribute("text-anchor", "middle");
     aiText.setAttribute("dominant-baseline", "middle");
     aiText.setAttribute("fill", "#c4b5fd");
-    aiText.setAttribute("font-family", "'Consolas','Courier New',monospace");
-    aiText.setAttribute("font-size", size > 50 ? "16" : "12");
-    aiText.setAttribute("letter-spacing", "4");
+    aiText.setAttribute("font-family", "monospace");
+    aiText.setAttribute("font-size", isFab ? "11" : "8");
+    aiText.setAttribute("letter-spacing", isFab ? "4" : "3");
     aiText.textContent = "AI";
     svg.appendChild(aiText);
 
     return svg;
   }
+
 
   function sendIcon() {
     var ns = "http://www.w3.org/2000/svg";
