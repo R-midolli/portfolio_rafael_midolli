@@ -420,6 +420,15 @@
   padding: 4px 0;
 }
 
+/* --- Response time meta --- */
+.mai-response-meta {
+  font-size: 10px;
+  opacity: 0.45;
+  margin-top: 4px;
+  padding-left: 2px;
+  letter-spacing: 0.02em;
+}
+
 /* --- Quick Action Chips --- */
 .mai-chips {
   display: flex;

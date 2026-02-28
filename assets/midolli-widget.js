@@ -18,6 +18,7 @@
       disclaimer: "Midolli-AI peut faire des erreurs.",
       subtitle: "Assistant Data Portfolio",
       send: "Envoyer",
+      responded: "répondu en",
     },
     en: {
       welcome:
@@ -27,6 +28,7 @@
       disclaimer: "Midolli-AI can make mistakes.",
       subtitle: "Data Portfolio Assistant",
       send: "Send",
+      responded: "responded in",
     },
   };
 
@@ -392,7 +394,7 @@
   // ---------------------------------------------------------------
   // Messages
   // ---------------------------------------------------------------
-  function renderMessage(content, role) {
+  function renderMessage(content, role, meta) {
     var wrapper = el("div", "mai-message mai-message-" + role);
     var bubble = el("div", role === "user" ? "mai-user-bubble" : "mai-bot-bubble");
 
@@ -404,6 +406,14 @@
     }
 
     wrapper.appendChild(bubble);
+
+    // Response time meta tag below bot bubbles
+    if (role === "bot" && meta) {
+      var metaEl = el("div", "mai-response-meta");
+      metaEl.textContent = meta;
+      wrapper.appendChild(metaEl);
+    }
+
     _els.messages.appendChild(wrapper);
     _els.messages.scrollTop = _els.messages.scrollHeight;
   }
@@ -446,6 +456,7 @@
 
     // Show typing
     showTyping();
+    var startTime = Date.now();
 
     // API call
     fetch(_cfg.apiUrl + "/chat", {
@@ -464,7 +475,9 @@
       .then(function (data) {
         hideTyping();
         var reply = data.reply || "...";
-        renderMessage(reply, "bot");
+        var elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+        var meta = "⚡ " + t().responded + " " + elapsed + "s";
+        renderMessage(reply, "bot", meta);
         _history.push({ role: "assistant", content: reply });
       })
       .catch(function (err) {
