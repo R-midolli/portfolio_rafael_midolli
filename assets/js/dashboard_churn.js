@@ -117,27 +117,15 @@ function initDashboard() {
         scoreVal.innerText = minScore.toFixed(2);
         budgetVal.innerText = "€ " + budget.toLocaleString();
 
-        // Filter logic: Score Threshold + Positive expected ROI + Active Segment Toggle
-        let filtered = data.filter(d =>
+        // Filter logic: Score Threshold + Positive expected ROI + Active Segment Toggle + Min ROI
+        let selected = data.filter(d =>
             d.score >= minScore &&
-            d.expected_roi > 0 &&
+            d.expected_roi >= budget &&
             (activeSegment === "All" || d.segment === activeSegment)
         );
 
         // Sort by expected ROI desc
-        filtered.sort((a, b) => b.expected_roi - a.expected_roi);
-
-        // Cumulative budget constraint
-        let selected = [];
-        let cumulative = 0;
-        for (let d of filtered) {
-            if (cumulative + d.coupon <= budget) {
-                cumulative += d.coupon;
-                selected.push(d);
-            } else {
-                break;
-            }
-        }
+        selected.sort((a, b) => b.expected_roi - a.expected_roi);
 
         // KPIs
         const n_selected = selected.length;
@@ -155,17 +143,17 @@ function initDashboard() {
             return;
         }
 
-        // Top 20 Bar Chart
-        let top20 = selected.slice(0, 20);
+        // Top 10 Bar Chart
+        let top10 = selected.slice(0, 10);
         let barTrace = {
             type: 'bar',
-            x: top20.map(d => d.expected_roi).reverse(),
-            y: top20.map(d => "Client " + d.id).reverse(),
+            x: top10.map(d => d.expected_roi).reverse(),
+            y: top10.map(d => "Client " + d.id).reverse(),
             orientation: 'h',
             marker: {
-                color: top20.map(d => colors[d.segment]).reverse()
+                color: top10.map(d => colors[d.segment]).reverse()
             },
-            text: top20.map(d => "€" + Math.round(d.expected_roi)).reverse(),
+            text: top10.map(d => "€" + Math.round(d.expected_roi)).reverse(),
             textposition: 'auto',
             hoverinfo: 'none'
         };
@@ -173,7 +161,7 @@ function initDashboard() {
         const currentLang = document.documentElement.getAttribute('data-lang') || 'fr';
 
         Plotly.newPlot('bar-chart', [barTrace], {
-            title: { text: currentLang === 'fr' ? 'Top 20 Clients (ROI Attendu)' : 'Top 20 Priority Clients (ROI)', font: { color: theme.fontColor } },
+            title: { text: currentLang === 'fr' ? 'Top 10 Clients (ROI Attendu)' : 'Top 10 Priority Clients (ROI)', font: { color: theme.fontColor } },
             paper_bgcolor: theme.paperBg,
             plot_bgcolor: theme.chartBg,
             font: { color: theme.fontColor, family: 'DM Sans, sans-serif' },
@@ -194,9 +182,13 @@ function initDashboard() {
                     mode: 'markers',
                     name: seg,
                     marker: {
-                        size: segData.map(d => d.coupon * 1.5),
+                        size: segData.map(d => 10 + d.coupon * 0.5),
                         color: colors[seg],
-                        opacity: 0.8
+                        opacity: 0.7,
+                        line: {
+                            color: isDarkMode ? '#1e293b' : '#ffffff',
+                            width: 1
+                        }
                     },
                     text: segData.map(d => `Client ${d.id}<br>ROI: €${Math.round(d.expected_roi)}`)
                 };
@@ -212,6 +204,52 @@ function initDashboard() {
             xaxis: { title: currentLang === 'fr' ? "Probabilité (Score)" : "Score", gridcolor: theme.gridColor },
             yaxis: { title: "CLV (€)", gridcolor: theme.gridColor },
             legend: { orientation: 'h', y: -0.2 }
+        }, { responsive: true, displayModeBar: false });
+
+        // Pareto Chart
+        let cumulativeRoi = [];
+        let runningSum = 0;
+        selected.forEach(d => {
+            runningSum += d.expected_roi;
+            cumulativeRoi.push(runningSum / total_roi * 100);
+        });
+
+        let paretoBar = {
+            type: 'bar',
+            x: selected.map((d, i) => i + 1),
+            y: selected.map(d => d.expected_roi),
+            name: currentLang === 'fr' ? 'ROI Indiv.' : 'Indiv. ROI',
+            marker: { color: theme.gridColor }
+        };
+
+        let paretoLine = {
+            type: 'scatter',
+            x: selected.map((d, i) => i + 1),
+            y: cumulativeRoi,
+            yaxis: 'y2',
+            name: currentLang === 'fr' ? '% Cumulé' : 'Cumul %',
+            mode: 'lines',
+            line: { color: theme.success, width: 3 }
+        };
+
+        Plotly.newPlot('pareto-chart', [paretoBar, paretoLine], {
+            title: { text: currentLang === 'fr' ? 'Distribution du ROI (Pareto)' : 'ROI Distribution (Pareto)', font: { color: theme.fontColor } },
+            paper_bgcolor: theme.paperBg,
+            plot_bgcolor: theme.chartBg,
+            font: { color: theme.fontColor, family: 'DM Sans, sans-serif' },
+            margin: { l: 50, r: 50, t: 40, b: 40 },
+            xaxis: { title: "Clients", showgrid: false, gridcolor: theme.gridColor },
+            yaxis: { title: "ROI (€)", showgrid: false, gridcolor: theme.gridColor },
+            yaxis2: {
+                title: "% Cumulé",
+                overlaying: 'y',
+                side: 'right',
+                range: [0, 105],
+                showgrid: true,
+                gridcolor: theme.gridColor
+            },
+            legend: { orientation: 'h', y: -0.2 },
+            hovermode: 'x unified'
         }, { responsive: true, displayModeBar: false });
 
         // Table rendering

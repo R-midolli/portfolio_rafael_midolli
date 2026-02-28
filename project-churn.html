@@ -416,9 +416,9 @@
       </div>
     </div>
 
-    <div class="info-grid">
+    <div class="bento-grid" style="margin-bottom: 24px;">
       <!-- Left Column items -->
-      <div style="display: flex; flex-direction: column;">
+      <div class="col-8" style="display: flex; flex-direction: column;">
 
         <!-- Problem + Approach -->
         <div class="insight-card"
@@ -495,15 +495,13 @@
       </div> <!-- End Left Column -->
 
       <!-- Tech Stack + GitHub -->
-      <div class="card">
+      <div class="bento-item col-4">
         <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
         <p>
-          <span class="lang-fr">Un projet logiciel complet organisé avec <strong>uv</strong> pour la gestion des
-            dépendances, et une documentation CI/CD. Les carnets de bord (notebooks) sont conçus de manière interactive
-            et reproductible grâce à <strong>Marimo</strong>.</span>
-          <span class="lang-en">A fully structured software project using <strong>uv</strong> for dependency management
-            with CI/CD documentation. Notebooks are built interactively and reproducibly via
-            <strong>Marimo</strong>.</span>
+          <span class="lang-fr">Un pipeline Machine Learning robuste géré avec <strong>uv</strong> pour le contrôle des
+            dépendances. L'entraînement XGBoost et le feature engineering sont hautement modulaires.</span>
+          <span class="lang-en">A robust Machine Learning pipeline managed with <strong>uv</strong> for dependency
+            control. The XGBoost training and feature engineering are highly modular.</span>
         </p>
         <p>
           <span class="lang-fr"><strong>Livrables :</strong> Pipeline `src/`, Notebooks Python réactifs, Fichiers
@@ -516,7 +514,6 @@
           <span class="tech-tag">🌲 XGBoost</span>
           <span class="tech-tag">🧪 Pytest</span>
           <span class="tech-tag">📉 SHAP</span>
-          <span class="tech-tag">📓 Marimo</span>
         </div>
         <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity" target="_blank"
           rel="noopener" class="btn-github">
@@ -622,12 +619,12 @@
 
         <!-- Controls 2 -->
         <div class="bento-item col-6" style="padding: 16px 24px;">
-          <div class="bento-title" style="margin-bottom: 4px;">💶 <span class="lang-fr">Budget de Campagne</span><span
-              class="lang-en">Campaign Budget</span> <span id="budget-val" class="val-display"
-              style="color:var(--accent);">€ 3,000</span></div>
-          <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Enveloppe
-              maximale de couponing</span><span class="lang-en">Maximum couponing envelope</span></div>
-          <input type="range" id="budget-slider" min="500" max="15000" step="500" value="3000">
+          <div class="bento-title" style="margin-bottom: 4px;">💶 <span class="lang-fr">ROI Net Minimum</span><span
+              class="lang-en">Min Net ROI</span> <span id="budget-val" class="val-display"
+              style="color:var(--accent);">€ 50</span></div>
+          <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Filtrer les
+              clients selon le gain espéré</span><span class="lang-en">Filter clients by expected gain</span></div>
+          <input type="range" id="budget-slider" min="0" max="250" step="5" value="50">
         </div>
 
         <!-- KPI 1 -->
@@ -671,22 +668,22 @@
           <div class="bento-desc" style="font-size: 0.75rem;">Cumulative upside</div>
         </div>
 
-        <!-- Chart 1: Top 20 Bar -->
-        <div class="bento-item col-6" style="padding: 10px;">
+        <!-- Chart 1: Top Bar -->
+        <div class="bento-item col-12" style="padding: 10px;">
           <div class="info-tooltip-wrap">
             <div class="info-tooltip-icon">?</div>
             <div class="info-tooltip-content">
-              <span class="lang-fr">Les 20 clients les plus rentables à inclure absolument dans la campagne marketing.
+              <span class="lang-fr">Les clients les plus rentables à inclure absolument dans la campagne marketing.
                 Classés par ROI.</span>
-              <span class="lang-en">The top 20 most profitable clients to absolutely include in the marketing list.
-                Sorted by ROI.</span>
+              <span class="lang-en">The most profitable clients to absolutely include in the marketing list. Sorted by
+                ROI.</span>
             </div>
           </div>
           <div id="bar-chart" class="chart-native-container" style="height: 350px;"></div>
         </div>
 
         <!-- Chart 2: Scatter -->
-        <div class="bento-item col-6" style="padding: 10px;">
+        <div class="bento-item col-7" style="padding: 10px;">
           <div class="info-tooltip-wrap">
             <div class="info-tooltip-icon">?</div>
             <div class="info-tooltip-content">
@@ -697,6 +694,20 @@
             </div>
           </div>
           <div id="scatter-chart" class="chart-native-container" style="height: 350px;"></div>
+        </div>
+
+        <!-- Chart 3: Pareto -->
+        <div class="bento-item col-5" style="padding: 10px;">
+          <div class="info-tooltip-wrap">
+            <div class="info-tooltip-icon">?</div>
+            <div class="info-tooltip-content">
+              <span class="lang-fr">Impact Pareto : Une minorité de clients génère la majorité du ROI total de
+                rétention.</span>
+              <span class="lang-en">Pareto Impact: A minority of clients generates the majority of total retention
+                ROI.</span>
+            </div>
+          </div>
+          <div id="pareto-chart" class="chart-native-container" style="height: 350px;"></div>
         </div>
 
         <!-- The Action Table -->
@@ -746,6 +757,30 @@
           revenue-generating engine.</span>
       </p>
     </section>
+
+    <!-- ═══ CTA ═══ -->
+    <div class="fmcg-cta" style="margin-top:32px;">
+      <div class="fmcg-cta-text">
+        <strong>
+          <span class="lang-fr">Voir le code d'entraînement complet</span>
+          <span class="lang-en">View the full training code</span>
+        </strong>
+        <p>
+          <span class="lang-fr">Plongez dans le code Python (EDA, ingénierie RFM, modélisation XGBoost et analyse
+            SHAP).</span>
+          <span class="lang-en">Dive into the actual Python code (EDA, RFM engineering, XGBoost modeling, and SHAP
+            analysis).</span>
+        </p>
+      </div>
+      <div class="fmcg-cta-actions">
+        <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity/blob/main/notebooks/02_model.py"
+          target="_blank" rel="noopener" class="btn-github"
+          style="width:auto;margin-top:0;padding:11px 22px;font-size:.9rem;">
+          <span class="lang-fr">Ouvrir le Modèle →</span>
+          <span class="lang-en">Open Model →</span>
+        </a>
+      </div>
+    </div>
 
   </main>
 
