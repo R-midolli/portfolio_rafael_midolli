@@ -417,72 +417,82 @@
     </div>
 
     <div class="info-grid">
-      <!-- Problem + Approach -->
-      <div class="insight-card"
-        style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
-        <h3>🎯 <span class="lang-fr">Le Défi Opérationnel</span><span class="lang-en">The Operational Challenge</span>
-        </h3>
-        <p style="color: var(--text-muted); line-height: 1.6;">
-          <span class="lang-fr">L'acquisition de nouveaux clients coûte beaucoup plus cher que la fidélisation, mais
-            arroser toute sa base de réductions détruit instantanément la marge.
-            <br><br><strong>La question clé :</strong> Comment cibler <em>uniquement</em> les clients sur le point de
-            partir, et calculer si leur rétention sera rentable ?</span>
-          <span class="lang-en">Acquiring new customers often costs far more than retention, but blasting the entire
-            base with discounts instantly destroys margins.
-            <br><br><strong>The key question:</strong> How to target <em>only</em> customers on the verge of leaving,
-            and calculate mathematically if keeping them is profitable?</span>
-        </p>
-      </div>
+      <!-- Left Column items -->
+      <div style="display: flex; flex-direction: column;">
 
-      <div class="insight-card"
-        style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
-        <h3>💡 <span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The Analytical Approach</span>
-        </h3>
-        <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
-          <span class="lang-fr">Au lieu d'un modèle de churn classique, j'ai développé une solution ROI-driven croisant
-            Machine Learning et valeur client (CLV) :</span>
-          <span class="lang-en">Instead of a standard churn model, I engineered an ROI-driven solution blending Machine
-            Learning with Customer Lifetime Value (CLV):</span>
-        </p>
-        <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: disc;">
-          <li><span class="lang-fr"><strong>Features RFM :</strong> Création de variables comportementales et
-              temporelles (récence, fréquence de promo) sur des données de caisse.</span><span
-              class="lang-en"><strong>RFM Features:</strong> Engineering temporal and behavioral variables (recency,
-              promo frequency) from raw POS data.</span></li>
-          <li><span class="lang-fr"><strong>Modèle XGBoost :</strong> Entraînement performant et interprétation des
-              facteurs de fuite via <strong>SHAP values</strong>.</span><span class="lang-en"><strong>XGBoost
-                Model:</strong> High-performance training and interpretation of flight factors using <strong>SHAP
-                values</strong>.</span></li>
-          <li><span class="lang-fr"><strong>Optimisation Financière :</strong> Segmentation par CLV pour ajuster
-              l'action (20€ pour VIP, 5€ pour standard) et calcul du ROI net.</span><span
-              class="lang-en"><strong>Financial Optimization:</strong> CLV segmentation to adjust actions (€20 for VIP,
-              €5 for standard) and compute net expected ROI.</span></li>
-        </ul>
-      </div>
-      <!-- Key metrics mini-cards -->
-      <div class="metrics-mini">
-        <div class="metric-mini">
-          <div class="metric-value highlight">XGB</div>
-          <div class="metric-label">
-            <span class="lang-fr">Modèle de Classification</span>
-            <span class="lang-en">Classification Model</span>
+        <!-- Problem + Approach -->
+        <div class="insight-card"
+          style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
+          <h3>🎯 <span class="lang-fr">Le Défi Opérationnel</span><span class="lang-en">The Operational Challenge</span>
+          </h3>
+          <p style="color: var(--text-muted); line-height: 1.6;">
+            <span class="lang-fr">L'acquisition de nouveaux clients coûte beaucoup plus cher que la fidélisation, mais
+              arroser toute sa base de réductions détruit instantanément la marge.
+              <br><br><strong>La question clé :</strong> Comment cibler <em>uniquement</em> les clients sur le point de
+              partir, et calculer si leur rétention sera rentable ?</span>
+            <span class="lang-en">Acquiring new customers often costs far more than retention, but blasting the entire
+              base with discounts instantly destroys margins.
+              <br><br><strong>The key question:</strong> How to target <em>only</em> customers on the verge of leaving,
+              and calculate mathematically if keeping them is profitable?</span>
+          </p>
+        </div>
+
+        <div class="insight-card"
+          style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
+          <h3>💡 <span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The Analytical Approach</span>
+          </h3>
+          <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+            <span class="lang-fr">Au lieu d'un modèle de churn classique, j'ai développé une solution ROI-driven
+              croisant
+              Machine Learning et valeur client (CLV) :</span>
+            <span class="lang-en">Instead of a standard churn model, I engineered an ROI-driven solution blending
+              Machine
+              Learning with Customer Lifetime Value (CLV):</span>
+          </p>
+          <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: disc;">
+            <li><span class="lang-fr"><strong>Features RFM :</strong> Création de variables comportementales et
+                temporelles (récence, fréquence de promo) sur des données de caisse.</span><span
+                class="lang-en"><strong>RFM Features:</strong> Engineering temporal and behavioral variables (recency,
+                promo frequency) from raw POS data.</span></li>
+            <li><span class="lang-fr"><strong>Modèle XGBoost :</strong> Entraînement performant et interprétation des
+                facteurs de fuite via <strong>SHAP values</strong>.</span><span class="lang-en"><strong>XGBoost
+                  Model:</strong> High-performance training and interpretation of flight factors using <strong>SHAP
+                  values</strong>.</span></li>
+            <li><span class="lang-fr"><strong>Optimisation Financière :</strong> Segmentation par CLV pour ajuster
+                l'action (20€ pour VIP, 5€ pour standard) et calcul du ROI net.</span><span
+                class="lang-en"><strong>Financial Optimization:</strong> CLV segmentation to adjust actions (€20 for
+                VIP,
+                €5 for standard) and compute net expected ROI.</span></li>
+          </ul>
+        </div>
+        <!-- Key metrics mini-cards -->
+        <div class="insight-card"
+          style="padding: 16px 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface);">
+          <div class="metrics-mini">
+            <div class="metric-mini">
+              <div class="metric-value highlight">XGB</div>
+              <div class="metric-label">
+                <span class="lang-fr">Modèle de Classification</span>
+                <span class="lang-en">Classification Model</span>
+              </div>
+            </div>
+            <div class="metric-mini">
+              <div class="metric-value success">ROI</div>
+              <div class="metric-label">
+                <span class="lang-fr">Optimisation Financière</span>
+                <span class="lang-en">Financial Optimization</span>
+              </div>
+            </div>
+            <div class="metric-mini">
+              <div class="metric-value">RFM</div>
+              <div class="metric-label">
+                <span class="lang-fr">Features Transactionnelles</span>
+                <span class="lang-en">Transactional Features</span>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="metric-mini">
-          <div class="metric-value success">ROI</div>
-          <div class="metric-label">
-            <span class="lang-fr">Optimisation Financière</span>
-            <span class="lang-en">Financial Optimization</span>
-          </div>
-        </div>
-        <div class="metric-mini">
-          <div class="metric-value">RFM</div>
-          <div class="metric-label">
-            <span class="lang-fr">Features Transactionnelles</span>
-            <span class="lang-en">Transactional Features</span>
-          </div>
-        </div>
-      </div>
+      </div> <!-- End Left Column -->
 
       <!-- Tech Stack + GitHub -->
       <div class="card">
