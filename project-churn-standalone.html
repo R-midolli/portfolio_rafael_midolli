@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Churn Prediction Focus - Rafael Midolli</title>
+    <meta name="description"
+        content="Customer Churn Prediction and ROI Optimization Interactive Dashboard using XGBoost and RFM features.">
+    <meta property="og:title" content="Customer Churn - Rafael Midolli">
+    <meta property="og:description" content="Predict customer churn and optimize reactivation ROI in FMCG context.">
+    <meta property="og:type" content="website">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --primary: #3b82f6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --purple: #8b5cf6;
+            --teal: #06b6d4;
+            --gray-badge: #64748b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Fade-in Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Section Spacing */
+        section {
+            margin-bottom: 5rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--bg-card);
+            padding-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, #3b82f6, #06b6d4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .kpi-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .kpi-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .cta-group {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-github {
+            background-color: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+
+        .btn-github:hover {
+            border-color: #e94560;
+            color: #e94560;
+            box-shadow: 0 0 10px rgba(233, 69, 96, 0.3);
+        }
+
+        /* Problem */
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .problem-col {
+            background: var(--bg-card);
+            padding: 2rem;
+            border-radius: 12px;
+        }
+
+        .problem-col h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-col.negative h3 {
+            color: var(--danger);
+        }
+
+        .problem-col.positive h3 {
+            color: var(--success);
+        }
+
+        .problem-col ul {
+            list-style: none;
+        }
+
+        .problem-col li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .problem-col.negative li::before {
+            content: "❌";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        .problem-col.positive li::before {
+            content: "✅";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+
+        /* Technical Pipeline */
+        .pipeline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            gap: 1rem;
+        }
+
+        .pipeline::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #334155;
+            z-index: 0;
+            transform: translateY(-50%);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 212, 170, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 212, 170, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 212, 170, 0);
+            }
+        }
+
+        .step-card {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 12px;
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            text-align: center;
+            border-top: 4px solid var(--text-muted);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .step-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .step-num {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: var(--bg-dark);
+            border-radius: 50%;
+            line-height: 30px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            border: 2px solid;
+        }
+
+        .step-card:nth-child(1) {
+            border-top-color: var(--primary);
+        }
+
+        .step-card:nth-child(1) .step-num {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .step-card:nth-child(2) {
+            border-top-color: var(--purple);
+        }
+
+        .step-card:nth-child(2) .step-num {
+            border-color: var(--purple);
+            color: var(--purple);
+        }
+
+        .step-card:nth-child(3) {
+            border-top-color: var(--warning);
+        }
+
+        .step-card:nth-child(3) .step-num {
+            border-color: var(--warning);
+            color: var(--warning);
+        }
+
+        .step-card:nth-child(4) {
+            border-top-color: var(--success);
+        }
+
+        .step-card:nth-child(4) .step-num {
+            border-color: var(--success);
+            color: var(--success);
+        }
+
+        .step-card:nth-child(5) {
+            border-top-color: var(--teal);
+        }
+
+        .step-card:nth-child(5) .step-num {
+            border-color: var(--teal);
+            color: var(--teal);
+        }
+
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-sub {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Segment Table */
+        .seg-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .seg-header {
+            background: #0f172a;
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+            color: var(--text-muted);
+        }
+
+        .seg-cell {
+            padding: 1.5rem 1rem;
+            border-bottom: 1px solid #334155;
+            display: flex;
+            align-items: center;
+        }
+
+        .seg-row {
+            display: contents;
+        }
+
+        .seg-row:last-child .seg-cell {
+            border-bottom: none;
+        }
+
+        .callout {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            font-style: italic;
+        }
+
+        /* SHAP */
+        .shap-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .shap-img-placeholder {
+            border: 2px dashed var(--primary);
+            border-radius: 12px;
+            height: 280px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .shap-img-placeholder img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none;
+            /* Hidden until updated with real asset path if needed, or we use a block */
+        }
+
+        .shap-img-placeholder .placeholder-content {
+            display: block;
+        }
+
+        .shap-img-placeholder.has-image .placeholder-content {
+            display: none;
+        }
+
+        .shap-img-placeholder.has-image img {
+            display: block;
+        }
+
+        .shap-caption {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        .shap-note {
+            font-size: 0.75rem;
+            color: #475569;
+            margin-top: 0.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            background: var(--bg-card);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .feature-icon {
+            font-size: 1.5rem;
+        }
+
+        .feature-text strong {
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .feature-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Architecture */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .arch-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .arch-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .arch-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .arch-file {
+            font-family: monospace;
+            color: var(--primary);
+            font-size: 1.1rem;
+            background: #0f172a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        .arch-desc {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .arch-link {
+            color: var(--text-main);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border-top: 1px solid #334155;
+            padding-top: 1rem;
+        }
+
+        .arch-link:hover {
+            color: var(--primary);
+        }
+
+        /* CRM Preview */
+        .crm-table-container {
+            overflow-x: auto;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .crm-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+
+        .crm-table th {
+            padding: 1rem;
+            border-bottom: 2px solid #334155;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .crm-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #334155;
+            font-family: monospace;
+        }
+
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .badge-green {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+        }
+
+        .badge-blue {
+            background: rgba(59, 130, 246, 0.2);
+            color: var(--primary);
+        }
+
+        .badge-gray {
+            background: rgba(100, 116, 139, 0.2);
+            color: var(--text-muted);
+        }
+
+        .crm-note {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid #1e293b;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-stack {
+            margin: 1rem 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+
+            .problem-grid,
+            .shap-grid,
+            .seg-table {
+                grid-template-columns: 1fr;
+            }
+
+            .pipeline {
+                flex-direction: column;
+            }
+
+            .pipeline::before {
+                display: none;
+            }
+
+            .step-card {
+                width: 100%;
+                margin-bottom: 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .seg-table {
+                display: block;
+            }
+
+            .seg-header {
+                display: none;
+            }
+
+            .seg-row {
+                display: block;
+                border-bottom: 2px solid #0f172a;
+                padding: 1rem 0;
+            }
+
+            .seg-cell {
+                display: flex;
+                justify-content: space-between;
+                padding: 0.5rem 1rem;
+                border: none;
+            }
+
+            .seg-cell::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: var(--text-muted);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- SECTION 1 - Hero -->
+        <section class="hero fade-in">
+            <h1>Customer Churn Prediction & Reactivation Propensity</h1>
+            <p>Comment allouer un budget de réactivation marketing avec précision ?</p>
+
+            <div class="kpi-grid">
+                <div class="card">
+                    <div class="kpi-value">0.84</div>
+                    <div class="kpi-label">AUC-ROC Score</div>
+                </div>
+                <div class="card">
+                    <div class="kpi-value">3.2x</div>
+                    <div class="kpi-label">Lift @ Décile 1</div>
+                </div>
+                <div class="card">
+                    <div class="kpi-value">€ 3,000</div>
+                    <div class="kpi-label">Budget Optimisé</div>
+                </div>
+                <div class="card">
+                    <div class="kpi-value">+45%</div>
+                    <div class="kpi-label">ROI vs Aléatoire</div>
+                </div>
+            </div>
+
+            <div class="cta-group">
+                <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity" target="_blank"
+                    class="btn btn-github">🔗 GitHub Repo</a>
+                <a href="#demo" class="btn btn-primary">▶ Live Demo</a>
+            </div>
+        </section>
+
+        <!-- SECTION 2 - Le Problème Métier -->
+        <section class="fade-in">
+            <h2>Contexte Métier</h2>
+            <div class="problem-grid">
+                <div class="problem-col negative">
+                    <h3>❌ Sans modèle</h3>
+                    <ul>
+                        <li>Coupons distribués à l'aveugle</li>
+                        <li>ROI négatif sur les campagnes de réactivation</li>
+                        <li>Clients churners non détectés à temps</li>
+                        <li>Budget gaspillé sur clients déjà actifs</li>
+                    </ul>
+                </div>
+                <div class="problem-col positive">
+                    <h3>✅ Avec ce système</h3>
+                    <ul>
+                        <li>Ciblage ML probabiliste par score de churn</li>
+                        <li>Threshold optimisé selon le coût métier réel</li>
+                        <li>Segmentation CLV (Low / Mid / High)</li>
+                        <li>Action personnalisée : coupon optimal par profil</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3 - Pipeline Technique -->
+        <section class="fade-in">
+            <h2>Pipeline Technique</h2>
+            <div class="pipeline">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <div class="step-title">📦 Dunnhumby Data</div>
+                    <div class="step-sub">Raw transactional retail data</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <div class="step-title">🔧 Feature Engineering</div>
+                    <div class="step-sub">RFM metrics · temporal windows</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <div class="step-title">🤖 XGBoost Model</div>
+                    <div class="step-sub">Walk-forward CV · threshold optimization</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">4</div>
+                    <div class="step-title">💡 SHAP Explainability</div>
+                    <div class="step-sub">Global importance · local waterfall</div>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">5</div>
+                    <div class="step-title">📋 CRM Output</div>
+                    <div class="step-sub">household_key · churn_score · coupon · action</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4 - Segmentation CLV & Recommandations -->
+        <section class="fade-in">
+            <h2>Stratégie de Réactivation par Segment</h2>
+
+            <div class="seg-table">
+                <div class="seg-header">Segment</div>
+                <div class="seg-header">Coupon Recommandé</div>
+                <div class="seg-header">Taux de Réponse</div>
+                <div class="seg-header">ROI Attendu</div>
+
+                <div class="seg-row">
+                    <div class="seg-cell" data-label="Segment">🔴 Low</div>
+                    <div class="seg-cell" data-label="Coupon">Pas de contact</div>
+                    <div class="seg-cell" data-label="Taux de Réponse">5% → 14%</div>
+                    <div class="seg-cell" data-label="ROI">Négatif (ne pas investir)</div>
+                </div>
+                <div class="seg-row">
+                    <div class="seg-cell" data-label="Segment">🟡 Mid</div>
+                    <div class="seg-cell" data-label="Coupon">10€</div>
+                    <div class="seg-cell" data-label="Taux de Réponse">16%</div>
+                    <div class="seg-cell" data-label="ROI">Positif si CLV suffisant</div>
+                </div>
+                <div class="seg-row">
+                    <div class="seg-cell" data-label="Segment">🟢 High</div>
+                    <div class="seg-cell" data-label="Coupon">20€</div>
+                    <div class="seg-cell" data-label="Taux de Réponse">35%</div>
+                    <div class="seg-cell" data-label="ROI">Maximum — priorité absolue</div>
+                </div>
+            </div>
+
+            <div class="callout">
+                💡 Un client High-Value avec CLV > 200€ génère un ROI net positif dès le coupon de 10€ — le modèle
+                priorise automatiquement ces profils.
+            </div>
+        </section>
+
+        <!-- SECTION 5 - Explainability SHAP -->
+        <section class="fade-in">
+            <h2>Pourquoi le modèle prend cette décision ?</h2>
+            <div class="shap-grid">
+                <div class="shap-img-placeholder">
+                    <div class="placeholder-content">
+                        <div style="font-weight:600; font-size:1.1rem; margin-bottom: 0.5rem; color:var(--primary);">
+                            [SHAP Feature Importance Chart]</div>
+                        <div class="shap-caption">Top features driving churn prediction (global SHAP values)</div>
+                        <div class="shap-note">Généré automatiquement par notebooks/02_model.py</div>
+                    </div>
+                    <img src="assets/shap_global_importance.png" alt="SHAP Feature Importance Chart"
+                        onerror="this.parentElement.classList.remove('has-image');"
+                        onload="this.parentElement.classList.add('has-image');">
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="feature-icon">📅</div>
+                        <div class="feature-text">
+                            <strong>Récence</strong>
+                            Délai depuis le dernier achat (signal le plus fort)
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feature-icon">🔁</div>
+                        <div class="feature-text">
+                            <strong>Fréquence</strong>
+                            Nombre de visites sur les 30 derniers jours
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feature-icon">💰</div>
+                        <div class="feature-text">
+                            <strong>Panier moyen</strong>
+                            Tendance de dépense (hausse ou baisse)
+                        </div>
+                    </li>
+                    <li>
+                        <div class="feature-icon">🗂️</div>
+                        <div class="feature-text">
+                            <strong>Diversité catégories</strong>
+                            Nombre de rayons différents achetés
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 6 - Architecture Modulaire -->
+        <section class="fade-in">
+            <h2>Architecture Modulaire</h2>
+            <div class="arch-grid">
+                <div class="arch-card">
+                    <div class="arch-icon">📥</div>
+                    <div class="arch-file">src/data.py</div>
+                    <div class="arch-desc">Ingestion & preprocessing pipeline Dunnhumby</div>
+                    <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity/blob/main/src/data.py"
+                        target="_blank" class="arch-link">Voir le code →</a>
+                </div>
+                <div class="arch-card">
+                    <div class="arch-icon">⚙️</div>
+                    <div class="arch-file">src/features.py</div>
+                    <div class="arch-desc">Construction des features RFM et temporelles</div>
+                    <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity/blob/main/src/features.py"
+                        target="_blank" class="arch-link">Voir le code →</a>
+                </div>
+                <div class="arch-card">
+                    <div class="arch-icon">🤖</div>
+                    <div class="arch-file">src/model.py</div>
+                    <div class="arch-desc">Entraînement XGBoost + optimisation du threshold</div>
+                    <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity/blob/main/src/model.py"
+                        target="_blank" class="arch-link">Voir le code →</a>
+                </div>
+                <div class="arch-card">
+                    <div class="arch-icon">💶</div>
+                    <div class="arch-file">src/roi.py</div>
+                    <div class="arch-desc">Segmentation CLV + moteur de recommandation coupon</div>
+                    <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity/blob/main/src/roi.py"
+                        target="_blank" class="arch-link">Voir le code →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 7 - Output CRM Preview -->
+        <section id="demo" class="fade-in">
+            <div style="text-align:center; padding: 1rem 0; margin-bottom:1rem;">
+                <span
+                    style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(0,212,170,0.1); border:1px solid #00d4aa; color:#00d4aa; padding:0.5rem 1rem; border-radius:20px; font-size:0.875rem; font-weight:600;">
+                    <span
+                        style="width:8px; height:8px; border-radius:50%; background:#00d4aa; box-shadow:0 0 8px #00d4aa; animation:pulse 2s infinite;"></span>
+                    Powered by Marimo WebAssembly
+                </span>
+            </div>
+            <h2>Output Opérationnel — Prêt pour intégration CRM</h2>
+            <div class="crm-table-container">
+                <table class="crm-table">
+                    <thead>
+                        <tr>
+                            <th>household_key</th>
+                            <th>churn_score</th>
+                            <th>clv_eur</th>
+                            <th>clv_segment</th>
+                            <th>recommended_coupon_eur</th>
+                            <th>expected_roi_eur</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1042</td>
+                            <td>0.89</td>
+                            <td>345.50</td>
+                            <td>High</td>
+                            <td>20.0</td>
+                            <td>40.46</td>
+                            <td><span class="badge badge-green">Priority contact</span></td>
+                        </tr>
+                        <tr>
+                            <td>2084</td>
+                            <td>0.76</td>
+                            <td>120.00</td>
+                            <td>Mid</td>
+                            <td>10.0</td>
+                            <td>-0.40</td>
+                            <td><span class="badge badge-gray">Do not contact</span></td>
+                        </tr>
+                        <tr>
+                            <td>845</td>
+                            <td>0.92</td>
+                            <td>210.25</td>
+                            <td>High</td>
+                            <td>20.0</td>
+                            <td>16.79</td>
+                            <td><span class="badge badge-blue">Contact</span></td>
+                        </tr>
+                        <tr>
+                            <td>412</td>
+                            <td>0.32</td>
+                            <td>45.80</td>
+                            <td>Low</td>
+                            <td>NaN</td>
+                            <td>-inf</td>
+                            <td><span class="badge badge-gray">Do not contact</span></td>
+                        </tr>
+                        <tr>
+                            <td>1902</td>
+                            <td>0.81</td>
+                            <td>275.40</td>
+                            <td>High</td>
+                            <td>20.0</td>
+                            <td>28.20</td>
+                            <td><span class="badge badge-green">Priority contact</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="crm-note">
+                Ce fichier CSV est exporté automatiquement à chaque run du pipeline — prêt pour import CRM ou Power BI.
+            </div>
+        </section>
+
+        <!-- SECTION 8 - Footer -->
+        <footer class="fade-in">
+            <div>Rafael Midolli — Data Analyst</div>
+            <div class="footer-stack">Python · XGBoost · SHAP · Marimo · UV · Dunnhumby</div>
+            <div>
+                <a href="https://github.com/R-midolli" target="_blank">GitHub</a> |
+                <a href="#" target="_blank">LinkedIn</a>
+            </div>
+            <div style="margin-top: 1rem; font-size: 0.75rem;">© 2025 Rafael Midolli</div>
+        </footer>
+    </div>
+
+    <script>
+        // Intersection Observer for fade-in animations
+        document.addEventListener("DOMContentLoaded", function () {
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.15
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.fade-in').forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+
+</html>

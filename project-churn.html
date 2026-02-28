@@ -302,20 +302,35 @@
     </div>
 
     <div class="card">
-      <h3><span class="lang-fr">Notebook Interactif (Marimo)</span><span class="lang-en">Interactive Notebook
-          (Marimo)</span></h3>
+      <h3><span class="lang-fr">Dashboard Interactif (Jupyter)</span><span class="lang-en">Interactive Dashboard
+          (Jupyter)</span></h3>
       <p style="margin-bottom: 20px;">
-        <span class="lang-fr">Ci-dessous, la démo exportée du pipeline, incluant la matrice d'action CRM et les segments
-          de clientèle visés, générés sans serveur grâce à WebAssembly sur Python.</span>
-        <span class="lang-en">Below is the exported demo of the pipeline charting SHAP importance and the CRM action
-          matrix, completely rendered dynamically.</span>
+        <span class="lang-fr">Ce projet inclut une interface de simulation ROI complète développée avec <strong>Jupyter
+            Notebook et ipywidgets</strong>. En ajustant le score de risque et le budget, les KPIs d'impact financier et
+          les graphiques Plotly s'actualisent instantanément en Python.</span>
+        <span class="lang-en">This project features a full ROI simulation interface built with <strong>Jupyter Notebook
+            and ipywidgets</strong>. By adjusting the risk threshold and campaign budget, financial impact KPIs and
+          Plotly charts update dynamically via Python.</span>
       </p>
-      <iframe src="reports/demo_churn.html" class="embed-frame" id="dashFrame" loading="lazy"></iframe>
-      <div class="embed-fallback" id="dashFallback">
-        <span class="lang-fr">Si le module dynamique d'analyse tarde à charger, <a href="reports/demo_churn.html"
-            target="_blank" rel="noopener">cliquez ici pour l'ouvrir en plein écran</a>.</span>
-        <span class="lang-en">If the dynamic notebook is slow to load, <a href="reports/demo_churn.html" target="_blank"
-            rel="noopener">click here to launch it in full screen</a>.</span>
+
+      <div
+        style="background:#1e2235; border:1px solid #2d3561; border-radius:12px; padding:2rem; text-align:center; margin-bottom:1rem;">
+        <div style="font-size:3rem; margin-bottom:1rem;">📊</div>
+        <h4 style="color:#e2e8f0; margin-bottom:0.5rem; font-size:1.2rem;">
+          <span class="lang-fr">Testez la simulation financière en direct</span>
+          <span class="lang-en">Run the Live Financial Simulation</span>
+        </h4>
+        <p style="color:#a8b2d8; font-size:0.9rem; max-width:600px; margin:0 auto 1.5rem auto;">
+          <span class="lang-fr">Le dashboard nécessite un backend Python pour effectuer les calculs d'optimisation en
+            temps réel. Découvrez le code source et exécutez le notebook complet sur GitHub.</span>
+          <span class="lang-en">The dashboard requires a Python backend to perform real-time optimization modeling.
+            Explore the source code and run the full interactive notebook via GitHub.</span>
+        </p>
+        <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity/blob/main/notebooks/03_demo.ipynb"
+          target="_blank" rel="noopener" class="btn-github" style="display:inline-flex; padding:0.8rem 1.5rem;">
+          <span class="lang-fr">📂 Ouvrir 03_demo.ipynb sur GitHub</span>
+          <span class="lang-en">📂 Open 03_demo.ipynb on GitHub</span>
+        </a>
       </div>
     </div>
 
