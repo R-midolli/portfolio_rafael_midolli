@@ -128,6 +128,220 @@
       font-size: 0.85rem;
       color: var(--text-muted);
     }
+
+    /* ── Bento Grid ── */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .bento-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .col-12 {
+      grid-column: span 12;
+    }
+
+    .col-8 {
+      grid-column: span 8;
+    }
+
+    .col-6 {
+      grid-column: span 6;
+    }
+
+    .col-4 {
+      grid-column: span 4;
+    }
+
+    .col-3 {
+      grid-column: span 3;
+    }
+
+    @media (max-width: 900px) {
+
+      .col-8,
+      .col-6,
+      .col-4,
+      .col-3 {
+        grid-column: span 12;
+      }
+    }
+
+    .bento-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bento-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .kpi-huge {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      transition: color 0.3s;
+    }
+
+    /* ── Chart Containers ── */
+    .chart-native-container {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    :root[data-theme="dark"] .chart-native-container {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* ── Tooltips ── */
+    .info-tooltip-wrap {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      z-index: 50;
+    }
+
+    .info-tooltip-icon {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+      background: rgba(128, 128, 128, 0.15);
+      border: 1px solid rgba(128, 128, 128, 0.4);
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: help;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 1;
+    }
+
+    .info-tooltip-icon:hover {
+      transform: scale(1.1);
+      background: var(--text);
+      color: #0f172a;
+      border-color: var(--text);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-tooltip-content {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      top: 32px;
+      left: 0;
+      width: max-content;
+      max-width: 320px;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    :root[data-theme="light"] .info-tooltip-content {
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: #1e293b;
+    }
+
+    .info-tooltip-icon:hover+.info-tooltip-content {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* ── Controls ── */
+    input[type=range] {
+      width: 100%;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .val-display {
+      font-weight: bold;
+      color: var(--text);
+      float: right;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    tr:hover {
+      background-color: var(--surface-hover);
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.7rem;
+    }
+
+    .badge-High {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .badge-Mid {
+      background: rgba(99, 102, 241, 0.2);
+      color: #6366f1;
+    }
+
+    .badge-Low {
+      background: rgba(244, 63, 94, 0.2);
+      color: #f43f5e;
+    }
   </style>
 </head>
 
@@ -301,62 +515,139 @@
       </div>
     </div>
 
-    <div class="card">
-      <h3><span class="lang-fr">Dashboard Interactif (Jupyter)</span><span class="lang-en">Interactive Dashboard
-          (Jupyter)</span></h3>
-      <p style="margin-bottom: 20px;">
-        <span class="lang-fr">Ce projet inclut une interface de simulation ROI complète développée avec <strong>Jupyter
-            Notebook et ipywidgets</strong>. En ajustant le score de risque et le budget, les KPIs d'impact financier et
-          les graphiques Plotly s'actualisent instantanément en Python.</span>
-        <span class="lang-en">This project features a full ROI simulation interface built with <strong>Jupyter Notebook
-            and ipywidgets</strong>. By adjusting the risk threshold and campaign budget, financial impact KPIs and
-          Plotly charts update dynamically via Python.</span>
-      </p>
-
-      <div
-        style="background:#1e2235; border:1px solid #2d3561; border-radius:12px; padding:2rem; text-align:center; margin-bottom:1rem;">
-        <div style="font-size:3rem; margin-bottom:1rem;">📊</div>
-        <h4 style="color:#e2e8f0; margin-bottom:0.5rem; font-size:1.2rem;">
-          <span class="lang-fr">Testez la simulation financière en direct</span>
-          <span class="lang-en">Run the Live Financial Simulation</span>
-        </h4>
-        <p style="color:#a8b2d8; font-size:0.9rem; max-width:600px; margin:0 auto 1.5rem auto;">
-          <span class="lang-fr">Le dashboard nécessite un backend Python pour effectuer les calculs d'optimisation en
-            temps réel. Découvrez le code source et exécutez le notebook complet sur GitHub.</span>
-          <span class="lang-en">The dashboard requires a Python backend to perform real-time optimization modeling.
-            Explore the source code and run the full interactive notebook via GitHub.</span>
+    <section class="card" style="padding: 2rem; border-radius: 24px; margin-bottom: 40px;">
+      <div style="margin-bottom: 20px;">
+        <h3 style="margin-bottom: 8px;">
+          <span class="lang-fr">📊 Dashboard Interactif & Simulation</span>
+          <span class="lang-en">📊 Interactive Simulation Dashboard</span>
+        </h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 650px; margin: 0; line-height: 1.5;">
+          <span class="lang-fr">Testez la simulation financière en direct sans serveur. Ajustez les curseurs pour voir
+            l'impact en temps réel sur la matrice et les KPIs générés par JS natif.</span>
+          <span class="lang-en">Run the live financial simulation serverlessly. Adjust the sliders to see real-time
+            impact on the CRM matrix and native JS-generated KPIs.</span>
         </p>
-        <a href="https://github.com/R-midolli/Customer-Churn-Prediction-Reactivation-Propensity/blob/main/notebooks/03_demo.ipynb"
-          target="_blank" rel="noopener" class="btn-github" style="display:inline-flex; padding:0.8rem 1.5rem;">
-          <span class="lang-fr">📂 Ouvrir 03_demo.ipynb sur GitHub</span>
-          <span class="lang-en">📂 Open 03_demo.ipynb on GitHub</span>
-        </a>
       </div>
-    </div>
+
+      <div class="bento-grid" style="margin-bottom:0;">
+
+        <!-- Controls 1 -->
+        <div class="bento-item col-6" style="padding: 16px 24px;">
+          <div class="bento-title" style="margin-bottom: 4px;">🎯 <span class="lang-fr">Min Churn Score</span><span
+              class="lang-en">Min Churn Score</span> <span id="score-val" class="val-display"
+              style="color:var(--accent);">0.70</span></div>
+          <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Seuil de
+              probabilité d'attrition</span><span class="lang-en">Churn probability threshold</span></div>
+          <input type="range" id="score-slider" min="0.5" max="0.95" step="0.01" value="0.70">
+        </div>
+
+        <!-- Controls 2 -->
+        <div class="bento-item col-6" style="padding: 16px 24px;">
+          <div class="bento-title" style="margin-bottom: 4px;">💶 <span class="lang-fr">Budget de Campagne</span><span
+              class="lang-en">Campaign Budget</span> <span id="budget-val" class="val-display"
+              style="color:var(--accent);">€ 3,000</span></div>
+          <div class="bento-desc" style="font-size:0.8rem; margin-bottom: 12px;"><span class="lang-fr">Enveloppe
+              maximale de couponing</span><span class="lang-en">Maximum couponing envelope</span></div>
+          <input type="range" id="budget-slider" min="500" max="15000" step="500" value="3000">
+        </div>
+
+        <!-- KPI 1 -->
+        <div class="bento-item col-3" style="text-align: center;">
+          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);">AUC-ROC
+          </div>
+          <div class="kpi-huge" style="color: #10b981;">0.84</div>
+          <div class="bento-desc" style="font-size: 0.75rem;">Discriminative Power</div>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="bento-item col-3" style="text-align: center;">
+          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);"><span
+              class="lang-fr">Lift au Décile 1</span><span class="lang-en">Lift @ Decile 1</span></div>
+          <div class="kpi-huge" style="color: #10b981;">3.2x</div>
+          <div class="bento-desc" style="font-size: 0.75rem;">vs Random Selection</div>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="bento-item col-3" style="text-align: center;">
+          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);"><span
+              class="lang-fr">Clients Ciblés</span><span class="lang-en">Targeted Clients</span></div>
+          <div class="kpi-huge" style="color: #3b82f6;" id="kpi-clients">0</div>
+          <div class="bento-desc" style="font-size: 0.75rem;">Fitting Criteria</div>
+        </div>
+
+        <!-- KPI 4 -->
+        <div class="bento-item col-3" style="text-align: center;">
+          <div class="info-tooltip-wrap" style="top:10px; left:10px;">
+            <div class="info-tooltip-icon" style="width:20px; height:20px; font-size:0.8rem;">?</div>
+            <div class="info-tooltip-content">
+              <span class="lang-fr">ROI net positif généré uniquement par les clients sauvés du churn après déduction de
+                tous les coûts de coupons.</span>
+              <span class="lang-en">Net positive ROI generated solely by clients saved from churn after deducting all
+                given coupon costs.</span>
+            </div>
+          </div>
+          <div class="bento-title" style="justify-content:center; font-size: 0.85rem; color:var(--text-muted);"><span
+              class="lang-fr">ROI Net Cumulé</span><span class="lang-en">Expected Net ROI</span></div>
+          <div class="kpi-huge" id="kpi-roi">€ 0</div>
+          <div class="bento-desc" style="font-size: 0.75rem;">Cumulative upside</div>
+        </div>
+
+        <!-- Chart 1: Top 20 Bar -->
+        <div class="bento-item col-6" style="padding: 10px;">
+          <div class="info-tooltip-wrap">
+            <div class="info-tooltip-icon">?</div>
+            <div class="info-tooltip-content">
+              <span class="lang-fr">Les 20 clients les plus rentables à inclure absolument dans la campagne marketing.
+                Classés par ROI.</span>
+              <span class="lang-en">The top 20 most profitable clients to absolutely include in the marketing list.
+                Sorted by ROI.</span>
+            </div>
+          </div>
+          <div id="bar-chart" class="chart-native-container" style="height: 350px;"></div>
+        </div>
+
+        <!-- Chart 2: Scatter -->
+        <div class="bento-item col-6" style="padding: 10px;">
+          <div class="info-tooltip-wrap">
+            <div class="info-tooltip-icon">?</div>
+            <div class="info-tooltip-content">
+              <span class="lang-fr">La matrice de décision : plus le client est à droite et en haut, plus il est vital à
+                l'entreprise ET à haut risque de fuite.</span>
+              <span class="lang-en">The decision matrix: the further right and upwards a client is, the more vital they
+                are to business AND at high risk of flight.</span>
+            </div>
+          </div>
+          <div id="scatter-chart" class="chart-native-container" style="height: 350px;"></div>
+        </div>
+
+        <!-- The Action Table -->
+        <div class="bento-item col-12" style="padding: 24px; overflow-x: auto;">
+          <div class="bento-title">📋 <span class="lang-fr">Matrice d'Export CRM (Top 15)</span><span
+              class="lang-en">CRM Export Matrix (Top 15)</span></div>
+          <div class="bento-desc" style="margin-bottom: 12px;"><span class="lang-fr">Flux de données prêt à être envoyé
+              à l'équipe Marketing/Salesforce.</span><span class="lang-en">Data feed ready to be piped to the
+              Marketing/Salesforce team.</span></div>
+          <div id="table-wrap"></div>
+        </div>
+
+      </div>
+    </section>
 
   </main>
 
+  <!-- Plotly.js -->
+  <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+
   <script src="assets/js/shared.js"></script>
+
+  <!-- Dashboard Integration -->
+  <script src="assets/js/dashboard_churn.js"></script>
+
   <script>
     (function () {
       document.querySelectorAll('.bullets .bullet').forEach(function (b) {
         b.addEventListener('click', function () { b.classList.toggle('active'); });
       });
-      var frame = document.getElementById('dashFrame');
-      var fallback = document.getElementById('dashFallback');
-      if (frame) {
-        frame.addEventListener('load', function () { if (fallback) fallback.style.display = 'none'; }, { once: true });
-        setTimeout(function () {
-          if (!frame.contentDocument || frame.contentDocument.body.childElementCount === 0) {
-            if (fallback) fallback.style.display = 'block';
-          }
-        }, 6000);
-        window.addEventListener('message', function (e) {
-          if (e.data && e.data.type === 'rm-iframe-height' && typeof e.data.height === 'number') {
-            if (e.data.height > 200) frame.style.height = e.data.height + 'px';
-          }
-        });
-      }
     })();
   </script>
 </body>
