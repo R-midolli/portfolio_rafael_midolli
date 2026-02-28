@@ -298,6 +298,36 @@
       float: right;
     }
 
+    .category-toggle {
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .category-toggle:hover {
+      border-color: var(--text);
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+
+    .category-toggle.active {
+      background: var(--btn-color, #818cf8);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transform: translateY(-2px);
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -388,53 +418,68 @@
 
     <div class="info-grid">
       <!-- Problem + Approach -->
-      <div class="card">
-        <h3><span class="lang-fr">Le Défi Opérationnel</span><span class="lang-en">The Operational Challenge</span></h3>
-        <p>
-          <span class="lang-fr">L'acquisition de nouveaux clients coûte souvent bien plus cher que la fidélisation.
-            <strong>La problématique métier clé :</strong> "Comment identifier de manière proactive les clients sur le
-            point de churner, et déterminer quelle offre promotionnelle propose le meilleur retour sur investissement
-            (ROI) sans éroder nos marges ?"</span>
-          <span class="lang-en">Acquiring new customers often costs far more than retail retention. <strong>The core
-              business problem:</strong> "How to proactively identify at-risk customers, and determine which promotional
-            offer yields the highest Return On Investment (ROI) without eroding margins?"</span>
+      <div class="insight-card"
+        style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
+        <h3>🎯 <span class="lang-fr">Le Défi Opérationnel</span><span class="lang-en">The Operational Challenge</span>
+        </h3>
+        <p style="color: var(--text-muted); line-height: 1.6;">
+          <span class="lang-fr">L'acquisition de nouveaux clients coûte beaucoup plus cher que la fidélisation, mais
+            arroser toute sa base de réductions détruit instantanément la marge.
+            <br><br><strong>La question clé :</strong> Comment cibler <em>uniquement</em> les clients sur le point de
+            partir, et calculer si leur rétention sera rentable ?</span>
+          <span class="lang-en">Acquiring new customers often costs far more than retention, but blasting the entire
+            base with discounts instantly destroys margins.
+            <br><br><strong>The key question:</strong> How to target <em>only</em> customers on the verge of leaving,
+            and calculate mathematically if keeping them is profitable?</span>
         </p>
-        <h3 style="margin-top:20px"><span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The
-            Analytical Approach</span></h3>
-        <p>
-          <span class="lang-fr">Création d'un pipeline d'apprentissage automatique entraînant un modèle
-            <strong>XGBoost</strong> sur des données de panel réelles (Dunnhumby). Extraction de caractéristiques RFM et
-            comportementales de consommation (fréquence de réduction, dépenses passées). Une couche d'optimisation
-            financière a ensuite calculé un seuil de décision basé sur le coût de la campagne versus la Customer
-            Lifetime Value (CLV).</span>
-          <span class="lang-en">Building a machine learning pipeline training an <strong>XGBoost</strong> model on real
-            panel data (Dunnhumby). Extracting RFM and behavioral consumption features (discount frequency, past spend).
-            A financial optimization layer then calculated a decision threshold based on campaign cost versus segmented
-            Customer Lifetime Value (CLV).</span>
-        </p>
+      </div>
 
-        <!-- Key metrics mini-cards -->
-        <div class="metrics-mini">
-          <div class="metric-mini">
-            <div class="metric-value highlight">XGB</div>
-            <div class="metric-label">
-              <span class="lang-fr">Modèle de Classification</span>
-              <span class="lang-en">Classification Model</span>
-            </div>
+      <div class="insight-card"
+        style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
+        <h3>💡 <span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The Analytical Approach</span>
+        </h3>
+        <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 16px;">
+          <span class="lang-fr">Au lieu d'un modèle de churn classique, j'ai développé une solution ROI-driven croisant
+            Machine Learning et valeur client (CLV) :</span>
+          <span class="lang-en">Instead of a standard churn model, I engineered an ROI-driven solution blending Machine
+            Learning with Customer Lifetime Value (CLV):</span>
+        </p>
+        <ul style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: disc;">
+          <li><span class="lang-fr"><strong>Features RFM :</strong> Création de variables comportementales et
+              temporelles (récence, fréquence de promo) sur des données de caisse.</span><span
+              class="lang-en"><strong>RFM Features:</strong> Engineering temporal and behavioral variables (recency,
+              promo frequency) from raw POS data.</span></li>
+          <li><span class="lang-fr"><strong>Modèle XGBoost :</strong> Entraînement performant et interprétation des
+              facteurs de fuite via <strong>SHAP values</strong>.</span><span class="lang-en"><strong>XGBoost
+                Model:</strong> High-performance training and interpretation of flight factors using <strong>SHAP
+                values</strong>.</span></li>
+          <li><span class="lang-fr"><strong>Optimisation Financière :</strong> Segmentation par CLV pour ajuster
+              l'action (20€ pour VIP, 5€ pour standard) et calcul du ROI net.</span><span
+              class="lang-en"><strong>Financial Optimization:</strong> CLV segmentation to adjust actions (€20 for VIP,
+              €5 for standard) and compute net expected ROI.</span></li>
+        </ul>
+      </div>
+      <!-- Key metrics mini-cards -->
+      <div class="metrics-mini">
+        <div class="metric-mini">
+          <div class="metric-value highlight">XGB</div>
+          <div class="metric-label">
+            <span class="lang-fr">Modèle de Classification</span>
+            <span class="lang-en">Classification Model</span>
           </div>
-          <div class="metric-mini">
-            <div class="metric-value success">ROI</div>
-            <div class="metric-label">
-              <span class="lang-fr">Optimisation Financière</span>
-              <span class="lang-en">Financial Optimization</span>
-            </div>
+        </div>
+        <div class="metric-mini">
+          <div class="metric-value success">ROI</div>
+          <div class="metric-label">
+            <span class="lang-fr">Optimisation Financière</span>
+            <span class="lang-en">Financial Optimization</span>
           </div>
-          <div class="metric-mini">
-            <div class="metric-value">RFM</div>
-            <div class="metric-label">
-              <span class="lang-fr">Features Transactionnelles</span>
-              <span class="lang-en">Transactional Features</span>
-            </div>
+        </div>
+        <div class="metric-mini">
+          <div class="metric-value">RFM</div>
+          <div class="metric-label">
+            <span class="lang-fr">Features Transactionnelles</span>
+            <span class="lang-en">Transactional Features</span>
           </div>
         </div>
       </div>
@@ -508,25 +553,49 @@
           <div class="arch-icon">💰</div>
           <div class="arch-title">ROI</div>
           <div class="arch-desc">
-            <span class="lang-fr">Optimisation des seuils / CLV ROI</span>
-            <span class="lang-en">Threshold optimization / CLV ROI</span>
+            <span class="lang-fr">Optimisation CLV et simulation métier JS</span>
+            <span class="lang-en">CLV optimization and JS business simulation</span>
           </div>
         </div>
       </div>
     </div>
 
-    <section class="card" style="padding: 2rem; border-radius: 24px; margin-bottom: 40px;">
-      <div style="margin-bottom: 20px;">
-        <h3 style="margin-bottom: 8px;">
-          <span class="lang-fr">📊 Dashboard Interactif & Simulation</span>
-          <span class="lang-en">📊 Interactive Simulation Dashboard</span>
-        </h3>
-        <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 650px; margin: 0; line-height: 1.5;">
-          <span class="lang-fr">Testez la simulation financière en direct sans serveur. Ajustez les curseurs pour voir
-            l'impact en temps réel sur la matrice et les KPIs générés par JS natif.</span>
-          <span class="lang-en">Run the live financial simulation serverlessly. Adjust the sliders to see real-time
-            impact on the CRM matrix and native JS-generated KPIs.</span>
-        </p>
+    <section class="card"
+      style="padding: 2rem; border-radius: 24px; margin-bottom: 40px; border: 1px solid var(--border);">
+      <div
+        style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; flex-wrap: wrap; gap: 15px;">
+        <div>
+          <h3 style="margin-bottom: 8px;">
+            <span class="lang-fr">📊 Dashboard Interactif & Simulation</span>
+            <span class="lang-en">📊 Interactive Simulation Dashboard</span>
+          </h3>
+          <p style="font-size: 0.95rem; color: var(--text-muted); max-width: 650px; margin: 0; line-height: 1.5;">
+            <span class="lang-fr">Simulateur natif avec graphiques Plotly. Ajustez les curseurs et filtrez par segment
+              pour observer instantanément l'impact financier d'une campagne de réactivation.</span>
+            <span class="lang-en">Native simulator powered by Plotly. Adjust sliders and filter by segment to see the
+              instant financial impact of a reactivation campaign.</span>
+          </p>
+        </div>
+
+        <!-- Category Toggles (from Pricing dashboard style) -->
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 8px;" id="segment-toggles">
+          <button class="category-toggle active" data-seg="All" style="--btn-color: #3b82f6;">
+            <span>🌍</span>
+            <span class="lang-fr">Tous</span><span class="lang-en">All</span>
+          </button>
+          <button class="category-toggle" data-seg="High" style="--btn-color: #10b981;">
+            <span>💎</span>
+            <span class="lang-fr">Top CLV</span><span class="lang-en">High CLV</span>
+          </button>
+          <button class="category-toggle" data-seg="Mid" style="--btn-color: #6366f1;">
+            <span>⭐</span>
+            <span class="lang-fr">Mid CLV</span><span class="lang-en">Mid CLV</span>
+          </button>
+          <button class="category-toggle" data-seg="Low" style="--btn-color: #f43f5e;">
+            <span>🥉</span>
+            <span class="lang-fr">Low CLV</span><span class="lang-en">Low CLV</span>
+          </button>
+        </div>
       </div>
 
       <div class="bento-grid" style="margin-bottom:0;">
@@ -631,6 +700,41 @@
         </div>
 
       </div>
+    </section>
+
+    <!-- ═══ Conclusion ═══ -->
+    <section class="conclusion conclusion--highlight" style="margin-top: 40px; border-radius: 20px;">
+      <h3>
+        <span class="lang-fr">🎯 Enseignements Clés & Recommandations</span>
+        <span class="lang-en">🎯 Key Takeaways & Recommendations</span>
+      </h3>
+      <p style="margin-bottom: 15px;">
+        <span class="lang-fr"><strong>1. Optimisation Ciblée vs. Réduction Massive :</strong> Modéliser la probabilité
+          de churn n'est utile que si on y associe la valeur financière du client. Accorder 20€ de réduction pour sauver
+          un client générant 500€ de marge (High CLV) est un excellent investissement, mais la même offre sur un client
+          à 15€ d'historique détruit le revenu.</span>
+        <span class="lang-en"><strong>1. Targeted Optimization vs. Carpet-bombing:</strong> Modeling churn probability
+          is only useful when crossed with customer value. Spending €20 to retain a client generating €500 margin is
+          excellent ROI, but the identical offer for a €15 historical value client destroys revenue.</span>
+      </p>
+      <p style="margin-bottom: 15px;">
+        <span class="lang-fr"><strong>2. L'Hyper-Réactivité Bat La Précision Absolue :</strong> Le pipeline produit une
+          matrice d'action quotidienne, isolant les profils chauds (Lift au décile 1 à 3.2x vs aléatoire). Appeler ces
+          clients <em>avant</em> qu'ils ne tarissent leurs dépenses est plus rentable que d'avoir un modèle précis à 99%
+          exécuté trop tard.</span>
+        <span class="lang-en"><strong>2. Hyper-Reactivity Over Absolute Precision:</strong> The data pipeline creates a
+          daily actionable matrix isolating hot profiles (First decile lift of 3.2x vs random). Contacting these clients
+          <em>before</em> they stop spending is more profitable than having a 99% accurate model deployed too
+          late.</span>
+      </p>
+      <p style="margin-bottom: 15px;">
+        <span class="lang-fr"><strong>3. Automatisation CRM :</strong> En exportant la sous-table `Matrice CRM`
+          directement vers les outils marketing (ex: Salesforce, Braze), on transforme une modélisation théorique en
+          machine génératrice de chiffre d'affaires.</span>
+        <span class="lang-en"><strong>3. CRM Automation:</strong> By pushing the `CRM Matrix` subset directly into
+          marketing automation tools (e.g., Salesforce, Braze), we transform a theoretical model into a daily
+          revenue-generating engine.</span>
+      </p>
     </section>
 
   </main>

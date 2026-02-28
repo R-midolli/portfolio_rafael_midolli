@@ -74,12 +74,16 @@ function initDashboard() {
         d.expected_roi = (d.clv * d.score * rate) - coupon;
     });
 
+    // --- State Variables ---
+    let activeSegment = "All"; // Can be All, High, Mid, Low
+
     // --- 2. Dashboard Logic ---
 
     const scoreSlider = document.getElementById('score-slider');
     const budgetSlider = document.getElementById('budget-slider');
     const scoreVal = document.getElementById('score-val');
     const budgetVal = document.getElementById('budget-val');
+    const segmentToggles = document.querySelectorAll('.category-toggle');
 
     const kpiClients = document.getElementById('kpi-clients');
     const kpiRoi = document.getElementById('kpi-roi');
@@ -113,8 +117,12 @@ function initDashboard() {
         scoreVal.innerText = minScore.toFixed(2);
         budgetVal.innerText = "€ " + budget.toLocaleString();
 
-        // Filter logic
-        let filtered = data.filter(d => d.score >= minScore && d.expected_roi > 0);
+        // Filter logic: Score Threshold + Positive expected ROI + Active Segment Toggle
+        let filtered = data.filter(d =>
+            d.score >= minScore &&
+            d.expected_roi > 0 &&
+            (activeSegment === "All" || d.segment === activeSegment)
+        );
 
         // Sort by expected ROI desc
         filtered.sort((a, b) => b.expected_roi - a.expected_roi);
@@ -142,7 +150,7 @@ function initDashboard() {
 
         if (n_selected === 0) {
             document.getElementById('bar-chart').innerHTML = `<div style="text-align:center; padding:2rem; color:${theme.danger}; font-weight:bold;">Aucun client ne correspond aux critères / No clients match criteria</div>`;
-            document.getElementById('scatter-chart').innerHTML = "";
+            document.getElementById('scatter-chart').innerHTML = `<div style="text-align:center; padding:2rem; color:${theme.danger}; font-weight:bold;">Graphique vide / Chart is empty</div>`;
             tableWrap.innerHTML = `<div style="text-align:center; padding:2rem; color:${theme.danger}; font-weight:bold;">Tableau vide / Table is empty</div>`;
             return;
         }
@@ -234,9 +242,23 @@ function initDashboard() {
         tableWrap.innerHTML = tableHTML;
     }
 
-    // Listeners
+    // --- Listeners ---
     scoreSlider.addEventListener('input', updateDashboard);
     budgetSlider.addEventListener('input', updateDashboard);
+
+    segmentToggles.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            // Remove active class from all
+            segmentToggles.forEach(t => t.classList.remove('active'));
+            // Add active to clicked
+            const target = e.currentTarget;
+            target.classList.add('active');
+
+            // Update state and refresh
+            activeSegment = target.getAttribute('data-seg');
+            updateDashboard();
+        });
+    });
 
     // Re-render charts on theme/language change if implemented in shared.js via MutationObserver or events
     const observer = new MutationObserver(() => {
