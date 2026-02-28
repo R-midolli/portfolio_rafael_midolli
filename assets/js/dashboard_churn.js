@@ -106,7 +106,9 @@ function initDashboard() {
             fontColor: isDark ? '#f8fafc' : '#1e293b',
             gridColor: isDark ? '#334155' : '#e2e8f0',
             success: '#10b981',
-            danger: '#ef4444'
+            danger: '#ef4444',
+            hoverBg: isDark ? '#1e293b' : '#ffffff',
+            hoverText: isDark ? '#f8fafc' : '#1e293b'
         };
     }
 
@@ -190,7 +192,11 @@ function initDashboard() {
                             width: 1
                         }
                     },
-                    text: segData.map(d => `Client ${d.id}<br>ROI: €${Math.round(d.expected_roi)}`)
+                    text: segData.map(d => `Client ${d.id}<br>ROI: €${d.expected_roi.toFixed(3)}<br>Score: ${d.score.toFixed(3)}`),
+                    hoverlabel: {
+                        bgcolor: theme.hoverBg,
+                        font: { color: theme.hoverText }
+                    }
                 };
             }
         });
@@ -219,7 +225,12 @@ function initDashboard() {
             x: selected.map((d, i) => i + 1),
             y: selected.map(d => d.expected_roi),
             name: currentLang === 'fr' ? 'ROI Indiv.' : 'Indiv. ROI',
-            marker: { color: theme.gridColor }
+            marker: { color: theme.gridColor },
+            hoverlabel: {
+                bgcolor: theme.hoverBg,
+                font: { color: theme.hoverText }
+            },
+            hovertemplate: currentLang === 'fr' ? 'ROI: €%{y:.3f}<extra></extra>' : 'ROI: €%{y:.3f}<extra></extra>'
         };
 
         let paretoLine = {
@@ -229,7 +240,12 @@ function initDashboard() {
             yaxis: 'y2',
             name: currentLang === 'fr' ? '% Cumulé' : 'Cumul %',
             mode: 'lines',
-            line: { color: theme.success, width: 3 }
+            line: { color: theme.success, width: 3 },
+            hoverlabel: {
+                bgcolor: theme.hoverBg,
+                font: { color: theme.hoverText }
+            },
+            hovertemplate: currentLang === 'fr' ? 'Cumulé: %{y:.3f}%<extra></extra>' : 'Cumulative: %{y:.3f}%<extra></extra>'
         };
 
         Plotly.newPlot('pareto-chart', [paretoBar, paretoLine], {
