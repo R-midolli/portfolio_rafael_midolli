@@ -503,18 +503,18 @@
           <span class="lang-fr">Une architecture RAG construite sur FastAPI et ChromaDB. L'ingestion scanne
             12+ sources documentaires (.md + CV PDF), les découpe sémantiquement, les encode en embeddings
             et les stocke dans un vectorstore local. Un LLM Router tri-niveau distribue les requêtes :
-            salutations → Gemini Flash Lite (~1s) · factuelles → Gemini 3 Flash (~3s) · complexes → LLaMA 3.1 70B
-            via NVIDIA. Chaque réponse affiche un timer "⚡ répondu en Xs".</span>
+            salutations → Gemini Flash Lite (~1s) · factuelles/complexes → Kimi K2.5
+            via NVIDIA · fallback → GLM-5 via NVIDIA. Chaque réponse affiche un timer "⚡ répondu en Xs".</span>
           <span class="lang-en">A RAG architecture built on FastAPI and ChromaDB. The ingestion layer scans
             12+ knowledge sources (.md + PDF CV), splits them semantically, encodes them into embeddings
-            and stores them in a local vectorstore. A tri-tier LLM Router distributes requests:
-            greetings → Gemini Flash Lite (~1s) · factual → Gemini 3 Flash (~3s) · complex → LLaMA 3.1 70B
-            via NVIDIA. Every response displays a timer "⚡ responded in Xs".</span>
+            and stores them in a local vectorstore. A smart LLM Router distributes requests:
+            greetings → Gemini Flash Lite (~1s) · factual/complex → Kimi K2.5
+            via NVIDIA · fallback → GLM-5 via NVIDIA. Every response displays a timer "⚡ responded in Xs".</span>
         </p>
         <div class="tech-stack">
           <span class="tech-tag">🐍 FastAPI</span>
           <span class="tech-tag">🗄️ ChromaDB</span>
-          <span class="tech-tag">🤖 Gemini/LLaMA</span>
+          <span class="tech-tag">🤖 Kimi K2.5 / GLM-5</span>
           <span class="tech-tag">🧪 Pytest</span>
         </div>
         <a href="https://github.com/R-midolli/Midolli-AI" target="_blank" rel="noopener" class="btn-github">
@@ -593,19 +593,20 @@
           <div class="bento-title">🔑 <span class="lang-fr">LLM Router & Failover Automatique</span><span
               class="lang-en">LLM Router & Automatic Failover</span></div>
           <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-            <span class="lang-fr">L'architecture 2026 intègre un routeur intelligent tri-niveau qui évalue la complexité
-              de chaque
+            <span class="lang-fr">L'architecture 2026 intègre un routeur intelligent qui évalue la complexité de chaque
               requête et distribue la charge :<br><br><strong>Tier 1 — Gemini Flash Lite</strong>
-              (Salutations instantanées, ~1s, sans RAG)<br><strong>Tier 2 — Gemini 3 Flash</strong>
-              (Questions factuelles, ~3-4s, recherche sémantique)<br><strong>Tier 3 — LLaMA 3.1 70B (NVIDIA)</strong>
-              (Analyses complexes, historique long)<br><br>Si une API subit des timeouts ou du rate-limiting,
-              le backend bascule silencieusement vers le niveau suivant.</span>
-            <span class="lang-en">The 2026 architecture features a smart tri-tier router that evaluates query complexity
+              (Salutations instantanées, ~1s, sans RAG)<br><strong>Tier 2/3 — Kimi K2.5 (NVIDIA)</strong>
+              (Questions factuelles et complexes, priorité 1)<br><strong>Fallback — GLM-5 (NVIDIA)</strong>
+              (Priorité 2 si Kimi rate-limited)<br><strong>Dernier recours — Gemini 3 Flash</strong>
+              (Backup Google si les deux NVIDIA échouent)<br><br>Chaque modèle a 3 tentatives avec
+              exponential backoff automatique.</span>
+            <span class="lang-en">The 2026 architecture features a smart router that evaluates query complexity
               on the fly:<br><br><strong>Tier 1 — Gemini Flash Lite</strong>
-              (Instant greetings, ~1s, no RAG)<br><strong>Tier 2 — Gemini 3 Flash</strong>
-              (Factual queries, ~3-4s, semantic search)<br><strong>Tier 3 — LLaMA 3.1 70B (NVIDIA)</strong>
-              (Deep analysis, long history)<br><br>If one API rate-limits or times out, the backend silently
-              routes to the next tier seamlessly.</span>
+              (Instant greetings, ~1s, no RAG)<br><strong>Tier 2/3 — Kimi K2.5 (NVIDIA)</strong>
+              (Factual & complex queries, priority 1)<br><strong>Fallback — GLM-5 (NVIDIA)</strong>
+              (Priority 2 if Kimi is rate-limited)<br><strong>Last resort — Gemini 3 Flash</strong>
+              (Google backup if both NVIDIA fail)<br><br>Each model has 3 retries with
+              exponential backoff.</span>
           </p>
         </div>
       </div>
@@ -628,12 +629,13 @@
       </p>
       <p style="margin-bottom: 15px;">
         <span class="lang-fr"><strong>2. Redondance des Modèles :</strong> L'implémentation d'un routeur multi-modèles
-          (Gemini 3.0, 2.5 et NVIDIA Qwen) assure la haute disponibilité de l'API. En interceptant silencieusement les
-          erreurs de rate-limit et en basculant vers des clés de secours, on garantit un "100% uptime" apparent pour
-          l'utilisateur final.</span>
-        <span class="lang-en"><strong>2. Model Redundancy:</strong> Implementing a multi-model router (Gemini 3.0, 2.5,
-          and NVIDIA Qwen) ensures high API availability. By silently intercepting rate-limit errors and failing over to
-          backup keys, it guarantees a seamless "100% uptime" experience for the end user.</span>
+          (Kimi K2.5, GLM-5, Gemini) avec 3 tentatives et exponential backoff par modèle assure la haute disponibilité.
+          En interceptant silencieusement les erreurs de rate-limit et en basculant vers des modèles de secours,
+          on garantit un "100% uptime" apparent pour l'utilisateur final.</span>
+        <span class="lang-en"><strong>2. Model Redundancy:</strong> Implementing a multi-model router (Kimi K2.5,
+          GLM-5, Gemini) with 3 retries and exponential backoff per model ensures high API availability.
+          By silently intercepting rate-limit errors and failing over to backup models, it guarantees a
+          seamless "100% uptime" experience for the end user.</span>
       </p>
       <p style="margin-bottom: 15px;">
         <span class="lang-fr"><strong>3. Automatisation de l'Ingestion :</strong> Une simple commande reconstruit
