@@ -458,10 +458,15 @@
     showTyping();
     var startTime = Date.now();
 
+    // Timeout: abort after 45s to avoid infinite loading
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function () { controller.abort(); }, 45000);
+
     // API call
     fetch(_cfg.apiUrl + "/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
       body: JSON.stringify({
         message: text,
         history: _history.slice(-6),
@@ -482,12 +487,22 @@
       })
       .catch(function (err) {
         hideTyping();
-        var errMsg =
-          _cfg.lang === "fr"
+        var errMsg;
+        if (err.name === "AbortError") {
+          errMsg = _cfg.lang === "fr"
+            ? "La réponse a pris trop de temps. Veuillez réessayer."
+            : "Response took too long. Please try again.";
+        } else {
+          errMsg = _cfg.lang === "fr"
             ? "Désolé, une erreur est survenue. Veuillez réessayer."
             : "Sorry, an error occurred. Please try again.";
+        }
         renderMessage(errMsg, "bot");
         console.error("[Midolli-AI]", err);
+      })
+      .finally(function () {
+        clearTimeout(timeoutId);
+        _els.sendBtn.disabled = false;
       });
   }
 
