@@ -472,24 +472,24 @@
           style="padding: 16px 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface);">
           <div class="metrics-mini">
             <div class="metric-mini">
-              <div class="metric-value highlight">RAG</div>
+              <div class="metric-value highlight">12+</div>
               <div class="metric-label">
-                <span class="lang-fr">Retrieval-Augmented Gen</span>
-                <span class="lang-en">Retrieval-Augmented Gen</span>
+                <span class="lang-fr">Sources ingestées</span>
+                <span class="lang-en">Ingested Sources</span>
               </div>
             </div>
             <div class="metric-mini">
-              <div class="metric-value success">Zero</div>
+              <div class="metric-value success">3 LLMs</div>
               <div class="metric-label">
-                <span class="lang-fr">Temps d'arrêt (Fallback)</span>
-                <span class="lang-en">Downtime (Fallback Setup)</span>
+                <span class="lang-fr">Router tri-niveau</span>
+                <span class="lang-en">Tri-tier Router</span>
               </div>
             </div>
             <div class="metric-mini">
-              <div class="metric-value" style="color:#a855f7;">UI</div>
+              <div class="metric-value" style="color:#a855f7;">LLM-Judge</div>
               <div class="metric-label">
-                <span class="lang-fr">Widget Vanilla JS Dynamique</span>
-                <span class="lang-en">Dynamic Vanilla JS Widget</span>
+                <span class="lang-fr">Évaluation anti-hallucination</span>
+                <span class="lang-en">Anti-hallucination Eval</span>
               </div>
             </div>
           </div>
@@ -500,16 +500,16 @@
       <div class="bento-item col-4">
         <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
         <p>
-          <span class="lang-fr">Un pipeline Machine Learning robuste géré avec <strong>uv</strong> pour le contrôle des
-            dépendances. L'entraînement XGBoost et le feature engineering sont hautement modulaires.</span>
-          <span class="lang-en">A robust Machine Learning pipeline managed with <strong>uv</strong> for dependency
-            control. The XGBoost training and feature engineering are highly modular.</span>
-        </p>
-        <p>
-          <span class="lang-fr"><strong>Livrables :</strong> Pipeline `src/`, Notebooks Python réactifs, Fichiers
-            d'exportation d'action CRM.</span>
-          <span class="lang-en"><strong>Deliverables:</strong> Core `src/` pipeline, reactive Python Marimo Notebooks,
-            CRM action export files.</span>
+          <span class="lang-fr">Une architecture RAG construite sur FastAPI et ChromaDB. L'ingestion scanne
+            12+ sources documentaires (.md + CV PDF), les découpe sémantiquement, les encode en embeddings
+            et les stocke dans un vectorstore local. Un LLM Router tri-niveau distribue les requêtes :
+            salutations → Gemini Flash Lite (~1s) · factuelles → Gemini 3 Flash (~3s) · complexes → LLaMA 3.1 70B
+            via NVIDIA. Chaque réponse affiche un timer "⚡ répondu en Xs".</span>
+          <span class="lang-en">A RAG architecture built on FastAPI and ChromaDB. The ingestion layer scans
+            12+ knowledge sources (.md + PDF CV), splits them semantically, encodes them into embeddings
+            and stores them in a local vectorstore. A tri-tier LLM Router distributes requests:
+            greetings → Gemini Flash Lite (~1s) · factual → Gemini 3 Flash (~3s) · complex → LLaMA 3.1 70B
+            via NVIDIA. Every response displays a timer "⚡ responded in Xs".</span>
         </p>
         <div class="tech-stack">
           <span class="tech-tag">🐍 FastAPI</span>
@@ -530,7 +530,8 @@
 
     <!-- SEÇÃO: ARQUITETURA -->
     <div class="card">
-      <h3>🏗️ <span class="lang-fr">Workflow Analytique ML</span><span class="lang-en">Analytical ML Workflow</span>
+      <h3>🏗️ <span class="lang-fr">Pipeline RAG — Flux de Données</span><span class="lang-en">RAG Pipeline — Data
+          Flow</span>
       </h3>
       <div class="architecture-flow">
         <div class="arch-step">
@@ -592,18 +593,19 @@
           <div class="bento-title">🔑 <span class="lang-fr">LLM Router & Failover Automatique</span><span
               class="lang-en">LLM Router & Automatic Failover</span></div>
           <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-            <span class="lang-fr">L'architecture 2026 intègre un routeur intelligent qui évalue la complexité de chaque
-              requête et distribue la charge de travail entre 3 API distinctes : <br><br><strong>1. Google Gemini 3.0
-                Flash</strong> (Routage primaire d'urgence, 70% du trafic)<br><strong>2. Google Gemini 2.5
-                Flash</strong> (Fallback secondaire immédiat)<br><strong>3. NVIDIA / Qwen 3.5 MoE</strong> (Modèle
-              profond pour raisonnement logique de haut niveau) <br><br>Si une API rate ou subit des timeouts severes,
-              le Backend gère les exceptions silencieusement et bascule chez la concurrence.</span>
-            <span class="lang-en">The 2026 architecture features a smart router that evaluates query complexity on the
-              fly and balances workloads across 3 distinct APIs: <br><br><strong>1. Google Gemini 3.0 Flash</strong>
-              (Primary sub-second routing, 70% of traffic)<br><strong>2. Google Gemini 2.5 Flash</strong> (Immediate
-              secondary failover)<br><strong>3. NVIDIA / Qwen 3.5 MoE</strong> (Deep model for high-stakes logical
-              reasoning)<br><br>If one API rate-limits or times out, the Backend silently catches the exception and
-              routes to competitors seamlessly.</span>
+            <span class="lang-fr">L'architecture 2026 intègre un routeur intelligent tri-niveau qui évalue la complexité
+              de chaque
+              requête et distribue la charge :<br><br><strong>Tier 1 — Gemini Flash Lite</strong>
+              (Salutations instantanées, ~1s, sans RAG)<br><strong>Tier 2 — Gemini 3 Flash</strong>
+              (Questions factuelles, ~3-4s, recherche sémantique)<br><strong>Tier 3 — LLaMA 3.1 70B (NVIDIA)</strong>
+              (Analyses complexes, historique long)<br><br>Si une API subit des timeouts ou du rate-limiting,
+              le backend bascule silencieusement vers le niveau suivant.</span>
+            <span class="lang-en">The 2026 architecture features a smart tri-tier router that evaluates query complexity
+              on the fly:<br><br><strong>Tier 1 — Gemini Flash Lite</strong>
+              (Instant greetings, ~1s, no RAG)<br><strong>Tier 2 — Gemini 3 Flash</strong>
+              (Factual queries, ~3-4s, semantic search)<br><strong>Tier 3 — LLaMA 3.1 70B (NVIDIA)</strong>
+              (Deep analysis, long history)<br><br>If one API rate-limits or times out, the backend silently
+              routes to the next tier seamlessly.</span>
           </p>
         </div>
       </div>
@@ -635,12 +637,10 @@
       </p>
       <p style="margin-bottom: 15px;">
         <span class="lang-fr"><strong>3. Automatisation de l'Ingestion :</strong> Une simple commande reconstruit
-          entièrement la base vectorielle ChromaDB en scannant les README mis à jour de mon dépôt local, garantissant
+          entièrement la base vectorielle ChromaDB en scannant les fichiers mis à jour de mon dépôt local, garantissant
           une évolution de l'agent synchronisée avec mon parcours sans requérir de code supplémentaire.</span>
-        directement vers les outils marketing (ex: Salesforce, Braze), on transforme une modélisation théorique en
-        machine génératrice de chiffre d'affaires.</span>
         <span class="lang-en"><strong>3. Ingestion Automation:</strong> A single command fully rebuilds the ChromaDB
-          vector database by scanning updated READMEs across my local repositories, ensuring the AI agent evolves
+          vector database by scanning updated files across my local repositories, ensuring the AI agent evolves
           synchronously with my career profile without requiring any extra code.</span>
       </p>
     </section>
