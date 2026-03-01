@@ -471,6 +471,7 @@
         message: text,
         history: _history.slice(-6),
         lang: _cfg.lang,
+        page_context: window.location.pathname,
       }),
     })
       .then(function (res) {
