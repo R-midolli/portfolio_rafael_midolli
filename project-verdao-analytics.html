@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="fr" data-theme="dark" data-lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="Case study — Verdão Analytics: SE Palmeiras Squad Performance & Injury Prediction. Portfolio Rafael Midolli." />
+  <title>Verdão Analytics | Football Data Portfolio</title>
+  <meta property="og:title" content="Verdão Analytics | Football Data Portfolio" />
+  <meta property="og:description"
+    content="Big Data platform analyzing SE Palmeiras performance and injury risks using XGBoost and CatBoost. Portfolio Rafael Midolli." />
+  <meta property="og:type" content="website" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>⚽</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/project.css" />
+  <!-- Google Analytics 4 (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2ST18JFPN"></script>
+  <script>
+    if (localStorage.getItem('ga_exclude') !== 'true') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-Z2ST18JFPN');
+    } else {
+      console.log('GA4 tracking disabled for internal device.');
+    }
+  </script>
+  <!-- End Google Analytics 4 -->
+  <style>
+    /* Inline specific UI enhancements for this project */
+    .metric-value.highlight {
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .metric-value.success {
+      background: linear-gradient(135deg, #10B981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .insight-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: default;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    :root[data-theme="dark"] .insight-card:hover {
+      border-color: rgba(91, 140, 255, 0.4);
+      box-shadow: 0 15px 35px rgba(91, 140, 255, 0.1);
+    }
+
+    .architecture-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2rem 0;
+    }
+
+    .arch-step {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .arch-step:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .arch-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .arch-step:not(:last-child)::after {
+        content: '↓';
+        right: 50%;
+        bottom: -24px;
+        top: auto;
+        transform: translateX(50%);
+      }
+
+      .architecture-flow {
+        flex-direction: column;
+      }
+    }
+
+    .arch-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .arch-title {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .arch-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* ── Bento Grid ── */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .bento-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-item:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+    }
+
+    .col-12 {
+      grid-column: span 12;
+    }
+
+    .col-8 {
+      grid-column: span 8;
+    }
+
+    .col-7 {
+      grid-column: span 7;
+    }
+
+    .col-6 {
+      grid-column: span 6;
+    }
+
+    .col-5 {
+      grid-column: span 5;
+    }
+
+    .col-4 {
+      grid-column: span 4;
+    }
+
+    .col-3 {
+      grid-column: span 3;
+    }
+
+    @media (max-width: 900px) {
+
+      .col-8,
+      .col-7,
+      .col-6,
+      .col-5,
+      .col-4,
+      .col-3 {
+        grid-column: span 12;
+      }
+    }
+
+    .bento-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .bento-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .kpi-huge {
+      font-size: 2.5rem;
+      font-weight: 800;
+      line-height: 1;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      transition: color 0.3s;
+    }
+
+    /* ── Chart Containers ── */
+    .chart-native-container {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    :root[data-theme="dark"] .chart-native-container {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* ── Tooltips ── */
+    .info-tooltip-wrap {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      z-index: 50;
+    }
+
+    .info-tooltip-icon {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
+      background: rgba(128, 128, 128, 0.15);
+      border: 1px solid rgba(128, 128, 128, 0.4);
+      border-radius: 50%;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: help;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      opacity: 1;
+    }
+
+    .info-tooltip-icon:hover {
+      transform: scale(1.1);
+      background: var(--text);
+      color: #0f172a;
+      border-color: var(--text);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .info-tooltip-content {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      top: 32px;
+      left: 0;
+      width: max-content;
+      max-width: 320px;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 14px 18px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transition: opacity 0.2s, visibility 0.2s;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    :root[data-theme="light"] .info-tooltip-content {
+      background: rgba(255, 255, 255, 0.98);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      color: #1e293b;
+    }
+
+    .info-tooltip-icon:hover+.info-tooltip-content {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    /* ── Controls ── */
+    input[type=range] {
+      width: 100%;
+      cursor: pointer;
+      accent-color: var(--accent);
+    }
+
+    .val-display {
+      font-weight: bold;
+      color: var(--text);
+      float: right;
+    }
+
+    .category-toggle {
+      background: var(--surface);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .category-toggle:hover {
+      border-color: var(--text);
+      color: var(--text);
+      transform: translateY(-2px);
+    }
+
+    .category-toggle.active {
+      background: var(--btn-color, #818cf8);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+      transform: translateY(-2px);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    th,
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    tr:hover {
+      background-color: var(--surface-hover);
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.7rem;
+    }
+
+    .badge-High {
+      background: rgba(16, 185, 129, 0.2);
+      color: #10b981;
+    }
+
+    .badge-Mid {
+      background: rgba(99, 102, 241, 0.2);
+      color: #6366f1;
+    }
+
+    .badge-Low {
+      background: rgba(244, 63, 94, 0.2);
+      color: #f43f5e;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="index.html#projects" class="logo">
+      <span class="logo-ring">RM</span>
+      Rafael Midolli
+    </a>
+    <div class="nav-right">
+      <a href="index.html#projects" class="btn-back">
+        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
+            class="back-label">Back</span></span>
+      </a>
+      <a href="reports/demo_churn.html" target="_blank" rel="noopener" class="btn-fullscreen">
+        <span class="lang-fr">↗ <span class="fs-label">Plein écran</span></span><span class="lang-en">↗ <span
+            class="fs-label">Full&nbsp;screen</span></span>
+      </a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue">
+        <span id="langIcon">FR</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main">
+        <div class="case-header">
+      <div class="case-label"><span class="lang-fr">Data Science & Analytics</span><span class="lang-en">Data Science & Analytics</span>
+      </div>
+      <h1 class="case-title"><span class="lang-fr">Verdão Analytics</span><span class="lang-en">Verdão Analytics</span></h1>
+      <div class="case-subtitle">
+        <span class="lang-fr">Plateforme analytique Big Data & Machine Learning (Streamlit, XGBoost, API-Football) dédiée au suivi tactique et médical de la SE Palmeiras.</span>
+        <span class="lang-en">Big Data & Machine Learning analytics platform (Streamlit, XGBoost, API-Football) dedicated to tactical and medical monitoring for SE Palmeiras.</span>
+      </div>
+    </div>
+
+    <div class="bento-grid" style="margin-bottom: 24px;">
+      <!-- Left Column items -->
+            <div class="col-8" style="display: flex; flex-direction: column;">
+
+        <!-- Problem + Approach -->
+        <div class="insight-card"
+          style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
+          <h3>🎯 <span class="lang-fr">L'Objectif</span><span class="lang-en">The Main Goal</span>
+          </h3>
+          <ul
+            style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
+            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Les clubs de football disposent de vastes données non exploitées.</span><span class="lang-en">Football clubs have vast amounts of untapped data.</span></li>
+            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Difficile de croiser performance et risque de blessure.</span><span class="lang-en">Hard to cross-reference performance and injury risks.</span></li>
+            <li>✅ <span class="lang-fr"><strong>Objectif :</strong> Centraliser les données de match et médicales pour offrir des insights prédictifs (XGBoost/CatBoost) à travers une UI interactive (Streamlit).</span><span class="lang-en"><strong>Goal:</strong> Centralize match and medical data to offer predictive insights (XGBoost/CatBoost) through an interactive UI (Streamlit).</span></li>
+          </ul>
+        </div>
+
+        <div class="insight-card"
+          style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
+          <h3>💡 <span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The Analytical Approach</span>
+          </h3>
+          <ul
+            style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
+            <li style="margin-bottom: 10px;">🧠 <span class="lang-fr"><strong>API-Football :</strong> Ingestion massive des fixtures, joueurs, stats et blessures (2024-2026).</span><span class="lang-en"><strong>API-Football:</strong> Massive ingestion of fixtures, players, stats, and injuries (2024-2026).</span></li>
+            <li style="margin-bottom: 10px;">⚡ <span class="lang-fr"><strong>Pipeline ML :</strong> Clusters k-Means, optimisation de lineup (PuLP) et features SHAP (XGBoost).</span><span class="lang-en"><strong>ML Pipeline:</strong> k-Means clusters, lineup optimization (PuLP), and SHAP features (XGBoost).</span></li>
+            <li>🛡️ <span class="lang-fr"><strong>Dashboard Multi-Layers :</strong> Couches Fans, Analysts et Experts (Streamlit + Plotly).</span><span class="lang-en"><strong>Multi-Layer Dashboard:</strong> Fans, Analysts, and Experts layers (Streamlit + Plotly).</span>
+            </li>
+          </ul>
+        </div>
+        <!-- Key metrics mini-cards -->
+        <div class="insight-card"
+          style="padding: 16px 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface);">
+          <div class="metrics-mini">
+            <div class="metric-mini">
+              <div class="metric-value highlight">API</div>
+              <div class="metric-label">
+                <span class="lang-fr">Ingestion automatisée</span>
+                <span class="lang-en">Automated Ingestion</span>
+              </div>
+            </div>
+            <div class="metric-mini">
+              <div class="metric-value success">3 <span style="font-size:0.5em">Layers</span></div>
+              <div class="metric-label">
+                <span class="lang-fr">Interface Utilisateur</span>
+                <span class="lang-en">User Interface</span>
+              </div>
+            </div>
+            <div class="metric-mini">
+              <div class="metric-value" style="color:#a855f7;">ML</div>
+              <div class="metric-label">
+                <span class="lang-fr">Modèles prédictifs SHAP</span>
+                <span class="lang-en">SHAP Predictive Models</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Left Column -->
+
+      <!-- Tech Stack + GitHub -->
+            <div class="bento-item col-4">
+        <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
+        <p>
+          <span class="lang-fr">Ce projet de bout en bout utilise <strong>Pandas</strong> et l'API-Football pour ingérer des gigaoctets de données de matchs. Celles-ci sont transformées (scikit-learn) et stockées au format Parquet. Le backend exécute des modèles <strong>XGBoost / CatBoost</strong> pour prédire le risque de blessure et la performance. Le tout est exposé dans un dashboard <strong>Streamlit</strong> richement interactif avec des graphiques <strong>Plotly</strong>.</span>
+          <span class="lang-en">This end-to-end project utilizes <strong>Pandas</strong> and API-Football to ingest gigabytes of match data. These are transformed (scikit-learn) and saved in Parquet format. The backend runs <strong>XGBoost / CatBoost</strong> models predicting injury risk and performance. Everything is showcased in a highly interactive <strong>Streamlit</strong> dashboard featuring <strong>Plotly</strong> charts.</span>
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">🐍 Python</span>
+          <span class="tech-tag">🖥️ Streamlit</span>
+          <span class="tech-tag">🤖 XGBoost</span>
+          <span class="tech-tag">📊 Plotly</span>
+        </div>
+        <a href="https://github.com/R-midolli/VERDAO-ANALYTICS" target="_blank" rel="noopener" class="btn-github">
+          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+          </svg>
+          <span class="lang-fr">Dépôt GitHub du Projet</span>
+          <span class="lang-en">View GitHub Repository</span>
+        </a>
+      </div>
+    </div>
+
+        <!-- SEÇÃO: ARQUITETURA -->
+    <div class="card">
+      <h3>🏗️ <span class="lang-fr">Pipeline Data — Flux de Données</span><span class="lang-en">Data Pipeline — Data Flow</span>
+      </h3>
+      <div class="architecture-flow">
+        <div class="arch-step">
+          <div class="arch-icon">📥</div>
+          <div class="arch-title">Ingest</div>
+          <div class="arch-desc">
+            <span class="lang-fr">API-Football & Statsbomb</span>
+            <span class="lang-en">API-Football & Statsbomb</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">⚙️</div>
+          <div class="arch-title">Transform</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Pandas & Scikit-Learn</span>
+            <span class="lang-en">Pandas & Scikit-Learn</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">🧠</div>
+          <div class="arch-title">Train (ML)</div>
+          <div class="arch-desc">
+            <span class="lang-fr">XGBoost & Lineup (PuLP)</span>
+            <span class="lang-en">XGBoost & Lineup (PuLP)</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">📊</div>
+          <div class="arch-title">Serve (UI)</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Streamlit Multi-Layers</span>
+            <span class="lang-en">Streamlit Multi-Layers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    
+
+
+        <!-- ═══ Conclusion ═══ -->
+    <section class="conclusion conclusion--highlight" style="margin-top: 40px; border-radius: 20px;">
+      <h3>
+        <span class="lang-fr">🎯 Enseignements Clés & Recommandations</span>
+        <span class="lang-en">🎯 Key Takeaways & Recommendations</span>
+      </h3>
+      <p style="margin-bottom: 15px;">
+        <span class="lang-fr"><strong>1. Centralisation des Couches de Données :</strong> Permettre de passer d'un affichage "Fan" (simplifié) à un affichage "Expert" (modèles SHAP, optimisation linéaire) démontre la flexibilité de Streamlit et l'importance d'adapter la donnée à son audience.</span>
+        <span class="lang-en"><strong>1. Centralizing Data Layers:</strong> Allowing the user to seamlessly switch from a "Fan" perspective (simplified) to an "Expert" perspective (SHAP models, linear optimization) demonstrates the flexibility of Streamlit and adapting data to the audience.</span>
+      </p>
+      <p style="margin-bottom: 15px;">
+        <span class="lang-fr"><strong>2. Prédiction des Blessures via ML :</strong> En injectant des métadonnées (âge, fatigue, historique) dans CatBoost, l'application anticipe visuellement le risque de blessure par jogador, agissant comme un véritable outil d'aide à la décision médicale et tactique.</span>
+        <span class="lang-en"><strong>2. Injury Prediction via ML:</strong> By injecting metadata (age, fatigue, history) into CatBoost, the application visually anticipates the injury risk per player, acting as a genuine medical and tactical decision-support tool.</span>
+      </p>
+      <p style="margin-bottom: 15px;">
+        <span class="lang-fr"><strong>3. Pipeline de test robuste :</strong> Avec l'utilisation de `pytest` automatisé via GitHub Actions, ce projet s'assure d'une couverture importante sur l'orchestration des données avant d'arriver au Dashboard.</span>
+        <span class="lang-en"><strong>3. Robust Testing Pipeline:</strong> By utilizing automated `pytest` via GitHub Actions, this project ensures high test coverage on data orchestration before allowing it into the Dashboard.</span>
+      </p>
+    </section>
+  </main>
+
+
+
+  <script>
+    (function () {
+      document.querySelectorAll('.bullets .bullet').forEach(function (b) {
+        b.addEventListener('click', function () { b.classList.toggle('active'); });
+      });
+    })();
+  </script>
+
+  <!-- Midolli-AI Widget -->
+  <link rel="stylesheet" href="assets/midolli-widget.css">
+  <script src="assets/midolli-widget.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      MidolliAI.init({
+        apiUrl: 'https://midolli-ai.onrender.com',
+        lang: document.documentElement.dataset.lang || 'fr',
+        theme: document.documentElement.dataset.theme || 'dark'
+      });
+    });
+  </script>
+</body>
+
+</html>
