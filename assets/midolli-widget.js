@@ -458,9 +458,9 @@
     showTyping();
     var startTime = Date.now();
 
-    // Timeout: abort after 45s to avoid infinite loading
+    // Timeout: abort after 60s to avoid infinite loading (allows Render cold-starts)
     var controller = new AbortController();
-    var timeoutId = setTimeout(function () { controller.abort(); }, 45000);
+    var timeoutId = setTimeout(function () { controller.abort(); }, 60000);
 
     // API call
     fetch(_cfg.apiUrl + "/chat", {
