@@ -413,19 +413,23 @@
   </nav>
 
   <main class="main">
-        <div class="case-header">
-      <div class="case-label"><span class="lang-fr">Data Science & Analytics</span><span class="lang-en">Data Science & Analytics</span>
+    <div class="case-header">
+      <div class="case-label"><span class="lang-fr">Data Science & Analytics</span><span class="lang-en">Data Science &
+          Analytics</span>
       </div>
-      <h1 class="case-title"><span class="lang-fr">Verdão Analytics</span><span class="lang-en">Verdão Analytics</span></h1>
+      <h1 class="case-title"><span class="lang-fr">Verdão Analytics</span><span class="lang-en">Verdão Analytics</span>
+      </h1>
       <div class="case-subtitle">
-        <span class="lang-fr">Plateforme analytique Big Data & Machine Learning (Streamlit, XGBoost, API-Football) dédiée au suivi tactique et médical de la SE Palmeiras.</span>
-        <span class="lang-en">Big Data & Machine Learning analytics platform (Streamlit, XGBoost, API-Football) dedicated to tactical and medical monitoring for SE Palmeiras.</span>
+        <span class="lang-fr">Plateforme analytique Big Data & Machine Learning (Streamlit, XGBoost, API-Football)
+          dédiée au suivi tactique et médical de la SE Palmeiras.</span>
+        <span class="lang-en">Big Data & Machine Learning analytics platform (Streamlit, XGBoost, API-Football)
+          dedicated to tactical and medical monitoring for SE Palmeiras.</span>
       </div>
     </div>
 
     <div class="bento-grid" style="margin-bottom: 24px;">
       <!-- Left Column items -->
-            <div class="col-8" style="display: flex; flex-direction: column;">
+      <div class="col-8" style="display: flex; flex-direction: column;">
 
         <!-- Problem + Approach -->
         <div class="insight-card"
@@ -434,9 +438,15 @@
           </h3>
           <ul
             style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
-            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Les clubs de football disposent de vastes données non exploitées.</span><span class="lang-en">Football clubs have vast amounts of untapped data.</span></li>
-            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Difficile de croiser performance et risque de blessure.</span><span class="lang-en">Hard to cross-reference performance and injury risks.</span></li>
-            <li>✅ <span class="lang-fr"><strong>Objectif :</strong> Centraliser les données de match et médicales pour offrir des insights prédictifs (XGBoost/CatBoost) à travers une UI interactive (Streamlit).</span><span class="lang-en"><strong>Goal:</strong> Centralize match and medical data to offer predictive insights (XGBoost/CatBoost) through an interactive UI (Streamlit).</span></li>
+            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Les clubs de football disposent de vastes données
+                non exploitées.</span><span class="lang-en">Football clubs have vast amounts of untapped data.</span>
+            </li>
+            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Difficile de croiser performance et risque de
+                blessure.</span><span class="lang-en">Hard to cross-reference performance and injury risks.</span></li>
+            <li>✅ <span class="lang-fr"><strong>Objectif :</strong> Centraliser les données de match et médicales pour
+                offrir des insights prédictifs (XGBoost/CatBoost) à travers une UI interactive (Streamlit).</span><span
+                class="lang-en"><strong>Goal:</strong> Centralize match and medical data to offer predictive insights
+                (XGBoost/CatBoost) through an interactive UI (Streamlit).</span></li>
           </ul>
         </div>
 
@@ -446,9 +456,17 @@
           </h3>
           <ul
             style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
-            <li style="margin-bottom: 10px;">🧠 <span class="lang-fr"><strong>API-Football :</strong> Ingestion massive des fixtures, joueurs, stats et blessures (2024-2026).</span><span class="lang-en"><strong>API-Football:</strong> Massive ingestion of fixtures, players, stats, and injuries (2024-2026).</span></li>
-            <li style="margin-bottom: 10px;">⚡ <span class="lang-fr"><strong>Pipeline ML :</strong> Clusters k-Means, optimisation de lineup (PuLP) et features SHAP (XGBoost).</span><span class="lang-en"><strong>ML Pipeline:</strong> k-Means clusters, lineup optimization (PuLP), and SHAP features (XGBoost).</span></li>
-            <li>🛡️ <span class="lang-fr"><strong>Dashboard Multi-Layers :</strong> Couches Fans, Analysts et Experts (Streamlit + Plotly).</span><span class="lang-en"><strong>Multi-Layer Dashboard:</strong> Fans, Analysts, and Experts layers (Streamlit + Plotly).</span>
+            <li style="margin-bottom: 10px;">🧠 <span class="lang-fr"><strong>API-Football :</strong> Ingestion massive
+                des fixtures, joueurs, stats et blessures (2024-2026).</span><span
+                class="lang-en"><strong>API-Football:</strong> Massive ingestion of fixtures, players, stats, and
+                injuries (2024-2026).</span></li>
+            <li style="margin-bottom: 10px;">⚡ <span class="lang-fr"><strong>Pipeline ML :</strong> Clusters k-Means,
+                optimisation de lineup (PuLP) et features SHAP (XGBoost).</span><span class="lang-en"><strong>ML
+                  Pipeline:</strong> k-Means clusters, lineup optimization (PuLP), and SHAP features (XGBoost).</span>
+            </li>
+            <li>🛡️ <span class="lang-fr"><strong>Dashboard Multi-Layers :</strong> Couches Fans, Analysts et Experts
+                (Streamlit + Plotly).</span><span class="lang-en"><strong>Multi-Layer Dashboard:</strong> Fans,
+                Analysts, and Experts layers (Streamlit + Plotly).</span>
             </li>
           </ul>
         </div>
@@ -482,11 +500,19 @@
       </div> <!-- End Left Column -->
 
       <!-- Tech Stack + GitHub -->
-            <div class="bento-item col-4">
+      <div class="bento-item col-4">
         <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
         <p>
-          <span class="lang-fr">Ce projet de bout en bout utilise <strong>Pandas</strong> et l'API-Football pour ingérer des gigaoctets de données de matchs. Celles-ci sont transformées (scikit-learn) et stockées au format Parquet. Le backend exécute des modèles <strong>XGBoost / CatBoost</strong> pour prédire le risque de blessure et la performance. Le tout est exposé dans un dashboard <strong>Streamlit</strong> richement interactif avec des graphiques <strong>Plotly</strong>.</span>
-          <span class="lang-en">This end-to-end project utilizes <strong>Pandas</strong> and API-Football to ingest gigabytes of match data. These are transformed (scikit-learn) and saved in Parquet format. The backend runs <strong>XGBoost / CatBoost</strong> models predicting injury risk and performance. Everything is showcased in a highly interactive <strong>Streamlit</strong> dashboard featuring <strong>Plotly</strong> charts.</span>
+          <span class="lang-fr">Ce projet de bout en bout utilise <strong>Pandas</strong> et l'API-Football pour ingérer
+            des gigaoctets de données de matchs. Celles-ci sont transformées (scikit-learn) et stockées au format
+            Parquet. Le backend exécute des modèles <strong>XGBoost / CatBoost</strong> pour prédire le risque de
+            blessure et la performance. Le tout est exposé dans un dashboard <strong>Streamlit</strong> richement
+            interactif avec des graphiques <strong>Plotly</strong>.</span>
+          <span class="lang-en">This end-to-end project utilizes <strong>Pandas</strong> and API-Football to ingest
+            gigabytes of match data. These are transformed (scikit-learn) and saved in Parquet format. The backend runs
+            <strong>XGBoost / CatBoost</strong> models predicting injury risk and performance. Everything is showcased
+            in a highly interactive <strong>Streamlit</strong> dashboard featuring <strong>Plotly</strong>
+            charts.</span>
         </p>
         <div class="tech-stack">
           <span class="tech-tag">🐍 Python</span>
@@ -505,9 +531,10 @@
       </div>
     </div>
 
-        <!-- SEÇÃO: ARQUITETURA -->
+    <!-- SEÇÃO: ARQUITETURA -->
     <div class="card">
-      <h3>🏗️ <span class="lang-fr">Pipeline Data — Flux de Données</span><span class="lang-en">Data Pipeline — Data Flow</span>
+      <h3>🏗️ <span class="lang-fr">Pipeline Data — Flux de Données</span><span class="lang-en">Data Pipeline — Data
+          Flow</span>
       </h3>
       <div class="architecture-flow">
         <div class="arch-step">
@@ -546,26 +573,38 @@
     </div>
 
 
-    
 
 
-        <!-- ═══ Conclusion ═══ -->
+
+    <!-- ═══ Conclusion ═══ -->
     <section class="conclusion conclusion--highlight" style="margin-top: 40px; border-radius: 20px;">
       <h3>
         <span class="lang-fr">🎯 Enseignements Clés & Recommandations</span>
         <span class="lang-en">🎯 Key Takeaways & Recommendations</span>
       </h3>
       <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>1. Centralisation des Couches de Données :</strong> Permettre de passer d'un affichage "Fan" (simplifié) à un affichage "Expert" (modèles SHAP, optimisation linéaire) démontre la flexibilité de Streamlit et l'importance d'adapter la donnée à son audience.</span>
-        <span class="lang-en"><strong>1. Centralizing Data Layers:</strong> Allowing the user to seamlessly switch from a "Fan" perspective (simplified) to an "Expert" perspective (SHAP models, linear optimization) demonstrates the flexibility of Streamlit and adapting data to the audience.</span>
+        <span class="lang-fr"><strong>1. Centralisation des Couches de Données :</strong> Permettre de passer d'un
+          affichage "Fan" (simplifié) à un affichage "Expert" (modèles SHAP, optimisation linéaire) démontre la
+          flexibilité de Streamlit et l'importance d'adapter la donnée à son audience.</span>
+        <span class="lang-en"><strong>1. Centralizing Data Layers:</strong> Allowing the user to seamlessly switch from
+          a "Fan" perspective (simplified) to an "Expert" perspective (SHAP models, linear optimization) demonstrates
+          the flexibility of Streamlit and adapting data to the audience.</span>
       </p>
       <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>2. Prédiction des Blessures via ML :</strong> En injectant des métadonnées (âge, fatigue, historique) dans CatBoost, l'application anticipe visuellement le risque de blessure par jogador, agissant comme un véritable outil d'aide à la décision médicale et tactique.</span>
-        <span class="lang-en"><strong>2. Injury Prediction via ML:</strong> By injecting metadata (age, fatigue, history) into CatBoost, the application visually anticipates the injury risk per player, acting as a genuine medical and tactical decision-support tool.</span>
+        <span class="lang-fr"><strong>2. Prédiction des Blessures via ML :</strong> En injectant des métadonnées (âge,
+          fatigue, historique) dans CatBoost, l'application anticipe visuellement le risque de blessure par jogador,
+          agissant comme un véritable outil d'aide à la décision médicale et tactique.</span>
+        <span class="lang-en"><strong>2. Injury Prediction via ML:</strong> By injecting metadata (age, fatigue,
+          history) into CatBoost, the application visually anticipates the injury risk per player, acting as a genuine
+          medical and tactical decision-support tool.</span>
       </p>
       <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>3. Pipeline de test robuste :</strong> Avec l'utilisation de `pytest` automatisé via GitHub Actions, ce projet s'assure d'une couverture importante sur l'orchestration des données avant d'arriver au Dashboard.</span>
-        <span class="lang-en"><strong>3. Robust Testing Pipeline:</strong> By utilizing automated `pytest` via GitHub Actions, this project ensures high test coverage on data orchestration before allowing it into the Dashboard.</span>
+        <span class="lang-fr"><strong>3. Pipeline de test robuste :</strong> Avec l'utilisation de `pytest` automatisé
+          via GitHub Actions, ce projet s'assure d'une couverture importante sur l'orchestration des données avant
+          d'arriver au Dashboard.</span>
+        <span class="lang-en"><strong>3. Robust Testing Pipeline:</strong> By utilizing automated `pytest` via GitHub
+          Actions, this project ensures high test coverage on data orchestration before allowing it into the
+          Dashboard.</span>
       </p>
     </section>
   </main>
@@ -580,7 +619,7 @@
     })();
   </script>
 
-  <!-- Midolli-AI Widget -->
+  <!-- Midolli-AI Widget
   <link rel="stylesheet" href="assets/midolli-widget.css">
   <script src="assets/midolli-widget.js"></script>
   <script>
@@ -592,6 +631,7 @@
       });
     });
   </script>
+  -->
 </body>
 
 </html>
