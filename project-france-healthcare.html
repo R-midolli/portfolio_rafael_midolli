@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="fr" data-theme="dark" data-lang="fr">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description"
+    content="Case study — Observatoire de l'accessibilité aux soins en France. Dashboard Streamlit, DuckDB, Plotly, Folium. Portfolio Rafael Midolli." />
+  <title>France Healthcare Access — Case Study</title>
+  <meta property="og:title" content="France Healthcare Access — Observatory" />
+  <meta property="og:description"
+    content="Analyse des déserts médicaux en France, pipeline ETL DuckDB et Dashboard Streamlit." />
+  <meta property="og:type" content="website" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🏥</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/project.css" />
+  <!-- Google Analytics 4 (GA4) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2ST18JFPN"></script>
+  <script>
+    if (localStorage.getItem('ga_exclude') !== 'true') {
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-Z2ST18JFPN');
+    } else {
+      console.log('GA4 tracking disabled for internal device.');
+    }
+  </script>
+  <style>
+    /* Inline specific UI enhancements for this project */
+    .metric-value.highlight {
+      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .metric-value.success {
+      background: linear-gradient(135deg, #10B981, #059669);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .insight-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+      cursor: default;
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    }
+
+    :root[data-theme="dark"] .insight-card:hover {
+      border-color: rgba(91, 140, 255, 0.4);
+      box-shadow: 0 15px 35px rgba(91, 140, 255, 0.1);
+    }
+
+    .architecture-flow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2rem 0;
+    }
+
+    .arch-step {
+      flex: 1;
+      min-width: 140px;
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .arch-step:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .arch-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -24px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.5rem;
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+
+    @media (max-width: 768px) {
+      .arch-step:not(:last-child)::after {
+        content: '↓';
+        right: 50%;
+        bottom: -24px;
+        top: auto;
+        transform: translateX(50%);
+      }
+
+      .architecture-flow {
+        flex-direction: column;
+      }
+    }
+
+    .arch-icon {
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+
+    .arch-title {
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 5px;
+    }
+
+    .arch-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-mesh" aria-hidden="true"></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a href="index.html#projects" class="logo">
+      <span class="logo-ring">RM</span>
+      Rafael Midolli
+    </a>
+    <div class="nav-right">
+      <a href="index.html#projects" class="btn-back">
+        <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
+            class="back-label">Back</span></span>
+      </a>
+      <!-- Link should point to the live url eventually. For now, we leave it as an empty target or github. -->
+      <a href="https://github.com/R-midolli/france-healthcare-access" target="_blank" rel="noopener" class="btn-fullscreen">
+        <span class="lang-fr">↗ <span class="fs-label">Dashboard Live</span></span><span class="lang-en">↗ <span
+            class="fs-label">Live&nbsp;Dashboard</span></span>
+      </a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
+        <span id="themeIcon">🌙</span>
+      </button>
+      <button class="lang-toggle" id="langToggle" type="button" aria-label="Changer de langue">
+        <span id="langIcon">FR</span>
+      </button>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="case-header">
+      <div class="case-label"><span class="lang-fr">Pipeline de Données Publiques</span><span class="lang-en">Public Data
+          Pipeline</span></div>
+      <h1 class="case-title"><span class="lang-fr">France Healthcare Access — Observatoire des Soins</span><span
+          class="lang-en">France Healthcare Access — Medical Observatory</span></h1>
+      <div class="case-subtitle">
+        <span class="lang-fr">Pipeline ETL DuckDB : extraction automatisée de l'open-data français (DREES, INSEE) 
+          pour analyser l'accès aux soins de proximité.</span>
+        <span class="lang-en">DuckDB ETL Pipeline: Automated extraction of French open-data (DREES, INSEE) 
+          to analyze primary healthcare accessibility (medical deserts).</span>
+      </div>
+    </div>
+
+    <div class="info-grid">
+      <!-- Problem + Approach -->
+      <div class="card">
+        <h3><span class="lang-fr">Problématique & Source des Données</span><span class="lang-en">Problem & Data Source</span></h3>
+        <p>
+          <span class="lang-fr">L'accès à un médecin généraliste est un problème croissant en France avec l'apparition
+            de "déserts médicaux". <strong>L'objectif :</strong> "Créer un observatoire automatisé et open-source 
+            croisant différentes bases de données publiques pour cartographier cette fracture territoriale."</span>
+          <span class="lang-en">Access to general practitioners is a growing issue in France due to emerging
+            "medical deserts". <strong>The goal:</strong> "Build an automated, open-source observatory 
+            crossing distinct public databases to map this territorial divide."</span>
+        </p>
+        <h3 style="margin-top:20px"><span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The Analytical Approach</span></h3>
+        <p>
+          <span class="lang-fr">Implémentation d'un pipeline ETL s'appuyant sur l'API data.gouv.fr (DREES) pour l'APL 
+            (Accessibilité Potentielle Localisée), l'INSEE pour la démographie et l'API Geo. Une transformation en-mémoire 
+            très véloce via DuckDB calcule les indicateurs de disparité à l'échelle départementale et produit un Dashboard 
+            Streamlit performant.</span>
+          <span class="lang-en">Implementation of an ETL pipeline leveraging the data.gouv.fr API (DREES) for APL 
+            (Localized Potential Accessibility), INSEE for demographics, and the Geo API. A blazing fast in-memory 
+            transformation via DuckDB calculates disparity metrics at the department level, feeding a performant 
+            Streamlit Dashboard.</span>
+        </p>
+
+        <!-- Key metrics mini-cards (real output from DuckDB) -->
+        <div class="metrics-mini">
+          <div class="metric-mini">
+            <div class="metric-value highlight">1.36<small>M</small></div>
+            <div class="metric-label">
+              <span class="lang-fr">Habitants en désert</span>
+              <span class="lang-en">Pop. in medical desert</span>
+            </div>
+          </div>
+          <div class="metric-mini">
+            <div class="metric-value success">3.5</div>
+            <div class="metric-label">
+              <span class="lang-fr">APL médiane nationale</span>
+              <span class="lang-en">National median APL</span>
+            </div>
+          </div>
+          <div class="metric-mini">
+            <div class="metric-value">23</div>
+            <div class="metric-label">
+              <span class="lang-fr">Département le plus touché</span>
+              <span class="lang-en">Most affected department</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tech Stack + GitHub -->
+      <div class="card">
+        <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
+        <p>
+          <span class="lang-fr">L'architecture est 100% cloud-native, reposant sur des scripts reproductibles. 
+            <strong>DuckDB</strong> compile massivement l'ETL, le tout s'exécutant sur <strong>GitHub Actions</strong> 
+            (CI/CD) mensuellement pour actualiser le dashboard publié sur Streamlit Cloud.</span>
+          <span class="lang-en">The cloud-native architecture centers around reproducible scripting. 
+            <strong>DuckDB</strong> massively compiles the ETL routines, with the whole engine triggered via 
+            <strong>GitHub Actions</strong> (CI/CD) on a monthly refresh cycle to publish updated Parquet files 
+            to Streamlit Cloud.</span>
+        </p>
+        <p>
+          <span class="lang-fr"><strong>Livrables :</strong> Pipeline OOP, Modèle Parquet Optimisé, Dashboard Bilingue, 
+          Rapport Qualité JSON automatisé.</span>
+          <span class="lang-en"><strong>Deliverables:</strong> OOP ETL Pipeline, Optimized Parquet Models, 
+          Bilingual Streamlit App, Automated JSON Quality Gates.</span>
+        </p>
+        <div class="tech-stack">
+          <span class="tech-tag">🐍 Python</span>
+          <span class="tech-tag">🦆 DuckDB</span>
+          <span class="tech-tag">🌐 Streamlit</span>
+          <span class="tech-tag">📊 Plotly / Folium</span>
+          <span class="tech-tag">🤖 GitHub Actions</span>
+        </div>
+        <a href="https://github.com/R-midolli/france-healthcare-access" target="_blank" rel="noopener" class="btn-github">
+          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+          </svg>
+          <span class="lang-fr">Dépôt GitHub du Projet</span>
+          <span class="lang-en">View GitHub Repository</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: ARQUITETURA -->
+    <div class="card">
+      <h3>🏗️ <span class="lang-fr">Data Pipeline</span><span class="lang-en">Data Pipeline</span></h3>
+      <div class="architecture-flow">
+        <div class="arch-step">
+          <div class="arch-icon">📥</div>
+          <div class="arch-title">API Extract</div>
+          <div class="arch-desc">
+            <span class="lang-fr">DREES (APL/RPPS), INSEE, GeoAPI</span>
+            <span class="lang-en">DREES (APL/RPPS), INSEE, GeoAPI</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">🦆</div>
+          <div class="arch-title">DuckDB Transform</div>
+          <div class="arch-desc">
+            <span class="lang-fr">SQL Jointures, Group Bys</span>
+            <span class="lang-en">SQL Merge, Groupings</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-title">Parquet Serialization</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Stockage ultra-compressé</span>
+            <span class="lang-en">Ultra-compressed storage</span>
+          </div>
+        </div>
+        <div class="arch-step">
+          <div class="arch-icon">📈</div>
+          <div class="arch-title">Streamlit UI</div>
+          <div class="arch-desc">
+            <span class="lang-fr">Choropleth (Folium) & Plotly</span>
+            <span class="lang-en">Choropleth (Folium) & Plotly</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight-card">
+      <h4>
+        <span class="insight-icon">🎯</span>
+        <span>
+          <span class="lang-fr">Performance et UX du Modèle Map</span>
+          <span class="lang-en">Map Performance and UX Modeling</span>
+        </span>
+      </h4>
+      <div class="insight-content">
+        <p>
+          <span class="lang-fr">
+            Rendre plus de 35 000 polygones (communes françaises) de manière native via Folium ralentissait 
+            systématiquement le navigateur et générait un payload >150 Mo. L'introduction d'une approche 
+            <code>gpd.simplify(tolerance=0.01)</code> via GeoPandas a permis de compresser la géométrie de plus 
+            de 70%, offrant au tableau de bord un rendu instantané sans altérer l'intégrité visuelle de la carte.
+          </span>
+          <span class="lang-en">
+            Natively rendering over 35,000 polygons (French municipalities) via Folium crashed browser engines 
+            and yielded >150MB payloads. Implementing a targeted <code>gpd.simplify(tolerance=0.01)</code> routine 
+            in GeoPandas compressed geometry footprint by over 70%, granting the dashboard swift instant loading 
+            times to its users without damaging map visual resolution.
+          </span>
+        </p>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="assets/js/shared.js"></script>
+</body>
+</html>
