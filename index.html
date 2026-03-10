@@ -686,34 +686,40 @@
       line-height: 1.5;
     }
 
-    /* Clickable metric cards */
-    .metric-card.clickable {
+    .metric-card.clickable:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(91, 140, 255, .1), 0 8px 20px rgba(91, 140, 255, .1);
+    }
+
+    .clickable {
       cursor: pointer;
       position: relative;
     }
 
-    .metric-card.clickable::after {
+    .clickable::after {
       content: "";
       position: absolute;
-      bottom: 10px;
-      right: 12px;
-      width: 18px;
-      height: 18px;
+      bottom: 12px;
+      right: 14px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
       background: rgba(91, 140, 255, .12);
       border: 1px solid rgba(91, 140, 255, .25);
       opacity: 0;
-      transition: opacity .25s ease;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235b8cff' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+      transition: opacity .25s ease, transform .2s ease;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235b8cff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
       background-position: center;
+      z-index: 2;
     }
 
-    .metric-card.clickable:hover::after {
-      opacity: 1
+    .clickable:hover::after {
+      opacity: 1;
+      transform: translateX(2px);
     }
 
-    .metric-card.clickable:hover {
+    .clickable:hover {
       border-color: var(--accent);
       box-shadow: 0 0 0 1px rgba(91, 140, 255, .1), 0 8px 20px rgba(91, 140, 255, .1);
     }
@@ -2272,7 +2278,7 @@
           </div>
         </div>
 
-        <div class="metric-card clickable" id="mbaCard">
+        <div class="metric-card" id="mbaCard">
           <div class="metric-value">MBA</div>
           <div class="metric-label">
             <span class="lang-fr">Intelligence Artificielle +<br>Diplôme d'Ingénieur</span>
@@ -2296,7 +2302,7 @@
       <div class="edu-timeline reveal reveal-d2">
 
         <!-- USP -->
-        <div class="edu-card">
+        <div class="edu-card clickable" id="uspCard">
           <div class="edu-header">
             <img src="assets/img/Usp_logo.svg" alt="USP Logo" class="edu-logo" loading="lazy">
             <div>
@@ -2663,28 +2669,6 @@
           </a>
         </article> -->
 
-        <article class="project-card reveal reveal-d1">
-          <h3><span class="lang-fr">Déserts Médicaux en France</span><span class="lang-en">France Healthcare
-              Access</span></h3>
-          <p>
-            <span class="lang-fr">Pipeline data end-to-end cartographiant l'accessibilité aux généralistes en France.
-              Extraction automatisée depuis les données de santé publiques, transformations DuckDB, et application
-              Streamlit interactive.</span>
-            <span class="lang-en">End-to-end data pipeline mapping GP accessibility across France. Automated extraction
-              from public open health APIs, multi-stage DuckDB transformations, and interactive Streamlit
-              application.</span>
-          </p>
-          <div class="project-tags">
-            <span class="project-tag">Python</span>
-            <span class="project-tag">DuckDB</span>
-            <span class="project-tag">Streamlit</span>
-            <span class="project-tag">Folium</span>
-          </div>
-          <a href="project-france-healthcare.html" class="btn-case">
-            <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
-            <span>→</span>
-          </a>
-        </article>
 
         <article class="project-card reveal reveal-d1">
           <h3><span class="lang-fr">Customer Churn Prediction</span><span class="lang-en">Customer Churn
@@ -3100,13 +3084,13 @@
       updateFormPlaceholders();
 
       // --- MBA diploma overlay ---
-      const mbaCard = $('#mbaCard');
+      const uspCard = $('#uspCard');
       const diplomaOverlay = $('#diplomaOverlay');
       const diplomaClose = $('#diplomaCloseBtn');
       const diplomaIframe = $('#diplomaIframe');
 
-      if (mbaCard && diplomaOverlay) {
-        mbaCard.addEventListener('click', () => {
+      if (uspCard && diplomaOverlay) {
+        uspCard.addEventListener('click', () => {
           if (diplomaIframe) diplomaIframe.src = 'assets/docs/MBA_IA_USP_MIDOLLI_Rafael.pdf';
           diplomaOverlay.classList.add('show');
         });
