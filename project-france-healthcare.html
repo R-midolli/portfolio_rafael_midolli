@@ -114,20 +114,263 @@
       }
     }
 
-    .arch-icon {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-
-    .arch-title {
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 5px;
-    }
-
     .arch-desc {
       font-size: 0.85rem;
       color: var(--text-muted);
+    }
+
+    /* Hero CTA Box */
+    .hero-cta-box {
+      margin: 40px 0;
+      padding: 32px;
+      background: linear-gradient(135deg, rgba(91, 140, 255, 0.1), rgba(139, 92, 246, 0.08));
+      border: 1px solid rgba(91, 140, 255, 0.25);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .hero-cta-content {
+      flex: 1.2;
+      z-index: 1;
+    }
+
+    /* Column specific styles for 3-col layout */
+    .info-grid.dual-focus {
+      display: grid;
+      grid-template-columns: 1fr 1fr 0.8fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    @media (max-width: 1200px) {
+      .info-grid.dual-focus {
+        grid-template-columns: 1fr 1fr;
+      }
+      .link-card {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .info-grid.dual-focus {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .link-card {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(91, 140, 255, 0.1));
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      padding: 32px;
+    }
+
+    .link-card h3 {
+      color: #10B981;
+      margin-bottom: 16px;
+    }
+
+    .btn-live-large {
+      display: block;
+      padding: 20px;
+      background: #10B981;
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 1.1rem;
+      box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s ease;
+      margin-top: auto;
+    }
+
+    .btn-live-large:hover {
+      background: #059669;
+      transform: scale(1.05);
+      box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+    }
+
+    .hero-cta-text h3 {
+      font-family: var(--font-head);
+      font-size: 1.6rem;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .hero-cta-text p {
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-size: 1rem;
+    }
+
+    .hero-cta-visual {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      perspective: 1000px;
+    }
+
+    .mockup-container {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      transform: rotateY(-15deg) rotateX(5deg);
+      transition: transform 0.5s ease;
+    }
+
+    .hero-cta-box:hover .mockup-container {
+      transform: rotateY(-5deg) rotateX(2deg);
+    }
+
+    .mockup-screen {
+      background: #1e293b;
+      border: 6px solid #334155;
+      border-radius: 12px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    }
+
+    .mockup-header {
+      height: 12px;
+      background: #334155;
+      display: flex;
+      gap: 4px;
+      padding-left: 8px;
+      align-items: center;
+    }
+
+    .mockup-header span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .mockup-body {
+      display: flex;
+      height: 100%;
+      padding: 8px;
+      gap: 8px;
+    }
+
+    .mock-sidebar {
+      width: 30%;
+      background: rgba(255,255,255,0.05);
+      border-radius: 4px;
+    }
+
+    .mock-main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .mock-charts {
+      display: flex;
+      gap: 6px;
+      height: 30%;
+    }
+
+    .mock-chart {
+      flex: 1;
+      background: rgba(91, 140, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    .mock-map {
+      flex: 1;
+      background: rgba(91, 140, 255, 0.1);
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .mock-map::after {
+      content: '📍';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.2rem;
+    }
+
+    .btn-primary-glow {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      background: var(--accent);
+      color: white;
+      border-radius: 12px;
+      font-weight: 700;
+      box-shadow: 0 10px 30px var(--accent-glow);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary-glow:hover {
+      background: #739dff;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 40px var(--accent-glow);
+    }
+
+    .btn-primary-glow .arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .btn-primary-glow:hover .arrow {
+      transform: translateX(5px);
+    }
+
+    .methodology-flex {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .methodology-item {
+      flex: 1;
+      min-width: 240px;
+    }
+
+    .methodology-item strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .methodology-item p {
+      font-size: 0.9rem !important;
+    }
+
+    .pulse-accent {
+      animation: pulse-border 2s infinite;
+    }
+
+    @keyframes pulse-border {
+      0% { border-color: rgba(91, 140, 255, 0.3); box-shadow: 0 0 0 0 rgba(91, 140, 255, 0.2); }
+      70% { border-color: rgba(91, 140, 255, 0.8); box-shadow: 0 0 0 10px rgba(91, 140, 255, 0); }
+      100% { border-color: rgba(91, 140, 255, 0.3); box-shadow: 0 0 0 0 rgba(91, 140, 255, 0); }
+    }
+
+    @media (max-width: 900px) {
+      .hero-cta-box {
+        flex-direction: column;
+        text-align: center;
+      }
+      .mockup-container {
+        transform: none;
+      }
+      .hero-cta-box:hover .mockup-container {
+        transform: translateY(-10px);
+      }
     }
   </style>
 </head>
@@ -146,10 +389,9 @@
         <span class="lang-fr">← <span class="back-label">Retour</span></span><span class="lang-en">← <span
             class="back-label">Back</span></span>
       </a>
-      <!-- Link should point to the live url eventually. For now, we leave it as an empty target or github. -->
-      <a href="https://france-healthcare-access.streamlit.app/" target="_blank" rel="noopener" class="btn-fullscreen">
-        <span class="lang-fr">↗ <span class="fs-label">Dashboard Live</span></span><span class="lang-en">↗ <span
-            class="fs-label">Live&nbsp;Dashboard</span></span>
+      <a href="https://france-healthcare-access.streamlit.app/" target="_blank" rel="noopener" class="btn-fullscreen pulse-accent">
+        <span class="lang-fr">🚀 <span class="fs-label">Lancer l'Explorateur Live</span></span><span class="lang-en">🚀 <span
+            class="fs-label">Launch Live Explorer</span></span>
       </a>
       <button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème">
         <span id="themeIcon">🌙</span>
@@ -172,11 +414,37 @@
         <span class="lang-en">DuckDB ETL Pipeline: Automated extraction of French open-data (DREES, INSEE) 
           to analyze primary healthcare accessibility (medical deserts).</span>
       </div>
+
+      <!-- Live Explorer Hero CTA -->
+      <div class="hero-cta-box">
+        <div class="hero-cta-content">
+          <div class="hero-cta-text">
+            <h3><span class="lang-fr">Outil Interactif Live</span><span class="lang-en">Live Interactive Tool</span></h3>
+            <p>
+              <span class="lang-fr">Explorez les données en temps réel sur l'ensemble du territoire français.</span>
+              <span class="lang-en">Explore real-time data across the entire French territory.</span>
+            </p>
+          </div>
+          <a href="https://france-healthcare-access.streamlit.app/" target="_blank" class="btn-primary-glow">
+            <span class="lang-fr">Ouvrir l'Observatoire Live</span>
+            <span class="lang-en">Open Live Observatory</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+        <div class="hero-cta-visual">
+          <div class="mockup-container">
+            <div class="mockup-screen" style="border: 2px solid rgba(91, 140, 255, 0.4); border-radius: 12px; overflow: hidden; background: #0a0a0a;">
+              <img src="assets/img/france-healthcare-live.png" alt="Live Dashboard Preview" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div class="mockup-glow"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="info-grid">
+    <div class="info-grid dual-focus">
       <!-- Problem + Approach -->
-      <div class="card">
+      <div class="card problem-card">
         <h3><span class="lang-fr">Problématique & Source des Données</span><span class="lang-en">Problem & Data Source</span></h3>
         <p>
           <span class="lang-fr">L'accès à un médecin généraliste est un problème croissant en France avec l'apparition
@@ -225,7 +493,7 @@
       </div>
 
       <!-- Tech Stack + GitHub -->
-      <div class="card">
+      <div class="card tech-card">
         <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
         <p>
           <span class="lang-fr">L'architecture est 100% cloud-native, reposant sur des scripts reproductibles. 
@@ -259,34 +527,47 @@
         </a>
       </div>
 
-      <!-- NEW SECTION: METHODOLOGY -->
-      <div class="card" style="grid-column: 1 / -1;">
-        <h3>🧪 <span class="lang-fr">Méthodologie de Recherche</span><span class="lang-en">Research Methodology</span></h3>
-        <p>
-          <span class="lang-fr">L'analyse repose sur le croisement de bases de données multi-sources via un moteur performant :</span>
-          <span class="lang-en">The analysis relies on crossing multi-source databases via a high-performance engine:</span>
+      <!-- New Streamlit Link Card (3rd Column) -->
+      <div class="card link-card">
+        <h3>🚀 <span class="lang-fr">Accès Direct</span><span class="lang-en">Direct Access</span></h3>
+        <p style="margin-bottom: 24px;">
+          <span class="lang-fr">Accédez immédiatement au dashboard interactif hébergé sur Streamlit Cloud.</span>
+          <span class="lang-en">Access the interactive dashboard hosted on Streamlit Cloud immediately.</span>
         </p>
-        <ul style="margin-left: 20px; color: var(--text-muted); line-height: 1.6;">
-          <li>
+        <a href="https://france-healthcare-access.streamlit.app/" target="_blank" class="btn-live-large">
+          <span class="lang-fr">Ouvrir Streamlit</span>
+          <span class="lang-en">Open Streamlit</span>
+        </a>
+        <div style="margin-top: 20px; font-size: 0.8rem; color: var(--text-muted);">
+          <span class="lang-fr">Dernières données : 2024</span>
+          <span class="lang-en">Latest data: 2024</span>
+        </div>
+      </div>
+
+      <!-- METHODOLOGY (Now alongside inside the grid or full width with better spacing) -->
+      <div class="card methodology-card" style="grid-column: 1 / -1;">
+        <h3>🧪 <span class="lang-fr">Méthodologie de Recherche</span><span class="lang-en">Research Methodology</span></h3>
+        <div class="methodology-flex">
+          <div class="methodology-item">
             <strong style="color: var(--text);">Source APL (DREES) :</strong> 
-            <span class="lang-fr">Utilisation de l'Indicateur d'Accessibilité Potentielle Localisée pour mesurer la pression sur les généralistes.</span>
-            <span class="lang-en">Use of the Localized Potential Accessibility (APL) indicator to measure pressure on practitioners.</span>
-          </li>
-          <li>
+            <p class="lang-fr">Indicateur d'Accessibilité Potentielle Localisée pour mesurer la pression sur les généralistes.</p>
+            <p class="lang-en">Localized Potential Accessibility (APL) indicator to measure pressure on practitioners.</p>
+          </div>
+          <div class="methodology-item">
             <strong style="color: var(--text);">Source RPPS :</strong> 
-            <span class="lang-fr">Nettoyage des données du Répertoire Partagé des Professionnels de Santé pour isoler les médecins actifs.</span>
-            <span class="lang-en">Cleaning of the Shared Directory of Health Professionals (RPPS) to isolate active physicians.</span>
-          </li>
-          <li>
+            <p class="lang-fr">Nettoyage des données du Répertoire Partagé des Professionnels de Santé (médecins actifs).</p>
+            <p class="lang-en">Cleaning of the Shared Directory of Health Professionals (active physicians).</p>
+          </div>
+          <div class="methodology-item">
             <strong style="color: var(--text);">Normalisation Géo :</strong> 
-            <span class="lang-fr">Réconciliation via les codes COG (INSEE) et enrichissement par les flux Parquet DuckDB.</span>
-            <span class="lang-en">Reconciliation via COG codes (INSEE) and enrichment through DuckDB Parquet streams.</span>
-          </li>
-        </ul>
+            <p class="lang-fr">Réconciliation via les codes COG (INSEE) et enrichissement par Parquet DuckDB.</p>
+            <p class="lang-en">Reconciliation via COG codes (INSEE) and enrichment through DuckDB Parquet.</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- SEÇÃO: ARQUITETURA -->
+    <!-- SECTION: ARCHITECTURE -->
     <div class="card">
       <h3>🏗️ <span class="lang-fr">Data Pipeline</span><span class="lang-en">Data Pipeline</span></h3>
       <div class="architecture-flow">
