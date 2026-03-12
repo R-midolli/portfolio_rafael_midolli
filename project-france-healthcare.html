@@ -201,31 +201,33 @@
   }
 
   .btn-live-large {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 20px;
-    background: #10B981;
+    gap: 10px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
     color: white;
     text-decoration: none;
-    border-radius: 12px;
-    font-weight: 800;
-    font-size: 1.1rem;
-    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 1rem;
     transition: all 0.3s ease;
-    margin-top: auto;
+    box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .btn-live-large:hover {
-    background: #059669;
-    transform: scale(1.02);
+    transform: translateY(-2px);
     box-shadow: 0 15px 30px rgba(16, 185, 129, 0.4);
+    filter: brightness(1.1);
   }
 
   .btn-live-large svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
   }    
     .hero-cta-text p {
       color: var(--text-muted);
@@ -607,10 +609,6 @@
             <li style="font-size: 0.8rem; margin-bottom: 6px;">
               <span class="lang-fr"><strong>Benchmarking :</strong> Comparaison directe entre territoires.</span>
               <span class="lang-en"><strong>Benchmarking :</strong> Direct comparison between territories.</span>
-            </li>
-            <li style="font-size: 0.8rem;">
-              <span class="lang-fr"><strong>Bilingue :</strong> Support complet Français / Anglais.</span>
-              <span class="lang-en"><strong>Bilingual :</strong> Full French / English support.</span>
             </li>
           </ul>
         </div>
