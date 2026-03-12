@@ -196,6 +196,49 @@
       color: var(--text);
     }
 
+    button[data-baseweb="tab"][aria-selected="true"] {
+        color: var(--text-primary) !important;
+  }
+
+  .cta-group {
+    display: flex;
+    gap: 12px;
+    margin-top: auto;
+    flex-wrap: wrap;
+  }
+
+  .btn-live-small {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: #b91c1c; /* Matte Red */
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .btn-live-small:hover {
+    background: #991b1b;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(185, 28, 28, 0.3);
+  }
+
+  .btn-github {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+  }
+
+  .btn-live-small {
+    flex: 1;
+    min-width: 140px;
+    justify-content: center;
+  }    
     .hero-cta-text p {
       color: var(--text-muted);
       margin-bottom: 24px;
@@ -499,9 +542,9 @@
       <div class="card tech-card">
         <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
         <p>
-          <span class="lang-fr">Architecture 100% cloud-native s'exécutant sur <strong>GitHub Actions</strong> 
+          <span class="lang-fr">Architecture cloud-native s'exécutant sur <strong>GitHub Actions</strong> 
             pour actualiser le dashboard via <strong>DuckDB</strong> et <strong>Parquet</strong>.</span>
-          <span class="lang-en">100% cloud-native architecture running on <strong>GitHub Actions</strong> 
+          <span class="lang-en">Cloud-native architecture running on <strong>GitHub Actions</strong> 
             to refresh the dashboard using <strong>DuckDB</strong> and <strong>Parquet</strong>.</span>
         </p>
 
@@ -511,8 +554,8 @@
             <span class="lang-en">Modular and typed OOP Python pipeline.</span>
           </li>
           <li>
-            <span class="lang-fr">Moteur SQL DuckDB pour des transformations 10x plus rapides.</span>
-            <span class="lang-en">DuckDB SQL Engine for 10x faster transformations.</span>
+            <span class="lang-fr">Moteur SQL DuckDB pour des transformations performantes.</span>
+            <span class="lang-en">DuckDB SQL Engine for high-performance transformations.</span>
           </li>
           <li>
             <span class="lang-fr">Validation de données automatisée avec Pydantic.</span>
@@ -534,14 +577,23 @@
           <span class="tech-tag">🌐 Streamlit</span>
           <span class="tech-tag">🤖 GH Actions</span>
         </div>
-        <a href="https://github.com/R-midolli/france-healthcare-access" target="_blank" rel="noopener" class="btn-github">
-          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-          </svg>
-          <span class="lang-fr">Dépôt GitHub</span>
-          <span class="lang-en">View Repository</span>
-        </a>
+        <div class="cta-group">
+          <a href="https://github.com/R-midolli/france-healthcare-access" target="_blank" rel="noopener" class="btn-github">
+            <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+            </svg>
+            <span class="lang-fr">Code Source</span>
+            <span class="lang-en">Source Code</span>
+          </a>
+          <a href="https://france-healthcare-access.streamlit.app/" target="_blank" rel="noopener" class="btn-live-small">
+            <svg viewBox="0 0 24 24" fill="currentColor" style="width:18px;height:18px;margin-right:6px;">
+              <path d="M12 2L1 21h22L12 2zm0 3.83L18.85 19H5.15L12 5.83zM12 8l-4 7h8l-4-7z"/>
+            </svg>
+            <span class="lang-fr">Ouvrir Streamlit</span>
+            <span class="lang-en">Open Streamlit</span>
+          </a>
+        </div>
       </div>
 
       <!-- New Streamlit Link Card (3rd Column) -->
@@ -583,11 +635,6 @@
             </li>
           </ul>
         </div>
-
-        <a href="https://france-healthcare-access.streamlit.app/" target="_blank" class="btn-live-large" style="margin-top: 20px;">
-          <span class="lang-fr">Ouvrir Streamlit</span>
-          <span class="lang-en">Open Streamlit</span>
-        </a>
       </div>
 
     </div>
