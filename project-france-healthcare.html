@@ -162,18 +162,14 @@
     }
 
     .link-card {
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(91, 140, 255, 0.1));
-      border: 1px solid rgba(16, 185, 129, 0.3);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      text-align: center;
-      padding: 32px;
+      padding: 24px;
     }
 
     .link-card h3 {
-      color: #10B981;
-      margin-bottom: 16px;
+      color: var(--accent);
+      margin-bottom: 12px;
     }
 
     .btn-live-large {
@@ -415,31 +411,6 @@
           to analyze primary healthcare accessibility (medical deserts).</span>
       </div>
 
-      <!-- Live Explorer Hero CTA -->
-      <div class="hero-cta-box">
-        <div class="hero-cta-content">
-          <div class="hero-cta-text">
-            <h3><span class="lang-fr">Outil Interactif Live</span><span class="lang-en">Live Interactive Tool</span></h3>
-            <p>
-              <span class="lang-fr">Explorez les données en temps réel sur l'ensemble du territoire français.</span>
-              <span class="lang-en">Explore real-time data across the entire French territory.</span>
-            </p>
-          </div>
-          <a href="https://france-healthcare-access.streamlit.app/" target="_blank" class="btn-primary-glow">
-            <span class="lang-fr">Ouvrir l'Observatoire Live</span>
-            <span class="lang-en">Open Live Observatory</span>
-            <span class="arrow">→</span>
-          </a>
-        </div>
-        <div class="hero-cta-visual">
-          <div class="mockup-container">
-            <div class="mockup-screen" style="border: 2px solid rgba(91, 140, 255, 0.4); border-radius: 12px; overflow: hidden; background: #0a0a0a;">
-              <img src="assets/img/france-healthcare-live.png" alt="Live Dashboard Preview" style="width: 100%; height: 100%; object-fit: cover; display: block;">
-            </div>
-            <div class="mockup-glow"></div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="info-grid dual-focus">
@@ -528,12 +499,19 @@
       </div>
 
       <!-- New Streamlit Link Card (3rd Column) -->
-      <div class="card link-card">
+      <div class="card link-card pulse-accent">
         <h3>🚀 <span class="lang-fr">Accès Direct</span><span class="lang-en">Direct Access</span></h3>
-        <p style="margin-bottom: 24px;">
+        <p>
           <span class="lang-fr">Accédez immédiatement au dashboard interactif hébergé sur Streamlit Cloud.</span>
-          <span class="lang-en">Access the interactive dashboard hosted on Streamlit Cloud immediately.</span>
+          <span class="lang-en">Access the interactive dashboard immediately, hosted on Streamlit Cloud.</span>
         </p>
+
+        <div class="mockup-container" style="transform:none; margin: 16px 0; max-width: 100%;">
+          <div class="mockup-screen" style="border: 1px solid rgba(91, 140, 255, 0.3); border-radius: 8px; background: #0a0a0a;">
+            <img src="assets/img/france-healthcare-live.png" alt="Live Dashboard Preview" style="width: 100%; display: block;">
+          </div>
+        </div>
+
         <a href="https://france-healthcare-access.streamlit.app/" target="_blank" class="btn-live-large">
           <span class="lang-fr">Ouvrir Streamlit</span>
           <span class="lang-en">Open Streamlit</span>
