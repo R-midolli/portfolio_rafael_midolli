@@ -147,7 +147,7 @@
             class="back-label">Back</span></span>
       </a>
       <!-- Link should point to the live url eventually. For now, we leave it as an empty target or github. -->
-      <a href="https://github.com/R-midolli/france-healthcare-access" target="_blank" rel="noopener" class="btn-fullscreen">
+      <a href="https://france-healthcare-access.streamlit.app/" target="_blank" rel="noopener" class="btn-fullscreen">
         <span class="lang-fr">↗ <span class="fs-label">Dashboard Live</span></span><span class="lang-en">↗ <span
             class="fs-label">Live&nbsp;Dashboard</span></span>
       </a>
@@ -258,6 +258,32 @@
           <span class="lang-en">View GitHub Repository</span>
         </a>
       </div>
+
+      <!-- NEW SECTION: METHODOLOGY -->
+      <div class="card" style="grid-column: 1 / -1;">
+        <h3>🧪 <span class="lang-fr">Méthodologie de Recherche</span><span class="lang-en">Research Methodology</span></h3>
+        <p>
+          <span class="lang-fr">L'analyse repose sur le croisement de bases de données multi-sources via un moteur performant :</span>
+          <span class="lang-en">The analysis relies on crossing multi-source databases via a high-performance engine:</span>
+        </p>
+        <ul style="margin-left: 20px; color: var(--text-muted); line-height: 1.6;">
+          <li>
+            <strong style="color: var(--text);">Source APL (DREES) :</strong> 
+            <span class="lang-fr">Utilisation de l'Indicateur d'Accessibilité Potentielle Localisée pour mesurer la pression sur les généralistes.</span>
+            <span class="lang-en">Use of the Localized Potential Accessibility (APL) indicator to measure pressure on practitioners.</span>
+          </li>
+          <li>
+            <strong style="color: var(--text);">Source RPPS :</strong> 
+            <span class="lang-fr">Nettoyage des données du Répertoire Partagé des Professionnels de Santé pour isoler les médecins actifs.</span>
+            <span class="lang-en">Cleaning of the Shared Directory of Health Professionals (RPPS) to isolate active physicians.</span>
+          </li>
+          <li>
+            <strong style="color: var(--text);">Normalisation Géo :</strong> 
+            <span class="lang-fr">Réconciliation via les codes COG (INSEE) et enrichissement par les flux Parquet DuckDB.</span>
+            <span class="lang-en">Reconciliation via COG codes (INSEE) and enrichment through DuckDB Parquet streams.</span>
+          </li>
+        </ul>
+      </div>
     </div>
 
     <!-- Interface Preview Section -->
@@ -330,6 +356,32 @@
             and yielded >150MB payloads. Implementing a targeted <code>gpd.simplify(tolerance=0.01)</code> routine 
             in GeoPandas compressed geometry footprint by over 70%, granting the dashboard swift instant loading 
             times to its users without damaging map visual resolution.
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <div class="insight-card" style="margin-top: 20px;">
+      <h4>
+        <span class="insight-icon">💡</span>
+        <span>
+          <span class="lang-fr">Data Insights : Disparités Nord-Sud</span>
+          <span class="lang-en">Data Insights: North-South Disparities</span>
+        </span>
+      </h4>
+      <div class="insight-content">
+        <p>
+          <span class="lang-fr">
+            L'analyse automatisée révèle une forte corrélation entre la densité de population urbaine et une APL 
+            critique. Contrairement aux idées reçues, certaines zones rurales historiques affichent une meilleure 
+            résilience grâce aux maisons de santé pluriprofessionnelles, tandis que les périphéries de grandes 
+            agglomérations (zones "grises") subissent la plus forte dégradation de l'accès aux soins.
+          </span>
+          <span class="lang-en">
+            Automated analysis reveals a strong correlation between urban population density and critical APL 
+            levels. Contrary to popular belief, some historic rural areas show better resilience thanks to 
+            multi-professional health centers, whereas the outskirts of large urban areas ("grey zones") 
+            experience the sharpest degradation in healthcare access.
           </span>
         </p>
       </div>
