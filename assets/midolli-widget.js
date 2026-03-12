@@ -18,7 +18,8 @@
       disclaimer: "Midolli-AI peut faire des erreurs.",
       subtitle: "Assistant Data Portfolio",
       send: "Envoyer",
-      responded: "répondu en",
+      error: "Désolé, une erreur est survenue. Veuillez réessayer.",
+      timeout: "Le serveur a mis trop de temps à répondre. Veuillez réessayer dans quelques secondes.",
     },
     en: {
       welcome:
@@ -28,7 +29,8 @@
       disclaimer: "Midolli-AI can make mistakes.",
       subtitle: "Data Portfolio Assistant",
       send: "Send",
-      responded: "responded in",
+      error: "Sorry, an error occurred. Please try again.",
+      timeout: "The server took too long to respond. Please try again in a few seconds.",
     },
   };
 
@@ -38,6 +40,7 @@
   let _cfg = { apiUrl: "", lang: "fr", theme: "dark" };
   let _isOpen = false;
   let _hasOpened = false;
+  let _isSending = false;
   let _history = [];
   let _els = {};
 
@@ -394,7 +397,7 @@
   // ---------------------------------------------------------------
   // Messages
   // ---------------------------------------------------------------
-  function renderMessage(content, role, meta) {
+  function renderMessage(content, role) {
     var wrapper = el("div", "mai-message mai-message-" + role);
     var bubble = el("div", role === "user" ? "mai-user-bubble" : "mai-bot-bubble");
 
@@ -406,14 +409,6 @@
     }
 
     wrapper.appendChild(bubble);
-
-    // Response time meta tag below bot bubbles
-    if (role === "bot" && meta) {
-      var metaEl = el("div", "mai-response-meta");
-      metaEl.textContent = meta;
-      wrapper.appendChild(metaEl);
-    }
-
     _els.messages.appendChild(wrapper);
     _els.messages.scrollTop = _els.messages.scrollHeight;
   }
@@ -435,10 +430,18 @@
     if (typing) typing.remove();
   }
 
+  function setComposerBusy(isBusy) {
+    _isSending = isBusy;
+    _els.textarea.disabled = isBusy;
+    _els.sendBtn.disabled = isBusy || !_els.textarea.value.trim();
+  }
+
   // ---------------------------------------------------------------
   // Send message
   // ---------------------------------------------------------------
   function sendMessage() {
+    if (_isSending) return;
+
     var text = _els.textarea.value.trim();
     if (!text) return;
 
@@ -456,11 +459,12 @@
 
     // Show typing
     showTyping();
-    var startTime = Date.now();
+    setComposerBusy(true);
 
-    // Timeout: abort after 60s to avoid infinite loading (allows Render cold-starts)
     var controller = new AbortController();
-    var timeoutId = setTimeout(function () { controller.abort(); }, 60000);
+    var timeoutId = setTimeout(function () {
+      controller.abort();
+    }, 20000);
 
     // API call
     fetch(_cfg.apiUrl + "/chat", {
@@ -481,29 +485,19 @@
       .then(function (data) {
         hideTyping();
         var reply = data.reply || "...";
-        var elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
-        var meta = "⚡ " + t().responded + " " + elapsed + "s";
-        renderMessage(reply, "bot", meta);
+        renderMessage(reply, "bot");
         _history.push({ role: "assistant", content: reply });
       })
       .catch(function (err) {
         hideTyping();
-        var errMsg;
-        if (err.name === "AbortError") {
-          errMsg = _cfg.lang === "fr"
-            ? "La réponse a pris trop de temps. Veuillez réessayer."
-            : "Response took too long. Please try again.";
-        } else {
-          errMsg = _cfg.lang === "fr"
-            ? "Désolé, une erreur est survenue. Veuillez réessayer."
-            : "Sorry, an error occurred. Please try again.";
-        }
+        var errMsg = err && err.name === "AbortError" ? t().timeout : t().error;
         renderMessage(errMsg, "bot");
         console.error("[Midolli-AI]", err);
       })
       .finally(function () {
         clearTimeout(timeoutId);
-        _els.sendBtn.disabled = false;
+        setComposerBusy(false);
+        _els.textarea.focus();
       });
   }
 
