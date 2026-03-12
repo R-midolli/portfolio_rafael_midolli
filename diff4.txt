@@ -1,0 +1,100 @@
+diff --git a/index.html b/index.html
+index 58edeae..3543acf 100644
+--- a/index.html
++++ b/index.html
+@@ -2687,21 +2687,22 @@
+ 
+ 
+         <article class="project-card reveal reveal-d1">
+-          <h3><span class="lang-fr">Customer Churn Prediction</span><span class="lang-en">Customer Churn
+-              Prediction</span></h3>
++          <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales &
++              Profitability</span></h3>
+           <p>
+-            <span class="lang-fr">Modélisation Machine Learning (XGBoost) avec features comportementales pour prédire
+-              l'attrition et optimiser le ROI des campagnes CRM de rétention.</span>
+-            <span class="lang-en">Machine Learning modeling (XGBoost) with behavioral features to predict attrition and
+-              optimize the ROI of retention CRM campaigns.</span>
++            <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de
++              rentabilité par produit et client, dashboard Power BI.</span>
++            <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema),
++              profitability analysis by product and customer, Power BI dashboard.</span>
+           </p>
+           <div class="project-tags">
++            <span class="project-tag">ELT</span>
+             <span class="project-tag">Python</span>
+-            <span class="project-tag">XGBoost</span>
+-            <span class="project-tag">pytest</span>
+-            <span class="project-tag">Marimo</span>
++            <span class="project-tag">dbt</span>
++            <span class="project-tag">Postgres</span>
++            <span class="project-tag">Power BI</span>
+           </div>
+-          <a href="project-churn.html" class="btn-case">
++          <a href="project-elt-retail.html" class="btn-case">
+             <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+             <span>→</span>
+           </a>
+@@ -2729,43 +2730,42 @@
+         </article>
+ 
+         <article class="project-card reveal reveal-d2">
+-          <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales &
+-              Profitability</span></h3>
++          <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain —
++              Delivery Performance</span></h3>
+           <p>
+-            <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de
+-              rentabilité par produit et client, dashboard Power BI.</span>
+-            <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema),
+-              profitability analysis by product and customer, Power BI dashboard.</span>
++            <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery),
++              analyse des causes de retard, et dashboard Power BI.</span>
++            <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root
++              cause analysis of delays, and Power BI dashboard.</span>
+           </p>
+           <div class="project-tags">
+-            <span class="project-tag">ELT</span>
+             <span class="project-tag">Python</span>
+-            <span class="project-tag">dbt</span>
+-            <span class="project-tag">Postgres</span>
++            <span class="project-tag">ETL</span>
+             <span class="project-tag">Power BI</span>
++            <span class="project-tag">KPI</span>
+           </div>
+-          <a href="project-elt-retail.html" class="btn-case">
++          <a href="project-supply-chain.html" class="btn-case">
+             <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+             <span>→</span>
+           </a>
+         </article>
+ 
+         <article class="project-card reveal reveal-d3">
+-          <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain —
+-              Delivery Performance</span></h3>
++          <h3><span class="lang-fr">Customer Churn Prediction</span><span class="lang-en">Customer Churn
++              Prediction</span></h3>
+           <p>
+-            <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery),
+-              analyse des causes de retard, et dashboard Power BI.</span>
+-            <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root
+-              cause analysis of delays, and Power BI dashboard.</span>
++            <span class="lang-fr">Modélisation Machine Learning (XGBoost) avec features comportementales pour prédire
++              l'attrition et optimiser le ROI des campagnes CRM de rétention.</span>
++            <span class="lang-en">Machine Learning modeling (XGBoost) with behavioral features to predict attrition and
++              optimize the ROI of retention CRM campaigns.</span>
+           </p>
+           <div class="project-tags">
+             <span class="project-tag">Python</span>
+-            <span class="project-tag">ETL</span>
+-            <span class="project-tag">Power BI</span>
+-            <span class="project-tag">KPI</span>
++            <span class="project-tag">XGBoost</span>
++            <span class="project-tag">pytest</span>
++            <span class="project-tag">Marimo</span>
+           </div>
+-          <a href="project-supply-chain.html" class="btn-case">
++          <a href="project-churn.html" class="btn-case">
+             <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+             <span>→</span>
+           </a>

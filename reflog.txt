@@ -1,0 +1,30 @@
+c51bc69 HEAD@{0}: reset: moving to c51bc69
+1f3ebe4 HEAD@{1}: reset: moving to 1f3ebe4
+a516336 HEAD@{2}: reset: moving to a516336
+88ebd39 HEAD@{3}: reset: moving to 88ebd39
+1f3ebe4 HEAD@{4}: checkout: moving from 88ebd39b73122848d9accde997a9dc34236dc034 to main
+88ebd39 HEAD@{5}: checkout: moving from 1f3ebe44cb88239170c35911b8e8516ad4d6ba05 to 88ebd39
+1f3ebe4 HEAD@{6}: reset: moving to 1f3ebe4
+fb3d901 HEAD@{7}: checkout: moving from main to fb3d901
+1f3ebe4 HEAD@{8}: reset: moving to 1f3ebe4
+e1e9c66 HEAD@{9}: commit: fix: reorder navigation links to put Formation before Compétences
+bbf4949 HEAD@{10}: commit: fix: invert projects and education, set properly nav links and script order
+56adc2a HEAD@{11}: commit: fix layout ids order on index.js
+88ebd39 HEAD@{12}: commit: fix(portfolio): reorder projects by relevance
+a516336 HEAD@{13}: commit: fix(nav): swap 'Projects' and 'Education' links in Navbar
+1f3ebe4 HEAD@{14}: commit: feat: add AI automations and AI agents to skills section
+15c8780 HEAD@{15}: commit: feat: align skills section with new CV for BA/DA roles
+c51bc69 HEAD@{16}: commit: feat(portfolio): refine diploma UI, remove unfinished project, and update CV
+3ebab39 HEAD@{17}: commit: update: update CV to 2026 version
+fb3d901 HEAD@{18}: commit: feat: add France Healthcare Access project
+83e8309 HEAD@{19}: commit: Completely remove chatbot widget code from all pages
+bb0c5e1 HEAD@{20}: commit: Hide chatbot widget from project pages
+009f6cf HEAD@{21}: commit: Hide Midolli-AI project and chatbot widget
+2769789 HEAD@{22}: commit: fix(widget): explicitly increase connection timeout from 45s to 60s to accommodate Render cold starts
+a66d10c HEAD@{23}: commit: feat: Add profile picture to hero section next to Disponible badge
+f4175f6 HEAD@{24}: commit: Fix sequential chat bugs and remove Verdao Empire
+e414044 HEAD@{25}: commit: Add Verdao Analytics project to portfolio
+fa8d0df HEAD@{26}: commit: feat: widget sends page_context (pathname) to backend for project-aware responses
+d785820 HEAD@{27}: commit: fix: add 45s AbortController timeout + re-enable send button in widget
+e825851 HEAD@{28}: commit: feat: update portfolio page — Kimi K2.5 + GLM-5 model references
+5b0de72 HEAD@{29}: commit: fix: midolli-ai page — correct architecture section, KPI cards, model names, flow title

@@ -1,0 +1,657 @@
+diff --git a/index.html b/index.html
+index 4812caf..af34d11 100644
+--- a/index.html
++++ b/index.html
+@@ -686,34 +686,40 @@
+       line-height: 1.5;
+     }
+ 
+-    /* Clickable metric cards */
+-    .metric-card.clickable {
++    .metric-card.clickable:hover {
++      border-color: var(--accent);
++      box-shadow: 0 0 0 1px rgba(91, 140, 255, .1), 0 8px 20px rgba(91, 140, 255, .1);
++    }
++
++    .clickable {
+       cursor: pointer;
+       position: relative;
+     }
+ 
+-    .metric-card.clickable::after {
++    .clickable::after {
+       content: "";
+       position: absolute;
+-      bottom: 10px;
+-      right: 12px;
+-      width: 18px;
+-      height: 18px;
++      bottom: 12px;
++      right: 14px;
++      width: 22px;
++      height: 22px;
+       border-radius: 50%;
+       background: rgba(91, 140, 255, .12);
+       border: 1px solid rgba(91, 140, 255, .25);
+       opacity: 0;
+-      transition: opacity .25s ease;
+-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%235b8cff' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
++      transition: opacity .25s ease, transform .2s ease;
++      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235b8cff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='9 18 15 12 9 6'/%3E%3C/svg%3E");
+       background-repeat: no-repeat;
+       background-position: center;
++      z-index: 2;
+     }
+ 
+-    .metric-card.clickable:hover::after {
+-      opacity: 1
++    .clickable:hover::after {
++      opacity: 1;
++      transform: translateX(2px);
+     }
+ 
+-    .metric-card.clickable:hover {
++    .clickable:hover {
+       border-color: var(--accent);
+       box-shadow: 0 0 0 1px rgba(91, 140, 255, .1), 0 8px 20px rgba(91, 140, 255, .1);
+     }
+@@ -1926,12 +1932,12 @@
+       <div style="display:flex;align-items:center;gap:12px">
+         <div class="nav-links" style="margin-right: 20px;">
+           <a href="#about" class="nav-link"><span class="lang-fr">À propos</span><span class="lang-en">About</span></a>
++          <a href="#education" class="nav-link"><span class="lang-fr">Formation</span><span
++              class="lang-en">Education</span></a>
+           <a href="#skills" class="nav-link"><span class="lang-fr">Compétences</span><span
+               class="lang-en">Skills</span></a>
+           <a href="#projects" class="nav-link"><span class="lang-fr">Projets</span><span
+               class="lang-en">Projects</span></a>
+-          <a href="#education" class="nav-link"><span class="lang-fr">Formation</span><span
+-              class="lang-en">Education</span></a>
+           <a href="#contact" class="nav-link">Contact</a>
+         </div>
+         <a href="assets/docs/CV_Rafael_Midolli_2026.pdf" class="btn-cv" target="_blank" rel="noopener">
+@@ -2272,7 +2278,7 @@
+           </div>
+         </div>
+ 
+-        <div class="metric-card clickable" id="mbaCard">
++        <div class="metric-card" id="mbaCard">
+           <div class="metric-value">MBA</div>
+           <div class="metric-label">
+             <span class="lang-fr">Intelligence Artificielle +<br>Diplôme d'Ingénieur</span>
+@@ -2283,336 +2289,6 @@
+     </div>
+   </section>
+ 
+-  <section class="section" id="education">
+-    <div class="section-inner">
+-      <div class="section-label reveal" style="text-align:center">
+-        <span class="lang-fr">Formation</span><span class="lang-en">Education</span>
+-      </div>
+-      <h2 class="section-title reveal reveal-d1" style="text-align:center; margin-bottom: 40px;">
+-        <span class="lang-fr">Parcours Académique & Certifications</span>
+-        <span class="lang-en">Academic Background & Certifications</span>
+-      </h2>
+-
+-      <div class="edu-timeline reveal reveal-d2">
+-
+-        <!-- USP -->
+-        <div class="edu-card">
+-          <div class="edu-header">
+-            <img src="assets/img/Usp_logo.svg" alt="USP Logo" class="edu-logo" loading="lazy">
+-            <div>
+-              <div class="edu-title">
+-                <span class="lang-fr">Université de São Paulo (USP)</span>
+-                <span class="lang-en">University of São Paulo (USP)</span>
+-              </div>
+-              <div class="edu-subtitle">Master MBA Intelligence Artificielle & Big Data</div>
+-              <div class="edu-date">07/2024 – 12/2025</div>
+-            </div>
+-          </div>
+-          <div class="edu-desc">
+-            <span class="lang-fr"><strong>Une des meilleures universités d'Amérique Latine.</strong> Formation
+-              d'excellence axée sur l'analyse de données complexes, le Machine Learning, et l'intégration de solutions
+-              IA
+-              pour résoudre des problématiques métier (RAG, LLMs).</span>
+-            <span class="lang-en"><strong>One of the best universities in Latin America.</strong> Executive program
+-              focused on complex data analysis, Machine Learning, and integrating AI solutions to solve business
+-              problems
+-              (RAG, LLMs).</span>
+-          </div>
+-        </div>
+-
+-        <!-- UFABC -->
+-        <div class="edu-card">
+-          <div class="edu-header">
+-            <img src="assets/img/Ufabc_logo.png" alt="UFABC Logo" class="edu-logo" loading="lazy">
+-            <div>
+-              <div class="edu-title">
+-                <span class="lang-fr">Université Fédérale de l'ABC (UFABC)</span>
+-                <span class="lang-en">Federal University of ABC (UFABC)</span>
+-              </div>
+-              <div class="edu-subtitle">
+-                <span class="lang-fr">Double Diplôme : Ingéniorat de Gestion & Sciences</span>
+-                <span class="lang-en">Dual Degree: Management Engineering & Science</span>
+-              </div>
+-              <div class="edu-date">2016 – 2023</div>
+-            </div>
+-          </div>
+-          <div class="edu-desc">
+-            <span class="lang-fr"><strong>Une des meilleures universités du Brésil.</strong> Formation d'ingénieur
+-              combinant méthodes quantitatives, optimisation de processus et management stratégique. Base solide en
+-              modélisation mathématique et informatique.</span>
+-            <span class="lang-en"><strong>One of the best universities in Brazil.</strong> Engineering program combining
+-              quantitative methods, process optimization, and strategic management. Solid foundation in mathematical
+-              modeling and computer science.</span>
+-          </div>
+-        </div>
+-
+-        <!-- Google -->
+-        <div class="edu-card">
+-          <div class="edu-header">
+-            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
+-              alt="Google Logo" class="edu-logo google-logo" loading="lazy">
+-            <div>
+-              <div class="edu-title">Google</div>
+-              <div class="edu-subtitle">Google Data Analytics Professional Certificate</div>
+-              <div class="edu-date">2023</div>
+-            </div>
+-          </div>
+-          <div class="edu-desc">
+-            <span class="lang-fr">Certification professionnelle sur les fondamentaux de l'analyse de données :
+-              préparation, nettoyage, analyse SQL/R, et visualisation (Tableau).</span>
+-            <span class="lang-en">Professional certification on data analytics fundamentals: data preparation, cleaning,
+-              SQL/R analysis, and visualization (Tableau).</span>
+-          </div>
+-        </div>
+-
+-      </div>
+-    </div>
+-  </section>
+-
+-
+-  <section class="section" id="skills">
+-    <div class="section-inner">
+-      <div class="section-label reveal">
+-        <span class="lang-fr">Compétences</span>
+-        <span class="lang-en">Skills</span>
+-      </div>
+-      <h2 class="section-title reveal reveal-d1">
+-        <span class="lang-fr">Stack technique & expertise métier</span>
+-        <span class="lang-en">Tech stack & business expertise</span>
+-      </h2>
+-
+-      <div class="skills-tabs reveal reveal-d2" id="skillsTabs">
+-        <button class="skill-tab active" data-tab="bi" type="button">
+-          <span>📊</span>
+-          <span class="lang-fr">BI & Viz</span>
+-          <span class="lang-en">BI & Viz</span>
+-        </button>
+-        <button class="skill-tab" data-tab="ai" type="button">
+-          <span>🧠</span>
+-          <span class="lang-fr">IA & GenAI</span>
+-          <span class="lang-en">AI & GenAI</span>
+-        </button>
+-        <button class="skill-tab" data-tab="engineering" type="button">
+-          <span>🧱</span>
+-          <span class="lang-fr">Data Engineering</span>
+-          <span class="lang-en">Data Engineering</span>
+-        </button>
+-        <button class="skill-tab" data-tab="business" type="button">
+-          <span>📈</span>
+-          <span class="lang-fr">Métier</span>
+-          <span class="lang-en">Business</span>
+-        </button>
+-        <button class="skill-tab" data-tab="tools" type="button">
+-          <span>🛠️</span>
+-          <span class="lang-fr">Outils</span>
+-          <span class="lang-en">Tools</span>
+-        </button>
+-      </div>
+-
+-      <div class="skills-grid">
+-        <!-- IA & GenAI -->
+-        <div class="skill-chip" data-scope="ai" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg" alt=""
+-            loading="lazy" /> LLMs</div>
+-        <div class="skill-chip" data-scope="ai" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+-            <polyline points="17 8 12 3 7 8" />
+-            <line x1="12" y1="3" x2="12" y2="15" />
+-          </svg> RAG Architecture</div>
+-        <div class="skill-chip" data-scope="ai" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+-            <polyline points="4 17 10 11 4 5" />
+-            <line x1="12" y1="19" x2="20" y2="19" />
+-          </svg> Prompt Engineering</div>
+-        <div class="skill-chip" data-scope="ai" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/scikitlearn/scikitlearn-original.svg" alt=""
+-            loading="lazy" /> Machine Learning</div>
+-
+-        <!-- BI & Viz -->
+-        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24">
+-            <rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811" />
+-            <rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65" />
+-            <rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35" />
+-          </svg> Power BI</div>
+-        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24">
+-            <rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811" />
+-            <rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65" />
+-            <rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35" />
+-          </svg> DAX</div>
+-        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24">
+-            <rect x="14" y="2" width="5" height="20" rx="2" fill="#F2C811" />
+-            <rect x="7.5" y="7" width="5" height="15" rx="2" fill="#F2C811" opacity=".65" />
+-            <rect x="1" y="12" width="5" height="10" rx="2" fill="#F2C811" opacity=".35" />
+-          </svg> Power Query (M)</div>
+-        <div class="skill-chip" data-scope="bi"><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/plotly/plotly-original.svg" alt=""
+-            loading="lazy" /> Plotly</div>
+-        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+-            <line x1="18" y1="20" x2="18" y2="10" />
+-            <line x1="12" y1="20" x2="12" y2="4" />
+-            <line x1="6" y1="20" x2="6" y2="14" />
+-          </svg> Data Visualization</div>
+-        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="1.5">
+-            <rect x="3" y="3" width="18" height="18" rx="2" />
+-            <line x1="3" y1="9" x2="21" y2="9" />
+-            <line x1="9" y1="21" x2="9" y2="9" />
+-          </svg> KPI Reporting</div>
+-        <div class="skill-chip" data-scope="bi"><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <circle cx="12" cy="12" r="2" fill="currentColor" />
+-            <circle cx="19" cy="5" r="1.5" />
+-            <circle cx="5" cy="19" r="1.5" />
+-            <circle cx="19" cy="19" r="1.5" />
+-            <circle cx="5" cy="5" r="1.5" />
+-            <circle cx="12" cy="19" r="1.5" />
+-            <circle cx="19" cy="12" r="1.5" />
+-            <circle cx="5" cy="12" r="1.5" />
+-            <circle cx="12" cy="5" r="1.5" />
+-          </svg> Tableau</div>
+-
+-        <!-- Data Engineering -->
+-        <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt=""
+-            loading="lazy" /> Python</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" alt=""
+-            loading="lazy" /> Pandas</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2">
+-            <ellipse cx="12" cy="5" rx="9" ry="3" />
+-            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+-            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
+-          </svg> SQL</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2">
+-            <ellipse cx="12" cy="5" rx="9" ry="3" />
+-            <path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5" />
+-            <path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3" />
+-          </svg> DuckDB</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" alt=""
+-            loading="lazy" /> PostgreSQL</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24">
+-            <circle cx="12" cy="12" r="11" fill="#FF694B" />
+-            <path d="M8 12a4 4 0 0 1 4-4v8a4 4 0 0 1-4-4z" fill="#fff" />
+-          </svg> dbt</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+-            <path d="M5 12h14" />
+-            <polyline points="12 5 19 12 12 19" />
+-          </svg> ETL / ELT</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linejoin="round">
+-            <polygon
+-              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+-          </svg> Star Schema</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+-            <circle cx="6" cy="6" r="3" />
+-            <circle cx="18" cy="18" r="3" />
+-            <circle cx="18" cy="6" r="3" />
+-            <line x1="8.5" y1="7.5" x2="15.5" y2="16.5" />
+-            <line x1="8.5" y1="5" x2="15.5" y2="5.5" />
+-          </svg> Data Modeling</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <polyline points="16 18 22 12 16 6" />
+-            <polyline points="8 6 2 12 8 18" />
+-          </svg> APIs</div>
+-        <div class="skill-chip" data-scope="engineering" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <path
+-              d="M12 2A10 10 0 0 0 2 12A10 10 0 0 0 12 22A10 10 0 0 0 22 12A10 10 0 0 0 12 2m0 16a6 6 0 0 1-6-6a6 6 0 0 1 6-6a6 6 0 0 1 6 6a6 6 0 0 1-6 6">
+-            </path>
+-          </svg> Apache Airflow</div>
+-
+-        <!-- Métier -->
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+-            <polyline points="9 22 9 12 15 12 15 22" />
+-          </svg> Retail Analytics</div>
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+-            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+-            <polyline points="17 6 23 6 23 12" />
+-          </svg> Sell-Out</div>
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2">
+-            <rect x="3" y="3" width="7" height="7" />
+-            <rect x="14" y="3" width="7" height="7" />
+-            <rect x="14" y="14" width="7" height="7" />
+-            <rect x="3" y="14" width="7" height="7" />
+-          </svg> Category Mgmt</div>
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" />
+-            <line x1="7" y1="7" x2="7.01" y2="7" />
+-          </svg> Pricing &amp; Assortment</div>
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <rect x="1" y="3" width="15" height="13" />
+-            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+-            <circle cx="5.5" cy="18.5" r="2.5" />
+-            <circle cx="18.5" cy="18.5" r="2.5" />
+-          </svg> Supply Chain KPIs</div>
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2">
+-            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+-            <path d="M22 12A10 10 0 0 0 12 2v10z" />
+-          </svg> Segmentation</div>
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+-            <line x1="18" y1="20" x2="18" y2="10" />
+-            <line x1="12" y1="20" x2="12" y2="4" />
+-            <line x1="6" y1="20" x2="6" y2="14" />
+-            <path d="M2 20l20-14" stroke-dasharray="3 3" opacity=".5" />
+-          </svg> Pareto Analysis</div>
+-        <div class="skill-chip" data-scope="business" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round">
+-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+-          </svg> Gap Analysis</div>
+-
+-        <!-- Outils -->
+-        <div class="skill-chip" data-scope="tools" hidden><svg class="skill-icon" viewBox="0 0 24 24">
+-            <rect x="2" y="2" width="20" height="20" rx="3" fill="#217346" />
+-            <path d="M7 7l4 5-4 5M13 7h4M13 12h4M13 17h3" stroke="#fff" stroke-width="1.8" stroke-linecap="round"
+-              fill="none" />
+-          </svg> Excel</div>
+-        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt=""
+-            loading="lazy" /> Git &amp; GitHub</div>
+-        <div class="skill-chip" data-scope="tools" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+-            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+-          </svg> GitHub Actions</div>
+-        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/jupyter/jupyter-original-wordmark.svg" alt=""
+-            loading="lazy" /> Jupyter</div>
+-        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt=""
+-            loading="lazy" /> VS Code</div>
+-        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt=""
+-            loading="lazy" /> Docker</div>
+-        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/streamlit/streamlit-original.svg" alt=""
+-            loading="lazy" /> Streamlit</div>
+-        <div class="skill-chip" data-scope="tools" hidden><svg class="skill-icon" viewBox="0 0 24 24" fill="none"
+-            stroke="currentColor" stroke-width="2">
+-            <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+-            <path d="M22 12A10 10 0 0 0 12 2v10z" />
+-          </svg> SAP</div>
+-        <div class="skill-chip" data-scope="tools" hidden><img class="skill-icon"
+-            src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/salesforce/salesforce-original.svg" alt=""
+-            loading="lazy" /> Salesforce</div>
+-      </div>
+-    </div>
+-  </section>
+-
+   <section class="section" id="projects">
+     <div class="section-inner">
+       <div class="section-label reveal">
+@@ -2663,45 +2339,24 @@
+           </a>
+         </article> -->
+ 
+-        <article class="project-card reveal reveal-d1">
+-          <h3><span class="lang-fr">Déserts Médicaux en France</span><span class="lang-en">France Healthcare
+-              Access</span></h3>
+-          <p>
+-            <span class="lang-fr">Pipeline data end-to-end cartographiant l'accessibilité aux généralistes en France.
+-              Extraction automatisée depuis les données de santé publiques, transformations DuckDB, et application
+-              Streamlit interactive.</span>
+-            <span class="lang-en">End-to-end data pipeline mapping GP accessibility across France. Automated extraction
+-              from public open health APIs, multi-stage DuckDB transformations, and interactive Streamlit
+-              application.</span>
+-          </p>
+-          <div class="project-tags">
+-            <span class="project-tag">Python</span>
+-            <span class="project-tag">DuckDB</span>
+-            <span class="project-tag">Streamlit</span>
+-            <span class="project-tag">Folium</span>
+-          </div>
+-          <a href="project-france-healthcare.html" class="btn-case">
+-            <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+-            <span>→</span>
+-          </a>
+-        </article>
+ 
+         <article class="project-card reveal reveal-d1">
+-          <h3><span class="lang-fr">Customer Churn Prediction</span><span class="lang-en">Customer Churn
+-              Prediction</span></h3>
++          <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales &
++              Profitability</span></h3>
+           <p>
+-            <span class="lang-fr">Modélisation Machine Learning (XGBoost) avec features comportementales pour prédire
+-              l'attrition et optimiser le ROI des campagnes CRM de rétention.</span>
+-            <span class="lang-en">Machine Learning modeling (XGBoost) with behavioral features to predict attrition and
+-              optimize the ROI of retention CRM campaigns.</span>
++            <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de
++              rentabilité par produit et client, dashboard Power BI.</span>
++            <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema),
++              profitability analysis by product and customer, Power BI dashboard.</span>
+           </p>
+           <div class="project-tags">
++            <span class="project-tag">ELT</span>
+             <span class="project-tag">Python</span>
+-            <span class="project-tag">XGBoost</span>
+-            <span class="project-tag">pytest</span>
+-            <span class="project-tag">Marimo</span>
++            <span class="project-tag">dbt</span>
++            <span class="project-tag">Postgres</span>
++            <span class="project-tag">Power BI</span>
+           </div>
+-          <a href="project-churn.html" class="btn-case">
++          <a href="project-elt-retail.html" class="btn-case">
+             <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+             <span>→</span>
+           </a>
+@@ -2729,43 +2384,42 @@
+         </article>
+ 
+         <article class="project-card reveal reveal-d2">
+-          <h3><span class="lang-fr">ELT Retail — Ventes & Rentabilité</span><span class="lang-en">ELT Retail — Sales &
+-              Profitability</span></h3>
++          <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain —
++              Delivery Performance</span></h3>
+           <p>
+-            <span class="lang-fr">Pipeline ELT complet : ingestion Python, transformations dbt (Star Schema), analyse de
+-              rentabilité par produit et client, dashboard Power BI.</span>
+-            <span class="lang-en">Complete ELT pipeline: Python ingestion, dbt transformations (Star Schema),
+-              profitability analysis by product and customer, Power BI dashboard.</span>
++            <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery),
++              analyse des causes de retard, et dashboard Power BI.</span>
++            <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root
++              cause analysis of delays, and Power BI dashboard.</span>
+           </p>
+           <div class="project-tags">
+-            <span class="project-tag">ELT</span>
+             <span class="project-tag">Python</span>
+-            <span class="project-tag">dbt</span>
+-            <span class="project-tag">Postgres</span>
++            <span class="project-tag">ETL</span>
+             <span class="project-tag">Power BI</span>
++            <span class="project-tag">KPI</span>
+           </div>
+-          <a href="project-elt-retail.html" class="btn-case">
++          <a href="project-supply-chain.html" class="btn-case">
+             <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+             <span>→</span>
+           </a>
+         </article>
+ 
+         <article class="project-card reveal reveal-d3">
+-          <h3><span class="lang-fr">Supply Chain — Performance Livraison</span><span class="lang-en">Supply Chain —
+-              Delivery Performance</span></h3>
++          <h3><span class="lang-fr">Customer Churn Prediction</span><span class="lang-en">Customer Churn
++              Prediction</span></h3>
+           <p>
+-            <span class="lang-fr">Pipeline ETL complet : extraction Python, KPI logistiques (OTIF, late delivery),
+-              analyse des causes de retard, et dashboard Power BI.</span>
+-            <span class="lang-en">Complete ETL pipeline: Python extraction, logistics KPIs (OTIF, late delivery), root
+-              cause analysis of delays, and Power BI dashboard.</span>
++            <span class="lang-fr">Modélisation Machine Learning (XGBoost) avec features comportementales pour prédire
++              l'attrition et optimiser le ROI des campagnes CRM de rétention.</span>
++            <span class="lang-en">Machine Learning modeling (XGBoost) with behavioral features to predict attrition and
++              optimize the ROI of retention CRM campaigns.</span>
+           </p>
+           <div class="project-tags">
+             <span class="project-tag">Python</span>
+-            <span class="project-tag">ETL</span>
+-            <span class="project-tag">Power BI</span>
+-            <span class="project-tag">KPI</span>
++            <span class="project-tag">XGBoost</span>
++            <span class="project-tag">pytest</span>
++            <span class="project-tag">Marimo</span>
+           </div>
+-          <a href="project-supply-chain.html" class="btn-case">
++          <a href="project-churn.html" class="btn-case">
+             <span class="lang-fr">Ouvrir le cas</span><span class="lang-en">Open case</span>
+             <span>→</span>
+           </a>
+@@ -2799,6 +2453,92 @@
+     </div>
+   </section>
+ 
++<section class="section" id="education">
++    <div class="section-inner">
++      <div class="section-label reveal" style="text-align:center">
++        <span class="lang-fr">Formation</span><span class="lang-en">Education</span>
++      </div>
++      <h2 class="section-title reveal reveal-d1" style="text-align:center; margin-bottom: 40px;">
++        <span class="lang-fr">Parcours Académique & Certifications</span>
++        <span class="lang-en">Academic Background & Certifications</span>
++      </h2>
++
++      <div class="edu-timeline reveal reveal-d2">
++
++        <!-- USP -->
++        <div class="edu-card clickable" id="uspCard">
++          <div class="edu-header">
++            <img src="assets/img/Usp_logo.svg" alt="USP Logo" class="edu-logo" loading="lazy">
++            <div>
++              <div class="edu-title">
++                <span class="lang-fr">Université de São Paulo (USP)</span>
++                <span class="lang-en">University of São Paulo (USP)</span>
++              </div>
++              <div class="edu-subtitle">Master MBA Intelligence Artificielle & Big Data</div>
++              <div class="edu-date">07/2024 – 12/2025</div>
++            </div>
++          </div>
++          <div class="edu-desc">
++            <span class="lang-fr"><strong>Une des meilleures universités d'Amérique Latine.</strong> Formation
++              d'excellence axée sur l'analyse de données complexes, le Machine Learning, et l'intégration de solutions
++              IA
++              pour résoudre des problématiques métier (RAG, LLMs).</span>
++            <span class="lang-en"><strong>One of the best universities in Latin America.</strong> Executive program
++              focused on complex data analysis, Machine Learning, and integrating AI solutions to solve business
++              problems
++              (RAG, LLMs).</span>
++          </div>
++        </div>
++
++        <!-- UFABC -->
++        <div class="edu-card">
++          <div class="edu-header">
++            <img src="assets/img/Ufabc_logo.png" alt="UFABC Logo" class="edu-logo" loading="lazy">
++            <div>
++              <div class="edu-title">
++                <span class="lang-fr">Université Fédérale de l'ABC (UFABC)</span>
++                <span class="lang-en">Federal University of ABC (UFABC)</span>
++              </div>
++              <div class="edu-subtitle">
++                <span class="lang-fr">Double Diplôme : Ingéniorat de Gestion & Sciences</span>
++                <span class="lang-en">Dual Degree: Management Engineering & Science</span>
++              </div>
++              <div class="edu-date">2016 – 2023</div>
++            </div>
++          </div>
++          <div class="edu-desc">
++            <span class="lang-fr"><strong>Une des meilleures universités du Brésil.</strong> Formation d'ingénieur
++              combinant méthodes quantitatives, optimisation de processus et management stratégique. Base solide en
++              modélisation mathématique et informatique.</span>
++            <span class="lang-en"><strong>One of the best universities in Brazil.</strong> Engineering program combining
++              quantitative methods, process optimization, and strategic management. Solid foundation in mathematical
++              modeling and computer science.</span>
++          </div>
++        </div>
++
++        <!-- Google -->
++        <div class="edu-card">
++          <div class="edu-header">
++            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg"
++              alt="Google Logo" class="edu-logo google-logo" loading="lazy">
++            <div>
++              <div class="edu-title">Google</div>
++              <div class="edu-subtitle">Google Data Analytics Professional Certificate</div>
++              <div class="edu-date">2023</div>
++            </div>
++          </div>
++          <div class="edu-desc">
++            <span class="lang-fr">Certification professionnelle sur les fondamentaux de l'analyse de données :
++              préparation, nettoyage, analyse SQL/R, et visualisation (Tableau).</span>
++            <span class="lang-en">Professional certification on data analytics fundamentals: data preparation, cleaning,
++              SQL/R analysis, and visualization (Tableau).</span>
++          </div>
++        </div>
++
++      </div>
++    </div>
++  </section>
++
+ 
+ 
+   <section class="section" id="contact">
+@@ -2909,7 +2649,7 @@
+ 
+       // --- scrollspy (SAFE) ---
+       const navLinks = $$('.nav-link');
+-      const sections = ['about', 'skills', 'projects', 'contact']
++      const sections = ['about', 'education', 'skills', 'projects', 'contact']
+         .map(id => document.getElementById(id))
+         .filter(Boolean);
+ 
+@@ -3100,13 +2840,13 @@
+       updateFormPlaceholders();
+ 
+       // --- MBA diploma overlay ---
+-      const mbaCard = $('#mbaCard');
++      const uspCard = $('#uspCard');
+       const diplomaOverlay = $('#diplomaOverlay');
+       const diplomaClose = $('#diplomaCloseBtn');
+       const diplomaIframe = $('#diplomaIframe');
+ 
+-      if (mbaCard && diplomaOverlay) {
+-        mbaCard.addEventListener('click', () => {
++      if (uspCard && diplomaOverlay) {
++        uspCard.addEventListener('click', () => {
+           if (diplomaIframe) diplomaIframe.src = 'assets/docs/MBA_IA_USP_MIDOLLI_Rafael.pdf';
+           diplomaOverlay.classList.add('show');
+         });

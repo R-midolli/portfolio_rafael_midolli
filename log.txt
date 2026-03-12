@@ -1,0 +1,10 @@
+e1e9c66 fix: reorder navigation links to put Formation before Compétences
+bbf4949 fix: invert projects and education, set properly nav links and script order
+56adc2a fix layout ids order on index.js
+88ebd39 fix(portfolio): reorder projects by relevance
+a516336 fix(nav): swap 'Projects' and 'Education' links in Navbar
+1f3ebe4 feat: add AI automations and AI agents to skills section
+15c8780 feat: align skills section with new CV for BA/DA roles
+c51bc69 feat(portfolio): refine diploma UI, remove unfinished project, and update CV
+3ebab39 update: update CV to 2026 version
+fb3d901 feat: add France Healthcare Access project

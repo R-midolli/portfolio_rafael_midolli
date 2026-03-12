@@ -36,12 +36,14 @@
     .metric-value.highlight {
       background: linear-gradient(135deg, #FF6B6B, #FF8E53);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .metric-value.success {
       background: linear-gradient(135deg, #10B981, #059669);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
@@ -258,6 +260,17 @@
       </div>
     </div>
 
+    <!-- Interface Preview Section -->
+    <section class="card">
+      <h3>
+        <span class="lang-fr">🖼️ Aperçu de l'Interface</span>
+        <span class="lang-en">🖼️ Interface Preview</span>
+      </h3>
+      <div class="mockup-container" style="margin-top: 20px; border-radius: 12px; overflow: hidden; background: var(--surface);">
+        <img src="assets/img/france-healthcare-mockup.png" alt="Healthcare Dashboard Mockup" style="width: 100%; height: auto; display: block;">
+      </div>
+    </section>
+
     <!-- SEÇÃO: ARQUITETURA -->
     <div class="card">
       <h3>🏗️ <span class="lang-fr">Data Pipeline</span><span class="lang-en">Data Pipeline</span></h3>
@@ -321,6 +334,18 @@
         </p>
       </div>
     </div>
+
+    <!-- Final Strategy Slide -->
+    <section class="card conclusion conclusion--highlight" style="margin-top: 40px;">
+      <h3>
+        <span class="lang-fr">🚀 Impact & Évolutivité</span>
+        <span class="lang-en">🚀 Impact & Scalability</span>
+      </h3>
+      <p>
+        <span class="lang-fr">Cet observatoire fournit une vision actionnable pour les politiques publiques de santé, permettant d'identifier précisément les zones nécessitant des mesures d'incitation à l'installation. L'automatisation via GitHub Actions assure une mise à jour mensuelle sans intervention humaine.</span>
+        <span class="lang-en">This observatory provides an actionable vision for public health policies, allowing for the precise identification of areas requiring installation incentives. Automation via GitHub Actions ensures a monthly update without human intervention.</span>
+      </p>
+    </section>
 
   </main>
 

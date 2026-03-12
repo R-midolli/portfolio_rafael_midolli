@@ -1,0 +1,6 @@
+Project 0: Midolli-AI Portfolio Chatbot
+Project 1: ELT Retail — Ventes & Rentabilité
+Project 2: Retail Analytics — Pareto & Segmentation
+Project 3: Supply Chain — Performance Livraison
+Project 4: Customer Churn Prediction
+Project 5: FMCG Cost Pressure Monitor

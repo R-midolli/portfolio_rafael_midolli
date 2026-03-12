@@ -1,0 +1,116 @@
+c51bc69 feat(portfolio): refine diploma UI, remove unfinished project, and update CV
+3ebab39 update: update CV to 2026 version
+fb3d901 feat: add France Healthcare Access project
+83e8309 Completely remove chatbot widget code from all pages
+bb0c5e1 Hide chatbot widget from project pages
+009f6cf Hide Midolli-AI project and chatbot widget
+2769789 fix(widget): explicitly increase connection timeout from 45s to 60s to accommodate Render cold starts
+a66d10c feat: Add profile picture to hero section next to Disponible badge
+f4175f6 Fix sequential chat bugs and remove Verdao Empire
+e414044 Add Verdao Analytics project to portfolio
+fa8d0df feat: widget sends page_context (pathname) to backend for project-aware responses
+d785820 fix: add 45s AbortController timeout + re-enable send button in widget
+e825851 feat: update portfolio page — Kimi K2.5 + GLM-5 model references
+5b0de72 fix: midolli-ai page — correct architecture section, KPI cards, model names, flow title
+d8ad0ab feat: add response time display below AI chat messages
+1b6323b fix: complete content replacement on Midolli-AI project page over Churn template
+f78c14a feat: Add Midolli-AI RAG Chatbot project page
+5c07a6a feat: integrate Midolli-AI floating widget on all project pages
+7f3dad4 fix: make M and AI equal size in FAB logo
+cc968fe fix: enlarge M and AI text in FAB logo for legibility
+1a51aae fix: clip panel height to viewport, remove redundant theme/lang toggles
+5da3516 fix: increase FAB logo size for better legibility
+5fd952c feat: add Midolli-AI chatbot widget (FR/EN, dark/light sync)
+157d9fb fix: repair churn grid layout and normalize home page project card
+2feca56 fix: revert sticky controls and restore original layout flow
+be1b57f feat: make dashboard controls sticky and refine insights
+d0b6aad feat: stack charts vertically and inject data insights
+209d514 fix: chart tooltip contrast and decimal precision
+659ae36 fix: chart tooltip visibility and precision
+14efaf5 fix: revert scatter bubble style, struct textual content on layout, add missing col classes, rm cta
+0356e08 feat: add pareto chart, top 10 scope, min ROI filter, remove stale ci/cd/marimo text, add notebook CTA link
+f7deb48 fix: align insight cards within the info-grid layout to prevent broken columns
+3bcde0c docs: remove residual demo html page
+56c7523 feat: natively embed dashboard with JS and Plotly matching pricing project layout
+830b95a docs: replace Marimo iframe with static link to Jupyter Notebook dashboard
+39a63ca feat: complete rewrite of churn demo to FR/EN using WASM marimo for interactivity
+b89efe6 fix: update github repo link in project-churn
+bf6f9cb feat: add customer churn prediction ML project case study
+0faa261 style: fix tooltip opacity, standardise placement to left & increase fx precision
+f80f9d8 style: fix tooltip contrast and differentiate inflation chart colors
+9d9ccee style(fmcg): enhance tooltip ? toggle legibility; refine inflation chart visual hierarchy
+3735c73 style(fmcg): enhance tooltip visibility, fix momentum tooltip position, refine inflation global view layout
+ac320e0 feat(fmcg): implement ultimate visual and UX polish requested by user
+91adb8a feat: Update Pricing Monitor with badge, CTA, and correct copy
+42dabf2 Implement GA4 internal traffic filtering via me=true parameter
+a891016 Activate real GA4 ID: G-Z2ST18JFPN
+18df34d Migrate from Cloudflare to GA4
+afba933 Fix mobile order: greeting text now precedes rafael.py terminal
+e08f940 Finalize hero description: ultra-concise 2-line industry-agnostic summary
+4d6f443 Refine hero description: synthesized strategic summary (2-3 lines)
+27f42da Rewrite hero description: focus on general strategy and commercial performance, expand to 3 lines
+7dd103f Enhance hero description to focus on data engineering and strategic analysis
+18967b4 Fix mobile responsiveness for navigation bar toggles and layout switcher
+ef47d3e Translate university names and highlight Latin America/Brazil prestige
+b1d3e95 Unify CV button style with theme toggles and increase navigation spacing
+b79b160 Move 'Education' section to follow 'About' section for better flow
+15fe8a7 Add 'Formation' section to top navigation menu
+9de5ad8 Add missing logo images for education section
+8cce5a9 Add missing CV skills: Tableau, Airflow, and GitHub Actions
+0cdb18c Update education logos to local files and fix USP dates
+3a59273 Add new Education section (USP, UFABC, Google)
+c6889b6 Add dynamic bilingual form validation messages
+077e7b4 Refactor Contact Form to use AJAX for silent submission
+7ffa62e Final UI polish: Email popup, Tooltips, Terminal roles, and Bio text fixes
+f3e23d2 feat: redesign hero typography and add modern contact form
+9e84069 Fix FMCG card border CSS
+51f1daf Hide NOVA project until Streamlit Cloud deployment is live
+59ea8bc Uncomment NOVA project using Gemini Flash API
+596da22 Filter momentum series data to allow correct y-axis auto-scaling
+409862a Add local momentum chart slicer
+c4e6a88 Remove EN LIGNE tags and fix FMCG momentum chart labels/scale
+8d0bbc2 Hide FMCG gradient style in list view mode
+4503d62 Fix UI overlap bug in projects list view mode
+d75db9d Hide Omni-RAG project temporarily
+1936c0b feat(dashboard): add short-term momentum chart (16-week trend)
+ed38fe1 feat(dashboard): redesign KPI overview grid + replace sparse heatmap with ranked pressure bars
+3430ccd fix(homepage): rewrite list-view layout with CSS grid, clean redundant FMCG/PGC acronyms from copy
+b3910c6 style(charts): premium visual overhaul — gradient fills, per-commodity colors, sorted bars, richer heatmap, pill endLabels
+de759a2 feat(dashboard): complete UX overhaul — data-driven KPIs, clean charts, proper rounding, storytelling copy
+247f66e feat(dashboard): convert inflation to time-series chart with dataZoom, add line endLabels, format generic KPIs
+e60f645 fix(dashboard): style category toggles, fix X-axis floating points, refine translations, clarify snapshot charts
+348d780 feat(ux): implement dynamic professional insights per category, fix language sync on slicer, enforce Math.round on layout, and rewrite copy to sound more native
+3e158eb fix(dashboard): remove redundant echarts legend, remove dataZoom scrollbar, fix dynamic KPI translations, attach spot KPI interactivty, and round axis decimals cleanly
+45fd517 feat(dashboard): normalize charts to Base 100, add interactive SVG toggles, dynamic KPI updates & formatting fixes
+c23dcfc feat(dashboard): premium ECharts rewrite with cross-filtering, gradient areas, dataZoom & trimmed FX
+a597475 fix(ui): index page project card text, tag, button color & dashboard echarts scaling/linking
+5fad58b fix(ui): native select dark mode contrast & echarts migration
+ab181e1 refactor: professional FMCG project page with interactive dashboard, storytelling, and filters
+5c661bf feat: redesign FMCG project page with embedded Plotly dashboard and full business insights
+f5bddb0 feat: update FMCG project card to 100% real data architecture with Plotly Dash
+b8fcd5d feat: integrate API-driven Pricing project into Portfolio
+0e2b362 update ignore
+92118ff update dir
+1f7fccd fix: SQL table focus — Scanntech (Retail/Assortiment), Colgate (Sell-In/Out/Multi-Sources)
+a77bbb6 fix: Kantar focus — Panel · CMI Insights · Market Research
+febdcbf fix: remove duplicate career info from bio + replace parcours with focus in terminal
+19967da fix: hero terminal — show companies instead of brands, use FMCG & Retail
+58cfe4a fix: shorten bio overlay + add scroll support
+7ec27e6 fix: update bio to match CV — accurate brands, career path & descriptions
+917d8e0 feat: replace hero avatar with interactive Python terminal (rafael.py) + add SQL career console with animated results + add MBA diploma overlay on click + use real SVG/devicon icons for skills + add clickable card indicator
+ce1e2eb update layout
+153117d update layout of all projects and homepage
+97e7a97 update project 2
+0c08037 Update - Project 3 - Dashboard
+0dd892c style: update project card transition effects
+1d855a8 style: implement animations in projects section
+bbf2f7f update img size
+7188b06 layout updat and add new project
+1eb2821 update layout
+c1dc21e Layout update
+94bf0fe docs: update retail project description
+88d7614 Minor layout fixes
+3024c04 Minor layout fixes
+d608d21 Minor layout fixes
+4d10fb1 Add polished portfolio: biography overlay, theme & language toggles, scroll fade effect and improved design
+c336f5b My portfolio online

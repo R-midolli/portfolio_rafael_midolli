@@ -1,0 +1,13 @@
+diff --git a/index.html b/index.html
+index 3543acf..8cab33e 100644
+--- a/index.html
++++ b/index.html
+@@ -2909,7 +2909,7 @@
+ 
+       // --- scrollspy (SAFE) ---
+       const navLinks = $$('.nav-link');
+-      const sections = ['about', 'skills', 'projects', 'contact']
++      const sections = ['about', 'skills', 'education', 'projects', 'contact']
+         .map(id => document.getElementById(id))
+         .filter(Boolean);
+ 
