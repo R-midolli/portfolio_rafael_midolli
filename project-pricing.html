@@ -335,11 +335,73 @@
             flex-shrink: 0;
         }
 
+        .signal-strip {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+            margin-top: 18px;
+        }
+
+        .signal-card {
+            padding: 18px;
+            border-radius: 16px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.015));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        :root[data-theme="light"] .signal-card {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.03), rgba(15, 23, 42, 0.015));
+            border-color: rgba(15, 23, 42, 0.08);
+        }
+
+        .signal-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .signal-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+
+        .signal-copy {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            line-height: 1.55;
+        }
+
+        .source-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .source-pill strong {
+            color: var(--text);
+        }
+
         @media(max-width:640px) {
             .fmcg-cta {
                 flex-direction: column;
                 align-items: flex-start;
                 padding: 20px;
+            }
+
+            .signal-strip {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -502,6 +564,54 @@
                     <div class="bento-desc" id="spot-desc">Yahoo Finance</div>
                 </div>
                 <div class="kpi-huge" style="margin:0; color: #f59e0b;" id="spot-value">—</div>
+            </div>
+
+            <div class="bento-item col-12">
+                <div class="dashboard-header" style="margin-bottom: 0;">
+                    <div>
+                        <div class="bento-title" style="margin-bottom:6px;"><span class="icon">🧭</span>
+                            <span class="lang-fr">Lecture Exécutive</span><span class="lang-en">Executive Readout</span>
+                        </div>
+                        <p class="section-subtitle">
+                            <span class="lang-fr">Une synthèse orientée décision pour isoler le point de tension principal, le régime matières et le signal tactique de court terme.</span>
+                            <span class="lang-en">A decision-oriented synthesis highlighting the main pressure point, the commodity regime and the short-term tactical signal.</span>
+                        </p>
+                    </div>
+                    <div class="source-pill">
+                        <span class="lang-fr">Source</span>
+                        <span class="lang-en">Source</span>
+                        <strong id="data-source-label">—</strong>
+                    </div>
+                </div>
+
+                <div class="signal-strip">
+                    <div class="signal-card">
+                        <div class="signal-label">
+                            <span class="lang-fr">Hotspot de pression</span>
+                            <span class="lang-en">Pressure hotspot</span>
+                        </div>
+                        <div class="signal-value" id="summary-pressure-title">—</div>
+                        <div class="signal-copy" id="summary-pressure-copy">—</div>
+                    </div>
+
+                    <div class="signal-card">
+                        <div class="signal-label">
+                            <span class="lang-fr">Régime matières</span>
+                            <span class="lang-en">Commodity regime</span>
+                        </div>
+                        <div class="signal-value" id="summary-regime-title">—</div>
+                        <div class="signal-copy" id="summary-regime-copy">—</div>
+                    </div>
+
+                    <div class="signal-card">
+                        <div class="signal-label">
+                            <span class="lang-fr">Signal tactique</span>
+                            <span class="lang-en">Tactical signal</span>
+                        </div>
+                        <div class="signal-value" id="summary-tactical-title">—</div>
+                        <div class="signal-copy" id="summary-tactical-copy">—</div>
+                    </div>
+                </div>
             </div>
         </section>
 

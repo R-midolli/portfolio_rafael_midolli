@@ -85,11 +85,121 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isDark = () => (document.documentElement.getAttribute('data-theme') || 'dark') === 'dark';
     let selectedCommodity = 'all';
     let localMomentumComm = 'Cocoa';
+    let dataSource = null;
+
+    const COMMODITY_FR = { Cocoa: 'Cacao', Coffee: 'Café', Sugar: 'Sucre', Wheat: 'Blé' };
+    const CATEGORY_FR = {
+        'Coffee, Tea, Cocoa': 'Café, thé, cacao',
+        'Sugar, Jam, Honey, Chocolate': 'Sucre, confiture, miel, chocolat',
+        'Bread & Cereals': 'Pain et céréales',
+        'All Items': 'Ensemble',
+        'Dairy, Cheese & Eggs': 'Produits laitiers',
+        'Oils & Fats': 'Huiles et graisses',
+        'Meat': 'Viandes'
+    };
+    const DATA_SOURCES = [
+        {
+            url: `https://raw.githubusercontent.com/R-midolli/fmcg_pricing_macro_monitor/main/data/dashboard_fmcg_data.json?ts=${Date.now()}`,
+            label: { fr: 'Repo FMCG live', en: 'Live FMCG repo' }
+        },
+        {
+            url: `https://cdn.jsdelivr.net/gh/R-midolli/fmcg_pricing_macro_monitor@main/data/dashboard_fmcg_data.json?ts=${Date.now()}`,
+            label: { fr: 'CDN miroir', en: 'CDN mirror' }
+        },
+        {
+            url: 'reports/dashboard_fmcg_data.json',
+            label: { fr: 'Copie locale', en: 'Local fallback' }
+        }
+    ];
+
+    function commodityLabel(name) {
+        return document.documentElement.getAttribute('data-lang') === 'en' ? name : (COMMODITY_FR[name] || name);
+    }
+
+    function categoryLabel(name) {
+        return document.documentElement.getAttribute('data-lang') === 'en' ? name : (CATEGORY_FR[name] || name);
+    }
+
+    function signedPct(value, digits = 1) {
+        if (typeof value !== 'number' || Number.isNaN(value)) return '—';
+        const prefix = value > 0 ? '+' : '';
+        return `${prefix}${value.toFixed(digits)}%`;
+    }
+
+    async function loadDashboardData() {
+        for (const source of DATA_SOURCES) {
+            try {
+                const res = await fetch(source.url, { cache: 'no-store' });
+                if (!res.ok) continue;
+                const payload = await res.json();
+                if (payload?.charts && payload?.kpis) {
+                    dataSource = source;
+                    return payload;
+                }
+            } catch (_err) {
+                continue;
+            }
+        }
+        throw new Error('No dashboard source available');
+    }
+
+    function renderDataSourceBadge() {
+        const el = document.getElementById('data-source-label');
+        if (!el || !dataSource) return;
+        const currentLang = document.documentElement.getAttribute('data-lang') || 'fr';
+        el.textContent = dataSource.label[currentLang] || dataSource.label.fr;
+    }
+
+    function renderExecutiveSummary() {
+        if (!data?.summary) return;
+
+        const pressureTitle = document.getElementById('summary-pressure-title');
+        const pressureCopy = document.getElementById('summary-pressure-copy');
+        const regimeTitle = document.getElementById('summary-regime-title');
+        const regimeCopy = document.getElementById('summary-regime-copy');
+        const tacticalTitle = document.getElementById('summary-tactical-title');
+        const tacticalCopy = document.getElementById('summary-tactical-copy');
+        const currentLang = document.documentElement.getAttribute('data-lang') || 'fr';
+
+        const topPressure = data.summary.top_pressure;
+        if (pressureTitle && pressureCopy && topPressure) {
+            const commodity = commodityLabel(topPressure.commodity);
+            const category = categoryLabel(topPressure.category);
+            pressureTitle.textContent = `${commodity} × ${category}`;
+            pressureCopy.textContent = currentLang === 'en'
+                ? `Gap of ${signedPct(topPressure.score, 1)} between commodity inflation and shelf inflation. Raw input: ${signedPct(topPressure.commodity_yoy_pct, 1)} vs retail: ${signedPct(topPressure.inflation_yoy_pct, 1)}.`
+                : `Écart de ${signedPct(topPressure.score, 1)} entre inflation matière et inflation rayon. Intrant: ${signedPct(topPressure.commodity_yoy_pct, 1)} contre retail: ${signedPct(topPressure.inflation_yoy_pct, 1)}.`;
+        }
+
+        const regime = data.summary.commodity_regime;
+        if (regimeTitle && regimeCopy && regime) {
+            const leader = commodityLabel(regime.leader);
+            const laggard = commodityLabel(regime.laggard);
+            regimeTitle.textContent = currentLang === 'en'
+                ? `${leader} leads, ${laggard} lags`
+                : `${leader} mène, ${laggard} corrige`;
+            regimeCopy.textContent = currentLang === 'en'
+                ? `${leader} is the only current annual upside at ${signedPct(regime.leader_yoy_pct, 1)}, while ${laggard} is the deepest correction at ${signedPct(regime.laggard_yoy_pct, 1)}.`
+                : `${leader} reste le principal foyer de hausse annuelle à ${signedPct(regime.leader_yoy_pct, 1)}, tandis que ${laggard} affiche la correction la plus forte à ${signedPct(regime.laggard_yoy_pct, 1)}.`;
+        }
+
+        const momentum = data.summary.momentum;
+        const fxContext = data.summary.fx_context;
+        if (tacticalTitle && tacticalCopy && momentum) {
+            const leader = commodityLabel(momentum.leader);
+            const laggard = commodityLabel(momentum.laggard);
+            tacticalTitle.textContent = currentLang === 'en'
+                ? `${leader} accelerates, ${laggard} unwinds`
+                : `${leader} accélère, ${laggard} se détend`;
+            tacticalCopy.textContent = currentLang === 'en'
+                ? `${leader} is up ${signedPct(momentum.leader_change_12w_pct, 1)} over 12 weeks, while ${laggard} is down ${signedPct(Math.abs(momentum.laggard_change_12w_pct), 1)}. EUR/USD moved ${signedPct(fxContext?.change_3m_pct ?? 0, 1)} over 3 months.`
+                : `${leader} progresse de ${signedPct(momentum.leader_change_12w_pct, 1)} sur 12 semaines, tandis que ${laggard} recule de ${signedPct(Math.abs(momentum.laggard_change_12w_pct), 1)}. L'EUR/USD évolue de ${signedPct(fxContext?.change_3m_pct ?? 0, 1)} sur 3 mois.`;
+        }
+    }
 
     // ─── DATA FETCH ──────────────────────────────────────────────────
     try {
-        const res = await fetch('reports/dashboard_fmcg_data.json');
-        data = await res.json();
+        data = await loadDashboardData();
 
         // Populate static KPIs from real data
         const kpiFx = document.getElementById('kpi-val-fx');
@@ -110,8 +220,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
         refreshLastUpdated(window.__rm ? window.__rm.getLang() : 'fr');
         document.addEventListener('langchange', e => refreshLastUpdated(e.detail.lang));
+        document.addEventListener('langchange', () => {
+            renderDataSourceBadge();
+            renderExecutiveSummary();
+        });
 
         initCharts();
+        renderDataSourceBadge();
+        renderExecutiveSummary();
         renderAll();
         bindEvents();
     } catch (e) {
@@ -206,8 +322,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (!kpiTitle || !data) return;
 
-        const frNames = { 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' };
-
         if (selectedCommodity === 'all') {
             // Show a compact overview of all 4 commodities
             const yoy = data.charts.yoy_commodity;
@@ -219,7 +333,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 const val = Math.round(yoy.values[i] * 10) / 10;
                 const prefix = val > 0 ? '+' : '';
                 const col = PALETTE[name] ? PALETTE[name].main : '#818cf8';
-                const frName = frNames[name] || name;
+                const frName = COMMODITY_FR[name] || name;
                 miniHtml += `<div style="text-align:center;">
                     <div style="font-size:.72rem;color:${theme().muted};font-weight:500;margin-bottom:2px;">
                         <span class="lang-fr">${frName}</span><span class="lang-en">${name}</span>
@@ -243,7 +357,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             if (dynInsight) dynInsight.innerHTML = buildGlobalInsight();
         } else {
-            const commFr = frNames[selectedCommodity] || selectedCommodity;
+            const commFr = COMMODITY_FR[selectedCommodity] || selectedCommodity;
             const yoyIdx = data.charts.yoy_commodity.labels.indexOf(selectedCommodity);
 
             if (yoyIdx !== -1) {
@@ -275,14 +389,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Insight text builders — derived from the actual data
     function buildGlobalInsight() {
-        const yoy = data.charts.yoy_commodity;
-        const rising = yoy.labels.filter((_, i) => yoy.values[i] > 0);
-        const falling = yoy.labels.filter((_, i) => yoy.values[i] < 0);
-        const risingFr = rising.map(n => ({ 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' }[n] || n));
-        const fallingFr = falling.map(n => ({ 'Cocoa': 'Cacao', 'Coffee': 'Café', 'Sugar': 'Sucre', 'Wheat': 'Blé' }[n] || n));
+        const pressure = data.summary?.top_pressure;
+        const regime = data.summary?.commodity_regime;
+        const momentum = data.summary?.momentum;
 
-        const frText = `Sur les 4 matières suivies, ${rising.length > 0 ? risingFr.join(', ') + (rising.length === 1 ? ' est' : ' sont') + ' en hausse annuelle' : 'aucune n\'est en hausse'}${falling.length > 0 ? ' tandis que ' + fallingFr.join(', ') + (falling.length === 1 ? ' recule.' : ' reculent.') : '.'}`;
-        const enText = `Of the 4 tracked commodities, ${rising.length > 0 ? rising.join(', ') + (rising.length === 1 ? ' is' : ' are') + ' rising year-over-year' : 'none are rising'}${falling.length > 0 ? ' while ' + falling.join(', ') + (falling.length === 1 ? ' is declining.' : ' are declining.') : '.'}`;
+        const frText = pressure && regime && momentum
+            ? `Le principal foyer de pression reste ${commodityLabel(pressure.commodity)} × ${categoryLabel(pressure.category)} avec ${signedPct(pressure.score, 1)} d'écart, pendant que ${commodityLabel(regime.leader)} mène encore à ${signedPct(regime.leader_yoy_pct, 1)} YoY et que ${commodityLabel(momentum.laggard)} corrige de ${signedPct(momentum.laggard_change_12w_pct, 1)} sur 12 semaines.`
+            : `Les matières premières restent divergentes, ce qui impose une lecture croisée entre coûts d'achat, change et inflation retail.`;
+        const enText = pressure && regime && momentum
+            ? `The main pressure point remains ${commodityLabel(pressure.commodity)} × ${categoryLabel(pressure.category)} with a ${signedPct(pressure.score, 1)} gap, while ${commodityLabel(regime.leader)} still leads at ${signedPct(regime.leader_yoy_pct, 1)} YoY and ${commodityLabel(momentum.laggard)} is unwinding at ${signedPct(momentum.laggard_change_12w_pct, 1)} over 12 weeks.`
+            : `Commodities are diverging, so purchase costs, FX and retail inflation need to be read together.`;
 
         return `<strong><span class="lang-fr">Vue d'ensemble :</span><span class="lang-en">Overview:</span></strong>
                 <span class="lang-fr"> ${frText}</span><span class="lang-en"> ${enText}</span>`;
@@ -304,10 +420,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (infVal !== null) {
             const infPrefix = infVal > 0 ? '+' : '';
-            frText += ` L'inflation de la catégorie associée (${infCat}) se situe à ${infPrefix}${infVal.toFixed(1)}% — `;
+            frText += ` L'inflation de la catégorie associée (${categoryLabel(infCat)}) se situe à ${infPrefix}${infVal.toFixed(1)}% — `;
             enText += ` Linked retail inflation (${infCat}) stands at ${infPrefix}${infVal.toFixed(1)}% — `;
 
-            if (Math.abs(yoyVal) > 20 && infVal < 5) {
+            const summaryPressure = data.summary?.top_pressure;
+            if (summaryPressure && summaryPressure.commodity === comm) {
+                frText += `c'est actuellement le point de tension prioritaire du portefeuille.`;
+                enText += `this is currently the portfolio's top pressure point.`;
+            } else if (Math.abs(yoyVal) > 20 && infVal < 5) {
                 frText += `le consommateur n'absorbe qu'une fraction du choc matières.`;
                 enText += `consumers are absorbing only a fraction of the raw material shock.`;
             } else if (yoyVal < 0 && infVal > 0) {
