@@ -5,382 +5,238 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description"
-    content="Case study — Midolli-AI, un chatbot RAG portfolio avec FastAPI, ChromaDB, widget Vanilla JS et orchestration multi-modèles. Portfolio Rafael Midolli." />
-  <title>Midolli-AI | RAG Chatbot Portfolio</title>
-  <meta property="og:title" content="Midolli-AI | RAG Chatbot Portfolio" />
+    content="Case study — Marketplace Support Agent, un moteur de triage post-achat avec LangGraph, politiques métier et cas Olist. Portfolio Rafael Midolli." />
+  <title>Marketplace Support Agent | GenAI Operations Case Study</title>
+  <meta property="og:title" content="Marketplace Support Agent | GenAI Operations Case Study" />
   <meta property="og:description"
-    content="RAG chatbot case study: FastAPI backend, ChromaDB retrieval, Vanilla JS widget, and multi-model routing for Rafael Midolli's portfolio." />
+    content="LangGraph case study for post-purchase marketplace support: delivery, refund, and product-quality triage grounded in real Olist complaint patterns." />
   <meta property="og:type" content="website" />
   <link rel="icon"
-    href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>🤖</text></svg>" />
+    href="data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27><text y=%27.9em%27 font-size=%2790%27>📦</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=DM+Sans:wght@400;500;600;700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="assets/css/project.css" />
-  <!-- Google Analytics 4 (GA4) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z2ST18JFPN"></script>
-  <script>
-    if (localStorage.getItem('ga_exclude') !== 'true') {
-      window.dataLayer = window.dataLayer || [];
-      function gtag() { dataLayer.push(arguments); }
-      gtag('js', new Date());
-      gtag('config', 'G-Z2ST18JFPN');
-    } else {
-      console.log('GA4 tracking disabled for internal device.');
-    }
-  </script>
-  <!-- End Google Analytics 4 -->
   <style>
-    /* Inline specific UI enhancements for this project */
-    .metric-value.highlight {
-      background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr .9fr;
+      gap: 24px;
+      margin-bottom: 28px;
     }
 
-    .metric-value.success {
-      background: linear-gradient(135deg, #10B981, #059669);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .insight-card {
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      cursor: default;
-    }
-
-    .insight-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
-    }
-
-    :root[data-theme="dark"] .insight-card:hover {
-      border-color: rgba(91, 140, 255, 0.4);
-      box-shadow: 0 15px 35px rgba(91, 140, 255, 0.1);
-    }
-
-    .architecture-flow {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1.5rem;
-      align-items: center;
-      justify-content: space-between;
-      margin: 2rem 0;
-    }
-
-    .arch-step {
-      flex: 1;
-      min-width: 140px;
-      text-align: center;
-      padding: 1.5rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-
-    .arch-step:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      background: var(--surface-hover);
-    }
-
-    .arch-step:not(:last-child)::after {
-      content: '→';
-      position: absolute;
-      right: -24px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.5rem;
-      color: var(--text-muted);
-      opacity: 0.5;
-    }
-
-    @media (max-width: 768px) {
-      .arch-step:not(:last-child)::after {
-        content: '↓';
-        right: 50%;
-        bottom: -24px;
-        top: auto;
-        transform: translateX(50%);
-      }
-
-      .architecture-flow {
-        flex-direction: column;
-      }
-    }
-
-    .arch-icon {
-      font-size: 2.2rem;
-      margin-bottom: 10px;
-    }
-
-    .arch-title {
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 5px;
-    }
-
-    .arch-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    /* ── Bento Grid ── */
-    .bento-grid {
+    .info-grid-tight {
       display: grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 20px;
-      margin-bottom: 40px;
+      margin-bottom: 28px;
     }
 
-    .bento-item {
+    .span-8 { grid-column: span 8; }
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 4; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(91, 140, 255, .08);
+      border: 1px solid rgba(91, 140, 255, .2);
+      color: var(--accent);
+      font-size: .8rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .metric-box {
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, .03);
+      border: 1px solid var(--border);
+    }
+
+    .metric-box strong {
+      display: block;
+      font-size: 1.6rem;
+      line-height: 1;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .metric-box span {
+      color: var(--text-muted);
+      font-size: .86rem;
+    }
+
+    .stack-tags,
+    .status-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stack-tags span,
+    .status-tags span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+    }
+
+    .status-tags .resolved {
+      color: #10b981;
+      border-color: rgba(16, 185, 129, .3);
+      background: rgba(16, 185, 129, .08);
+    }
+
+    .status-tags .escalated {
+      color: #f59e0b;
+      border-color: rgba(245, 158, 11, .3);
+      background: rgba(245, 158, 11, .08);
+    }
+
+    .status-tags .flagged {
+      color: #60a5fa;
+      border-color: rgba(96, 165, 250, .3);
+      background: rgba(96, 165, 250, .08);
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .flow-step {
+      padding: 18px 14px;
+      border-radius: 16px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 24px;
-      transition: transform 0.3s ease, border-color 0.3s ease;
-      position: relative;
-      overflow: hidden;
+      text-align: center;
     }
 
-    .bento-item:hover {
-      transform: translateY(-4px);
-      border-color: var(--accent);
+    .flow-step .icon {
+      font-size: 1.6rem;
+      margin-bottom: 10px;
     }
 
-    .col-12 {
-      grid-column: span 12;
+    .flow-step strong {
+      display: block;
+      margin-bottom: 6px;
     }
 
-    .col-8 {
-      grid-column: span 8;
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 18px;
     }
 
-    .col-7 {
-      grid-column: span 7;
+    .scenario-card {
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      background: var(--surface);
     }
 
-    .col-6 {
-      grid-column: span 6;
+    .scenario-card h4 {
+      margin-bottom: 10px;
+      font-size: 1rem;
     }
 
-    .col-5 {
-      grid-column: span 5;
+    .scenario-card p {
+      font-size: .92rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
     }
 
-    .col-4 {
-      grid-column: span 4;
+    .scenario-card code {
+      display: block;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(0, 0, 0, .25);
+      color: #dbeafe;
+      font-size: .8rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
     }
 
-    .col-3 {
-      grid-column: span 3;
+    .timeline-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
     }
 
-    @media (max-width: 900px) {
+    .timeline-item {
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, .03);
+    }
 
-      .col-8,
-      .col-7,
-      .col-6,
-      .col-5,
-      .col-4,
-      .col-3 {
+    .timeline-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .quote-box {
+      padding: 18px 20px;
+      border-left: 3px solid var(--accent);
+      border-radius: 0 16px 16px 0;
+      background: rgba(91, 140, 255, .06);
+      color: var(--text-muted);
+      margin-top: 14px;
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .btn-soft {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid,
+      .scenario-grid,
+      .flow,
+      .metric-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .span-8,
+      .span-6,
+      .span-4 {
         grid-column: span 12;
       }
-    }
-
-    .bento-title {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .bento-desc {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    .kpi-huge {
-      font-size: 2.5rem;
-      font-weight: 800;
-      line-height: 1;
-      margin-top: 10px;
-      margin-bottom: 5px;
-      transition: color 0.3s;
-    }
-
-    /* ── Chart Containers ── */
-    .chart-native-container {
-      width: 100%;
-      border-radius: 12px;
-      overflow: hidden;
-      background: rgba(0, 0, 0, 0.02);
-    }
-
-    :root[data-theme="dark"] .chart-native-container {
-      background: rgba(255, 255, 255, 0.01);
-    }
-
-    /* ── Tooltips ── */
-    .info-tooltip-wrap {
-      position: absolute;
-      top: 15px;
-      left: 20px;
-      z-index: 50;
-    }
-
-    .info-tooltip-icon {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      width: 24px;
-      height: 24px;
-      background: rgba(128, 128, 128, 0.15);
-      border: 1px solid rgba(128, 128, 128, 0.4);
-      border-radius: 50%;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: help;
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      opacity: 1;
-    }
-
-    .info-tooltip-icon:hover {
-      transform: scale(1.1);
-      background: var(--text);
-      color: #0f172a;
-      border-color: var(--text);
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    }
-
-    .info-tooltip-content {
-      visibility: hidden;
-      opacity: 0;
-      position: absolute;
-      top: 32px;
-      left: 0;
-      width: max-content;
-      max-width: 320px;
-      background: rgba(15, 23, 42, 0.98);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      padding: 14px 18px;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      color: #e2e8f0;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      transition: opacity 0.2s, visibility 0.2s;
-      z-index: 100;
-      pointer-events: none;
-    }
-
-    :root[data-theme="light"] .info-tooltip-content {
-      background: rgba(255, 255, 255, 0.98);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      color: #1e293b;
-    }
-
-    .info-tooltip-icon:hover+.info-tooltip-content {
-      visibility: visible;
-      opacity: 1;
-    }
-
-    /* ── Controls ── */
-    input[type=range] {
-      width: 100%;
-      cursor: pointer;
-      accent-color: var(--accent);
-    }
-
-    .val-display {
-      font-weight: bold;
-      color: var(--text);
-      float: right;
-    }
-
-    .category-toggle {
-      background: var(--surface);
-      color: var(--text-muted);
-      border: 1px solid var(--border);
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .category-toggle:hover {
-      border-color: var(--text);
-      color: var(--text);
-      transform: translateY(-2px);
-    }
-
-    .category-toggle.active {
-      background: var(--btn-color, #818cf8);
-      color: #fff;
-      border-color: transparent;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-      transform: translateY(-2px);
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.85rem;
-    }
-
-    th,
-    td {
-      padding: 10px 12px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    th {
-      color: var(--text-muted);
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-
-    tr:hover {
-      background-color: var(--surface-hover);
-    }
-
-    .badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-weight: bold;
-      font-size: 0.7rem;
-    }
-
-    .badge-High {
-      background: rgba(16, 185, 129, 0.2);
-      color: #10b981;
-    }
-
-    .badge-Mid {
-      background: rgba(99, 102, 241, 0.2);
-      color: #6366f1;
-    }
-
-    .badge-Low {
-      background: rgba(244, 63, 94, 0.2);
-      color: #f43f5e;
     }
   </style>
 </head>
@@ -408,256 +264,163 @@
   </nav>
 
   <main class="main">
-    <div class="case-header">
-      <div class="case-label"><span class="lang-fr">GenAI & Backend</span><span class="lang-en">GenAI & Backend</span>
-      </div>
-      <h1 class="case-title"><span class="lang-fr">Midolli-AI: Chatbot RAG</span><span class="lang-en">Midolli-AI: RAG
-          Chatbot</span></h1>
+    <header class="case-header">
+      <div class="case-label"><span class="lang-fr">GenAI · Operations · Support</span><span class="lang-en">GenAI · Operations · Support</span></div>
+      <h1 class="case-title"><span class="lang-fr">Marketplace Support Agent</span><span class="lang-en">Marketplace Support Agent</span></h1>
       <div class="case-subtitle">
-        <span class="lang-fr">Chatbot RAG intelligent (FastAPI + ChromaDB) avec triple routeur LLM (Gemini/NVIDIA) pour
-          répondre instantanément sur mes projets.</span>
-        <span class="lang-en">Intelligent RAG chatbot (FastAPI + ChromaDB) featuring a triple LLM router (Gemini/NVIDIA)
-          to instantly answer questions about my portfolio.</span>
+        <span class="lang-fr">Un case study GenAI orienté opérations: un moteur de triage post-achat construit avec LangGraph pour classer les plaintes e-commerce, récupérer la bonne politique métier et router chaque cas vers une réponse, une escalade humaine ou une revue seller ops.</span>
+        <span class="lang-en">An operations-oriented GenAI case study: a LangGraph-based post-purchase triage engine that classifies e-commerce complaints, retrieves the right business policy, and routes each case to an answer, a human escalation, or a seller-ops review.</span>
       </div>
-    </div>
+    </header>
 
-    <div class="bento-grid" style="margin-bottom: 24px;">
-      <!-- Left Column items -->
-      <div class="col-8" style="display: flex; flex-direction: column;">
-
-        <!-- Problem + Approach -->
-        <div class="insight-card"
-          style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
-          <h3>🎯 <span class="lang-fr">L'Objectif</span><span class="lang-en">The Main Goal</span>
-          </h3>
-          <ul
-            style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
-            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">Les portfolios statiques limitent
-                l'interaction.</span><span class="lang-en">Static portfolios strictly limit recruiter
-                interaction.</span></li>
-            <li style="margin-bottom: 8px;">❌ <span class="lang-fr">La recherche d'informations dans un CV est
-                fastidieuse.</span><span class="lang-en">Searching for specific data across a CV is tedious.</span></li>
-            <li>✅ <span class="lang-fr"><strong>Objectif :</strong> Offrir un assistant virtuel capable d'expliquer mon
-                parcours et mes projets instantanément.</span><span class="lang-en"><strong>Goal:</strong> Provide a
-                virtual assistant capable of instantly explaining my background and projects.</span></li>
-          </ul>
-        </div>
-
-        <div class="insight-card"
-          style="padding: 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); margin-bottom: 24px;">
-          <h3>💡 <span class="lang-fr">L'Approche Analytique</span><span class="lang-en">The Analytical Approach</span>
-          </h3>
-          <ul
-            style="color: var(--text-muted); line-height: 1.6; padding-left: 20px; list-style-type: none; margin-bottom: 0;">
-            <li style="margin-bottom: 10px;">🧠 <span class="lang-fr"><strong>Base de Connaissances :</strong> Ingestion
-                de 12 sources (.md, PDF) stockées localement via ChromaDB.</span><span class="lang-en"><strong>Knowledge
-                  Base:</strong> Ingestion of 12 internal sources (.md, PDF) stored locally via ChromaDB.</span></li>
-            <li style="margin-bottom: 10px;">⚡ <span class="lang-fr"><strong>Backend FastAPI :</strong> Un moteur
-                asynchrone ultra-rapide exposant les endpoints `/chat` et `/health`.</span><span
-                class="lang-en"><strong>FastAPI Backend:</strong> An ultra-fast async engine exposing `/chat` and
-                `/health` endpoints.</span></li>
-            <li>🛡️ <span class="lang-fr"><strong>Triple API Fallback :</strong> Redondance via Google AI Studio (2x) et
-                NVIDIA (1x) garantissant zéro temps d'arrêt.</span><span class="lang-en"><strong>Triple API
-                  Fallback:</strong> Redundancy via Google AI Studio (2x) and NVIDIA (1x) ensuring zero downtime.</span>
-            </li>
-          </ul>
-        </div>
-        <!-- Key metrics mini-cards -->
-        <div class="insight-card"
-          style="padding: 16px 24px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface);">
-          <div class="metrics-mini">
-            <div class="metric-mini">
-              <div class="metric-value highlight">12+</div>
-              <div class="metric-label">
-                <span class="lang-fr">Sources ingestées</span>
-                <span class="lang-en">Ingested Sources</span>
-              </div>
-            </div>
-            <div class="metric-mini">
-              <div class="metric-value success">3 LLMs</div>
-              <div class="metric-label">
-                <span class="lang-fr">Router tri-niveau</span>
-                <span class="lang-en">Tri-tier Router</span>
-              </div>
-            </div>
-            <div class="metric-mini">
-              <div class="metric-value" style="color:#a855f7;">LLM-Judge</div>
-              <div class="metric-label">
-                <span class="lang-fr">Évaluation anti-hallucination</span>
-                <span class="lang-en">Anti-hallucination Eval</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> <!-- End Left Column -->
-
-      <!-- Tech Stack + GitHub -->
-      <div class="bento-item col-4">
-        <h3><span class="lang-fr">Architecture Technique</span><span class="lang-en">Technical Architecture</span></h3>
+    <section class="hero-grid">
+      <article class="card">
+        <div class="eyebrow"><span>📦</span><span class="lang-fr">Pourquoi ce projet compte</span><span class="lang-en">Why this project matters</span></div>
         <p>
-          <span class="lang-fr">Une architecture RAG construite sur FastAPI et ChromaDB. L'ingestion scanne
-            12+ sources documentaires (.md + CV PDF), les découpe sémantiquement, les encode en embeddings
-            et les stocke dans un vectorstore local. Un LLM Router tri-niveau distribue les requêtes :
-            salutations → Gemini Flash Lite (~1s) · factuelles/complexes → Kimi K2.5
-            via NVIDIA · fallback → GLM-5 via NVIDIA. Chaque réponse affiche un timer "⚡ répondu en Xs".</span>
-          <span class="lang-en">A RAG architecture built on FastAPI and ChromaDB. The ingestion layer scans
-            12+ knowledge sources (.md + PDF CV), splits them semantically, encodes them into embeddings
-            and stores them in a local vectorstore. A smart LLM Router distributes requests:
-            greetings → Gemini Flash Lite (~1s) · factual/complex → Kimi K2.5
-            via NVIDIA · fallback → GLM-5 via NVIDIA. Every response displays a timer "⚡ responded in Xs".</span>
+          <span class="lang-fr">Le projet d'origine ressemblait à une démo d'agent sans cas d'usage clair. Je l'ai transformé en workflow de support marketplace, beaucoup plus crédible pour montrer ma capacité à relier GenAI, règles métier et logique opérationnelle.</span>
+          <span class="lang-en">The original project felt like an agent demo without a strong business use case. I turned it into a marketplace support workflow, which is far more credible for showing how I connect GenAI, business rules, and operational logic.</span>
         </p>
-        <div class="tech-stack">
-          <span class="tech-tag">🐍 FastAPI</span>
-          <span class="tech-tag">🗄️ ChromaDB</span>
-          <span class="tech-tag">🤖 Kimi K2.5 / GLM-5</span>
-          <span class="tech-tag">🧪 Pytest</span>
+        <div class="metric-strip">
+          <div class="metric-box"><strong>99k</strong><span class="lang-fr">reviews Olist analysables</span><span class="lang-en">Olist reviews available</span></div>
+          <div class="metric-box"><strong>40.9k</strong><span class="lang-fr">commentaires texte</span><span class="lang-en">text comments</span></div>
+          <div class="metric-box"><strong>14.5k</strong><span class="lang-fr">reviews à score ≤ 2</span><span class="lang-en">reviews with score ≤ 2</span></div>
+          <div class="metric-box"><strong>3</strong><span class="lang-fr">issues métier routés</span><span class="lang-en">business issue types routed</span></div>
         </div>
-        <a href="https://github.com/R-midolli/Midolli-AI" target="_blank" rel="noopener" class="btn-github">
-          <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.419-1.305.763-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-          </svg>
-          <span class="lang-fr">Dépôt GitHub du Projet</span>
-          <span class="lang-en">View GitHub Repository</span>
-        </a>
-      </div>
-    </div>
+      </article>
 
-    <!-- SEÇÃO: ARQUITETURA -->
-    <div class="card">
-      <h3>🏗️ <span class="lang-fr">Pipeline RAG — Flux de Données</span><span class="lang-en">RAG Pipeline — Data
-          Flow</span>
-      </h3>
-      <div class="architecture-flow">
-        <div class="arch-step">
-          <div class="arch-icon">📥</div>
-          <div class="arch-title">Ingest</div>
-          <div class="arch-desc">
-            <span class="lang-fr">Markdown & PDFs (ChromaDB)</span>
-            <span class="lang-en">Markdown & PDFs (ChromaDB)</span>
-          </div>
-        </div>
-        <div class="arch-step">
-          <div class="arch-icon">🔍</div>
-          <div class="arch-title">Retrieve</div>
-          <div class="arch-desc">
-            <span class="lang-fr">Recherche Sémantique (Top 10)</span>
-            <span class="lang-en">Semantic Search (Top 10 chunks)</span>
-          </div>
-        </div>
-        <div class="arch-step">
-          <div class="arch-icon">🧠</div>
-          <div class="arch-title">Generate</div>
-          <div class="arch-desc">
-            <span class="lang-fr">Prompt injecté et LLM Router</span>
-            <span class="lang-en">Injected Prompt & LLM Router</span>
-          </div>
-        </div>
-        <div class="arch-step">
-          <div class="arch-icon">💬</div>
-          <div class="arch-title">Serve</div>
-          <div class="arch-desc">
-            <span class="lang-fr">FastAPI Endpoint via Render.com</span>
-            <span class="lang-en">FastAPI Endpoint via Render.com</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <section class="card"
-      style="padding: 2rem; border-radius: 24px; margin-bottom: 40px; border: 1px solid var(--border);">
-      <div>
-        <h3 style="margin-bottom: 16px;">
-          <span class="lang-fr">🔌 Démontration Interactive Intégrée</span>
-          <span class="lang-en">🔌 Integrated Interactive Demo</span>
-        </h3>
-        <p style="font-size: 1rem; color: var(--text-muted); line-height: 1.6; max-width: 800px;">
-          <span class="lang-fr">L'assistant RAG documenté sur cette page est le même widget flottant avec lequel vous
-            pouvez interagir en bas à droite de l'écran right now. N'hésitez pas à cliquer sur le bouton violet "M-AI"
-            pour tester sa réactivité, l'architecture de fallback, et sa connaissance détaillée de mon CV.</span>
-          <span class="lang-en">The RAG assistant documented on this page is the exact same floating widget you can
-            interact with right now in the bottom right corner of your screen. Go ahead and click the purple "M-AI"
-            button to test its responsiveness, fallback architecture, and deep knowledge of my background.</span>
+      <article class="card">
+        <h3><span class="lang-fr">Résultats opératoires</span><span class="lang-en">Operational outcomes</span></h3>
+        <p>
+          <span class="lang-fr">Le moteur ne cherche pas à tout résoudre. Il limite volontairement l'autonomie du LLM avec des gates déterministes et produit toujours un statut exploitable par une équipe support.</span>
+          <span class="lang-en">The engine does not try to solve everything. It deliberately constrains LLM autonomy with deterministic gates and always produces an operationally usable status.</span>
         </p>
-      </div>
+        <div class="status-tags">
+          <span class="resolved">resolved</span>
+          <span class="escalated">escalated</span>
+          <span class="flagged">flagged</span>
+        </div>
+        <div class="stack-tags">
+          <span>LangGraph</span>
+          <span>LLM Guardrails</span>
+          <span>SQLite</span>
+          <span>Olist</span>
+          <span>Prompted LLMs</span>
+        </div>
+      </article>
+    </section>
 
-      <div class="bento-grid" style="margin-top: 30px; margin-bottom: 0;">
-        <div class="bento-item col-12"
-          style="padding: 24px; background: rgba(168, 85, 247, 0.05); border-left: 4px solid var(--accent); border-radius: 12px;">
-          <div class="bento-title">🔑 <span class="lang-fr">LLM Router & Failover Automatique</span><span
-              class="lang-en">LLM Router & Automatic Failover</span></div>
-          <p style="margin: 0; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
-            <span class="lang-fr">L'architecture 2026 intègre un routeur intelligent qui évalue la complexité de chaque
-              requête et distribue la charge :<br><br><strong>Tier 1 — Gemini Flash Lite</strong>
-              (Salutations instantanées, ~1s, sans RAG)<br><strong>Tier 2/3 — Kimi K2.5 (NVIDIA)</strong>
-              (Questions factuelles et complexes, priorité 1)<br><strong>Fallback — GLM-5 (NVIDIA)</strong>
-              (Priorité 2 si Kimi rate-limited)<br><strong>Dernier recours — Gemini 3 Flash</strong>
-              (Backup Google si les deux NVIDIA échouent)<br><br>Chaque modèle a 3 tentatives avec
-              exponential backoff automatique.</span>
-            <span class="lang-en">The 2026 architecture features a smart router that evaluates query complexity
-              on the fly:<br><br><strong>Tier 1 — Gemini Flash Lite</strong>
-              (Instant greetings, ~1s, no RAG)<br><strong>Tier 2/3 — Kimi K2.5 (NVIDIA)</strong>
-              (Factual & complex queries, priority 1)<br><strong>Fallback — GLM-5 (NVIDIA)</strong>
-              (Priority 2 if Kimi is rate-limited)<br><strong>Last resort — Gemini 3 Flash</strong>
-              (Google backup if both NVIDIA fail)<br><br>Each model has 3 retries with
-              exponential backoff.</span>
+    <section class="info-grid-tight">
+      <article class="card span-8">
+        <h3><span class="lang-fr">Problème business</span><span class="lang-en">Business problem</span></h3>
+        <p>
+          <span class="lang-fr">Les équipes marketplace reçoivent des messages clients très hétérogènes: retards, remboursements, produit cassé, article incomplet, double débit. Une partie peut être traitée avec un playbook, mais d'autres cas demandent une validation humaine ou une revue qualité vendeur. C'est exactement là qu'un agent orchestré a de la valeur.</span>
+          <span class="lang-en">Marketplace support teams receive highly heterogeneous customer messages: delays, refunds, damaged products, incomplete items, duplicate charges. Some can be handled with a playbook, while others require human validation or seller-quality review. That is exactly where an orchestrated agent adds value.</span>
+        </p>
+        <div class="quote-box">
+          <span class="lang-fr">Objectif: transformer un agent flou en un moteur de triage utile, traçable et présentable pour des contextes e-commerce ou CRM service.</span>
+          <span class="lang-en">Goal: turn a vague agent demo into a useful, traceable triage engine for e-commerce or CRM service contexts.</span>
+        </div>
+      </article>
+
+      <article class="card span-4">
+        <h3><span class="lang-fr">Taxonomie finale</span><span class="lang-en">Final taxonomy</span></h3>
+        <div class="timeline-list">
+          <div class="timeline-item"><strong>delivery_issue</strong><span class="lang-fr">Retard, suivi bloqué, livré mais non reçu.</span><span class="lang-en">Delay, stuck tracking, delivered but not received.</span></div>
+          <div class="timeline-item"><strong>payment_refund</strong><span class="lang-fr">Double débit, annulation, remboursement, risque paiement.</span><span class="lang-en">Duplicate charge, cancellation, refund, payment risk.</span></div>
+          <div class="timeline-item"><strong>product_issue</strong><span class="lang-fr">Produit cassé, mauvaise référence, accessoire manquant.</span><span class="lang-en">Damaged item, wrong product, missing accessory.</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card" style="margin-bottom: 28px;">
+      <h3><span class="lang-fr">Architecture de décision</span><span class="lang-en">Decision architecture</span></h3>
+      <p>
+        <span class="lang-fr">Le pipeline combine règles métier et LLMs, mais dans un cadre contraint: le modèle classe, résume et rédige; les gates empêchent les réponses risquées ou mal contextualisées.</span>
+        <span class="lang-en">The pipeline combines business rules and LLMs inside a constrained frame: the model classifies, summarizes, and drafts; deterministic gates prevent risky or weakly grounded answers.</span>
+      </p>
+      <div class="flow">
+        <div class="flow-step"><div class="icon">🧼</div><strong>Sanitize</strong><span class="lang-fr">PII + risque</span><span class="lang-en">PII + risk</span></div>
+        <div class="flow-step"><div class="icon">🏷️</div><strong>Classify</strong><span class="lang-fr">Type + priorité</span><span class="lang-en">Type + priority</span></div>
+        <div class="flow-step"><div class="icon">🔎</div><strong>Retrieve</strong><span class="lang-fr">Politiques métier</span><span class="lang-en">Business policies</span></div>
+        <div class="flow-step"><div class="icon">🧠</div><strong>Decide</strong><span class="lang-fr">Respond / Handoff / Flag</span><span class="lang-en">Respond / Handoff / Flag</span></div>
+        <div class="flow-step"><div class="icon">🗂️</div><strong>Persist</strong><span class="lang-fr">SQLite + audit log</span><span class="lang-en">SQLite + audit log</span></div>
+      </div>
+    </section>
+
+    <section class="card" style="margin-bottom: 28px;">
+      <h3><span class="lang-fr">Exemples de trajectoires</span><span class="lang-en">Example trajectories</span></h3>
+      <div class="scenario-grid">
+        <div class="scenario-card">
+          <h4>Resolved</h4>
+          <p>
+            <span class="lang-fr">Cas livraison avec politique trouvée et réponse guidée.</span>
+            <span class="lang-en">Delivery case with grounded policy and guided response.</span>
           </p>
+          <code>"My order is late and tracking has not updated"
+category=delivery_issue
+action=respond
+status=resolved</code>
+        </div>
+        <div class="scenario-card">
+          <h4>Escalated</h4>
+          <p>
+            <span class="lang-fr">Cas remboursement ou paiement nécessitant validation humaine.</span>
+            <span class="lang-en">Refund or payment case requiring human validation.</span>
+          </p>
+          <code>"I was charged twice and need a refund"
+category=payment_refund
+action=handoff
+status=escalated</code>
+        </div>
+        <div class="scenario-card">
+          <h4>Flagged</h4>
+          <p>
+            <span class="lang-fr">Cas qualité produit routé vers seller operations.</span>
+            <span class="lang-en">Product-quality case routed to seller operations.</span>
+          </p>
+          <code>"The product arrived damaged and one piece is missing"
+category=product_issue
+action=flag_data_quality
+status=flagged</code>
         </div>
       </div>
     </section>
 
+    <section class="info-grid-tight">
+      <article class="card span-6">
+        <h3><span class="lang-fr">Ce qui donne de la valeur portfolio</span><span class="lang-en">Why this is portfolio-worthy</span></h3>
+        <div class="timeline-list">
+          <div class="timeline-item"><strong><span class="lang-fr">Workflow métier explicite</span><span class="lang-en">Explicit business workflow</span></strong><span class="lang-fr">Plus fort qu'un chatbot libre, car chaque ticket finit dans un état opératoire.</span><span class="lang-en">Stronger than a free-form chatbot because every ticket ends in an operational status.</span></div>
+          <div class="timeline-item"><strong><span class="lang-fr">Données publiques réelles</span><span class="lang-en">Real public data</span></strong><span class="lang-fr">Le projet est ancré dans Olist plutôt que dans des prompts entièrement synthétiques.</span><span class="lang-en">The project is anchored in Olist instead of fully synthetic prompts.</span></div>
+          <div class="timeline-item"><strong><span class="lang-fr">Trade-offs assumés</span><span class="lang-en">Clear trade-offs</span></strong><span class="lang-fr">Retrieval simple mais transparent, idéal pour expliquer les limites et la V2.</span><span class="lang-en">Simple but transparent retrieval, ideal for explaining current limits and a V2 roadmap.</span></div>
+        </div>
+      </article>
 
-    <!-- ═══ Conclusion ═══ -->
-    <section class="conclusion conclusion--highlight" style="margin-top: 40px; border-radius: 20px;">
-      <h3>
-        <span class="lang-fr">🎯 Enseignements Clés & Recommandations</span>
-        <span class="lang-en">🎯 Key Takeaways & Recommendations</span>
-      </h3>
-      <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>1. Séparation propre des préoccupations :</strong> Au lieu d'exposer la logique
-          d'IA sur le frontend, l'application délègue solidement le travail intensif de chunking, d'enchâssement et
-          d'orchestration LLM à un microservice FastAPI robuste déployé sur un serveur dédié.</span>
-        <span class="lang-en"><strong>1. Clean Separation of Concerns:</strong> Rather than exposing AI logic directly
-          on the frontend, the app securely delegates heavy embedding, chunking, and LLM orchestration workloads to a
-          robust FastAPI microservice hosted on a dedicated server.</span>
+      <article class="card span-6">
+        <h3><span class="lang-fr">Roadmap crédible</span><span class="lang-en">Credible roadmap</span></h3>
+        <div class="timeline-list">
+          <div class="timeline-item"><strong>V1</strong><span class="lang-fr">Tri de tickets + policies curées + Streamlit demo.</span><span class="lang-en">Ticket triage + curated policies + Streamlit demo.</span></div>
+          <div class="timeline-item"><strong>V2</strong><span class="lang-fr">Jointure directe Olist orders/reviews/payments pour enrichir le contexte du ticket.</span><span class="lang-en">Direct Olist joins across orders, reviews, and payments to enrich the ticket context.</span></div>
+          <div class="timeline-item"><strong>V3</strong><span class="lang-fr">Dashboard ops: volumes, taux d'escalade, seller quality incidents, motifs de remboursement.</span><span class="lang-en">Ops dashboard: volumes, escalation rate, seller quality incidents, refund drivers.</span></div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card">
+      <h3><span class="lang-fr">Résumé</span><span class="lang-en">Summary</span></h3>
+      <p>
+        <span class="lang-fr">Ce projet est désormais présentable comme un case study GenAI orienté opérations: un moteur de triage post-achat, gouverné par des règles, connecté à un corpus de politiques, et repositionné sur un vrai signal business issu d'un dataset public. Il raconte mieux ma capacité à cadrer un problème métier qu'un simple chatbot de démo.</span>
+        <span class="lang-en">This project is now presentable as an operations-oriented GenAI case study: a post-purchase triage engine governed by rules, connected to a policy corpus, and repositioned around a real business signal from a public dataset. It tells a much stronger story about business framing than a simple chatbot demo.</span>
       </p>
-      <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>2. Redondance des Modèles :</strong> L'implémentation d'un routeur multi-modèles
-          (Kimi K2.5, GLM-5, Gemini) avec 3 tentatives et exponential backoff par modèle assure la haute disponibilité.
-          En interceptant silencieusement les erreurs de rate-limit et en basculant vers des modèles de secours,
-          on garantit un "100% uptime" apparent pour l'utilisateur final.</span>
-        <span class="lang-en"><strong>2. Model Redundancy:</strong> Implementing a multi-model router (Kimi K2.5,
-          GLM-5, Gemini) with 3 retries and exponential backoff per model ensures high API availability.
-          By silently intercepting rate-limit errors and failing over to backup models, it guarantees a
-          seamless "100% uptime" experience for the end user.</span>
-      </p>
-      <p style="margin-bottom: 15px;">
-        <span class="lang-fr"><strong>3. Automatisation de l'Ingestion :</strong> Une simple commande reconstruit
-          entièrement la base vectorielle ChromaDB en scannant les fichiers mis à jour de mon dépôt local, garantissant
-          une évolution de l'agent synchronisée avec mon parcours sans requérir de code supplémentaire.</span>
-        <span class="lang-en"><strong>3. Ingestion Automation:</strong> A single command fully rebuilds the ChromaDB
-          vector database by scanning updated files across my local repositories, ensuring the AI agent evolves
-          synchronously with my career profile without requiring any extra code.</span>
-      </p>
+      <div class="cta-row">
+        <a class="btn-soft" href="index.html#projects"><span class="lang-fr">Voir les autres projets</span><span class="lang-en">See other projects</span></a>
+        <a class="btn-soft" href="https://github.com/R-midolli" target="_blank" rel="noopener">GitHub Profile</a>
+      </div>
     </section>
   </main>
 
-
   <script src="assets/js/shared.js"></script>
-
-
-  <script>
-    (function () {
-      document.querySelectorAll('.bullets .bullet').forEach(function (b) {
-        b.addEventListener('click', function () { b.classList.toggle('active'); });
-      });
-    })();
-  </script>
-
   <script src="assets/js/midolli-widget-loader.js"></script>
-
-
 </body>
 
 </html>
